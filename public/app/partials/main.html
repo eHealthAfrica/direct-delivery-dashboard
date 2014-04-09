@@ -1,9 +1,17 @@
 <div class="container">
     <h1>LMIS Dashboard Demo</h1>
     <table ng-table class="table">
-        <tr ng-repeat="user in users">
-            <td data-title="'Name'">{{user.name}}</td>
-            <td data-title="'Age'">{{user.age}}</td>
+        <tr ng-repeat="doc in docs">
+            <td data-title="'_id'">{{doc._id}}</td>
+            <td data-title="'opened'">{{doc.opened}}</td>
+            <td data-title="'unopened'">{{doc.unopened}}</td>
+            <td data-title="'confirmation'">{{doc.confirmation}}</td>
+            <td data-title="'countDate'">{{doc.countDate}}</td>
+            <td data-title="'isComplete'">{{doc.isComplete}}</td>
+            <td data-title="'facility'">{{doc.facility}}</td>
+            <td data-title="'uuid'">{{doc.uuid}}</td>
+            <td data-title="'created'">{{doc.created}}</td>
+            <td data-title="'modified'">{{doc.modified}}</td>
         </tr>
     </table>
 </div>

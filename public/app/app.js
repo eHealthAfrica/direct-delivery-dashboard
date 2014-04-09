@@ -5,7 +5,7 @@ angular.module('lmisDashboardApp').config(function($routeProvider) {
     $routeProvider
         .when('/',{
             templateUrl:'public/app/partials/main.html',
-            controller:'MainCtrl'
+            controller:'main'
         });
 
 });
