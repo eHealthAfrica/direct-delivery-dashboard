@@ -1,6 +1,6 @@
 'use strict';
 angular.module('lmisDashboardApp').factory('database', function($resource, $q) {
-    var resource = $resource('https://79.125.119.180:6984/stockcount/:param',{param:'@param'});
+    var resource = $resource('http://dev.lomis.ehealth.org.ng:5984/stockcount/:param',{param:'@param'});
 
     return {
         loadData: function() {

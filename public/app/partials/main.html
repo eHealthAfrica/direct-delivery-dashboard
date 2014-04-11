@@ -1,17 +1,45 @@
+
 <div class="container">
-    <h1>LMIS Dashboard Demo</h1>
-    <table ng-table class="table">
+
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">LMIS Dashboard</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">Database</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+
+    <h3>Stockcount</h3>
+    <!--table class="table table-bordered table-hover">
+        <tr>
+            <th>Facility</th>
+            <th>Count Date</th>
+            <th ng-repeat="(profile, count) in docs[0].unopened">{{profile}}</th>
+        </tr>
         <tr ng-repeat="doc in docs">
-            <td data-title="'_id'">{{doc._id}}</td>
-            <td data-title="'opened'">{{doc.opened}}</td>
-            <td data-title="'unopened'">{{doc.unopened}}</td>
-            <td data-title="'confirmation'">{{doc.confirmation}}</td>
-            <td data-title="'countDate'">{{doc.countDate}}</td>
-            <td data-title="'isComplete'">{{doc.isComplete}}</td>
-            <td data-title="'facility'">{{doc.facility}}</td>
-            <td data-title="'uuid'">{{doc.uuid}}</td>
-            <td data-title="'created'">{{doc.created}}</td>
-            <td data-title="'modified'">{{doc.modified}}</td>
+            <td>{{doc.facility}}</td>
+            <td>{{doc.countDate}}</td>
+            <td ng-repeat="count in doc.unopened">{{count}}</td>
+        </tr>
+    </table-->
+    <table class="table table-bordered">
+        <tr>
+            <th>Facility</th>
+            <th>Count Date</th>
+            <th ng-repeat="(profile, count) in docs[0].unopened">{{profile}}</th>
+        </tr>
+
+        <tr ng-repeat="doc in docs">
+            <td>{{doc.facility}}</td>
+            <td>{{doc.countDate}}</td>
+            <td ng-repeat="count in doc.unopened" >{{count}}</td>
         </tr>
     </table>
 </div>
