@@ -20,7 +20,7 @@ describe('Database service', function() {
             doc2:{},
             doc3:{}
         }}
-        httpBackend.expectGET('https://79.125.119.180:6984/stockcount/_all_docs?include_docs=true').respond(200, responseMock);
+        httpBackend.expectGET('http://dev.lomis.ehealth.org.ng:5984/stockcount/_all_docs?include_docs=true').respond(200, responseMock);
         database.loadData()
         httpBackend.flush();
     });
