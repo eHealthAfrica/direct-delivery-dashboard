@@ -10,7 +10,7 @@ var stockcount_unopened_map_reduce = {
       for (var product in doc.unopened) {
         var count = parseInt(doc.unopened[product]);
         if (!isNaN(count))
-          emit([doc.facility, product, doc.countDate], count);
+          emit([doc.facility, doc.countDate, product], count);
       }
     }
   },
