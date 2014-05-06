@@ -1,0 +1,7 @@
+language: node_js
+node_js:
+  - '0.10'
+before_script:
+
+notifications:
+  #flowdock: 232485f7661e644ae5878944c2597042

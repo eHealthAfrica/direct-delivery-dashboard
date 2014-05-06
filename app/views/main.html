@@ -1,0 +1,39 @@
+<div class="header">
+  <h3 class="text-muted">LMIS Dashboard</h3>
+</div>
+
+<div class="row" ng-controller="UnopenedCtrl">
+  <div class="col-xs-12">
+    <h2 class="page-header">Online stock count</h2>
+    <div class="row" ng-show="loading || error">
+      <div class="col-xs-12">
+        <div class="alert alert-info" ng-show="loading">
+          Loading ...
+        </div>
+        <div class="alert alert-danger" ng-show="error">
+          Error loading data.
+        </div>
+      </div>
+    </div>
+    <div class="row" ng-hide="loading || error">
+      <div class="col-xs-12">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Facility</th>
+              <th>Date</th>
+              <th ng-repeat="product in products">{{product}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="row in rows">
+              <td style="white-space: nowrap;">{{facilities[row.facility] || row.facility}}</td>
+              <td style="white-space: nowrap;">{{row.date | date:'yyyy-MM-dd'}}</td>
+              <td ng-repeat="(uuid, name) in products">{{row.products[uuid] || 0}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

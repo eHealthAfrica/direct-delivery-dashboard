@@ -1,3 +1,6 @@
-node_modules/*
-public/vendor/*
-.idea/*
+node_modules
+dist
+.tmp
+.sass-cache
+app/bower_components
+.idea/
