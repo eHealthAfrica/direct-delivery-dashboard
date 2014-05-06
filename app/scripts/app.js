@@ -1,9 +1,10 @@
 'use strict';
 
 angular
-  .module('smart2App', [
+  .module('lmisApp', [
     'ngSanitize',
-    'ngRoute'
+    'ngRoute',
+    'pouchdb'
   ])
   .config(function ($routeProvider) {
     $routeProvider

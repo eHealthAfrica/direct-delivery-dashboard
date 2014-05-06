@@ -9,7 +9,7 @@
 <html class="no-js"> <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>SMART2 Dashboard</title>
+  <title>LMIS Dashboard</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="styles/main.css">
   <!-- endbuild -->
 </head>
-<body ng-app="smart2App">
+<body ng-app="lmisApp">
   <!--[if lt IE 7]>
   <p class="browsehappy">You are using an <strong>outdated</strong> browser.
     Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve
@@ -29,7 +29,7 @@
   <![endif]-->
 
   <!-- Add your site or application content here -->
-  <div class="container" ng-view=""></div>
+  <div class="container-fluid" ng-view=""></div>
 
   <!--[if lt IE 9]>
   <script src="bower_components/es5-shim/es5-shim.js"></script>
@@ -54,11 +54,16 @@
   <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/popover.js"></script>
   <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/pouchdb/dist/pouchdb-nightly.js"></script>
+  <script src="bower_components/angular-pouchdb/angular-pouchdb.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 
   <!-- build:js({.tmp,app}) scripts/scripts.js -->
   <script src="scripts/app.js"></script>
+  <script src="scripts/services/facility.js"></script>
+  <script src="scripts/services/product_profiles.js"></script>
+  <script src="scripts/services/stockcount.js"></script>
   <script src="scripts/controllers/main.js"></script>
   <!-- endbuild -->
 </body>
