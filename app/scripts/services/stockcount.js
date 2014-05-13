@@ -4,7 +4,7 @@ angular.module('lmisApp')
   .factory('stockcountDB', function surveyDB(pouchdb) {
     return pouchdb.create('http://dev.lomis.ehealth.org.ng:5984/stockcount');
   })
-  .factory('stockcountUnopened', function stockcountUnopened($q, stockcountDB) {
+  .factory('stockcountUnopened', function stockcountUnopened($q, stockcountDB, inventoryRulesFactory) {
     function query(group_level, descending) {
       var options = {
         reduce: true,
@@ -16,6 +16,20 @@ angular.module('lmisApp')
         options.group_level = group_level;
 
       return stockcountDB.query('stockcount/unopened', options);
+    }
+
+    function addInventoryRules(rows) {
+      rows.forEach(function(row) {
+        var products = Object.keys(row.products).map(function(key) {
+          return row.products[key];
+        });
+
+        inventoryRulesFactory.bufferStock(products).forEach(function(product) {
+          inventoryRulesFactory.reorderPoint(product);
+        });
+      });
+
+      return rows;
     }
 
     return {
@@ -53,13 +67,13 @@ angular.module('lmisApp')
                 date: row.key[1],
                 products: {}
               };
-              items[key].products[row.key[2]] = row.value;
+              items[key].products[row.key[2]] = { count: row.value };
             });
 
             for (var key in items)
               rows.push(items[key]);
 
-            d.resolve(rows)
+            d.resolve(addInventoryRules(rows))
           })
           .catch(function (error) {
             console.log(error);

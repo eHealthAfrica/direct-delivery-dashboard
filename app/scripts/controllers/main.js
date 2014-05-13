@@ -10,9 +10,19 @@ angular.module('lmisApp')
     $scope.loading = true;
     $scope.error = false;
 
+    $scope.count = function (row, productId) {
+      var product = row.products[productId];
+      return (product && product.count !== undefined) ? product.count : '-';
+    };
+
+    $scope.isOut = function (row, productId) {
+      var product = row.products[productId];
+      return (product && product.count < product.min);
+    };
+
     stockcountUnopened.byFacilityAndDate(true)
       .then(function (rows) {
-        $scope.rows = rows.map(function(row) {
+        $scope.rows = rows.map(function (row) {
           row.facility = $scope.facilities[row.facility];
           return row;
         });
