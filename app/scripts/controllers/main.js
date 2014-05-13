@@ -1,26 +1,21 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('MainCtrl', function ($scope) {
+  .controller('MainCtrl', function ($scope, facilities, products) {
+    $scope.facilities = facilities;
+    $scope.products = products;
   })
-  .controller('UnopenedCtrl', function ($scope, Facility, Product, stockcountUnopened) {
-    $scope.facilities = {};
-    $scope.products = {};
+  .controller('UnopenedCtrl', function ($scope, stockcountUnopened) {
     $scope.rows = [];
     $scope.loading = true;
     $scope.error = false;
 
-    Facility.all().then(function (facilities) {
-      $scope.facilities = facilities;
-    });
-
-    Product.all().then(function (products) {
-      $scope.products = products;
-    });
-
-    stockcountUnopened.byFacilityAndDate()
+    stockcountUnopened.byFacilityAndDate(true)
       .then(function (rows) {
-        $scope.rows = rows;
+        $scope.rows = rows.map(function(row) {
+          row.facility = $scope.facilities[row.facility];
+          return row;
+        });
       })
       .catch(function () {
         $scope.error = true;

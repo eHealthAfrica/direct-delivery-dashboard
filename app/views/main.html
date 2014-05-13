@@ -17,22 +17,30 @@
     </div>
     <div class="row" ng-hide="loading || error">
       <div class="col-xs-12">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>Facility</th>
-              <th>Date</th>
-              <th ng-repeat="product in products">{{product}}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="row in rows">
-              <td style="white-space: nowrap;">{{facilities[row.facility] || row.facility}}</td>
-              <td style="white-space: nowrap;">{{row.date | date:'yyyy-MM-dd'}}</td>
-              <td ng-repeat="(uuid, name) in products">{{row.products[uuid] || 0}}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div style="overflow: auto;">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Facility</th>
+                <th>Date</th>
+                <th ng-repeat="product in products">{{product}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in rows | orderBy:'facility'">
+                <td style="white-space: nowrap;">
+                  {{row.facility}}
+                </td>
+                <td style="white-space: nowrap;">
+                  {{row.date | date:'yyyy-MM-dd'}}
+                </td>
+                <td ng-repeat="(uuid, name) in products">
+                  {{row.products[uuid] || 0}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
