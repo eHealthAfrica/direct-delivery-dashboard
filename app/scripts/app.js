@@ -13,12 +13,12 @@ angular
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
         resolve: {
-          facilities: function(Facility) {
+          facilities: ['Facility', function(Facility) {
             return Facility.all();
-          },
-          products: function(Product) {
+          }],
+          products: ['Product', function(Product) {
             return Product.all();
-          }
+          }]
         }
       })
       .otherwise({
