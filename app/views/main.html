@@ -17,6 +17,7 @@
     </div>
     <div class="row" ng-hide="loading || error">
       <div class="col-xs-12">
+        <h3>Most recent</h3>
         <div style="overflow: auto;">
           <table class="table table-bordered">
             <thead>
@@ -28,7 +29,7 @@
             </thead>
             <tbody>
               <tr ng-repeat="row in rows | filter:{mostRecent: true} | orderBy:'facility'">
-                <td style="white-space: nowrap;">
+                <td style="white-space: nowrap; cursor: pointer;" ng-click="setChartData(row.facility)">
                   {{row.facility}}
                 </td>
                 <td style="white-space: nowrap;">
@@ -41,7 +42,33 @@
             </tbody>
           </table>
         </div>
+        <h3>By product over time</h3>
+        <div class="panel panel-primary center-block" style="width: 1024px">
+          <div class="panel-heading">
+            {{chartFacility || 'Please select a facility'}}
+          </div>
+          <div class="panel-body">
+            <nvd3-line-chart
+              data="chartData"
+              id="exampleId"
+              width="1024"
+              height="600"
+              showXAxis="true"
+              xAxisTickFormat="formatDateAxisFunction()"
+              staggerLabels="true"
+              showYAxis="true"
+              showLegend="true"
+              margin="{right:80}">
+              <svg></svg>
+            </nvd3-line-chart>
+          </div>
+          <div class="panel-footer">
+            Please click on a facility name in the table above to see related
+            data.
+          </div>
+        </div>
       </div>
     </div>
   </div>
+</div>
 </div>
