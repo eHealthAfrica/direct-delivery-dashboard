@@ -19,12 +19,12 @@ angular.module('lmisApp')
     }
 
     function addInventoryRules(rows) {
-      rows.forEach(function(row) {
-        var products = Object.keys(row.products).map(function(key) {
+      rows.forEach(function (row) {
+        var products = Object.keys(row.products).map(function (key) {
           return row.products[key];
         });
 
-        inventoryRulesFactory.bufferStock(products).forEach(function(product) {
+        inventoryRulesFactory.bufferStock(products).forEach(function (product) {
           inventoryRulesFactory.reorderPoint(product);
         });
       });
@@ -37,43 +37,24 @@ angular.module('lmisApp')
        * Read data from stockcount/unopened db view and arrange it by facility and date. Every item
        * has a facility name, a date and a hash of product -> count.
        */
-      byFacilityAndDate: function (mostRecentOnly) {
+      byFacilityAndDate: function () {
         var d = $q.defer();
         query(3, true)
           .then(function (response) {
-            var rows = [];
             var items = {};
-            if (mostRecentOnly)
-            {
-              // items are ordered in descending order (by facility, most recent first),
-              // so take the first row of a facility and all next ones that have the same date.
-              var mostRecent = [];
-              var last = null;
-              response.rows.forEach(function(row) {
-                if (!last || row.key[0] != last.key[0] || row.key[1] == last.key[1])
-                {
-                  mostRecent.push(row);
-                  last = row;
-                }
-              });
-
-              response.rows = mostRecent;
-            }
-
             response.rows.forEach(function (row) {
               var key = row.key[0] + row.key[1];
               items[key] = items[key] || {
                 facility: row.key[0],
-                date: row.key[1],
+                date: new Date(row.key[1]),
                 products: {}
               };
               items[key].products[row.key[2]] = { count: row.value };
             });
 
-            for (var key in items)
-              rows.push(items[key]);
-
-            d.resolve(addInventoryRules(rows))
+            d.resolve(addInventoryRules(Object.keys(items).map(function (key) {
+              return items[key];
+            })));
           })
           .catch(function (error) {
             console.log(error);

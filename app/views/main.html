@@ -27,7 +27,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="row in rows | orderBy:'facility'">
+              <tr ng-repeat="row in rows | filter:{mostRecent: true} | orderBy:'facility'">
                 <td style="white-space: nowrap;">
                   {{row.facility}}
                 </td>

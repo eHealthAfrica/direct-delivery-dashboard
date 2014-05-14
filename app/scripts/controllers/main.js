@@ -20,12 +20,9 @@ angular.module('lmisApp')
       return (product && product.count < product.min);
     };
 
-    stockcountUnopened.byFacilityAndDate(true)
+    stockcountUnopened.byFacilityAndDate()
       .then(function (rows) {
-        $scope.rows = rows.map(function (row) {
-          row.facility = $scope.facilities[row.facility];
-          return row;
-        });
+        $scope.rows = prepare(rows);
       })
       .catch(function () {
         $scope.error = true;
@@ -33,4 +30,26 @@ angular.module('lmisApp')
       .finally(function () {
         $scope.loading = false;
       });
+
+    function prepare(rows) {
+      var recent = {};
+
+      rows.forEach(function(row) {
+        var mostRecent = recent[row.facility];
+        row.mostRecent = false;
+        if (!mostRecent || mostRecent.date < row.date)
+        {
+          if (mostRecent)
+            mostRecent.mostRecent = false;
+
+          row.mostRecent = true;
+          recent[row.facility] = row;
+        }
+
+        // set facility name at last
+        row.facility = $scope.facilities[row.facility];
+      });
+
+      return rows;
+    }
   });
