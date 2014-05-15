@@ -21,7 +21,7 @@ var stockcount_unopened_map_reduce = {
 
         Object.keys(doc.unopened).forEach(function (product) {
           var count = parseInt(doc.unopened[product]);
-          if (!isNaN(count))
+          if (!isNaN(count) && count < 100000)
             emit([doc.facility, date, product], count);
         });
       }
