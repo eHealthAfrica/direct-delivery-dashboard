@@ -9,7 +9,7 @@ angular.module('lmisApp')
       all: function () {
         var d = $q.defer();
 
-        $http.get('scripts/fixtures/product_types.json')
+        $http.get('fixtures/product_types.json')
           .success(function(data) {
             d.resolve(data);
           })
