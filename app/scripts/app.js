@@ -16,8 +16,11 @@ angular
           facilities: ['Facility', function(Facility) {
             return Facility.all();
           }],
-          products: ['Product', function(Product) {
-            return Product.all();
+          productProfiles: ['ProductProfile', function(ProductProfile) {
+            return ProductProfile.all();
+          }],
+          productTypes: ['ProductType', function(ProductType) {
+            return ProductType.all();
           }]
         }
       })

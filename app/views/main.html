@@ -24,7 +24,7 @@
               <tr>
                 <th>Facility</th>
                 <th>Date</th>
-                <th ng-repeat="product in products">{{product}}</th>
+                <th ng-repeat="type in productTypes">{{type.name}}</th>
               </tr>
             </thead>
             <tbody>
@@ -35,7 +35,7 @@
                 <td style="white-space: nowrap;">
                   {{row.date | date:'yyyy-MM-dd'}}
                 </td>
-                <td ng-repeat="(uuid, name) in products" ng-class="{ 'danger': isOut(row, uuid) }">
+                <td ng-repeat="(uuid, type) in productTypes" ng-class="{ 'danger': isOut(row, uuid) }">
                   {{count(row, uuid)}}
                 </td>
               </tr>

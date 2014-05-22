@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('MainCtrl', function ($scope, facilities, products) {
+  .controller('MainCtrl', function ($scope, facilities, productProfiles, productTypes) {
     $scope.facilities = facilities;
-    $scope.products = products;
+    $scope.productProfiles = productProfiles;
+    $scope.productTypes = productTypes;
   })
   .controller('UnopenedCtrl', function ($scope, stockcountUnopened) {
     $scope.rows = [];
@@ -18,13 +19,13 @@ angular.module('lmisApp')
       }
     };
 
-    $scope.count = function (row, productId) {
-      var product = row.products[productId];
+    $scope.count = function (row, productType) {
+      var product = row.products[productType];
       return (product && product.count !== undefined) ? product.count : '-';
     };
 
-    $scope.isOut = function (row, productId) {
-      var product = row.products[productId];
+    $scope.isOut = function (row, productType) {
+      var product = row.products[productType];
       return (product && product.count < product.min);
     };
 
@@ -39,7 +40,7 @@ angular.module('lmisApp')
           Object.keys(row.products).forEach(function (key) {
             if (!products[key]) {
               products[key] = {
-                'key': ($scope.products[key] || key).substr(0, 10),
+                'key': $scope.productTypes[key].name,
                 'values': []
               }
             }
@@ -63,7 +64,7 @@ angular.module('lmisApp')
 
         return products[key];
       });
-    }
+    };
 
     stockcountUnopened.byFacilityAndDate()
       .then(function (rows) {
