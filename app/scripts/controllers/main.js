@@ -40,7 +40,7 @@ angular.module('lmisApp')
           Object.keys(row.products).forEach(function (key) {
             if (!products[key]) {
               products[key] = {
-                'key': $scope.productTypes[key].name,
+                'key': $scope.productTypes[key].code,
                 'values': []
               }
             }
