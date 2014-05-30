@@ -4,7 +4,8 @@ angular
   .module('lmisApp', [
     'ngSanitize',
     'ngRoute',
-    'pouchdb'
+    'pouchdb',
+    'nvd3ChartDirectives'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -12,12 +13,15 @@ angular
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
         resolve: {
-          facilities: function(Facility) {
+          facilities: ['Facility', function(Facility) {
             return Facility.all();
-          },
-          products: function(Product) {
-            return Product.all();
-          }
+          }],
+          productProfiles: ['ProductProfile', function(ProductProfile) {
+            return ProductProfile.all();
+          }],
+          productTypes: ['ProductType', function(ProductType) {
+            return ProductType.all();
+          }]
         }
       })
       .otherwise({
