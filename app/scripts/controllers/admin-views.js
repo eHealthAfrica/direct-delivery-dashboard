@@ -16,4 +16,20 @@ angular.module('lmisApp')
       .finally(function () {
         $scope.loading = false;
       });
+  })
+  .controller('StockOutCtrl', function ($scope, stockOut) {
+    $scope.rows = [];
+    $scope.loading = true;
+    $scope.error = false;
+
+    stockOut.all()
+      .then(function(rows) {
+        $scope.rows = rows;
+      })
+      .catch(function () {
+        $scope.error = true;
+      })
+      .finally(function () {
+        $scope.loading = false;
+      });
   });
