@@ -7,6 +7,9 @@ angular
     'pouchdb',
     'nvd3ChartDirectives'
   ])
+  .constant('SETTINGS', {
+    dbUrl: 'http://dev.lomis.ehealth.org.ng:5984/'
+  })
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {

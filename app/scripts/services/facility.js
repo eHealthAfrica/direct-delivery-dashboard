@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('facilityDB', function surveyDB(pouchdb) {
-    return pouchdb.create('http://dev.lomis.ehealth.org.ng:5984/facility');
+  .factory('facilityDB', function surveyDB(pouchdb, SETTINGS) {
+    return pouchdb.create(SETTINGS.dbUrl + 'facility');
   })
   .factory('Facility', function Facility($q, facilityDB) {
     return {
