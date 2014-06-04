@@ -30,4 +30,9 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+  })
+  .controller('NavBar', function ($scope, $location) {
+    $scope.isActive = function (url) {
+      return url == $location.path();
+    }
   });
