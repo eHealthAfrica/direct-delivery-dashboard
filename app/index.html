@@ -33,6 +33,9 @@
     <div class="header">
       <ul class="nav nav-pills pull-right" ng-controller="NavBar">
         <li ng-class="{active: isActive('/')}"><a href="#/">Home</a></li>
+        <li ng-class="{active: isActive('/admin-views')}">
+          <a href="#/admin-views">Admin Views</a>
+        </li>
       </ul>
       <h3 class="text-muted">LMIS Dashboard</h3>
     </div>
@@ -79,7 +82,9 @@
   <script src="scripts/services/product_profiles.js"></script>
   <script src="scripts/services/product_types.js"></script>
   <script src="scripts/services/stockcount.js"></script>
+  <script src="scripts/services/ccu_breakdown.js"></script>
   <script src="scripts/controllers/main.js"></script>
+  <script src="scripts/controllers/admin-views.js"></script>
   <!-- endbuild -->
 </body>
 </html>

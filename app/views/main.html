@@ -29,7 +29,7 @@
                   {{row.facility}}
                 </td>
                 <td style="white-space: nowrap;">
-                  {{row.date | date:'yyyy-MM-dd'}}
+                  {{row.date | date:SETTINGS.dateFormat}}
                 </td>
                 <td ng-repeat="(uuid, type) in productTypes" ng-class="{ 'danger': isOut(row, uuid) }">
                   {{count(row, uuid)}}
