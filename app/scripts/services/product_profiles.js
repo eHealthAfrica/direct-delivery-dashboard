@@ -5,11 +5,16 @@ angular.module('lmisApp')
     return pouchdb.create(SETTINGS.dbUrl + 'product_profiles');
   })
   .factory('ProductProfile', function ($q, productProfilesDB) {
+    var allPromise = null;
+
     return {
       /**
        * Read data from product_profiles db and arrange it as a hash of uuid -> product profile
        */
-      all: function () {
+      all: function (reload) {
+        if (!reload && allPromise)
+          return allPromise;
+
         var d = $q.defer();
         productProfilesDB.allDocs({include_docs: true})
           .then(function (response) {
@@ -24,7 +29,8 @@ angular.module('lmisApp')
             d.reject(error);
           });
 
-        return d.promise;
+        allPromise = d.promise;
+        return allPromise;
       }
     }
   });

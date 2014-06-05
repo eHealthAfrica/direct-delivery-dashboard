@@ -2,13 +2,17 @@
 
 angular.module('lmisApp')
   .factory('ProductType', function ($q, $http) {
+    var allPromise = null;
+
     return {
       /**
        * Read data from product types fixture file
        */
-      all: function () {
-        var d = $q.defer();
+      all: function (reload) {
+        if (!reload && allPromise)
+          return allPromise;
 
+        var d = $q.defer();
         $http.get('fixtures/product_types.json')
           .success(function (data) {
             d.resolve(data);
@@ -18,7 +22,8 @@ angular.module('lmisApp')
             d.resolve({});
           });
 
-        return d.promise;
+        allPromise = d.promise;
+        return allPromise;
       }
     };
   });

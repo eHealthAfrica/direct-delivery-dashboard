@@ -5,11 +5,16 @@ angular.module('lmisApp')
     return pouchdb.create(SETTINGS.dbUrl + 'facility');
   })
   .factory('Facility', function ($q, facilityDB) {
+    var allPromise = null;
+
     return {
       /**
        * Read data from facility db and arrange it as a hash of uuid -> name
        */
-      all: function () {
+      all: function (reload) {
+        if (!reload && allPromise)
+          return allPromise;
+
         var d = $q.defer();
         facilityDB.allDocs({include_docs: true})
           .then(function (response) {
@@ -24,7 +29,8 @@ angular.module('lmisApp')
             d.reject(error);
           });
 
-        return d.promise;
+        allPromise = d.promise;
+        return allPromise;
       }
     };
   });
