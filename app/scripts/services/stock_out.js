@@ -33,7 +33,7 @@ angular.module('lmisApp')
               return {
                 facility: row.value.facility ? facilities[row.value.facility] : undefined,
                 created: row.value.created,
-                productType: productType ? productType.name : undefined,
+                productType: productType ? productType.code : undefined,
                 stockLevel: row.value.stockLevel
               };
             }));
