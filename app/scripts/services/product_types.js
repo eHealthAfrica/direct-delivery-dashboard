@@ -1,25 +1,32 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('ProductType', function ($q, $http) {
+  .factory('productTypesDB', function (pouchdb, SETTINGS) {
+    return pouchdb.create(SETTINGS.dbUrl + 'product_types');
+  })
+  .factory('ProductType', function ($q, productTypesDB) {
     var allPromise = null;
 
     return {
       /**
-       * Read data from product types fixture file
+       * Read data from product_types db and arrange it as a hash of uuid -> product type
        */
       all: function (reload) {
         if (!reload && allPromise)
           return allPromise;
 
         var d = $q.defer();
-        $http.get('fixtures/product_types.json')
-          .success(function (data) {
-            d.resolve(data);
+        productTypesDB.allDocs({include_docs: true})
+          .then(function (response) {
+            var types = {};
+            response.rows.forEach(function(row) {
+              types[row.doc.uuid] = row.doc;
+            });
+            d.resolve(types);
           })
-          .error(function (err) {
-            console.log(err);
-            d.resolve({});
+          .catch(function (error) {
+            console.log(error);
+            d.reject(error);
           });
 
         allPromise = d.promise;
