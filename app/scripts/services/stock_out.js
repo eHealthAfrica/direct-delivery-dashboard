@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('stockOutDB', function surveyDB(pouchdb, SETTINGS) {
+  .factory('stockOutDB', function (pouchdb, SETTINGS) {
     return pouchdb.create(SETTINGS.dbUrl + 'stock_out');
   })
-  .factory('stockOut', function Facility($q, stockOutDB) {
+  .factory('stockOut', function ($q, stockOutDB) {
     return {
       /**
        * Read data from db and arrange it in an array. Every item has the following structure:
@@ -21,7 +21,7 @@ angular.module('lmisApp')
         var d = $q.defer();
         stockOutDB.query({map: '(' + map.toString() + ')'}, {include_docs: false})
           .then(function (response) {
-            d.resolve(response.rows.map(function(row) {
+            d.resolve(response.rows.map(function (row) {
               return row.value;
             }));
           })

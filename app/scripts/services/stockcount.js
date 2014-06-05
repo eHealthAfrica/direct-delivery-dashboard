@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('stockcountDB', function surveyDB(pouchdb, SETTINGS) {
+  .factory('stockcountDB', function (pouchdb, SETTINGS) {
     return pouchdb.create(SETTINGS.dbUrl + 'stockcount');
   })
-  .factory('stockcountUnopened', function stockcountUnopened($q, stockcountDB, inventoryRulesFactory, ProductProfile) {
+  .factory('stockcountUnopened', function ($q, stockcountDB, inventoryRulesFactory, ProductProfile) {
     function query(group_level, descending) {
       var options = {
         reduce: true,

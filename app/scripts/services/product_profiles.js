@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('productProfilesDB', function surveyDB(pouchdb, SETTINGS) {
+  .factory('productProfilesDB', function (pouchdb, SETTINGS) {
     return pouchdb.create(SETTINGS.dbUrl + 'product_profiles');
   })
-  .factory('ProductProfile', function Product($q, productProfilesDB) {
+  .factory('ProductProfile', function ($q, productProfilesDB) {
     return {
       /**
        * Read data from product_profiles db and arrange it as a hash of uuid -> product profile

@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('facilityDB', function surveyDB(pouchdb, SETTINGS) {
+  .factory('facilityDB', function (pouchdb, SETTINGS) {
     return pouchdb.create(SETTINGS.dbUrl + 'facility');
   })
-  .factory('Facility', function Facility($q, facilityDB) {
+  .factory('Facility', function ($q, facilityDB) {
     return {
       /**
        * Read data from facility db and arrange it as a hash of uuid -> name
