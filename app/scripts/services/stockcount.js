@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('stockcountDB', function surveyDB(pouchdb) {
-    return pouchdb.create('http://dev.lomis.ehealth.org.ng:5984/stockcount');
+  .factory('stockcountDB', function (pouchdb, SETTINGS) {
+    return pouchdb.create(SETTINGS.dbUrl + 'stockcount');
   })
-  .factory('stockcountUnopened', function stockcountUnopened($q, stockcountDB, inventoryRulesFactory, ProductProfile) {
+  .factory('stockcountUnopened', function ($q, stockcountDB, inventoryRulesFactory, ProductProfile, ProductType, Facility) {
     function query(group_level, descending) {
       var options = {
         reduce: true,
@@ -61,6 +61,57 @@ angular.module('lmisApp')
     }
 
     return {
+      /**
+       * Read all documents from db, expand them on unopened products and arrange them in an array
+       * with facilities resolved to their names and product types to their codes. Every item has the
+       * following structure:
+       * {
+       *   "facility": string,
+       *   "created": date,
+       *   "productType": string,
+       *   "count": number,
+       * }
+       */
+      all: function () {
+        var d = $q.defer();
+        $q.all([
+            stockcountDB.allDocs({include_docs: true}),
+            ProductProfile.all(),
+            ProductType.all(),
+            Facility.all()
+          ])
+          .then(function (response) {
+            var rows = response[0].rows;
+            var productProfiles = response[1];
+            var productTypes = response[2];
+            var facilities = response[3];
+
+            var expanded = [];
+            rows.forEach(function (row) {
+              if (row.doc.unopened) {
+                Object.keys(row.doc.unopened).forEach(function (productProfileUUID) {
+                  var productProfile = productProfiles[productProfileUUID];
+                  var productType = (productProfile && productProfile.product) ? productTypes[productProfile.product] : undefined;
+
+                  expanded.push({
+                    facility: row.doc.facility ? facilities[row.doc.facility] : undefined,
+                    created: row.doc.created,
+                    productType: productType ? productType.code : undefined,
+                    count: row.doc.unopened[productProfileUUID]
+                  });
+                });
+              }
+            });
+
+            d.resolve(expanded);
+          })
+          .catch(function (error) {
+            console.log(error);
+            d.reject(error);
+          });
+
+        return d.promise;
+      },
       /**
        * Read data from stockcount/unopened db view and arrange it by facility and date. Every item
        * has a facility name, a date and a hash of productType -> count.

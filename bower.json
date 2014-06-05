@@ -16,7 +16,7 @@
     "bootstrap-sass-official": "~3.1.1",
     "angular-sanitize": "1.2.16",
     "angular-route": "1.2.16",
-    "pouchdb": "~2.2.0",
+    "pouchdb": "~2.2.3",
     "angular-pouchdb": "~0.1.5",
     "angularjs-nvd3-directives": "~0.0.7"
   },

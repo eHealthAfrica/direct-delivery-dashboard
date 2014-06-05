@@ -1,28 +1,28 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('facilityDB', function (pouchdb, SETTINGS) {
-    return pouchdb.create(SETTINGS.dbUrl + 'facility');
+  .factory('cceiDB', function (pouchdb, SETTINGS) {
+    return pouchdb.create(SETTINGS.dbUrl + 'ccei');
   })
-  .factory('Facility', function ($q, facilityDB) {
+  .factory('CCEI', function ($q, cceiDB) {
     var allPromise = null;
 
     return {
       /**
-       * Read data from facility db and arrange it as a hash of uuid -> name
+       * Read data from facility db and arrange it as a hash of dhis2_modelid -> name
        */
       all: function (reload) {
         if (!reload && allPromise)
           return allPromise;
 
         var d = $q.defer();
-        facilityDB.allDocs({include_docs: true})
+        cceiDB.allDocs({include_docs: true})
           .then(function (response) {
-            var facilities = {};
+            var cceis = {};
             response.rows.forEach(function (row) {
-              facilities[row.doc.uuid] = row.doc.name;
+              cceis[row.doc.dhis2_modelid] = row.doc.name;
             });
-            d.resolve(facilities);
+            d.resolve(cceis);
           })
           .catch(function (error) {
             console.log(error);
