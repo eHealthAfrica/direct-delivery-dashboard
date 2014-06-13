@@ -29,8 +29,17 @@ angular
           }]
         }
       })
-      .when('/admin-views', {
-        templateUrl: 'views/admin-views.html'
+      .when('/ccu-breakdown', {
+        templateUrl: 'views/ccu-breakdown.html',
+        controller: 'CCUBreakdownCtrl'
+      })
+      .when('/stock-count', {
+        templateUrl: 'views/stock-count.html',
+        controller: 'StockCountCtrl'
+      })
+      .when('/stock-out', {
+        templateUrl: 'views/stock-out.html',
+        controller: 'StockOutCtrl'
       })
       .otherwise({
         redirectTo: '/'

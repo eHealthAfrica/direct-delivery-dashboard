@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h2 class="page-header">Stock Count</h2>
+    <div class="row" ng-show="loading || error">
+      <div class="col-xs-12">
+        <div class="alert alert-info" ng-show="loading">
+          Loading ...
+        </div>
+        <div class="alert alert-danger" ng-show="error">
+          Error loading data.
+        </div>
+      </div>
+    </div>
+    <div class="row" ng-hide="loading || error">
+      <div class="col-xs-12">
+        <table class="table table-condensed table-bordered table-striped">
+          <thead>
+            <th>Facility</th>
+            <th>Date</th>
+            <th>Product Type</th>
+            <th>Stock Count</th>
+          </thead>
+          <tbody>
+            <tr ng-repeat="row in rows | orderBy:'-created'">
+              <td>{{row.facility}}</td>
+              <td>{{row.created | date:SETTINGS.dateTimeFormat}}</td>
+              <td>{{row.productType}}</td>
+              <td>{{row.count}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
