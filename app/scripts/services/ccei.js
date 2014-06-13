@@ -9,7 +9,7 @@ angular.module('lmisApp')
 
     return {
       /**
-       * Read data from facility db and arrange it as a hash of dhis2_modelid -> name
+       * Read data from db and arrange it as a hash of dhis2_modelid -> name
        */
       all: function (reload) {
         if (!reload && allPromise)

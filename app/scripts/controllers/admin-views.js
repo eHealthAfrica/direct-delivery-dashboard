@@ -7,8 +7,18 @@ angular.module('lmisApp')
     $scope.error = false;
 
     ccuBreakdown.all()
-      .then(function(rows) {
-        $scope.rows = rows;
+      .then(function (rows) {
+        $scope.rows = rows.map(function (row) {
+          return {
+            state: row.facility.state,
+            zone: row.facility.zone,
+            lga: row.facility.lga,
+            ward: row.facility.ward,
+            facility: row.facility.name,
+            created: row.created,
+            name: row.name
+          };
+        });
       })
       .catch(function () {
         $scope.error = true;
@@ -23,8 +33,19 @@ angular.module('lmisApp')
     $scope.error = false;
 
     stockOut.all()
-      .then(function(rows) {
-        $scope.rows = rows;
+      .then(function (rows) {
+        $scope.rows = rows.map(function (row) {
+          return {
+            state: row.facility.state,
+            zone: row.facility.zone,
+            lga: row.facility.lga,
+            ward: row.facility.ward,
+            facility: row.facility.name,
+            created: row.created,
+            productType: row.productType,
+            stockLevel: row.stockLevel
+          };
+        });
       })
       .catch(function () {
         $scope.error = true;
@@ -40,7 +61,19 @@ angular.module('lmisApp')
 
     stockcountUnopened.all()
       .then(function (rows) {
-        $scope.rows = rows;
+        $scope.rows = rows.map(function (row) {
+          return {
+            state: row.facility.state,
+            zone: row.facility.zone,
+            lga: row.facility.lga,
+            ward: row.facility.ward,
+            facility: row.facility.name,
+            created: row.created,
+            productType: row.productType,
+            count: row.count
+          };
+        });
+
       })
       .catch(function () {
         $scope.error = true;

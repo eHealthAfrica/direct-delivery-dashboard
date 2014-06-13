@@ -12,7 +12,7 @@ angular.module('lmisApp')
        * {
        *   "name": string,
        *   "created": date,
-       *   "facility": string
+       *   "facility": object
        * }
        *
        */

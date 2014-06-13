@@ -99,7 +99,8 @@ angular.module('lmisApp')
         }
 
         // set facility name at last
-        row.facility = $scope.facilities[row.facility];
+        var facility = $scope.facilities[row.facility];
+        row.facility = facility ? facility.name : '';
       });
 
       return rows;
