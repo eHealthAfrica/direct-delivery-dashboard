@@ -13,17 +13,51 @@
     </div>
     <div class="row" ng-hide="loading || error">
       <div class="col-xs-12">
-        <table class="table table-condensed table-bordered table-striped">
+        <table class="table table-condensed table-bordered table-striped table-condensed">
           <thead>
-            <th>Facility</th>
-            <th>Date</th>
-            <th>CCU Unit</th>
+            <tr>
+              <th>State</th>
+              <th>Zone</th>
+              <th>LGA</th>
+              <th>Ward</th>
+              <th>Facility</th>
+              <th>Date</th>
+              <th>CCU Unit</th>
+            </tr>
+            <tr class="active">
+              <td>
+                <input type="text" class="form-control" ng-model="search.state">
+              </td>
+              <td>
+                <input type="text" class="form-control" ng-model="search.zone">
+              </td>
+              <td>
+                <input type="text" class="form-control" ng-model="search.lga">
+              </td>
+              <td>
+                <input type="text" class="form-control" ng-model="search.ward">
+              </td>
+              <td>
+                <input type="text" class="form-control" ng-model="search.facility">
+              </td>
+              <td colspan="2">
+                <button type="button" class="btn btn-primary" ng-click="search = {}">
+                  Clear Filter
+                </button>
+              </td>
+            </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="row in rows | orderBy:'-created'">
+            <tr ng-repeat="row in rows | filter:search | orderBy:'-created'">
+              <td>{{row.state}}</td>
+              <td>{{row.zone}}</td>
+              <td>{{row.lga}}</td>
+              <td>{{row.ward}}</td>
               <td>{{row.facility}}</td>
-              <td>{{row.created | date:SETTINGS.dateTimeFormat}}</td>
-              <td>{{row.name}}</td>
+              <td style="white-space: nowrap;">
+                {{row.created | date:SETTINGS.dateTimeFormat}}
+              </td>
+              <td style="white-space: nowrap;">{{row.name}}</td>
             </tr>
           </tbody>
         </table>

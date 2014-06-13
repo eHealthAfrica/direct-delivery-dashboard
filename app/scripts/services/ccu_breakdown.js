@@ -12,7 +12,7 @@ angular.module('lmisApp')
        * {
        *   "name": string,
        *   "created": date,
-       *   "facility": string
+       *   "facility": object
        * }
        *
        */
@@ -28,11 +28,10 @@ angular.module('lmisApp')
             var cceis = response[1];
             var facilities = response[2];
             d.resolve(rows.map(function (row) {
-              var facility = row.value.facility ? facilities[row.value.facility] : undefined;
               return {
                 name: row.value.ccu ? cceis[row.value.ccu] : undefined,
                 created: row.value.created,
-                facility: facility ? facility.name : undefined
+                facility: row.value.facility ? facilities[row.value.facility] : undefined
               };
             }));
           })

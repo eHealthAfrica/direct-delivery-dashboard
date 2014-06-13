@@ -7,8 +7,18 @@ angular.module('lmisApp')
     $scope.error = false;
 
     ccuBreakdown.all()
-      .then(function(rows) {
-        $scope.rows = rows;
+      .then(function (rows) {
+        $scope.rows = rows.map(function (row) {
+          return {
+            state: row.facility.state,
+            zone: row.facility.zone,
+            lga: row.facility.lga,
+            ward: row.facility.ward,
+            facility: row.facility.name,
+            created: row.created,
+            name: row.name
+          };
+        });
       })
       .catch(function () {
         $scope.error = true;
@@ -23,7 +33,7 @@ angular.module('lmisApp')
     $scope.error = false;
 
     stockOut.all()
-      .then(function(rows) {
+      .then(function (rows) {
         $scope.rows = rows;
       })
       .catch(function () {
