@@ -5,7 +5,8 @@ angular
     'ngSanitize',
     'ngRoute',
     'pouchdb',
-    'nvd3ChartDirectives'
+    'nvd3ChartDirectives',
+    'ui.bootstrap'
   ])
   .constant('SETTINGS', {
     dbUrl: 'http://dev.lomis.ehealth.org.ng:5984/',
@@ -45,8 +46,51 @@ angular
         redirectTo: '/'
       });
   })
-  .run(function($rootScope, SETTINGS) {
+  .run(function ($rootScope, $q, SETTINGS, State, Zone, LGA, Ward, Facility) {
     $rootScope.SETTINGS = SETTINGS;
+
+    $rootScope.dataProvider = {
+      loadingStates: false,
+      getStates: function (value) {
+        this.loadingStates = true;
+        return State.names(value)
+          .finally(function () {
+            this.loadingStates = false;
+          }.bind(this));
+      },
+      loadingZones: false,
+      getZones: function (value) {
+        this.loadingZones = true;
+        return Zone.names(value)
+          .finally(function () {
+            this.loadingZones = false;
+          }.bind(this));
+      },
+      loadingLgas: false,
+      getLgas: function (value) {
+        this.loadingLgas = true;
+        return LGA.names(value)
+          .finally(function () {
+            this.loadingLgas = false;
+          }.bind(this));
+      },
+      loadingWards: false,
+      getWards: function (value) {
+        this.loadingWards = true;
+        return Ward.names(value)
+          .finally(function () {
+            this.loadingWards = false;
+          }.bind(this));
+      },
+      loadingFacilities: false,
+      getFacilities: function (value) {
+        this.loadingFacilities = true;
+        return Facility.names(value)
+          .finally(function () {
+            this.loadingFacilities = false;
+          }.bind(this));
+      }
+    };
   })
   .controller('NavBar', function ($scope, $location) {
     $scope.isActive = function (url) {

@@ -89,3 +89,15 @@ body {
         border-bottom: 0;
     }
 }
+
+td .form-group {
+  margin: 0;
+}
+
+td .form-group .form-control-feedback {
+  top: 0;
+}
+
+.has-feedback .form-control.filter {
+  padding-right: 12px;
+}

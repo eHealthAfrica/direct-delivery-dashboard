@@ -6,6 +6,7 @@ angular.module('lmisApp')
   })
   .factory('Facility', function ($q, facilityDB) {
     var allPromise = null;
+    var names = [];
 
     return {
       /**
@@ -16,12 +17,19 @@ angular.module('lmisApp')
           return allPromise;
 
         var d = $q.defer();
+        allPromise = d.promise;
+        names = [];
+
         facilityDB.allDocs({include_docs: true})
           .then(function (response) {
             var facilities = {};
             response.rows.forEach(function (row) {
               facilities[row.doc.uuid] = row.doc;
+              if (names.indexOf(row.doc.name) < 0)
+                names.push(row.doc.name);
             });
+
+            names.sort();
             d.resolve(facilities);
           })
           .catch(function (error) {
@@ -29,8 +37,25 @@ angular.module('lmisApp')
             d.reject(error);
           });
 
-        allPromise = d.promise;
         return allPromise;
+      },
+      /**
+       * Returns data as array of names.
+       */
+      names: function (filter, reload) {
+        var d = $q.defer();
+        var pattern = (filter && filter.length) ? new RegExp(filter, 'i') : null;
+        this.all(reload)
+          .then(function () {
+            d.resolve(pattern ? names.filter(function (name) {
+              return pattern.test(name);
+            }) : names);
+          })
+          .catch(function (error) {
+            d.reject(error);
+          });
+
+        return d.promise;
       }
     };
   });
