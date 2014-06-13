@@ -9,7 +9,7 @@ angular.module('lmisApp')
 
     return {
       /**
-       * Read data from db and arrange it as a hash of uuid -> name
+       * Read data from db and arrange it as a hash of uuid -> facility
        */
       all: function (reload) {
         if (!reload && allPromise)
@@ -20,7 +20,7 @@ angular.module('lmisApp')
           .then(function (response) {
             var facilities = {};
             response.rows.forEach(function (row) {
-              facilities[row.doc.uuid] = row.doc.name;
+              facilities[row.doc.uuid] = row.doc;
             });
             d.resolve(facilities);
           })

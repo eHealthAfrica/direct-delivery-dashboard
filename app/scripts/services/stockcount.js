@@ -90,11 +90,12 @@ angular.module('lmisApp')
             rows.forEach(function (row) {
               if (row.doc.unopened) {
                 Object.keys(row.doc.unopened).forEach(function (productProfileUUID) {
+                  var facility = row.doc.facility ? facilities[row.doc.facility] : undefined;
                   var productProfile = productProfiles[productProfileUUID];
                   var productType = (productProfile && productProfile.product) ? productTypes[productProfile.product] : undefined;
 
                   expanded.push({
-                    facility: row.doc.facility ? facilities[row.doc.facility] : undefined,
+                    facility: facility ? facility.name : undefined,
                     created: row.doc.created,
                     productType: productType ? productType.code : undefined,
                     count: row.doc.unopened[productProfileUUID]

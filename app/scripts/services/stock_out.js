@@ -29,9 +29,10 @@ angular.module('lmisApp')
             var productTypes = response[1];
             var facilities = response[2];
             d.resolve(rows.map(function (row) {
+              var facility = row.value.facility ? facilities[row.value.facility] : undefined;
               var productType = row.value.productType ? productTypes[row.value.productType] : undefined;
               return {
-                facility: row.value.facility ? facilities[row.value.facility] : undefined,
+                facility: facility ? facility.name : undefined,
                 created: row.value.created,
                 productType: productType ? productType.code : undefined,
                 stockLevel: row.value.stockLevel
