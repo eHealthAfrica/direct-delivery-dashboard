@@ -2,14 +2,14 @@
 
 angular.module('lmisApp')
   .factory('facilityDB', function (pouchdb, SETTINGS) {
-    return pouchdb.create(SETTINGS.dbUrl + 'facility');
+    return pouchdb.create(SETTINGS.dbUrl + 'facilities');
   })
   .factory('Facility', function ($q, facilityDB) {
     var allPromise = null;
 
     return {
       /**
-       * Read data from facility db and arrange it as a hash of uuid -> name
+       * Read data from db and arrange it as a hash of uuid -> name
        */
       all: function (reload) {
         if (!reload && allPromise)
