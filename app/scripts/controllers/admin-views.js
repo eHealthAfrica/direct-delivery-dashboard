@@ -34,7 +34,18 @@ angular.module('lmisApp')
 
     stockOut.all()
       .then(function (rows) {
-        $scope.rows = rows;
+        $scope.rows = rows.map(function (row) {
+          return {
+            state: row.facility.state,
+            zone: row.facility.zone,
+            lga: row.facility.lga,
+            ward: row.facility.ward,
+            facility: row.facility.name,
+            created: row.created,
+            productType: row.productType,
+            stockLevel: row.stockLevel
+          };
+        });
       })
       .catch(function () {
         $scope.error = true;
