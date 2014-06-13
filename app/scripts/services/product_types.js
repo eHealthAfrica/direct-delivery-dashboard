@@ -9,7 +9,7 @@ angular.module('lmisApp')
 
     return {
       /**
-       * Read data from product_types db and arrange it as a hash of uuid -> product type
+       * Read data from db and arrange it as a hash of uuid -> product type
        */
       all: function (reload) {
         if (!reload && allPromise)
