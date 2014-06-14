@@ -8,17 +8,21 @@ angular.module('lmisApp')
 
     ccuBreakdown.all()
       .then(function (rows) {
-        $scope.rows = rows.map(function (row) {
-          return {
-            state: row.facility.state,
-            zone: row.facility.zone,
-            lga: row.facility.lga,
-            ward: row.facility.ward,
-            facility: row.facility.name,
-            created: row.created,
-            name: row.name
-          };
-        });
+        $scope.rows = rows
+          .filter(function (row) {
+            return !!row.facility;
+          })
+          .map(function (row) {
+            return {
+              state: row.facility.state,
+              zone: row.facility.zone,
+              lga: row.facility.lga,
+              ward: row.facility.ward,
+              facility: row.facility.name,
+              created: row.created,
+              name: row.name
+            };
+          });
       })
       .catch(function () {
         $scope.error = true;
@@ -34,18 +38,22 @@ angular.module('lmisApp')
 
     stockOut.all()
       .then(function (rows) {
-        $scope.rows = rows.map(function (row) {
-          return {
-            state: row.facility.state,
-            zone: row.facility.zone,
-            lga: row.facility.lga,
-            ward: row.facility.ward,
-            facility: row.facility.name,
-            created: row.created,
-            productType: row.productType,
-            stockLevel: row.stockLevel
-          };
-        });
+        $scope.rows = rows
+          .filter(function (row) {
+            return !!row.facility;
+          })
+          .map(function (row) {
+            return {
+              state: row.facility.state,
+              zone: row.facility.zone,
+              lga: row.facility.lga,
+              ward: row.facility.ward,
+              facility: row.facility.name,
+              created: row.created,
+              productType: row.productType,
+              stockLevel: row.stockLevel
+            };
+          });
       })
       .catch(function () {
         $scope.error = true;
@@ -61,18 +69,22 @@ angular.module('lmisApp')
 
     stockcountUnopened.all()
       .then(function (rows) {
-        $scope.rows = rows.map(function (row) {
-          return {
-            state: row.facility.state,
-            zone: row.facility.zone,
-            lga: row.facility.lga,
-            ward: row.facility.ward,
-            facility: row.facility.name,
-            created: row.created,
-            productType: row.productType,
-            count: row.count
-          };
-        });
+        $scope.rows = rows
+          .filter(function (row) {
+            return !!row.facility;
+          })
+          .map(function (row) {
+            return {
+              state: row.facility.state,
+              zone: row.facility.zone,
+              lga: row.facility.lga,
+              ward: row.facility.ward,
+              facility: row.facility.name,
+              created: row.created,
+              productType: row.productType,
+              count: row.count
+            };
+          });
 
       })
       .catch(function () {
