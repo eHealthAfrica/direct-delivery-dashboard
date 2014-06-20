@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('CCUBreakdownCtrl', function ($scope, State, Zone, LGA, Ward, Facility, ccuBreakdown) {
+  .controller('CCUBreakdownCtrl', function ($scope, $q, State, Zone, LGA, Ward, Facility, CCEI, ccuBreakdown) {
     $scope.rows = [];
     $scope.totals = [];
+    $scope.units = [];
     $scope.loading = true;
     $scope.error = false;
     $scope.loadingPlaces = false;
@@ -36,7 +37,7 @@ angular.module('lmisApp')
       }
     };
 
-    $scope.getPlaces = function(value) {
+    $scope.getPlaces = function (value) {
       $scope.loadingPlaces = true;
       var service = State;
       switch (parseInt($scope.place.type)) {
@@ -92,29 +93,42 @@ angular.module('lmisApp')
         var search = $scope.place.search.toLowerCase();
         $scope.rows.forEach(function (row) {
           if (row[filterBy].toLowerCase() == search) {
-            var key = row[groupBy] + '#' + row.name;
+            var key = row[groupBy];
             totals[key] = totals[key] || {
-              place: row[groupBy],
-              name: row.name,
-              total: 0
+              place: key,
+              values: {}
             };
 
             var date = moment(row.created);
             if ((date.isSame($scope.from.date, 'day') || date.isAfter($scope.from.date)) &&
-              (date.isSame($scope.to.date, 'day') || date.isBefore($scope.to.date)))
-              totals[key].total++;
+              (date.isSame($scope.to.date, 'day') || date.isBefore($scope.to.date))) {
+              var value = totals[key].values[row.name] || 0;
+              totals[key].values[row.name] = value + 1;
+            }
           }
         });
       }
 
       $scope.place.columnTitle = columnTitle;
       $scope.totals = Object.keys(totals).map(function (key) {
-        return totals[key];
+        var item = totals[key];
+        return {
+          place: item.place,
+          values: $scope.units.map(function (unit) {
+            return (item.values[unit] || 0);
+          })
+        };
       });
     };
 
-    ccuBreakdown.all()
-      .then(function (rows) {
+    $q.all([
+        CCEI.names(),
+        ccuBreakdown.all()
+      ])
+      .then(function (responses) {
+        $scope.units = responses[0];
+
+        var rows = responses[1];
         var startState = '';
         $scope.rows = rows
           .filter(function (row) {

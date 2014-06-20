@@ -101,3 +101,31 @@ td .form-group .form-control-feedback {
 .has-feedback .form-control.filter {
   padding-right: 12px;
 }
+
+.table-scroller {
+  display: block;
+  overflow-x: auto;
+}
+
+.table-scroller table {
+  margin-bottom: 0;
+  border: none;
+}
+
+.table-scroller table.table-bordered > thead > tr > th:first-child,
+.table-scroller table.table-bordered > thead > tr > td:first-child,
+.table-scroller table.table-bordered > tbody > tr > th:first-child,
+.table-scroller table.table-bordered > tbody > tr > td:first-child,
+.table-scroller table.table-bordered > tfoot > tr > th:first-child,
+.table-scroller table.table-bordered > tfoot > tr > td:first-child {
+  border-left: none;
+}
+
+.table-scroller table.table-bordered > thead > tr > th:last-child,
+.table-scroller table.table-bordered > thead > tr > td:last-child,
+.table-scroller table.table-bordered > tbody > tr > th:last-child,
+.table-scroller table.table-bordered > tbody > tr > td:last-child,
+.table-scroller table.table-bordered > tfoot > tr > th:last-child,
+.table-scroller table.table-bordered > tfoot > tr > td:last-child {
+  border-right: none;
+}
