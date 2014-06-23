@@ -190,10 +190,22 @@ angular.module('lmisApp')
         $scope.loading = false;
       });
   })
-  .controller('StockCountCtrl', function ($scope, stockcountUnopened) {
+  .controller('StockCountCtrl', function ($scope, $filter, Pagination, stockcountUnopened) {
     $scope.rows = [];
+    $scope.filteredRows = [];
+    $scope.search = {};
+    $scope.pagination = new Pagination();
     $scope.loading = true;
     $scope.error = false;
+
+    $scope.$watch('search', function () {
+      updateFilteredRows();
+    }, true);
+
+    function updateFilteredRows() {
+      $scope.filteredRows = $filter('filter')($scope.rows, $scope.search);
+      $scope.pagination.totalItemsChanged($scope.filteredRows.length);
+    }
 
     stockcountUnopened.all()
       .then(function (rows) {
@@ -222,6 +234,8 @@ angular.module('lmisApp')
         $scope.rows = Object.keys(byProductType).map(function (key) {
           return byProductType[key];
         });
+
+        updateFilteredRows();
       })
       .catch(function () {
         $scope.error = true;
