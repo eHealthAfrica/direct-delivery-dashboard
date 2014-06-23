@@ -1,8 +1,11 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('CCUBreakdownCtrl', function ($scope, $q, State, Zone, LGA, Ward, Facility, CCEI, ccuBreakdown) {
+  .controller('CCUBreakdownCtrl', function ($scope, $q, $filter, Pagination, State, Zone, LGA, Ward, Facility, CCEI, ccuBreakdown) {
     $scope.rows = [];
+    $scope.filteredRows = [];
+    $scope.search = {};
+    $scope.pagination = new Pagination();
     $scope.totals = [];
     $scope.units = [];
     $scope.loading = true;
@@ -121,6 +124,15 @@ angular.module('lmisApp')
       });
     };
 
+    $scope.$watch('search', function () {
+      updateFilteredRows();
+    }, true);
+
+    function updateFilteredRows() {
+      $scope.filteredRows = $filter('filter')($scope.rows, $scope.search);
+      $scope.pagination.totalItemsChanged($scope.filteredRows.length);
+    }
+
     $q.all([
         CCEI.names(),
         ccuBreakdown.all()
@@ -151,6 +163,7 @@ angular.module('lmisApp')
 
         $scope.place.search = startState;
         $scope.updateTotals();
+        updateFilteredRows();
       })
       .catch(function () {
         $scope.error = true;
