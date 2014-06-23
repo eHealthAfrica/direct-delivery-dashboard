@@ -197,12 +197,15 @@ angular.module('lmisApp')
 
     stockcountUnopened.all()
       .then(function (rows) {
-        $scope.rows = rows
+        var byProductType = {};
+
+        rows
           .filter(function (row) {
             return !!row.facility;
           })
-          .map(function (row) {
-            return {
+          .forEach(function (row) {
+            var key = row.facility.uuid + '#' + row.productType + '#' + row.created;
+            byProductType[key] = byProductType[key] || {
               state: row.facility.state,
               zone: row.facility.zone,
               lga: row.facility.lga,
@@ -210,10 +213,15 @@ angular.module('lmisApp')
               facility: row.facility.name,
               created: row.created,
               productType: row.productType,
-              count: row.count
+              count: 0
             };
+
+            byProductType[key].count += row.count;
           });
 
+        $scope.rows = Object.keys(byProductType).map(function (key) {
+          return byProductType[key];
+        });
       })
       .catch(function () {
         $scope.error = true;
