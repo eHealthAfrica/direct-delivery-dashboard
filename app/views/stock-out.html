@@ -79,7 +79,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="row in rows | filter:search | orderBy:'-created'">
+            <tr ng-repeat="row in filteredRows | orderBy:['-created', 'productType'] | limitTo:pagination.limit | limitTo:-pagination.count">
               <td>{{row.state}}</td>
               <td>{{row.zone}}</td>
               <td>{{row.lga}}</td>
@@ -91,6 +91,11 @@
             </tr>
           </tbody>
         </table>
+        <div class="text-center">
+          <pagination style="margin-top: 0" max-size="10" boundary-links="true" rotate="false"
+            total-items="pagination.totalItems" items-per-page="pagination.itemsPerPage"
+            ng-model="pagination.currentPage" ng-change="pagination.pageChanged()"></pagination>
+        </div>
       </div>
     </div>
   </div>

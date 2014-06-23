@@ -172,10 +172,22 @@ angular.module('lmisApp')
         $scope.loading = false;
       });
   })
-  .controller('StockOutCtrl', function ($scope, stockOut) {
+  .controller('StockOutCtrl', function ($scope, $filter, Pagination, stockOut) {
     $scope.rows = [];
+    $scope.filteredRows = [];
+    $scope.search = {};
+    $scope.pagination = new Pagination();
     $scope.loading = true;
     $scope.error = false;
+
+    $scope.$watch('search', function () {
+      updateFilteredRows();
+    }, true);
+
+    function updateFilteredRows() {
+      $scope.filteredRows = $filter('filter')($scope.rows, $scope.search);
+      $scope.pagination.totalItemsChanged($scope.filteredRows.length);
+    }
 
     stockOut.all()
       .then(function (rows) {
@@ -195,6 +207,8 @@ angular.module('lmisApp')
               stockLevel: row.stockLevel
             };
           });
+
+        updateFilteredRows();
       })
       .catch(function () {
         $scope.error = true;
