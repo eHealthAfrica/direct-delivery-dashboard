@@ -142,6 +142,7 @@ angular.module('lmisApp')
               ward: row.facility.ward,
               facility: row.facility.name,
               created: row.created,
+              modified: row.modified,
               productType: row.productType,
               count: 0
             };

@@ -91,13 +91,14 @@
         <table class="table table-condensed table-bordered table-striped">
           <thead>
             <tr>
-              <th style="width: 12%">State</th>
-              <th style="width: 12%">Zone</th>
-              <th style="width: 12%">LGA</th>
-              <th style="width: 12%">Ward</th>
-              <th style="width: 17%">Facility</th>
-              <th style="width: 13%">Date</th>
-              <th style="width: 14%">Product Type</th>
+              <th style="width: 10%">State</th>
+              <th style="width: 10%">Zone</th>
+              <th style="width: 10%">LGA</th>
+              <th style="width: 10%">Ward</th>
+              <th style="width: 15%">Facility</th>
+              <th style="width: 13%">Created</th>
+              <th style="width: 13%">Modified</th>
+              <th style="width: 11%">Product Type</th>
               <th style="width: 8%">Stock Count</th>
             </tr>
             <tr class="active">
@@ -146,7 +147,7 @@
                     class="glyphicon glyphicon-refresh form-control-feedback"></span>
                 </div>
               </td>
-              <td colspan="3">
+              <td colspan="4">
                 <button type="button" class="btn btn-primary" ng-click="search = {}">
                   Clear Filter
                 </button>
@@ -161,6 +162,7 @@
               <td>{{row.ward}}</td>
               <td>{{row.facility}}</td>
               <td>{{row.created | date:SETTINGS.dateTimeFormat}}</td>
+              <td>{{row.modified | date:SETTINGS.dateTimeFormat}}</td>
               <td>{{row.productType}}</td>
               <td>{{row.count}}</td>
             </tr>
