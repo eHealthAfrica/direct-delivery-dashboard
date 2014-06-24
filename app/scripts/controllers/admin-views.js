@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('CCUBreakdownCtrl', function ($scope, $q, $filter, Pagination, State, Zone, LGA, Ward, Facility, CCEI, ccuBreakdown) {
+  .controller('CCUBreakdownCtrl', function ($scope, $q, $filter, Pagination, Places, CCEI, ccuBreakdown) {
     $scope.rows = [];
     $scope.filteredRows = [];
     $scope.search = {};
@@ -10,7 +10,7 @@ angular.module('lmisApp')
     $scope.units = [];
     $scope.loading = true;
     $scope.error = false;
-    $scope.loadingPlaces = false;
+    $scope.places = null;
 
     $scope.place = {
       type: 0,
@@ -40,28 +40,10 @@ angular.module('lmisApp')
       }
     };
 
-    $scope.getPlaces = function (value) {
-      $scope.loadingPlaces = true;
-      var service = State;
-      switch (parseInt($scope.place.type)) {
-        case 1:
-          service = Zone;
-          break;
-        case 2:
-          service = LGA;
-          break;
-        case 3:
-          service = Ward;
-          break;
-        case 4:
-          service = Facility;
-          break;
-      }
+    $scope.getPlaces = function (filter) {
+      $scope.places = new Places($scope.place.type, filter);
 
-      return service.names(value)
-        .finally(function () {
-          $scope.loadingPlaces = false;
-        }.bind(this));
+      return $scope.places.promise;
     };
 
     $scope.updateTotals = function () {

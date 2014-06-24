@@ -32,8 +32,8 @@
                 <input type="text" class="form-control filter" placeholder="Place Name"
                   ng-model="place.search"
                   typeahead="place for place in getPlaces($viewValue)"
-                  typeahead-loading="loadingPlaces">
-                      <span ng-show="loadingPlaces"
+                  typeahead-loading="places.loading">
+                      <span ng-show="places.loading"
                         class="glyphicon glyphicon-refresh form-control-feedback"></span>
               </div>
               &nbsp;
