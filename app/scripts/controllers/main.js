@@ -68,7 +68,9 @@ angular.module('lmisApp')
 
     stockcountUnopened.byFacilityAndDate()
       .then(function (rows) {
-        $scope.rows = prepare(rows);
+        $scope.rows = prepare(rows.filter(function(row) {
+          return (row.facility && $scope.facilities[row.facility]);
+        }));
         var firstChart = '';
         $scope.rows.forEach(function(row) {
           if (!firstChart || row.facility < firstChart)
@@ -87,6 +89,9 @@ angular.module('lmisApp')
       var recent = {};
 
       rows.forEach(function(row) {
+        // use name of facility
+        row.facility = $scope.facilities[row.facility].name;
+
         var mostRecent = recent[row.facility];
         row.mostRecent = false;
         if (!mostRecent || mostRecent.date < row.date)
@@ -97,10 +102,6 @@ angular.module('lmisApp')
           row.mostRecent = true;
           recent[row.facility] = row;
         }
-
-        // set facility name at last
-        var facility = $scope.facilities[row.facility];
-        row.facility = facility ? facility.name : '';
       });
 
       return rows;
