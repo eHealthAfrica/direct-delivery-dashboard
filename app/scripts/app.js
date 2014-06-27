@@ -31,15 +31,15 @@ angular
         }
       })
       .when('/ccu-breakdown', {
-        templateUrl: 'views/ccu-breakdown.html',
+        templateUrl: 'views/ccu_breakdown.html',
         controller: 'CCUBreakdownCtrl'
       })
       .when('/stock-count', {
-        templateUrl: 'views/stock-count.html',
+        templateUrl: 'views/stock_count.html',
         controller: 'StockCountCtrl'
       })
       .when('/stock-out', {
-        templateUrl: 'views/stock-out.html',
+        templateUrl: 'views/stock_out.html',
         controller: 'StockOutCtrl'
       })
       .otherwise({

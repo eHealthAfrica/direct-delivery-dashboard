@@ -6,6 +6,7 @@ angular.module('lmisApp')
   })
   .factory('ProductType', function ($q, productTypesDB) {
     var allPromise = null;
+    var codes = [];
 
     return {
       /**
@@ -16,12 +17,19 @@ angular.module('lmisApp')
           return allPromise;
 
         var d = $q.defer();
+        allPromise = d.promise;
+        codes = [];
+
         productTypesDB.allDocs({include_docs: true})
           .then(function (response) {
             var types = {};
-            response.rows.forEach(function(row) {
+            response.rows.forEach(function (row) {
               types[row.doc.uuid] = row.doc;
+              if (row.doc.code && codes.indexOf(row.doc.code) < 0)
+                codes.push(row.doc.code);
             });
+
+            codes.sort();
             d.resolve(types);
           })
           .catch(function (error) {
@@ -29,8 +37,25 @@ angular.module('lmisApp')
             d.reject(error);
           });
 
-        allPromise = d.promise;
         return allPromise;
+      },
+      /**
+       * Returns data as array of codes.
+       */
+      codes: function (filter, reload) {
+        var d = $q.defer();
+        var pattern = (filter && filter.length) ? new RegExp(filter, 'i') : null;
+        this.all(reload)
+          .then(function () {
+            d.resolve(pattern ? codes.filter(function (code) {
+              return pattern.test(code);
+            }) : codes);
+          })
+          .catch(function (error) {
+            d.reject(error);
+          });
+
+        return d.promise;
       }
     };
   });

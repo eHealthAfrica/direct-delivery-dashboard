@@ -79,11 +79,14 @@
   <script src="bower_components/nvd3/nv.d3.js"></script>
   <script src="bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js"></script>
   <script src="bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js"></script>
+  <script src="bower_components/moment/moment.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 
   <!-- build:js({.tmp,app}) scripts/scripts.js -->
   <script src="scripts/app.js"></script>
+  <script src="scripts/services/pagination.js"></script>
+  <script src="scripts/services/places.js"></script>
   <script src="scripts/services/inventoryrulesfactory.js"></script>
   <script src="scripts/services/facilities.js"></script>
   <script src="scripts/services/product_profiles.js"></script>
@@ -97,7 +100,9 @@
   <script src="scripts/services/lga.js"></script>
   <script src="scripts/services/ward.js"></script>
   <script src="scripts/controllers/main.js"></script>
-  <script src="scripts/controllers/admin-views.js"></script>
+  <script src="scripts/controllers/ccu_breakdown.js"></script>
+  <script src="scripts/controllers/stock_count.js"></script>
+  <script src="scripts/controllers/stock_out.js"></script>
   <!-- endbuild -->
 </body>
 </html>

@@ -96,6 +96,7 @@ angular.module('lmisApp')
                   expanded.push({
                     facility: row.doc.facility ? facilities[row.doc.facility] : undefined,
                     created: row.doc.created,
+                    modified: row.doc.modified,
                     productType: productType ? productType.code : undefined,
                     count: row.doc.unopened[productProfileUUID]
                   });
