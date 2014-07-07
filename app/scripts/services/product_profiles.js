@@ -16,6 +16,8 @@ angular.module('lmisApp')
           return allPromise;
 
         var d = $q.defer();
+        allPromise = d.promise;
+
         productProfilesDB.allDocs({include_docs: true})
           .then(function (response) {
             var products = {};
@@ -26,11 +28,11 @@ angular.module('lmisApp')
           })
           .catch(function (error) {
             console.log(error);
+            allPromise = null;
             d.reject(error);
           });
 
-        allPromise = d.promise;
-        return allPromise;
+        return d.promise;
       }
     }
   });

@@ -34,10 +34,11 @@ angular.module('lmisApp')
           })
           .catch(function (error) {
             console.log(error);
+            allPromise = null;
             d.reject(error);
           });
 
-        return allPromise;
+        return d.promise;
       },
       /**
        * Returns data as array of codes.
