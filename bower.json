@@ -16,8 +16,7 @@
     "bootstrap-sass-official": "~3.1.1",
     "angular-sanitize": "1.2.16",
     "angular-route": "1.2.16",
-    "pouchdb": "~2.2.3",
-    "angular-pouchdb": "~0.1.5",
+    "angular-resource": "~1.2.19",
     "angularjs-nvd3-directives": "~0.0.7",
     "angular-ui-bootstrap-bower": "~0.11.0",
     "moment": "~2.7.0"
@@ -32,7 +31,7 @@
     "ehealth"
   ],
   "resolutions": {
-    "pouchdb": "~2.2.0",
-    "d3": "~3.4.1"
+    "d3": "~3.4.1",
+    "angular": "1.2.16"
   }
 }

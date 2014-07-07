@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('stockOutDB', function (pouchdb, SETTINGS) {
-    return pouchdb.create(SETTINGS.dbUrl + 'stock_out');
-  })
-  .factory('stockOut', function ($q, stockOutDB, ProductType, Facility) {
+  .factory('stockOut', function ($q, couchdb, ProductType, Facility) {
+    var dbName = 'stock_out';
+
     return {
       /**
        * Read data from db and arrange it in an array. Every item has the following structure:
@@ -20,7 +19,7 @@ angular.module('lmisApp')
       all: function () {
         var d = $q.defer();
         $q.all([
-            stockOutDB.query({map: '(' + map.toString() + ')'}, {include_docs: false}),
+            couchdb.allDocs({_db: dbName}).$promise,
             ProductType.all(),
             Facility.all()
           ])
@@ -29,12 +28,12 @@ angular.module('lmisApp')
             var productTypes = response[1];
             var facilities = response[2];
             d.resolve(rows.map(function (row) {
-              var productType = row.value.productType ? productTypes[row.value.productType] : undefined;
+              var productType = row.doc.productType ? productTypes[row.doc.productType.uuid || row.doc.productType] : undefined;
               return {
-                facility: row.value.facility ? facilities[row.value.facility] : undefined,
-                created: row.value.created,
+                facility: row.doc.facility ? facilities[row.doc.facility.uuid] : undefined,
+                created: row.doc.created,
                 productType: productType ? productType.code : undefined,
-                stockLevel: row.value.stockLevel
+                stockLevel: row.doc.stockLevel
               };
             }));
           })
@@ -46,16 +45,4 @@ angular.module('lmisApp')
         return d.promise;
       }
     };
-
-    /**
-     * Simple map function for selecting only required fields.
-     */
-    function map(doc) {
-      emit(doc._id, {
-        facility: doc.facility ? doc.facility.uuid : undefined,
-        created: doc.created,
-        productType: doc.productType ? (doc.productType.uuid || doc.productType) : undefined,
-        stockLevel: doc.stockLevel
-      })
-    }
   });

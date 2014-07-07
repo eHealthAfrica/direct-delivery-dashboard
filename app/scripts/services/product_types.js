@@ -1,10 +1,8 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('productTypesDB', function (pouchdb, SETTINGS) {
-    return pouchdb.create(SETTINGS.dbUrl + 'product_types');
-  })
-  .factory('ProductType', function ($q, productTypesDB) {
+  .factory('ProductType', function ($q, couchdb) {
+    var dbName = 'product_types';
     var allPromise = null;
     var codes = [];
 
@@ -20,7 +18,7 @@ angular.module('lmisApp')
         allPromise = d.promise;
         codes = [];
 
-        productTypesDB.allDocs({include_docs: true})
+        couchdb.allDocs({_db: dbName}).$promise
           .then(function (response) {
             var types = {};
             response.rows.forEach(function (row) {

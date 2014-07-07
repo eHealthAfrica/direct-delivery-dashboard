@@ -1,10 +1,8 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('wardDB', function (pouchdb, SETTINGS) {
-    return pouchdb.create(SETTINGS.dbUrl + 'ward');
-  })
-  .factory('Ward', function ($q, wardDB) {
+  .factory('Ward', function ($q, couchdb) {
+    var dbName = 'ward';
     var allPromise = null;
     var names = [];
 
@@ -20,7 +18,7 @@ angular.module('lmisApp')
         allPromise = d.promise;
         names = [];
 
-        wardDB.allDocs({include_docs: true})
+        couchdb.allDocs({_db: dbName}).$promise
           .then(function (response) {
             var wards = {};
             response.rows.forEach(function (row) {

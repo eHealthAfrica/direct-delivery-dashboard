@@ -4,7 +4,7 @@ angular
   .module('lmisApp', [
     'ngSanitize',
     'ngRoute',
-    'pouchdb',
+    'ngResource',
     'nvd3ChartDirectives',
     'ui.bootstrap'
   ])

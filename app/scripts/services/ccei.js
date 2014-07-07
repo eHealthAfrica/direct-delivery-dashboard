@@ -1,10 +1,8 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('cceiDB', function (pouchdb, SETTINGS) {
-    return pouchdb.create(SETTINGS.dbUrl + 'ccei');
-  })
-  .factory('CCEI', function ($q, cceiDB) {
+  .factory('CCEI', function ($q, couchdb) {
+    var dbName = 'ccei';
     var allPromise = null;
     var names = [];
 
@@ -20,7 +18,7 @@ angular.module('lmisApp')
         allPromise = d.promise;
         names = [];
 
-        cceiDB.allDocs({include_docs: true})
+        couchdb.allDocs({_db: dbName}).$promise
           .then(function (response) {
             var cceis = {};
             response.rows.forEach(function (row) {
