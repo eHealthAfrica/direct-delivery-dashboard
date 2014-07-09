@@ -15,7 +15,7 @@
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
   <!-- build:css styles/vendor.css -->
   <!-- bower:css -->
-  <link rel="stylesheet" href="bower_components/nvd3/src/nv.d3.css" />
+  <link rel="stylesheet" href="bower_components/nvd3/src/nv.d3.css"/>
   <!-- endbower -->
   <!-- endbuild -->
   <!-- build:css({.tmp,app}) styles/main.css -->
@@ -29,9 +29,13 @@
   your experience.</p>
 <![endif]-->
 
-<div class="container-fluid">
-  <div class="header">
-    <ul class="nav nav-pills pull-right" ng-controller="NavBar">
+<div ng-hide="app.init"></div>
+<nav ng-show="app.init" class="navbar navbar-default navbar-static-top" ng-controller="NavBar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">LMIS Dashboard</a>
+    </div>
+    <ul class="nav navbar-nav">
       <li ng-class="{active: isActive('/')}"><a href="#/">Home</a></li>
       <li ng-class="{active: isActive('/ccu-breakdown')}">
         <a href="#/ccu-breakdown">CCU Breakdown</a>
@@ -43,12 +47,19 @@
         <a href="#/stock-out">Stock Out</a>
       </li>
     </ul>
-    <h3 class="text-muted">LMIS Dashboard</h3>
+    <ul class="nav navbar-nav navbar-right">
+      <li ng-show="currentUser" class="dropdown">
+        <a class="dropdown-toggle" href="#" data-toggle="dropdown">{{currentUser.name}} <span class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+          <li><a ng-click="logout()">Logout</a></li>
+        </ul>
+      </li>
+    </ul>
   </div>
+</nav>
 
-  <!-- Add your site or application content here -->
-  <div ng-view=""></div>
-</div>
+<!-- Add your site or application content here -->
+<div ng-show="app.init" class="container-fluid" ng-view=""></div>
 
 <!--[if lt IE 9]>
 <script src="bower_components/es5-shim/es5-shim.js"></script>
@@ -86,7 +97,7 @@
 
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
 <script src="scripts/app.js"></script>
-<script src="scripts/services/error_handler.js"></script>
+<script src="scripts/services/auth.js"></script>
 <script src="scripts/services/pagination.js"></script>
 <script src="scripts/services/couchdb.js"></script>
 <script src="scripts/services/places.js"></script>

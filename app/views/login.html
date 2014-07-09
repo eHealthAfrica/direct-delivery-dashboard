@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col-md-4 col-md-offset-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Login</h3>
+      </div>
+      <div class="panel-body">
+        <form name="form" ng-submit="login(form)" novalidate>
+          <fieldset>
+            <div class="form-group">
+              <input class="form-control" placeholder="Username" name="username" autofocus ng-model="scope.user.username" required>
+            </div>
+            <div class="form-group">
+              <input class="form-control" placeholder="Password" name="password" type="password" value="" ng-model="scope.user.password" required>
+            </div>
+            <div class="form-group has-error">
+              <span class="help-block" ng-show="(form.username.$error.required || form.password.$error.required) && scope.submitted">
+                Please enter your username and password.
+              </span>
+              <span class="help-block">{{scope.error}}</span>
+            </div>
+            <button type="submit" class="btn btn-lg btn-primary btn-block">
+              Login
+            </button>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

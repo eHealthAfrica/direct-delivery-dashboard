@@ -13,7 +13,8 @@ angular
     dateFormat: 'yyyy-MM-dd',
     dateTimeFormat: 'yyyy-MM-dd HH:mm'
   })
-  .config(function ($routeProvider) {
+  .config(function ($httpProvider, $routeProvider) {
+
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -30,6 +31,10 @@ angular
           }]
         }
       })
+      .when('/login', {
+        templateUrl: 'views/login.html',
+        controller: 'LoginCtrl'
+      })
       .when('/ccu-breakdown', {
         templateUrl: 'views/ccu_breakdown.html',
         controller: 'CCUBreakdownCtrl'
@@ -45,9 +50,32 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+
+    // Intercept 401s and redirect user to login
+    $httpProvider.interceptors.push(function ($q, $location) {
+      return {
+        'responseError': function (response) {
+          switch (response.status) {
+            case 401:
+              if ($location.path() != '/login')
+                $location.search('back', $location.path()).path('/login');
+              break;
+          }
+
+          return $q.reject(response);
+        }
+      };
+    });
   })
-  .run(function ($rootScope, $q, SETTINGS, State, Zone, LGA, Ward, Facility) {
+  .run(function ($rootScope, $route, SETTINGS, Auth, State, Zone, LGA, Ward, Facility) {
     $rootScope.SETTINGS = SETTINGS;
+
+    $rootScope.logout = function() {
+      Auth.logout()
+        .then(function() {
+          $route.reload();
+        })
+    };
 
     $rootScope.dataProvider = {
       loadingStates: false,
