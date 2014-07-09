@@ -1,10 +1,14 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('ProductType', function ($q, couchdb) {
+  .factory('ProductType', function ($rootScope, $q, couchdb) {
     var dbName = 'product_types';
     var allPromise = null;
     var codes = [];
+
+    $rootScope.$on('currentUserChanged', function() {
+      allPromise = null;
+    });
 
     return {
       /**
