@@ -52,7 +52,7 @@ angular
       });
 
     // Intercept 401s and redirect user to login
-    $httpProvider.interceptors.push(function ($q, $location) {
+    $httpProvider.interceptors.push(['$q', '$location', function ($q, $location) {
       return {
         'responseError': function (response) {
           switch (response.status) {
@@ -65,7 +65,7 @@ angular
           return $q.reject(response);
         }
       };
-    });
+    }]);
   })
   .run(function ($rootScope, $route, SETTINGS, Auth, State, Zone, LGA, Ward, Facility) {
     $rootScope.SETTINGS = SETTINGS;
