@@ -27,8 +27,12 @@ angular.module('lmisApp')
             var cceis = response[1];
             var facilities = response[2];
             d.resolve(rows.map(function (row) {
+              var modelId = (row.doc.ccuProfile && row.doc.ccuProfile.dhis2_modelid !== undefined) ? row.doc.ccuProfile.dhis2_modelid : undefined;
+              var name = modelId !== undefined ? cceis[modelId] : undefined;
+              if (name === undefined)
+                name = '** Unknown (' + modelId + ') **';
               return {
-                name: row.doc.ccuProfile ? cceis[row.doc.ccuProfile.dhis2_modelid] : undefined,
+                name: name,
                 created: row.doc.created,
                 facility: row.doc.facility ? facilities[row.doc.facility.uuid] : undefined
               };
