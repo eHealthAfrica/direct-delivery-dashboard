@@ -67,4 +67,47 @@
     </div>
   </div>
 </div>
+<div class="row" ng-controller="MainStockOutCtrl">
+  <div class="col-xs-12">
+    <h2 class="page-header">Stock Out Alerts</h2>
+    <div class="row" ng-show="loading || error">
+      <div class="col-xs-12">
+        <div class="alert alert-info" ng-show="loading">
+          Loading ...
+        </div>
+        <div class="alert alert-danger" ng-show="error">
+          Error loading data.
+        </div>
+      </div>
+    </div>
+    <div class="row" ng-hide="loading || error">
+      <div class="col-xs-12">
+        <h3>Most recent</h3>
+        <div style="overflow: auto;">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Facility</th>
+                <th>Date</th>
+                <th>Product Type</th>
+                <th>Stock Level</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in mostRecent">
+                <td ng-if="row.mostRecentCount" rowspan="{{row.mostRecentCount}}" style="white-space: nowrap;">
+                  {{row.facility.name}}
+                </td>
+                <td style="white-space: nowrap;">
+                  {{row.created | date:SETTINGS.dateFormat}}
+                </td>
+                <td>{{row.productType}}</td>
+                <td>{{row.stockLevel}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

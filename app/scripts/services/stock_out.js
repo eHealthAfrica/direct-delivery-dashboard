@@ -27,15 +27,22 @@ angular.module('lmisApp')
             var rows = response[0].rows;
             var productTypes = response[1];
             var facilities = response[2];
-            d.resolve(rows.map(function (row) {
-              var productType = row.doc.productType ? productTypes[row.doc.productType.uuid || row.doc.productType] : undefined;
-              return {
-                facility: row.doc.facility ? facilities[row.doc.facility.uuid] : undefined,
-                created: row.doc.created,
-                productType: productType ? productType.code : undefined,
-                stockLevel: row.doc.stockLevel
-              };
-            }));
+            d.resolve(rows
+              .map(function (row) {
+                var productType = row.doc.productType ? productTypes[row.doc.productType.uuid || row.doc.productType] : undefined;
+                return {
+                  facility: row.doc.facility ? facilities[row.doc.facility.uuid] : undefined,
+                  created: row.doc.created,
+                  productType: productType ? productType.code : undefined,
+                  stockLevel: row.doc.stockLevel
+                };
+              })
+              .sort(function (a, b) {
+                if (a.created > b.created) return -1;
+                if (a.created < b.created) return 1;
+                return 0;
+              })
+            );
           })
           .catch(function (error) {
             console.log(error);
