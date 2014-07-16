@@ -134,9 +134,15 @@ angular.module('lmisApp')
               items[key].products[row.key[2]] = { count: row.value };
             });
 
-            var rows = Object.keys(items).map(function (key) {
-              return items[key];
-            });
+            var rows = Object.keys(items)
+              .map(function (key) {
+                return items[key];
+              })
+              .sort(function (a, b) {
+                if (a.date > b.date) return -1;
+                if (a.date < b.date) return 1;
+                return 0;
+              });
 
             groupByProductType(rows)
               .then(function (rows) {

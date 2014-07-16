@@ -8,6 +8,7 @@ angular.module('lmisApp')
   })
   .controller('UnopenedCtrl', function ($scope, stockcountUnopened) {
     $scope.rows = [];
+    $scope.mostRecent = [];
     $scope.chartData = [];
     $scope.chartFacility = '';
     $scope.loading = true;
@@ -29,7 +30,7 @@ angular.module('lmisApp')
       return (product && product.count < product.min);
     };
 
-    $scope.setChartData = function(facility) {
+    $scope.setChartData = function (facility) {
       if (!facility)
         return;
 
@@ -53,7 +54,7 @@ angular.module('lmisApp')
       $scope.chartFacility = facility;
       $scope.chartData = Object.keys(products).map(function (key) {
         // sort values by date
-        products[key].values.sort(function(a, b) {
+        products[key].values.sort(function (a, b) {
           if (a[0] < b[0])
             return -1;
           else if (a[0] > b[0])
@@ -66,13 +67,36 @@ angular.module('lmisApp')
       });
     };
 
+    function setMostRecent(rows) {
+      var recent = {};
+
+      rows.forEach(function (row) {
+        // use name of facility
+        row.facility = $scope.facilities[row.facility].name;
+
+        var mostRecent = recent[row.facility] = recent[row.facility] || [];
+        if (mostRecent.length < 5)
+          mostRecent.push(row);
+      });
+
+      Object.keys(recent).sort().forEach(function (key) {
+        recent[key][0].mostRecentCount = recent[key].length;
+        recent[key].forEach(function (row) {
+          $scope.mostRecent.push(row);
+        })
+      });
+    }
+
     stockcountUnopened.byFacilityAndDate()
       .then(function (rows) {
-        $scope.rows = prepare(rows.filter(function(row) {
+        $scope.rows = rows.filter(function (row) {
           return (row.facility && $scope.facilities[row.facility]);
-        }));
+        });
+
+        setMostRecent($scope.rows);
+
         var firstChart = '';
-        $scope.rows.forEach(function(row) {
+        $scope.rows.forEach(function (row) {
           if (!firstChart || row.facility < firstChart)
             firstChart = row.facility;
         });
@@ -84,26 +108,4 @@ angular.module('lmisApp')
       .finally(function () {
         $scope.loading = false;
       });
-
-    function prepare(rows) {
-      var recent = {};
-
-      rows.forEach(function(row) {
-        // use name of facility
-        row.facility = $scope.facilities[row.facility].name;
-
-        var mostRecent = recent[row.facility];
-        row.mostRecent = false;
-        if (!mostRecent || mostRecent.date < row.date)
-        {
-          if (mostRecent)
-            mostRecent.mostRecent = false;
-
-          row.mostRecent = true;
-          recent[row.facility] = row;
-        }
-      });
-
-      return rows;
-    }
   });

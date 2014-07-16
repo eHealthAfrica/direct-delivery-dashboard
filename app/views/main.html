@@ -24,8 +24,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="row in rows | filter:{mostRecent: true} | orderBy:'facility'">
-                <td style="white-space: nowrap; cursor: pointer;" ng-click="setChartData(row.facility)">
+              <tr ng-repeat="row in mostRecent">
+                <td ng-if="row.mostRecentCount" rowspan="{{row.mostRecentCount}}" style="white-space: nowrap; cursor: pointer;" ng-click="setChartData(row.facility)">
                   {{row.facility}}
                 </td>
                 <td style="white-space: nowrap;">
