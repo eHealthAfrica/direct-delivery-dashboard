@@ -2,17 +2,13 @@
 
 angular
   .module('lmisApp', [
+    'config',
     'ngSanitize',
     'ngRoute',
     'ngResource',
     'nvd3ChartDirectives',
     'ui.bootstrap'
   ])
-  .constant('SETTINGS', {
-    dbUrl: 'http://dev.lomis.ehealth.org.ng:5984/',
-    dateFormat: 'yyyy-MM-dd',
-    dateTimeFormat: 'yyyy-MM-dd HH:mm'
-  })
   .config(function ($httpProvider, $routeProvider) {
 
     $routeProvider
