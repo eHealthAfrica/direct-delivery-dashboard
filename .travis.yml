@@ -2,6 +2,11 @@ language: node_js
 node_js:
   - '0.10'
 before_script:
-
+  - gem update --system
+  - gem install sass --version '=3.3.7'
+  - gem install compass --version '=0.12.3'
+  - npm install --global bower grunt-cli
+  - npm install
+  - bower install
 notifications:
-  #flowdock: 232485f7661e644ae5878944c2597042
+  flowdock: 232485f7661e644ae5878944c2597042
