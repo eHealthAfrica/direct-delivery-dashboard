@@ -76,22 +76,23 @@ angular.module('lmisApp')
 
       if ($scope.place.search.length) {
         var search = $scope.place.search.toLowerCase();
-        $scope.rows.forEach(function (row) {
-          if (row[filterBy].toLowerCase() == search) {
+        $scope.rows
+          .filter(function (row) {
+            var date = moment(row.created);
+            return ((row[filterBy].toLowerCase() == search) &&
+              (date.isSame($scope.from.date, 'day') || date.isAfter($scope.from.date)) &&
+              (date.isSame($scope.to.date, 'day') || date.isBefore($scope.to.date)))
+          })
+          .forEach(function (row) {
             var key = row[groupBy];
             totals[key] = totals[key] || {
               place: key,
               values: {}
             };
 
-            var date = moment(row.created);
-            if ((date.isSame($scope.from.date, 'day') || date.isAfter($scope.from.date)) &&
-              (date.isSame($scope.to.date, 'day') || date.isBefore($scope.to.date))) {
-              var value = totals[key].values[row.name] || 0;
-              totals[key].values[row.name] = value + 1;
-            }
-          }
-        });
+            var value = totals[key].values[row.name] || 0;
+            totals[key].values[row.name] = value + 1;
+          });
       }
 
       $scope.place.columnTitle = columnTitle;

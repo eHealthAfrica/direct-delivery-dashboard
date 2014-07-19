@@ -76,22 +76,25 @@ angular.module('lmisApp')
 
       if ($scope.place.search.length) {
         var search = $scope.place.search.toLowerCase();
-        $scope.rows.forEach(function (row) {
-          if (row[filterBy].toLowerCase() == search) {
+        $scope.rows
+          .filter(function (row) {
+            var date = moment(row.created);
+            return ((row[filterBy].toLowerCase() == search) &&
+              (date.isSame($scope.from.date, 'day') || date.isAfter($scope.from.date)) &&
+              (date.isSame($scope.to.date, 'day') || date.isBefore($scope.to.date)))
+          })
+          .forEach(function (row) {
             var key = row[groupBy];
             totals[key] = totals[key] || {
               place: key,
               values: {}
             };
 
-            var date = moment(row.created);
-            if ((date.isSame($scope.from.date, 'day') || date.isAfter($scope.from.date)) &&
-              (date.isSame($scope.to.date, 'day') || date.isBefore($scope.to.date))) {
-              var value = totals[key].values[row.productType] || 0;
-              totals[key].values[row.productType] = value + row.count;
-            }
-          }
-        });
+            // take first value, which is the most recent one as the data is
+            // sorted by date in descending order
+            if (totals[key].values[row.productType] === undefined)
+              totals[key].values[row.productType] = row.count;
+          });
       }
 
       $scope.place.columnTitle = columnTitle;
@@ -150,9 +153,15 @@ angular.module('lmisApp')
             byProductType[key].count += row.count;
           });
 
-        $scope.rows = Object.keys(byProductType).map(function (key) {
-          return byProductType[key];
-        });
+        $scope.rows = Object.keys(byProductType)
+          .map(function (key) {
+            return byProductType[key];
+          })
+          .sort(function (a, b) {
+            if (a.created > b.created) return -1;
+            if (a.created < b.created) return 1;
+            return 0;
+          });
 
         $scope.place.search = startState;
         $scope.updateTotals();
