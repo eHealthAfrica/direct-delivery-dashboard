@@ -41,11 +41,11 @@ var stockcount_test_docs = [
     "_id": "04873a9c-f899-4f95-f340-beb0e610b5ff",
     "_rev": "1-0c4dcf6a3afce98bb336e7bce4e58f4a",
     "countDate": "2014-04-10T00:00:00.000Z",
-    "created": "2014-04-09 14:25:24",
+    "created": "2014-04-09T14:25:24.000Z",
     "facility": "d48a39fb-6d37-4472-9983-bc0720403719",
     "isComplete": 1,
     "lastPosition": 0,
-    "modified": "2014-04-10 11:13:45",
+    "modified": "2014-04-10T11:13:45.000Z",
     "unopened": {
       "075bd789-4b29-4033-80b6-4f834e602628": 122,
       "217e255d-0dd0-4bcf-aefc-3d7668ba7487": 20
