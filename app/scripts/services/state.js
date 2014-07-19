@@ -1,10 +1,8 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('stateDB', function (pouchdb, SETTINGS) {
-    return pouchdb.create(SETTINGS.dbUrl + 'state');
-  })
-  .factory('State', function ($q, stateDB) {
+  .factory('State', function ($q, couchdb) {
+    var dbName = 'state';
     var allPromise = null;
     var names = [];
 
@@ -20,7 +18,7 @@ angular.module('lmisApp')
         allPromise = d.promise;
         names = [];
 
-        stateDB.allDocs({include_docs: true})
+        couchdb.allDocs({_db: dbName}).$promise
           .then(function (response) {
             var states = {};
             response.rows.forEach(function (row) {
@@ -34,10 +32,11 @@ angular.module('lmisApp')
           })
           .catch(function (error) {
             console.log(error);
+            allPromise = null;
             d.reject(error);
           });
 
-        return allPromise;
+        return d.promise;
       },
       /**
        * Returns data as array of names.

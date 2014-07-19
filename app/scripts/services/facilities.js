@@ -1,12 +1,14 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('facilityDB', function (pouchdb, SETTINGS) {
-    return pouchdb.create(SETTINGS.dbUrl + 'facilities');
-  })
-  .factory('Facility', function ($q, facilityDB) {
+  .factory('Facility', function ($rootScope, $q, couchdb) {
+    var dbName = 'facilities';
     var allPromise = null;
     var names = [];
+
+    $rootScope.$on('currentUserChanged', function() {
+      allPromise = null;
+    });
 
     return {
       /**
@@ -20,7 +22,7 @@ angular.module('lmisApp')
         allPromise = d.promise;
         names = [];
 
-        facilityDB.allDocs({include_docs: true})
+        couchdb.allDocs({_db: dbName}).$promise
           .then(function (response) {
             var facilities = {};
             response.rows.forEach(function (row) {
@@ -34,10 +36,11 @@ angular.module('lmisApp')
           })
           .catch(function (error) {
             console.log(error);
+            allPromise = null;
             d.reject(error);
           });
 
-        return allPromise;
+        return d.promise;
       },
       /**
        * Returns data as array of names.

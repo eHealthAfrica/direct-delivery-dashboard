@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('ccuBreakdownDB', function (pouchdb, SETTINGS) {
-    return pouchdb.create(SETTINGS.dbUrl + 'ccu_breakdown');
-  })
-  .factory('ccuBreakdown', function ($q, ccuBreakdownDB, CCEI, Facility) {
+  .factory('ccuBreakdown', function ($q, couchdb, CCEI, Facility) {
+    var dbName = 'ccu_breakdown';
+
     return {
       /**
        * Read data from db and arrange it in an array. Every item has the following structure:
@@ -19,7 +18,7 @@ angular.module('lmisApp')
       all: function () {
         var d = $q.defer();
         $q.all([
-            ccuBreakdownDB.query({map: '(' + map.toString() + ')'}, {include_docs: false}),
+            couchdb.allDocs({_db: dbName}).$promise,
             CCEI.all(),
             Facility.all()
           ])
@@ -29,9 +28,9 @@ angular.module('lmisApp')
             var facilities = response[2];
             d.resolve(rows.map(function (row) {
               return {
-                name: row.value.ccu ? cceis[row.value.ccu] : undefined,
-                created: row.value.created,
-                facility: row.value.facility ? facilities[row.value.facility] : undefined
+                name: row.doc.ccuProfile ? cceis[row.doc.ccuProfile.dhis2_modelid] : undefined,
+                created: row.doc.created,
+                facility: row.doc.facility ? facilities[row.doc.facility.uuid] : undefined
               };
             }));
           })
@@ -43,15 +42,4 @@ angular.module('lmisApp')
         return d.promise;
       }
     };
-
-    /**
-     * Simple map function for selecting only required fields.
-     */
-    function map(doc) {
-      emit(doc._id, {
-        ccu: doc.ccuProfile ? doc.ccuProfile.dhis2_modelid : undefined,
-        created: doc.created,
-        facility: doc.facility ? doc.facility.uuid : undefined
-      })
-    }
   });

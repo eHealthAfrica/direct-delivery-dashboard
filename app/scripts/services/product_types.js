@@ -1,12 +1,14 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('productTypesDB', function (pouchdb, SETTINGS) {
-    return pouchdb.create(SETTINGS.dbUrl + 'product_types');
-  })
-  .factory('ProductType', function ($q, productTypesDB) {
+  .factory('ProductType', function ($rootScope, $q, couchdb) {
+    var dbName = 'product_types';
     var allPromise = null;
     var codes = [];
+
+    $rootScope.$on('currentUserChanged', function() {
+      allPromise = null;
+    });
 
     return {
       /**
@@ -20,7 +22,7 @@ angular.module('lmisApp')
         allPromise = d.promise;
         codes = [];
 
-        productTypesDB.allDocs({include_docs: true})
+        couchdb.allDocs({_db: dbName}).$promise
           .then(function (response) {
             var types = {};
             response.rows.forEach(function (row) {
@@ -34,10 +36,11 @@ angular.module('lmisApp')
           })
           .catch(function (error) {
             console.log(error);
+            allPromise = null;
             d.reject(error);
           });
 
-        return allPromise;
+        return d.promise;
       },
       /**
        * Returns data as array of codes.

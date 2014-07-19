@@ -1,12 +1,14 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('stockcountDB', function (pouchdb, SETTINGS) {
-    return pouchdb.create(SETTINGS.dbUrl + 'stockcount');
-  })
-  .factory('stockcountUnopened', function ($q, stockcountDB, inventoryRulesFactory, ProductProfile, ProductType, Facility) {
+  .factory('stockcountUnopened', function ($q, couchdb, inventoryRulesFactory, ProductProfile, ProductType, Facility) {
+    var dbName = 'stockcount';
+
     function query(group_level, descending) {
       var options = {
+        _db: dbName,
+        _param: 'stockcount',
+        _sub_param: 'unopened',
         reduce: true,
         group: group_level ? true : false,
         descending: !!descending
@@ -15,7 +17,7 @@ angular.module('lmisApp')
       if (group_level)
         options.group_level = group_level;
 
-      return stockcountDB.query('stockcount/unopened', options);
+      return couchdb.view(options).$promise;
     }
 
     function groupByProductType(rows) {
@@ -75,7 +77,7 @@ angular.module('lmisApp')
       all: function () {
         var d = $q.defer();
         $q.all([
-            stockcountDB.allDocs({include_docs: true}),
+            couchdb.allDocs({_db: dbName}).$promise,
             ProductProfile.all(),
             ProductType.all(),
             Facility.all()

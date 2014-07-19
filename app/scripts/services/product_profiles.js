@@ -1,11 +1,13 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('productProfilesDB', function (pouchdb, SETTINGS) {
-    return pouchdb.create(SETTINGS.dbUrl + 'product_profiles');
-  })
-  .factory('ProductProfile', function ($q, productProfilesDB) {
+  .factory('ProductProfile', function ($rootScope, $q, couchdb) {
+    var dbName = 'product_profiles';
     var allPromise = null;
+
+    $rootScope.$on('currentUserChanged', function() {
+      allPromise = null;
+    });
 
     return {
       /**
@@ -16,7 +18,9 @@ angular.module('lmisApp')
           return allPromise;
 
         var d = $q.defer();
-        productProfilesDB.allDocs({include_docs: true})
+        allPromise = d.promise;
+
+        couchdb.allDocs({_db: dbName}).$promise
           .then(function (response) {
             var products = {};
             response.rows.forEach(function (row) {
@@ -26,11 +30,11 @@ angular.module('lmisApp')
           })
           .catch(function (error) {
             console.log(error);
+            allPromise = null;
             d.reject(error);
           });
 
-        allPromise = d.promise;
-        return allPromise;
+        return d.promise;
       }
     }
   });

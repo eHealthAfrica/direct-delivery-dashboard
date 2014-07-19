@@ -1,12 +1,14 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('cceiDB', function (pouchdb, SETTINGS) {
-    return pouchdb.create(SETTINGS.dbUrl + 'ccei');
-  })
-  .factory('CCEI', function ($q, cceiDB) {
+  .factory('CCEI', function ($rootScope, $q, couchdb) {
+    var dbName = 'ccei';
     var allPromise = null;
     var names = [];
+
+    $rootScope.$on('currentUserChanged', function() {
+      allPromise = null;
+    });
 
     return {
       /**
@@ -20,7 +22,7 @@ angular.module('lmisApp')
         allPromise = d.promise;
         names = [];
 
-        cceiDB.allDocs({include_docs: true})
+        couchdb.allDocs({_db: dbName}).$promise
           .then(function (response) {
             var cceis = {};
             response.rows.forEach(function (row) {
@@ -34,10 +36,11 @@ angular.module('lmisApp')
           })
           .catch(function (error) {
             console.log(error);
+            allPromise = null;
             d.reject(error);
           });
 
-        return allPromise;
+        return d.promise;
       },
       /**
        * Returns data as array of names.

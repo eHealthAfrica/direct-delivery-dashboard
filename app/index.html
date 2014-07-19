@@ -23,86 +23,101 @@
   <!-- endbuild -->
 </head>
 <body ng-app="lmisApp">
-  <!--[if lt IE 7]>
-  <p class="browsehappy">You are using an <strong>outdated</strong> browser.
-    Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve
-    your experience.</p>
-  <![endif]-->
+<!--[if lt IE 7]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser.
+  Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve
+  your experience.</p>
+<![endif]-->
 
+<div ng-hide="app.init"></div>
+<nav ng-show="app.init" class="navbar navbar-default navbar-static-top" ng-controller="NavBar">
   <div class="container-fluid">
-    <div class="header">
-      <ul class="nav nav-pills pull-right" ng-controller="NavBar">
-        <li ng-class="{active: isActive('/')}"><a href="#/">Home</a></li>
-        <li ng-class="{active: isActive('/ccu-breakdown')}">
-          <a href="#/ccu-breakdown">CCU Breakdown</a>
-        </li>
-        <li ng-class="{active: isActive('/stock-count')}">
-          <a href="#/stock-count">Stock Count</a>
-        </li>
-        <li ng-class="{active: isActive('/stock-out')}">
-          <a href="#/stock-out">Stock Out</a>
-        </li>
-      </ul>
-      <h3 class="text-muted">LMIS Dashboard</h3>
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">LMIS Dashboard</a>
     </div>
-
-    <!-- Add your site or application content here -->
-    <div ng-view=""></div>
+    <ul class="nav navbar-nav">
+      <li ng-class="{active: isActive('/')}"><a href="#/">Home</a></li>
+      <li ng-class="{active: isActive('/ccu-breakdown')}">
+        <a href="#/ccu-breakdown">CCU Breakdown</a>
+      </li>
+      <li ng-class="{active: isActive('/stock-count')}">
+        <a href="#/stock-count">Stock Count</a>
+      </li>
+      <li ng-class="{active: isActive('/stock-out')}">
+        <a href="#/stock-out">Stock Out</a>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li ng-show="currentUser" class="dropdown">
+        <a class="dropdown-toggle" href="#" data-toggle="dropdown">{{currentUser.name}} <span class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+          <li><a ng-click="logout()">Logout</a></li>
+        </ul>
+      </li>
+    </ul>
   </div>
+</nav>
 
-  <!--[if lt IE 9]>
-  <script src="bower_components/es5-shim/es5-shim.js"></script>
-  <script src="bower_components/json3/lib/json3.min.js"></script>
-  <![endif]-->
+<!-- Add your site or application content here -->
+<div ng-show="app.init" class="container-fluid" ng-view=""></div>
 
-  <!-- build:js scripts/vendor.js -->
-  <!-- bower:js -->
-  <script src="bower_components/jquery/dist/jquery.js"></script>
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/affix.js"></script>
-  <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/alert.js"></script>
-  <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/button.js"></script>
-  <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/carousel.js"></script>
-  <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/collapse.js"></script>
-  <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/dropdown.js"></script>
-  <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/tab.js"></script>
-  <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/transition.js"></script>
-  <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/scrollspy.js"></script>
-  <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/modal.js"></script>
-  <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/tooltip.js"></script>
-  <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/popover.js"></script>
-  <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-  <script src="bower_components/angular-route/angular-route.js"></script>
-  <script src="bower_components/pouchdb/dist/pouchdb-nightly.js"></script>
-  <script src="bower_components/angular-pouchdb/angular-pouchdb.js"></script>
-  <script src="bower_components/d3/d3.js"></script>
-  <script src="bower_components/nvd3/nv.d3.js"></script>
-  <script src="bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js"></script>
-  <script src="bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js"></script>
-  <script src="bower_components/moment/moment.js"></script>
-  <!-- endbower -->
-  <!-- endbuild -->
+<!--[if lt IE 9]>
+<script src="bower_components/es5-shim/es5-shim.js"></script>
+<script src="bower_components/json3/lib/json3.min.js"></script>
+<![endif]-->
 
-  <!-- build:js({.tmp,app}) scripts/scripts.js -->
-  <script src="scripts/app.js"></script>
-  <script src="scripts/services/pagination.js"></script>
-  <script src="scripts/services/places.js"></script>
-  <script src="scripts/services/inventoryrulesfactory.js"></script>
-  <script src="scripts/services/facilities.js"></script>
-  <script src="scripts/services/product_profiles.js"></script>
-  <script src="scripts/services/product_types.js"></script>
-  <script src="scripts/services/stockcount.js"></script>
-  <script src="scripts/services/ccu_breakdown.js"></script>
-  <script src="scripts/services/stock_out.js"></script>
-  <script src="scripts/services/ccei.js"></script>
-  <script src="scripts/services/state.js"></script>
-  <script src="scripts/services/zone.js"></script>
-  <script src="scripts/services/lga.js"></script>
-  <script src="scripts/services/ward.js"></script>
-  <script src="scripts/controllers/main.js"></script>
-  <script src="scripts/controllers/ccu_breakdown.js"></script>
-  <script src="scripts/controllers/stock_count.js"></script>
-  <script src="scripts/controllers/stock_out.js"></script>
-  <!-- endbuild -->
+<!-- build:js scripts/vendor.js -->
+<!-- bower:js -->
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/json3/lib/json3.js"></script>
+<script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/affix.js"></script>
+<script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/alert.js"></script>
+<script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/button.js"></script>
+<script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/carousel.js"></script>
+<script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/collapse.js"></script>
+<script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/dropdown.js"></script>
+<script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/tab.js"></script>
+<script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/transition.js"></script>
+<script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/scrollspy.js"></script>
+<script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/modal.js"></script>
+<script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/tooltip.js"></script>
+<script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/popover.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/d3/d3.js"></script>
+<script src="bower_components/nvd3/nv.d3.js"></script>
+<script src="bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js"></script>
+<script src="bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js"></script>
+<script src="bower_components/moment/moment.js"></script>
+<script src="bower_components/pouchdb/dist/pouchdb-nightly.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+
+<!-- build:js({.tmp,app}) scripts/scripts.js -->
+<script src="scripts/app.js"></script>
+<script src="scripts/services/auth.js"></script>
+<script src="scripts/services/pagination.js"></script>
+<script src="scripts/services/couchdb.js"></script>
+<script src="scripts/services/places.js"></script>
+<script src="scripts/services/inventoryrulesfactory.js"></script>
+<script src="scripts/services/facilities.js"></script>
+<script src="scripts/services/product_profiles.js"></script>
+<script src="scripts/services/product_types.js"></script>
+<script src="scripts/services/stockcount.js"></script>
+<script src="scripts/services/ccu_breakdown.js"></script>
+<script src="scripts/services/stock_out.js"></script>
+<script src="scripts/services/ccei.js"></script>
+<script src="scripts/services/state.js"></script>
+<script src="scripts/services/zone.js"></script>
+<script src="scripts/services/lga.js"></script>
+<script src="scripts/services/ward.js"></script>
+<script src="scripts/controllers/login.js"></script>
+<script src="scripts/controllers/main.js"></script>
+<script src="scripts/controllers/ccu_breakdown.js"></script>
+<script src="scripts/controllers/stock_count.js"></script>
+<script src="scripts/controllers/stock_out.js"></script>
+<!-- endbuild -->
 </body>
 </html>
