@@ -119,13 +119,13 @@ module.exports = function (grunt) {
         files: [{
           dot: true,
           src: [
-            '.tmp',
-            '<%= yeoman.dist %>/*',
+            '.tmp/**',
+            '<%= yeoman.dist %>/**',
             '!<%= yeoman.dist %>/.git*'
           ]
         }]
       },
-      server: '.tmp'
+      server: '.tmp/**'
     },
 
     // Add vendor prefixed styles
@@ -346,6 +346,34 @@ module.exports = function (grunt) {
       ]
     },
 
+    ngconstant: {
+      options: {
+        name: 'config',
+        dest: '<%= yeoman.app %>/scripts/config.js',
+        template: grunt.file.read('.ngconstant.tpl.ejs'),
+        constants: {
+          SETTINGS: {
+            dateFormat: 'yyyy-MM-dd',
+            dateTimeFormat: 'yyyy-MM-dd HH:mm'
+          }
+        }
+      },
+      dev: {
+        constants: {
+          SETTINGS: {
+            dbUrl: 'http://dev.lomis.ehealth.org.ng:5984/'
+          }
+        }
+      },
+      prod: {
+        constants: {
+          SETTINGS: {
+            dbUrl: 'http://lomis.ehealth.org.ng:5984/'
+          }
+        }
+      }
+    },
+
     // By default, your `index.html`'s <!-- Usemin block --> will take care of
     // minification. These next options are pre-configured if you do not wish
     // to use the Usemin blocks.
@@ -386,9 +414,13 @@ module.exports = function (grunt) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
     }
+    else if (target === 'prod') {
+      return grunt.task.run(['build:prod', 'connect:dist:keepalive']);
+    }
 
     grunt.task.run([
       'clean:server',
+      'ngconstant:dev',
       'bowerInstall',
       'concurrent:server',
       'autoprefixer',
@@ -404,28 +436,37 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', [
     'clean:server',
+    'ngconstant:dev',
     'concurrent:test',
     'autoprefixer',
     'connect:test',
     'karma'
   ]);
 
-  grunt.registerTask('build', [
-    'clean:dist',
-    'bowerInstall',
-    'useminPrepare',
-    'concurrent:dist',
-    'autoprefixer',
-    'concat',
-    'ngmin',
-    'copy:dist',
-    'cdnify',
-    'cssmin',
-    'uglify',
-    'rev',
-    'usemin',
-    'htmlmin'
-  ]);
+  grunt.registerTask('build', function (target) {
+    var ngct = 'dev';
+
+    if (target === 'prod')
+      ngct = 'prod';
+
+    grunt.task.run([
+      'clean:dist',
+      'ngconstant:' + ngct,
+      'bowerInstall',
+      'useminPrepare',
+      'concurrent:dist',
+      'autoprefixer',
+      'concat',
+      'ngmin',
+      'copy:dist',
+      'cdnify',
+      'cssmin',
+      'uglify',
+      'rev',
+      'usemin',
+      'htmlmin'
+    ])
+  });
 
   grunt.registerTask('default', [
     'newer:jshint',
