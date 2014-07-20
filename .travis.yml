@@ -8,5 +8,7 @@ before_script:
   - npm install --global bower grunt-cli
   - npm install
   - bower install
+after_success:
+  - scripts/build.sh
 notifications:
   flowdock: 232485f7661e644ae5878944c2597042
