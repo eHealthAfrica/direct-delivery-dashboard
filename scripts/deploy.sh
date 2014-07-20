@@ -29,4 +29,8 @@ fi
 decode_ssh_key "$host"
 
 now="$(date -u "+%Y%m%d%H%M%S")"
-rsync -avz -e ssh "$dist" travisci@$host:~/lmis-dashboard/$now/
+user="travisci"
+root="/home/$user/lmis-dashboard"
+
+rsync -avz -e ssh "$dist/" $user@$host:$root/$now/
+ssh $user@$host ln -fsn "$root/$now" "$root/latest"
