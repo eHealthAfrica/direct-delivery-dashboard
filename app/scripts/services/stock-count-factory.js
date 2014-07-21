@@ -133,10 +133,9 @@ angular.module('lmisApp')
 
           for (var key in groupedStockCount) {
             var sortedStockCount = getSortedStockCount(groupedStockCount[key]);
-            var fake = getSortedStockCount(groupedStockCount[key]);
-            console.info(fake.map(function (s) {return s.doc.created}));
             var latestStockCount = sortedStockCount[0];
             var previousStockCount = sortedStockCount[1] ? sortedStockCount[1] : null;
+
             if (angular.isDefined(facilities[key])){
               var facilityConfig = appConfig[facilities[key].doc.email];
               var currentDueDate = getStockCountDueDate(facilityConfig.value.facility.stockCountInterval, facilityConfig.value.facility.reminderDay);
