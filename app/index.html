@@ -46,6 +46,9 @@
       <li ng-class="{active: isActive('/stock-out')}">
         <a href="#/stock-out">Stock Out</a>
       </li>
+      <li ng-class="{active: isActive('/stock-count-summary')}">
+        <a href="#/stock-count-summary">Stock Count Summary</a>
+      </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li ng-show="currentUser" class="dropdown">
@@ -110,6 +113,13 @@
 <script src="scripts/services/stock_out.js"></script>
 <script src="scripts/services/ccei.js"></script>
 <script src="scripts/services/state.js"></script>
+<script src="scripts/services/app-config-factory.js"></script>
+<script src="scripts/services/cache-service.js"></script>
+<script src="scripts/services/facility-factory.js"></script>
+<script src="scripts/services/storage-service.js"></script>
+<script src="scripts/services/product-service.js"></script>
+<script src="scripts/services/utility.js"></script>
+<script src="scripts/services/stock-count-factory.js"></script>
 <script src="scripts/services/zone.js"></script>
 <script src="scripts/services/lga.js"></script>
 <script src="scripts/services/ward.js"></script>
