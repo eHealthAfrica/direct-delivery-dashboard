@@ -1,0 +1,57 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Stock Count List</h3>
+  </div>
+  <div class="panel-body">
+    <table id="stock-count-summary" class="table table-bordered table-condensed">
+      <thead>
+      <th>#</th>
+      <th>Facility</th>
+      <th>Reminder Day</th>
+      <th>Previous Count Date</th>
+      <th>Most Recent Count Date</th>
+      <th>Current Due Date</th>
+      <th>Next Count Due Date</th>
+      <th>Days From Last Count</th>
+      <th>Completed Counts</th>
+      </thead>
+      <tbody ng-repeat="row in stockCountSummary" ng-switch on="stockCountRowCollapse[row.facilityUUID]">
+      <tr class="pointer"
+          ng-class="{'bg-success': row.daysFromLastCountDate < 6, 'bg-danger': row.daysFromLastCountDate > 6, 'bg-warning': row.daysFromLastCountDate === 6}"
+          ng-click="toggleRow(row.facilityUUID)">
+        <td>{{ $index + 1 }}</td>
+        <td>{{ row.facility }}</td>
+        <td>{{ row.reminderDay }}</td>
+        <td>{{ row.previousCountDate }} ({{ row.previousCreatedDate }}) </td>
+        <td>{{ row.mostRecentCountDate }} ({{ row.createdDate }})</td>
+        <td>{{ row.currentDueDate }}</td>
+        <td>{{ row.nextCountDate }}</td>
+        <td>{{ row.daysFromLastCountDate }}</td>
+        <td>{{ row.completedCounts }}</td>
+      </tr>
+      <tr ng-switch-when="true">
+        <td colspan="8">
+          <div class="container">
+            <table class="table table-bordered table-condensed table-striped">
+              <thead>
+              <tr>
+                <th>#</th>
+                <th>Count Date</th>
+                <th>Created Date</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="facilityStockCount in facilityStockCounts[row.facilityUUID]">
+                <td>{{ $index + 1 }}</td>
+                <td>{{ ((facilityStockCount).doc).countDate | date: 'dd MMM yyyy' }}</td>
+                <td>{{ ((facilityStockCount).doc).created | date: 'dd MMM yyyy HH:mm' }}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
