@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('appConfigFactory', function ($q, storageService, facilityFactory, cacheService) {
+  .factory('appConfigFactory', function ($q, facilityFactory, cacheService, couchdb) {
 
     var DB_NAME = 'app_config';
 
@@ -22,20 +22,15 @@ angular.module('lmisApp')
       }.toString();
 
       var params = {
-        data: {
-          map: '('+mapFunc+')',
-          include_docs: false
-        },
-        method: 'POST',
-        cache: true
+        map: '(' + mapFunc + ')'
       };
 
-      storageService.getCustomView(DB_NAME, params)
-        .success(function (appConfig) {
+      couchdb.mapReduce({_db: DB_NAME, include_docs: false}, params).$promise
+        .then(function (appConfig) {
           cache.put(DB_NAME, appConfig);
           deferred.resolve(appConfig);
         })
-        .error(function (reason) {
+        .catch(function (reason) {
           deferred.reject(reason);
         });
 

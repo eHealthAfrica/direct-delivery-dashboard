@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('facilityFactory', function ($q, storageService, utility, cacheService) {
+  .factory('facilityFactory', function ($q, couchdb, utility, cacheService) {
 
     var DB_NAME = 'facilities',
         CONNECTION_IN_PROGRESS;
@@ -12,13 +12,13 @@ angular.module('lmisApp')
 
       CONNECTION_IN_PROGRESS = true;
 
-      storageService.all(DB_NAME)
-        .success(function (data) {
+      couchdb.allDocs({_db: DB_NAME}).$promise
+        .then(function (data) {
           cache.put(DB_NAME, data.rows);
           deferred.resolve(data.rows);
           CONNECTION_IN_PROGRESS = false;
         })
-        .error(function (reason) {
+        .catch(function (reason) {
           CONNECTION_IN_PROGRESS = false;
           deferred.reject(reason);
         });

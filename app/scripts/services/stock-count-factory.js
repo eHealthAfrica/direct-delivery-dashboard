@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisApp')
-  .service('stockCountFactory', function ($q, storageService, facilityFactory, cacheService, productService,
+  .service('stockCountFactory', function ($q, facilityFactory, cacheService, couchdb,
                                           utility, $filter, appConfigFactory) {
 
     var DB_NAME = 'stockcount';
@@ -14,8 +14,8 @@ angular.module('lmisApp')
       var deferred = $q.defer();
       var cache = cacheService.cache(DB_NAME);
 
-      storageService.all(DB_NAME)
-        .success(function (stockCount) {
+      couchdb.allDocs({_db: DB_NAME}).$promise
+        .then(function (stockCount) {
           cache.put(DB_NAME, stockCount);
           deferred.resolve(stockCount);
         })
@@ -125,8 +125,8 @@ angular.module('lmisApp')
       getStockCountWithFacilitiesAndAppConfig()
         .then(function (resolved) {
           var facilities = resolved[0],
-            stockCount = resolved[1].rows,
-            appConfig = utility.castArrayToObject(resolved[2].rows, 'id');
+              stockCount = resolved[1].rows,
+              appConfig = utility.castArrayToObject(resolved[2].rows, 'id');
 
           var groupedStockCount = groupByFacility(stockCount);
           var summaryHeader = [];
@@ -137,26 +137,29 @@ angular.module('lmisApp')
             var previousStockCount = sortedStockCount[1] ? sortedStockCount[1] : null;
 
             if (angular.isDefined(facilities[key])){
-              var facilityConfig = appConfig[facilities[key].doc.email];
-              var currentDueDate = getStockCountDueDate(facilityConfig.value.facility.stockCountInterval, facilityConfig.value.facility.reminderDay);
-              var nextCountDate = currentDueDate.getTime() + new Date(1000 * 60 * 60 * 24 * facilityConfig.value.facility.stockCountInterval).getTime();
-              var daysFromLastCount = getDaysFromLastCountDate(new Date(latestStockCount.doc.countDate));
 
-              summaryHeader.push({
-                facility: facilityConfig.value.facility.name,
-                createdDate: $filter('date')(latestStockCount.doc.created, 'dd MMM yyyy HH:mm'),
-                facilityUUID: key,
-                reminderDay: utility.getWeekDay(facilityConfig.value.facility.reminderDay),
-                previousCountDate: previousStockCount !== null ? $filter('date')(previousStockCount.doc.countDate, 'dd MMM yyyy') : 'None',
-                previousCreatedDate: previousStockCount !== null ? $filter('date')(previousStockCount.doc.created, 'dd MMM yyyy HH:mm') : 'None',
-                currentDueDate: $filter('date')(currentDueDate, 'dd MMM yyyy'),
-                mostRecentCountDate: $filter('date')(latestStockCount.doc.countDate, 'dd MMM yyyy'),
-                nextCountDate: $filter('date')(new Date(nextCountDate), 'dd MMM yyyy') ,
-                stockCountInterval: facilityConfig.value.facility.stockCountInterval,
-                completedCounts: groupedStockCount[key].length,
-                hasPendingStockCount: hasPendingStockCount(new Date(latestStockCount.doc.countDate), currentDueDate),
-                daysFromLastCountDate: daysFromLastCount
-              });
+              var facilityConfig = appConfig[facilities[key].doc.email];
+              if(angular.isDefined(facilityConfig)){
+                var currentDueDate = getStockCountDueDate(facilityConfig.value.facility.stockCountInterval, facilityConfig.value.facility.reminderDay);
+                var nextCountDate = currentDueDate.getTime() + new Date(1000 * 60 * 60 * 24 * facilityConfig.value.facility.stockCountInterval).getTime();
+                var daysFromLastCount = getDaysFromLastCountDate(new Date(latestStockCount.doc.countDate));
+
+                summaryHeader.push({
+                  facility: facilityConfig.value.facility.name,
+                  createdDate: $filter('date')(latestStockCount.doc.created, 'dd MMM yyyy HH:mm'),
+                  facilityUUID: key,
+                  reminderDay: utility.getWeekDay(facilityConfig.value.facility.reminderDay),
+                  previousCountDate: previousStockCount !== null ? $filter('date')(previousStockCount.doc.countDate, 'dd MMM yyyy') : 'None',
+                  previousCreatedDate: previousStockCount !== null ? $filter('date')(previousStockCount.doc.created, 'dd MMM yyyy HH:mm') : 'None',
+                  currentDueDate: $filter('date')(currentDueDate, 'dd MMM yyyy'),
+                  mostRecentCountDate: $filter('date')(latestStockCount.doc.countDate, 'dd MMM yyyy'),
+                  nextCountDate: $filter('date')(new Date(nextCountDate), 'dd MMM yyyy') ,
+                  stockCountInterval: facilityConfig.value.facility.stockCountInterval,
+                  completedCounts: groupedStockCount[key].length,
+                  hasPendingStockCount: hasPendingStockCount(new Date(latestStockCount.doc.countDate), currentDueDate),
+                  daysFromLastCountDate: daysFromLastCount
+                });
+              }
             }
           }
 
