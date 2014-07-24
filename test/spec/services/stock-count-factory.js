@@ -5,13 +5,14 @@ describe('factory: stockCountFactory', function () {
 
   var stockCountFactory,
       stockCount,
+      utility,
       appConfig;
 
   var fakeStockCount = [
     {
       'doc': {
         'facility': 'facility-1',
-        'created': '2014-06-14T09:53:23.410Z',
+        'created': '2014-06-13T09:53:23.410Z',
         'countDate': '2014-06-08T23:00:00.000Z'
       }
     },
@@ -38,29 +39,67 @@ describe('factory: stockCountFactory', function () {
     }
   ];
 
-  beforeEach(inject(function (_stockCountFactory_, stockCountMock, appConfigMock) {
+  beforeEach(inject(function (_stockCountFactory_, stockCountMock, appConfigMock, _utility_) {
     stockCountFactory = _stockCountFactory_;
     stockCount = stockCountMock;
-    appConfig = appConfigMock
+    appConfig = appConfigMock;
+    utility = _utility_;
   }));
 
   describe('groupByFacility', function () {
     it('should group stockCount by facility uuid', function () {
       var groupedStockCount = stockCountFactory.groupByFacility(fakeStockCount);
-
       expect(toString.call(groupedStockCount)).toEqual('[object Object]');
       expect(groupedStockCount['facility-1'].length).toEqual(2);
     });
   });
 
-  describe('getSortedStockCount', function () {
+  describe('getStockCountDueDate', function () {
 
-    it('should sort stock count by created date in a descending order', function () {
-      var sortedCount = stockCountFactory.getSortedStockCount(fakeStockCount);
-      console.log(JSON.stringify(sortedCount));
-      expect(sortedCount[0].doc.created).toEqual('2014-07-09T09:56:16.682Z');
+    var DAILY = 1,
+        WEEKLY = 7;
+
+    it('should return today\'s date when called with DAILY interval.', function () {
+      var today = utility.getFullDate(new Date());
+      var reminderDay = 1;//Monday.
+      var result = stockCountFactory.getStockCountDueDate(DAILY, reminderDay);
+      var stockCountDueDate = utility.getFullDate(result);
+      expect(today).toBe(stockCountDueDate);
     });
 
+    it('should return expected count date when called with WEEKLY interval and reminder day.', function () {
+      var today = new Date();
+      var reminderDay = today.getDay();
+      var expectedStockCountDate = utility.getFullDate(utility.getWeekRangeByDate(today, reminderDay).reminderDate);
+      var result = stockCountFactory.getStockCountDueDate(WEEKLY, reminderDay);
+      var stockCountDueDate = utility.getFullDate(result);
+      expect(expectedStockCountDate).toBe(stockCountDueDate);
+    });
+
+    it('should return last week count date, if current week is not yet due.', function () {
+      var today = new Date();
+      var reminderDay = today.getDay() + 1;
+      var aWeekAgo = new Date(today.getFullYear(), today.getMonth(), today.getDate() - WEEKLY);
+      var expectedStockCountDate = utility.getFullDate(utility.getWeekRangeByDate(aWeekAgo, reminderDay).reminderDate);
+      var result = stockCountFactory.getStockCountDueDate(WEEKLY, reminderDay);
+      var stockCountDueDate = utility.getFullDate(result);
+      expect(expectedStockCountDate).toBe(stockCountDueDate);
+    });
+
+  });
+
+  describe('getDaysFromLastCountDate', function () {
+    it('should return throw if date object is not provided', function () {
+      expect(function () {stockCountFactory.getDaysFromLastCountDate('2014-07-10')}).toThrow('value provided is not a date object');
+    });
+
+    it('should return number of days from given date to the today\'s date', function () {
+      var givenDate = new Date('2014-07-10'),
+          today = new Date(),
+          difference = today.getDate() - givenDate.getDate(),
+          expectedDay = stockCountFactory.getDaysFromLastCountDate(givenDate);
+          expect(expectedDay).toEqual(difference);
+    });
   });
 
 });
