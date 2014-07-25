@@ -17,7 +17,7 @@
       </thead>
       <tbody ng-repeat="row in stockCountSummary" ng-switch on="stockCountRowCollapse[row.facilityUUID]">
       <tr class="pointer"
-          ng-class="{'bg-success': row.daysFromLastCountDate < 7, 'bg-warning': row.daysFromLastCountDate > 7 && row.daysFromLastCountDate < 14, 'bg-danger': row.daysFromLastCountDate > 13}"
+          ng-class="{'bg-success': row.daysFromLastCountDate < 7, 'bg-warning': row.daysFromLastCountDate >= 7 && row.daysFromLastCountDate < 14, 'bg-danger': row.daysFromLastCountDate > 13}"
           ng-click="toggleRow(row.facilityUUID)">
         <td>{{ $index + 1 }}</td>
         <td>{{ row.facility }}</td>
