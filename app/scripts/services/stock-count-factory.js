@@ -73,7 +73,10 @@ angular.module('lmisApp')
         throw "value provided is not a date object";
       }
 
-      return new Date().getDate() - lastCountDate.getDate();
+      var one_day=1000*60*60*24;
+      var difference_ms = new Date().getTime() - lastCountDate.getTime();
+
+      return Math.round(difference_ms/one_day);
     };
 
     var getStockCountDueDate = function(interval, reminderDay, date){
