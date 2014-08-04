@@ -1,14 +1,38 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('Facility', function ($rootScope, $q, couchdb) {
-    var dbName = 'facilities';
+  .factory('Facility', function ($rootScope, $q, couchdb, utility) {
+    var DB_NAME = 'facilities';
     var allPromise = null;
     var names = [];
 
     $rootScope.$on('currentUserChanged', function() {
       allPromise = null;
     });
+
+    function getAll(){
+      var deferred = $q.defer();
+      couchdb.allDocs({_db: DB_NAME}).$promise
+        .then(function (data) {
+          deferred.resolve(data.rows);
+        })
+        .catch(function (reason) {
+          deferred.reject(reason);
+        });
+      return deferred.promise;
+    }
+
+    function getAllObject() {
+      var deferred = $q.defer();
+      getAll()
+        .then(function (data) {
+          deferred.resolve(utility.castArrayToObject(data, 'id'));
+        })
+        .catch(function (reason) {
+          deferred.reject(reason);
+        });
+      return deferred.promise;
+    }
 
     return {
       /**
@@ -22,7 +46,7 @@ angular.module('lmisApp')
         allPromise = d.promise;
         names = [];
 
-        couchdb.allDocs({_db: dbName}).$promise
+        couchdb.allDocs({_db: DB_NAME}).$promise
           .then(function (response) {
             var facilities = {};
             response.rows.forEach(function (row) {
@@ -59,6 +83,7 @@ angular.module('lmisApp')
           });
 
         return d.promise;
-      }
+      },
+      getObjects: getAllObject
     };
   });
