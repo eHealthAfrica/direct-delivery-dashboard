@@ -1,53 +1,97 @@
 'use strict';
 
 angular.module('lmisApp')
-  .service('stockCountFactory', function ($q, facilityFactory, cacheService, couchdb,
-                                          utility, $filter, appConfigFactory) {
+  .factory('stockcountUnopened', function ($q, couchdb, inventoryRulesFactory, ProductProfile, ProductType,
+                                           Facility, appConfigFactory, utility) {
+    var DB_NAME = 'stockcount',
+        DAILY = 1,
+        WEEKLY = 7,
+        BI_WEEKLY = 14,
+        MONTHLY = 30;
+    
 
-    var DB_NAME = 'stockcount';
-    var DAILY = 1;
-    var WEEKLY = 7;
-    var BI_WEEKLY = 14;
-    var MONTHLY = 30;
+    function query(group_level, descending) {
+      var options = {
+        _db: DB_NAME,
+        _param: 'stockcount',
+        _sub_param: 'unopened',
+        reduce: true,
+        group: group_level ? true : false,
+        descending: !!descending
+      };
 
-    var getAllFromServer = function () {
+      if (group_level)
+        options.group_level = group_level;
+
+      return couchdb.view(options).$promise;
+    }
+
+    function groupByProductType(rows) {
+      var d = $q.defer();
+      ProductProfile.all()
+        .then(function (profiles) {
+          rows.forEach(function (row) {
+            var rowProducts = {};
+            Object.keys(row.products).forEach(function (key) {
+              var product = row.products[key];
+              var profile = profiles[key];
+              if (profile && profile.product) {
+                rowProducts[profile.product] = rowProducts[profile.product] || { count: 0 };
+                rowProducts[profile.product].count += product.count;
+              }
+            });
+
+            row.products = rowProducts;
+          });
+
+          d.resolve(rows);
+        })
+        .catch(function (error) {
+          console.log(error);
+          d.reject(error);
+        });
+
+      return d.promise;
+    }
+
+    function addInventoryRules(rows) {
+      rows.forEach(function (row) {
+        var products = Object.keys(row.products).map(function (key) {
+          return row.products[key];
+        });
+
+        inventoryRulesFactory.bufferStock(products).forEach(function (product) {
+          inventoryRulesFactory.reorderPoint(product);
+        });
+      });
+
+      return rows;
+    }
+
+    function getAllStockCount() {
       var deferred = $q.defer();
-      var cache = cacheService.cache(DB_NAME);
 
       couchdb.allDocs({_db: DB_NAME}).$promise
         .then(function (stockCount) {
-          cache.put(DB_NAME, stockCount);
           deferred.resolve(stockCount);
         })
         .catch(function (reason) {
           deferred.reject(reason);
         });
       return deferred.promise;
-    };
+    }
 
-    var getAll = function () {
-      var deferred = $q.defer();
-      var cache = cacheService.cache(DB_NAME);
-      var cached = cache.get(DB_NAME);
-      if (angular.isDefined(cached)) {
-        deferred.resolve(cached);
-        getAllFromServer();
-        return deferred.promise;
-      }
-      return getAllFromServer();
-    };
-
-    var getStockCountWithFacilitiesAndAppConfig = function () {
+    function getStockCountWithFacilitiesAndAppConfig() {
       var promises = [
-        facilityFactory.getObjects(),
-        getAll(),
+        Facility.getObjects(),
+        getAllStockCount(),
         appConfigFactory.all()
       ];
 
       return $q.all(promises);
-    };
+    }
 
-    var groupByFacility = function (stockCount) {
+    function groupByFacility(stockCount) {
       var groupedStockCount  = {};
 
       for(var i = 0; i < stockCount.length; i++ ){
@@ -59,16 +103,16 @@ angular.module('lmisApp')
         }
       }
       return groupedStockCount;
-    };
+    }
 
-    var getSortedStockCount = function (stockCountList) {
+    function getSortedStockCount(stockCountList) {
       return stockCountList
         .sort(function (a, b){
           return new Date(a.doc.created).getTime() < new Date(b.doc.created).getTime();
         });
-    };
+    }
 
-    var getDaysFromLastCountDate = function (lastCountDate) {
+    function getDaysFromLastCountDate(lastCountDate) {
       if (Object.prototype.toString.call(lastCountDate) !== '[object Date]') {
         throw "value provided is not a date object";
       }
@@ -77,9 +121,9 @@ angular.module('lmisApp')
       var difference_ms = new Date().getTime() - lastCountDate.getTime();
 
       return Math.round(difference_ms/one_day);
-    };
+    }
 
-    var getStockCountDueDate = function(interval, reminderDay, date){
+    function getStockCountDueDate(interval, reminderDay, date){
       var today = new Date();
       var currentDate = date || today;
       var countDate;
@@ -115,21 +159,21 @@ angular.module('lmisApp')
           }
       }
       return countDate
-    };
+    }
 
     var hasPendingStockCount = function (lastCountDueDate, currentDueDate) {
       return !(lastCountDueDate.getTime() === currentDueDate.getTime());
     };
 
-    var stockCountSummaryByFacility = function () {
+    function stockCountSummaryByFacility() {
 
       var deferred = $q.defer();
 
       getStockCountWithFacilitiesAndAppConfig()
         .then(function (resolved) {
           var facilities = resolved[0],
-              stockCount = resolved[1].rows,
-              appConfig = utility.castArrayToObject(resolved[2].rows, 'id');
+            stockCount = resolved[1].rows,
+            appConfig = utility.castArrayToObject(resolved[2].rows, 'id');
 
           var groupedStockCount = groupByFacility(stockCount);
           var summaryHeader = [];
@@ -149,14 +193,14 @@ angular.module('lmisApp')
 
                 summaryHeader.push({
                   facility: facilityConfig.value.facility.name,
-                  createdDate: $filter('date')(latestStockCount.doc.created, 'dd MMM yyyy HH:mm'),
+                  createdDate: latestStockCount.doc.created,
                   facilityUUID: key,
                   reminderDay: utility.getWeekDay(facilityConfig.value.facility.reminderDay),
-                  previousCountDate: previousStockCount !== null ? $filter('date')(previousStockCount.doc.countDate, 'dd MMM yyyy') : 'None',
-                  previousCreatedDate: previousStockCount !== null ? $filter('date')(previousStockCount.doc.created, 'dd MMM yyyy HH:mm') : 'None',
-                  currentDueDate: $filter('date')(currentDueDate, 'dd MMM yyyy'),
-                  mostRecentCountDate: $filter('date')(latestStockCount.doc.countDate, 'dd MMM yyyy'),
-                  nextCountDate: $filter('date')(new Date(nextCountDate), 'dd MMM yyyy') ,
+                  previousCountDate: previousStockCount !== null ? previousStockCount.doc.countDate : 'None',
+                  previousCreatedDate: previousStockCount !== null ? previousStockCount.doc.created : 'None',
+                  currentDueDate: currentDueDate,
+                  mostRecentCountDate: latestStockCount,
+                  nextCountDate: nextCountDate ,
                   stockCountInterval: facilityConfig.value.facility.stockCountInterval,
                   completedCounts: groupedStockCount[key].length,
                   hasPendingStockCount: hasPendingStockCount(new Date(latestStockCount.doc.countDate), currentDueDate),
@@ -176,10 +220,101 @@ angular.module('lmisApp')
         });
 
       return deferred.promise;
-    };
+    }
+
 
     return {
-      all: getAll,
+      /**
+       * Read all documents from db, expand them on unopened products and arrange them in an array
+       * with facilities resolved to their names and product types to their codes. Every item has the
+       * following structure:
+       * {
+       *   "facility": string,
+       *   "created": date,
+       *   "productType": string,
+       *   "count": number,
+       * }
+       */
+      all: function () {
+        var d = $q.defer();
+        $q.all([
+            couchdb.allDocs({_db: DB_NAME}).$promise,
+            ProductProfile.all(),
+            ProductType.all(),
+            Facility.all()
+          ])
+          .then(function (response) {
+            var rows = response[0].rows;
+            var productProfiles = response[1];
+            var productTypes = response[2];
+            var facilities = response[3];
+
+            var expanded = [];
+            rows.forEach(function (row) {
+              if (row.doc.unopened) {
+                Object.keys(row.doc.unopened).forEach(function (productProfileUUID) {
+                  var productProfile = productProfiles[productProfileUUID];
+                  var productType = (productProfile && productProfile.product) ? productTypes[productProfile.product] : undefined;
+
+                  expanded.push({
+                    facility: row.doc.facility ? facilities[row.doc.facility] : undefined,
+                    created: row.doc.created,
+                    modified: row.doc.modified,
+                    productType: productType ? productType.code : undefined,
+                    count: row.doc.unopened[productProfileUUID]
+                  });
+                });
+              }
+            });
+
+            d.resolve(expanded);
+          })
+          .catch(function (error) {
+            console.log(error);
+            d.reject(error);
+          });
+
+        return d.promise;
+      },
+      /**
+       * Read data from stockcount/unopened db view and arrange it by facility and date. Every item
+       * has a facility name, a date and a hash of productType -> count.
+       */
+      byFacilityAndDate: function () {
+        var d = $q.defer();
+        query(3, true)
+          .then(function (response) {
+            var items = {};
+            response.rows.forEach(function (row) {
+              var key = row.key[0] + row.key[1];
+              items[key] = items[key] || {
+                facility: row.key[0],
+                date: new Date(row.key[1]),
+                products: {}
+              };
+              items[key].products[row.key[2]] = { count: row.value };
+            });
+
+            var rows = Object.keys(items).map(function (key) {
+              return items[key];
+            });
+
+            groupByProductType(rows)
+              .then(function (rows) {
+                d.resolve(addInventoryRules(rows));
+              })
+              .catch(function (error) {
+                console.log(error);
+                d.reject(error);
+              });
+          })
+          .catch(function (error) {
+            console.log(error);
+            d.reject(error);
+          });
+
+        return d.promise;
+      },
       groupByFacility: groupByFacility,
       stockCountSummaryByFacility: stockCountSummaryByFacility,
       getStockCountDueDate: getStockCountDueDate,
