@@ -1,6 +1,6 @@
 'use strict';
 
-describe('factory: stockCountFactory', function () {
+describe('factory: stockcountUnopened', function () {
   beforeEach(module('lmisApp', 'appConfigMocks', 'stockCountMocks'));
 
   var stockCountFactory,
@@ -39,8 +39,8 @@ describe('factory: stockCountFactory', function () {
     }
   ];
 
-  beforeEach(inject(function (_stockCountFactory_, stockCountMock, appConfigMock, _utility_) {
-    stockCountFactory = _stockCountFactory_;
+  beforeEach(inject(function (_stockcountUnopened_, stockCountMock, appConfigMock, _utility_) {
+    stockCountFactory = _stockcountUnopened_;
     stockCount = stockCountMock;
     appConfig = appConfigMock;
     utility = _utility_;
@@ -95,8 +95,9 @@ describe('factory: stockCountFactory', function () {
 
     it('should return number of days from given date to the today\'s date', function () {
       var givenDate = new Date('2014-07-10'),
+          one_day=1000*60*60*24,
           today = new Date(),
-          difference = today.getDate() - givenDate.getDate(),
+          difference = Math.round((today.getTime() - givenDate.getTime())/one_day),
           expectedDay = stockCountFactory.getDaysFromLastCountDate(givenDate);
           expect(expectedDay).toEqual(difference);
     });
