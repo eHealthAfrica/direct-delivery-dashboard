@@ -6,7 +6,7 @@ angular.module('lmisApp')
 
     return {
       /**
-       * Read data from db and arrange it in an array. Every item has the following structure:
+       * Read data from db ordered by date and arrange it in an array. Every item has the following structure:
        *
        * {
        *   "name": string,
@@ -15,10 +15,19 @@ angular.module('lmisApp')
        * }
        *
        */
-      all: function () {
+      byDate: function (options) {
+        options = options || {};
+
+        var limit = options.limit;
+        var descending = options.descending !== undefined ? !!options.descending : true;
+
+        var params = { _db: dbName, _param: 'ccu_breakdown', _sub_param: 'by_date', descending: descending };
+        if (limit !== undefined && !isNaN(limit))
+          params.limit = parseInt(limit);
+
         var d = $q.defer();
         $q.all([
-            couchdb.allDocs({_db: dbName}).$promise,
+            couchdb.view(params).$promise,
             CCEI.all(),
             Facility.all()
           ])
@@ -27,14 +36,15 @@ angular.module('lmisApp')
             var cceis = response[1];
             var facilities = response[2];
             d.resolve(rows.map(function (row) {
-              var modelId = (row.doc.ccuProfile && row.doc.ccuProfile.dhis2_modelid !== undefined) ? row.doc.ccuProfile.dhis2_modelid : undefined;
+              var modelId = row.value.ccuProfile.dhis2_modelid;
               var name = modelId !== undefined ? cceis[modelId] : undefined;
               if (name === undefined)
                 name = '** Unknown (' + modelId + ') **';
+
               return {
                 name: name,
-                created: row.doc.created,
-                facility: row.doc.facility ? facilities[row.doc.facility.uuid] : undefined
+                created: row.value.created,
+                facility: facilities[row.value.facility]
               };
             }));
           })
