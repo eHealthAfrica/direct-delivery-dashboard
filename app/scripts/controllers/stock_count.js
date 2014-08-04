@@ -174,11 +174,11 @@ angular.module('lmisApp')
         $scope.loading = false;
       });
   })
-  .controller('StockCountSummaryCtrl', function ($scope, stockCountFactory) {
+  .controller('StockCountSummaryCtrl', function ($scope, stockcountUnopened) {
 
     $scope.facilityStockCounts = {};
     $scope.toggleAllMode = false;
-    stockCountFactory.stockCountSummaryByFacility()
+    stockcountUnopened.stockCountSummaryByFacility()
       .then(function (data) {
         $scope.stockCountSummary = data.summary;
         $scope.groupedStockCount = data.groupedStockCount
