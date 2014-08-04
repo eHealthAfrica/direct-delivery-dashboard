@@ -106,34 +106,12 @@ angular.module('lmisApp')
   })
   .controller('MainStockOutCtrl', function ($scope, stockOut) {
     $scope.rows = [];
-    $scope.mostRecent = [];
     $scope.loading = true;
     $scope.error = false;
 
-    function setMostRecent(rows) {
-      var recent = {};
-
-      rows.forEach(function (row) {
-        var mostRecent = recent[row.facility.name] = recent[row.facility.name] || [];
-        if (mostRecent.length < 5)
-          mostRecent.push(row);
-      });
-
-      Object.keys(recent).sort().forEach(function (key) {
-        recent[key][0].mostRecentCount = recent[key].length;
-        recent[key].forEach(function (row) {
-          $scope.mostRecent.push(row);
-        })
-      });
-    }
-
-    stockOut.all()
+    stockOut.byDate({ limit: 10 })
       .then(function (rows) {
-        $scope.rows = rows.filter(function (row) {
-          return !!row.facility;
-        });
-
-        setMostRecent($scope.rows);
+        $scope.rows = rows;
       })
       .catch(function () {
         $scope.error = true;

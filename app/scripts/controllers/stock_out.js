@@ -118,7 +118,7 @@ angular.module('lmisApp')
 
     $q.all([
         ProductType.codes(),
-        stockOut.all()
+        stockOut.byDate()
       ])
       .then(function (responses) {
         $scope.productTypes = responses[0];

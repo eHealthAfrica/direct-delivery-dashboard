@@ -95,6 +95,8 @@
           <table class="table table-bordered">
             <thead>
               <tr>
+                <th>LGA</th>
+                <th>Ward</th>
                 <th>Facility</th>
                 <th>Date</th>
                 <th>Product Type</th>
@@ -102,8 +104,14 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="row in mostRecent">
-                <td ng-if="row.mostRecentCount" rowspan="{{row.mostRecentCount}}" style="white-space: nowrap;">
+              <tr ng-repeat="row in rows">
+                <td>
+                  {{row.facility.lga}}
+                </td>
+                <td>
+                  {{row.facility.ward}}
+                </td>
+                <td>
                   {{row.facility.name}}
                 </td>
                 <td style="white-space: nowrap;">
