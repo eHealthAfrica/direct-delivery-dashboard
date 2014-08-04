@@ -1,13 +1,12 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('appConfigFactory', function ($q, facilityFactory, cacheService, couchdb) {
+  .factory('appConfigFactory', function ($q, Facility, couchdb) {
 
     var DB_NAME = 'app_config';
 
-    var getAllFromServer = function () {
+    var getAll = function () {
       var deferred = $q.defer();
-      var cache = cacheService.cache(DB_NAME);
       var mapFunc = function (doc) {
         emit(doc.id, {
           uuid: doc.uuid,
@@ -27,7 +26,6 @@ angular.module('lmisApp')
 
       couchdb.mapReduce({_db: DB_NAME, include_docs: false}, params).$promise
         .then(function (appConfig) {
-          cache.put(DB_NAME, appConfig);
           deferred.resolve(appConfig);
         })
         .catch(function (reason) {
@@ -37,21 +35,9 @@ angular.module('lmisApp')
       return deferred.promise;
     };
 
-    var getAll = function () {
-      var deferred = $q.defer();
-      var cache = cacheService.cache(DB_NAME);
-      var cached = cache.get(DB_NAME);
-      if(angular.isDefined(cached)){
-        deferred.resolve(cached);
-        getAllFromServer();
-        return deferred.promise;
-      }
-      return getAllFromServer();
-    };
-
     var getAppConfigWithFacilities = function () {
       var promises = [
-        facilityFactory.getObjects(),
+        Facility.getObjects(),
         getAll()
       ];
 
