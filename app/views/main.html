@@ -18,6 +18,8 @@
           <table class="table table-bordered">
             <thead>
               <tr>
+                <th>LGA</th>
+                <th>Ward</th>
                 <th>Facility</th>
                 <th>Date</th>
                 <th ng-repeat="type in productTypes">{{type.code}}</th>
@@ -25,8 +27,14 @@
             </thead>
             <tbody>
               <tr ng-repeat="row in mostRecent">
-                <td style="white-space: nowrap; cursor: pointer;" ng-click="setChartData(row.facility)">
-                  {{row.facility}}
+                <td>
+                  {{row.facility.lga}}
+                </td>
+                <td>
+                  {{row.facility.ward}}
+                </td>
+                <td style="cursor: pointer;" ng-click="setChartData(row.facility)">
+                  {{row.facility.name}}
                 </td>
                 <td style="white-space: nowrap;">
                   {{row.date | date:SETTINGS.dateFormat}}
@@ -41,7 +49,7 @@
         <h3>By product over time</h3>
         <div class="panel panel-primary center-block" style="width: 1024px">
           <div class="panel-heading">
-            {{chartFacility || 'Please select a facility'}}
+            {{chartFacility.name}}
           </div>
           <div class="panel-body">
             <nvd3-line-chart

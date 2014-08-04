@@ -72,29 +72,25 @@ angular.module('lmisApp')
       var recent = {};
 
       rows.forEach(function (row) {
-        var mostRecent = recent[row.facility];
+        var facility = row.facility.uuid;
+        var mostRecent = recent[facility];
         row.mostRecent = false;
         if (!mostRecent || mostRecent.date < row.date) {
           if (mostRecent)
             mostRecent.mostRecent = false;
 
           row.mostRecent = true;
-          recent[row.facility] = row;
+          recent[facility] = row;
         }
       });
 
-      $scope.mostRecent = $filter('orderBy')($filter('filter')(rows, {mostRecent: true}), ['-date', 'facility']);
+      $scope.mostRecent = $filter('orderBy')($filter('filter')(rows, {mostRecent: true}), ['-date', 'facility.name']);
     }
 
     stockcountUnopened.byFacilityAndDate()
       .then(function (data) {
         rows = data.filter(function (row) {
-          if (row.facility && $scope.facilities[row.facility]) {
-            row.facility = $scope.facilities[row.facility].name;
-            return true;
-          }
-
-          return false;
+          return !!row.facility;
         });
 
         setMostRecent();
