@@ -1,12 +1,18 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('stockcountUnopened', function ($q, couchdb, inventoryRulesFactory, ProductProfile, ProductType, Facility) {
-    var dbName = 'stockcount';
+  .factory('stockcountUnopened', function ($q, couchdb, inventoryRulesFactory, ProductProfile, ProductType,
+                                           Facility, appConfigFactory, utility) {
+    var DB_NAME = 'stockcount',
+        DAILY = 1,
+        WEEKLY = 7,
+        BI_WEEKLY = 14,
+        MONTHLY = 30;
+    
 
     function query(group_level, descending) {
       var options = {
-        _db: dbName,
+        _db: DB_NAME,
         _param: 'stockcount',
         _sub_param: 'unopened',
         reduce: true,
@@ -62,6 +68,161 @@ angular.module('lmisApp')
       return rows;
     }
 
+    function getAllStockCount() {
+      var deferred = $q.defer();
+
+      couchdb.allDocs({_db: DB_NAME}).$promise
+        .then(function (stockCount) {
+          deferred.resolve(stockCount);
+        })
+        .catch(function (reason) {
+          deferred.reject(reason);
+        });
+      return deferred.promise;
+    }
+
+    function getStockCountWithFacilitiesAndAppConfig() {
+      var promises = [
+        Facility.getObjects(),
+        getAllStockCount(),
+        appConfigFactory.all()
+      ];
+
+      return $q.all(promises);
+    }
+
+    function groupByFacility(stockCount) {
+      var groupedStockCount  = {};
+
+      for(var i = 0; i < stockCount.length; i++ ){
+        if(groupedStockCount.hasOwnProperty(stockCount[i].doc.facility)){
+          groupedStockCount[stockCount[i].doc.facility].push(stockCount[i]);
+        } else {
+          groupedStockCount[stockCount[i].doc.facility] = [];
+          groupedStockCount[stockCount[i].doc.facility].push( stockCount[i]);
+        }
+      }
+      return groupedStockCount;
+    }
+
+    function getSortedStockCount(stockCountList) {
+      return stockCountList
+        .sort(function (a, b){
+          return new Date(a.doc.created).getTime() < new Date(b.doc.created).getTime();
+        });
+    }
+
+    function getDaysFromLastCountDate(lastCountDate) {
+      if (Object.prototype.toString.call(lastCountDate) !== '[object Date]') {
+        throw "value provided is not a date object";
+      }
+
+      var one_day=1000*60*60*24;
+      var difference_ms = new Date().getTime() - lastCountDate.getTime();
+
+      return Math.round(difference_ms/one_day);
+    }
+
+    function getStockCountDueDate(interval, reminderDay, date){
+      var today = new Date();
+      var currentDate = date || today;
+      var countDate;
+      interval = parseInt(interval);
+
+      switch (interval) {
+        case DAILY:
+          countDate = new Date(utility.getFullDate(currentDate));
+          break;
+        case WEEKLY:
+          countDate = utility.getWeekRangeByDate(currentDate, reminderDay).reminderDate;
+          if(currentDate.getTime() < countDate.getTime()){
+            //current week count date is not yet due, return previous week count date..
+            countDate = new Date(countDate.getFullYear(), countDate.getMonth(), countDate.getDate() - interval);
+          }
+          break;
+        case BI_WEEKLY:
+          countDate = utility.getWeekRangeByDate(currentDate, reminderDay).reminderDate;
+          if (currentDate.getTime() < countDate.getTime()) {
+            //current week count date is not yet due, return last bi-weekly count date
+            countDate = new Date(countDate.getFullYear(), countDate.getMonth(), countDate.getDate() - interval);
+          }
+          break;
+        case MONTHLY:
+          var monthlyDate = (currentDate.getTime() === today.getTime())? 1 : currentDate.getDate();
+          countDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), monthlyDate);
+          break;
+        default:
+          countDate = utility.getWeekRangeByDate(currentDate, reminderDay).reminderDate;
+          if(currentDate.getTime() < countDate.getTime()){
+            //current week count date is not yet due, return previous week count date..
+            countDate = new Date(countDate.getFullYear(), countDate.getMonth(), countDate.getDate() - interval);
+          }
+      }
+      return countDate
+    }
+
+    var hasPendingStockCount = function (lastCountDueDate, currentDueDate) {
+      return !(lastCountDueDate.getTime() === currentDueDate.getTime());
+    };
+
+    function stockCountSummaryByFacility() {
+
+      var deferred = $q.defer();
+
+      getStockCountWithFacilitiesAndAppConfig()
+        .then(function (resolved) {
+          var facilities = resolved[0],
+            stockCount = resolved[1].rows,
+            appConfig = utility.castArrayToObject(resolved[2].rows, 'id');
+
+          var groupedStockCount = groupByFacility(stockCount);
+          var summaryHeader = [];
+
+          for (var key in groupedStockCount) {
+            var sortedStockCount = getSortedStockCount(groupedStockCount[key]);
+            var latestStockCount = sortedStockCount[0];
+            var previousStockCount = sortedStockCount[1] ? sortedStockCount[1] : null;
+
+            if (angular.isDefined(facilities[key])){
+
+              var facilityConfig = appConfig[facilities[key].doc.email];
+              if(angular.isDefined(facilityConfig)){
+                var currentDueDate = getStockCountDueDate(facilityConfig.value.facility.stockCountInterval, facilityConfig.value.facility.reminderDay);
+                var nextCountDate = currentDueDate.getTime() + new Date(1000 * 60 * 60 * 24 * facilityConfig.value.facility.stockCountInterval).getTime();
+                var daysFromLastCount = getDaysFromLastCountDate(new Date(latestStockCount.doc.countDate));
+
+                summaryHeader.push({
+                  facility: facilityConfig.value.facility.name,
+                  createdDate: latestStockCount.doc.created,
+                  facilityUUID: key,
+                  reminderDay: utility.getWeekDay(facilityConfig.value.facility.reminderDay),
+                  previousCountDate: previousStockCount !== null ? previousStockCount.doc.countDate : 'None',
+                  previousCreatedDate: previousStockCount !== null ? previousStockCount.doc.created : 'None',
+                  currentDueDate: currentDueDate,
+                  mostRecentCountDate: latestStockCount,
+                  nextCountDate: nextCountDate ,
+                  stockCountInterval: facilityConfig.value.facility.stockCountInterval,
+                  completedCounts: groupedStockCount[key].length,
+                  hasPendingStockCount: hasPendingStockCount(new Date(latestStockCount.doc.countDate), currentDueDate),
+                  daysFromLastCountDate: daysFromLastCount
+                });
+              }
+            }
+          }
+
+          deferred.resolve({
+            summary: summaryHeader,
+            groupedStockCount: groupedStockCount
+          });
+        })
+        .catch(function (reason) {
+          deferred.reject(reason);
+        });
+
+      return deferred.promise;
+    }
+
+
     return {
       /**
        * Read all documents from db, expand them on unopened products and arrange them in an array
@@ -77,7 +238,7 @@ angular.module('lmisApp')
       all: function () {
         var d = $q.defer();
         $q.all([
-            couchdb.allDocs({_db: dbName}).$promise,
+            couchdb.allDocs({_db: DB_NAME}).$promise,
             ProductProfile.all(),
             ProductType.all(),
             Facility.all()
@@ -153,6 +314,12 @@ angular.module('lmisApp')
           });
 
         return d.promise;
-      }
+      },
+      groupByFacility: groupByFacility,
+      stockCountSummaryByFacility: stockCountSummaryByFacility,
+      getStockCountDueDate: getStockCountDueDate,
+      getDaysFromLastCountDate: getDaysFromLastCountDate,
+      getSortedStockCount: getSortedStockCount,
+      hasPendingStockCount: hasPendingStockCount
     };
   });
