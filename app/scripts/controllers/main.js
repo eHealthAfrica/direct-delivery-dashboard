@@ -6,13 +6,14 @@ angular.module('lmisApp')
     $scope.productProfiles = productProfiles;
     $scope.productTypes = productTypes;
   })
-  .controller('UnopenedCtrl', function ($scope, stockcountUnopened) {
-    $scope.rows = [];
+  .controller('UnopenedCtrl', function ($scope, $filter, stockcountUnopened) {
     $scope.mostRecent = [];
     $scope.chartData = [];
     $scope.chartFacility = '';
     $scope.loading = true;
     $scope.error = false;
+
+    var rows = [];
 
     $scope.formatDateAxisFunction = function () {
       return function (d) {
@@ -36,7 +37,7 @@ angular.module('lmisApp')
 
       var products = {};
 
-      $scope.rows.forEach(function (row) {
+      rows.forEach(function (row) {
         if (row.facility == facility) {
           Object.keys(row.products).forEach(function (key) {
             if (!products[key]) {
@@ -67,40 +68,38 @@ angular.module('lmisApp')
       });
     };
 
-    function setMostRecent(rows) {
+    function setMostRecent() {
       var recent = {};
 
       rows.forEach(function (row) {
-        // use name of facility
-        row.facility = $scope.facilities[row.facility].name;
+        var mostRecent = recent[row.facility];
+        row.mostRecent = false;
+        if (!mostRecent || mostRecent.date < row.date) {
+          if (mostRecent)
+            mostRecent.mostRecent = false;
 
-        var mostRecent = recent[row.facility] = recent[row.facility] || [];
-        if (mostRecent.length < 5)
-          mostRecent.push(row);
+          row.mostRecent = true;
+          recent[row.facility] = row;
+        }
       });
 
-      Object.keys(recent).sort().forEach(function (key) {
-        recent[key][0].mostRecentCount = recent[key].length;
-        recent[key].forEach(function (row) {
-          $scope.mostRecent.push(row);
-        })
-      });
+      $scope.mostRecent = $filter('orderBy')($filter('filter')(rows, {mostRecent: true}), ['-date', 'facility']);
     }
 
     stockcountUnopened.byFacilityAndDate()
-      .then(function (rows) {
-        $scope.rows = rows.filter(function (row) {
-          return (row.facility && $scope.facilities[row.facility]);
+      .then(function (data) {
+        rows = data.filter(function (row) {
+          if (row.facility && $scope.facilities[row.facility]) {
+            row.facility = $scope.facilities[row.facility].name;
+            return true;
+          }
+
+          return false;
         });
 
-        setMostRecent($scope.rows);
-
-        var firstChart = '';
-        $scope.rows.forEach(function (row) {
-          if (!firstChart || row.facility < firstChart)
-            firstChart = row.facility;
-        });
-        $scope.setChartData(firstChart);
+        setMostRecent();
+        if ($scope.mostRecent.length)
+          $scope.setChartData($scope.mostRecent[0].facility);
       })
       .catch(function () {
         $scope.error = true;
@@ -147,3 +146,4 @@ angular.module('lmisApp')
         $scope.loading = false;
       });
   });
+
