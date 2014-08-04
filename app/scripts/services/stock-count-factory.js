@@ -116,7 +116,6 @@ angular.module('lmisApp')
       if (Object.prototype.toString.call(lastCountDate) !== '[object Date]') {
         throw "value provided is not a date object";
       }
-
       var one_day=1000*60*60*24;
       var difference_ms = new Date().getTime() - lastCountDate.getTime();
 
@@ -172,7 +171,10 @@ angular.module('lmisApp')
       getStockCountWithFacilitiesAndAppConfig()
         .then(function (resolved) {
           var facilities = resolved[0],
-            stockCount = resolved[1].rows,
+            stockCount = resolved[1].rows
+              .sort(function(a, b) {
+                return new Date(a.doc.created).getTime() < new Date(b.doc.created).getTime();
+              }),
             appConfig = utility.castArrayToObject(resolved[2].rows, 'id');
 
           var groupedStockCount = groupByFacility(stockCount);
@@ -199,7 +201,7 @@ angular.module('lmisApp')
                   previousCountDate: previousStockCount !== null ? previousStockCount.doc.countDate : 'None',
                   previousCreatedDate: previousStockCount !== null ? previousStockCount.doc.created : 'None',
                   currentDueDate: currentDueDate,
-                  mostRecentCountDate: latestStockCount,
+                  mostRecentCountDate: latestStockCount.doc.countDate,
                   nextCountDate: nextCountDate ,
                   stockCountInterval: facilityConfig.value.facility.stockCountInterval,
                   completedCounts: groupedStockCount[key].length,
