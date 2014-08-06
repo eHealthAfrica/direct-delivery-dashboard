@@ -1,6 +1,100 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="row" ng-controller="MainStockOutCtrl">
+      <div class="col-xs-12">
+        <h2 class="page-header">Stock Out Alerts</h2>
+        <div class="row" ng-show="loading || error">
+          <div class="col-xs-12">
+            <div class="alert alert-info" ng-show="loading">
+              Loading ...
+            </div>
+            <div class="alert alert-danger" ng-show="error">
+              Error loading data.
+            </div>
+          </div>
+        </div>
+        <div class="row" ng-hide="loading || error">
+          <div class="col-xs-12">
+            <div style="overflow: auto;">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>LGA</th>
+                    <th>Ward</th>
+                    <th>Facility</th>
+                    <th>Date</th>
+                    <th>Product Type</th>
+                    <th>Stock Level</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="row in rows">
+                    <td>{{row.facility.lga}}</td>
+                    <td>{{row.facility.ward}}</td>
+                    <td>{{row.facility.name}}</td>
+                    <td style="white-space: nowrap;">
+                      {{row.created | date:SETTINGS.dateFormat}}
+                    </td>
+                    <td>{{row.productType}}</td>
+                    <td>{{row.stockLevel}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="row" ng-controller="MainCCUBreakdownCtrl">
+      <div class="col-xs-12">
+        <h2 class="page-header">CCU Breakdown Alerts</h2>
+        <div class="row" ng-show="loading || error">
+          <div class="col-xs-12">
+            <div class="alert alert-info" ng-show="loading">
+              Loading ...
+            </div>
+            <div class="alert alert-danger" ng-show="error">
+              Error loading data.
+            </div>
+          </div>
+        </div>
+        <div class="row" ng-hide="loading || error">
+          <div class="col-xs-12">
+            <div style="overflow: auto;">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>LGA</th>
+                    <th>Ward</th>
+                    <th>Facility</th>
+                    <th>Date</th>
+                    <th>CCU Unit</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="row in rows">
+                    <td>{{row.facility.lga}}</td>
+                    <td>{{row.facility.ward}}</td>
+                    <td>{{row.facility.name}}</td>
+                    <td style="white-space: nowrap;">
+                      {{row.created | date:SETTINGS.dateFormat}}
+                    </td>
+                    <td>{{row.name}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="row" ng-controller="UnopenedCtrl">
   <div class="col-xs-12">
-    <h2 class="page-header">Online stock count</h2>
+    <h2 class="page-header">Stock Count</h2>
     <div class="row" ng-show="loading || error">
       <div class="col-xs-12">
         <div class="alert alert-info" ng-show="loading">
@@ -18,15 +112,19 @@
           <table class="table table-bordered">
             <thead>
               <tr>
+                <th>LGA</th>
+                <th>Ward</th>
                 <th>Facility</th>
                 <th>Date</th>
                 <th ng-repeat="type in productTypes">{{type.code}}</th>
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="row in rows | filter:{mostRecent: true} | orderBy:'facility'">
-                <td style="white-space: nowrap; cursor: pointer;" ng-click="setChartData(row.facility)">
-                  {{row.facility}}
+              <tr ng-repeat="row in mostRecent">
+                <td>{{row.facility.lga}}</td>
+                <td>{{row.facility.ward}}</td>
+                <td style="cursor: pointer;" ng-click="setChartData(row.facility)">
+                  {{row.facility.name}}
                 </td>
                 <td style="white-space: nowrap;">
                   {{row.date | date:SETTINGS.dateFormat}}
@@ -41,7 +139,7 @@
         <h3>By product over time</h3>
         <div class="panel panel-primary center-block" style="width: 1024px">
           <div class="panel-heading">
-            {{chartFacility || 'Please select a facility'}}
+            {{chartFacility.name}}
           </div>
           <div class="panel-body">
             <nvd3-line-chart
@@ -66,5 +164,4 @@
       </div>
     </div>
   </div>
-</div>
 </div>

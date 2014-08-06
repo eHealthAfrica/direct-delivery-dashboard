@@ -121,22 +121,34 @@ angular.module('lmisApp')
        */
       byFacilityAndDate: function () {
         var d = $q.defer();
-        query(3, true)
+        $q.all([
+            query(3, true),
+            Facility.all()
+          ])
           .then(function (response) {
+            var queryRows = response[0].rows;
+            var facilities = response[1];
+
             var items = {};
-            response.rows.forEach(function (row) {
+            queryRows.forEach(function (row) {
               var key = row.key[0] + row.key[1];
               items[key] = items[key] || {
-                facility: row.key[0],
+                facility: facilities[row.key[0]] || undefined,
                 date: new Date(row.key[1]),
                 products: {}
               };
               items[key].products[row.key[2]] = { count: row.value };
             });
 
-            var rows = Object.keys(items).map(function (key) {
-              return items[key];
-            });
+            var rows = Object.keys(items)
+              .map(function (key) {
+                return items[key];
+              })
+              .sort(function (a, b) {
+                if (a.date > b.date) return -1;
+                if (a.date < b.date) return 1;
+                return 0;
+              });
 
             groupByProductType(rows)
               .then(function (rows) {
