@@ -83,7 +83,7 @@ angular.module('lmisApp')
 
     function getStockCountWithFacilitiesAndAppConfig() {
       var promises = [
-        Facility.getObjects(),
+        Facility.all(),
         getAllStockCount(),
         appConfigFactory.all()
       ];
@@ -108,7 +108,13 @@ angular.module('lmisApp')
     function getSortedStockCount(stockCountList) {
       return stockCountList
         .sort(function (a, b){
-          return new Date(a.doc.created).getTime() < new Date(b.doc.created).getTime();
+          if (new Date(a.doc.created).getTime() > new Date(b.doc.created).getTime()){
+            return -1;
+          }
+          if (new Date(a.doc.created).getTime() < new Date(b.doc.created).getTime()){
+            return 1;
+          }
+          return 0;
         });
     }
 
@@ -171,10 +177,7 @@ angular.module('lmisApp')
       getStockCountWithFacilitiesAndAppConfig()
         .then(function (resolved) {
           var facilities = resolved[0],
-            stockCount = resolved[1].rows
-              .sort(function(a, b) {
-                return new Date(a.doc.created).getTime() < new Date(b.doc.created).getTime();
-              }),
+            stockCount = resolved[1].rows,
             appConfig = utility.castArrayToObject(resolved[2].rows, 'id');
 
           var groupedStockCount = groupByFacility(stockCount);
@@ -187,7 +190,7 @@ angular.module('lmisApp')
 
             if (angular.isDefined(facilities[key])){
 
-              var facilityConfig = appConfig[facilities[key].doc.email];
+              var facilityConfig = appConfig[facilities[key].email];
               if(angular.isDefined(facilityConfig)){
                 var currentDueDate = getStockCountDueDate(facilityConfig.value.facility.stockCountInterval, facilityConfig.value.facility.reminderDay);
                 var nextCountDate = currentDueDate.getTime() + new Date(1000 * 60 * 60 * 24 * facilityConfig.value.facility.stockCountInterval).getTime();
