@@ -8,7 +8,7 @@ angular.module('lmisApp')
         WEEKLY = 7,
         BI_WEEKLY = 14,
         MONTHLY = 30;
-    
+
 
     function query(group_level, descending) {
       var options = {
@@ -122,7 +122,7 @@ angular.module('lmisApp')
       if (Object.prototype.toString.call(lastCountDate) !== '[object Date]') {
         throw "value provided is not a date object";
       }
-      var one_day=1000*60*60*24;
+      var one_day = 1000*60*60*24;
       var difference_ms = new Date().getTime() - lastCountDate.getTime();
 
       return Math.round(difference_ms/one_day);
@@ -243,11 +243,11 @@ angular.module('lmisApp')
       all: function () {
         var d = $q.defer();
         $q.all([
-            couchdb.allDocs({_db: DB_NAME}).$promise,
-            ProductProfile.all(),
-            ProductType.all(),
-            Facility.all()
-          ])
+          couchdb.allDocs({_db: DB_NAME}).$promise,
+          ProductProfile.all(),
+          ProductType.all(),
+          Facility.all()
+        ])
           .then(function (response) {
             var rows = response[0].rows;
             var productProfiles = response[1];
@@ -287,22 +287,34 @@ angular.module('lmisApp')
        */
       byFacilityAndDate: function () {
         var d = $q.defer();
-        query(3, true)
+        $q.all([
+          query(3, true),
+          Facility.all()
+        ])
           .then(function (response) {
+            var queryRows = response[0].rows;
+            var facilities = response[1];
+
             var items = {};
-            response.rows.forEach(function (row) {
+            queryRows.forEach(function (row) {
               var key = row.key[0] + row.key[1];
               items[key] = items[key] || {
-                facility: row.key[0],
+                facility: facilities[row.key[0]] || undefined,
                 date: new Date(row.key[1]),
                 products: {}
               };
               items[key].products[row.key[2]] = { count: row.value };
             });
 
-            var rows = Object.keys(items).map(function (key) {
-              return items[key];
-            });
+            var rows = Object.keys(items)
+              .map(function (key) {
+                return items[key];
+              })
+              .sort(function (a, b) {
+                if (a.date > b.date) return -1;
+                if (a.date < b.date) return 1;
+                return 0;
+              });
 
             groupByProductType(rows)
               .then(function (rows) {
