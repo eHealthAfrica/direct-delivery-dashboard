@@ -10,30 +10,6 @@ angular.module('lmisApp')
       allPromise = null;
     });
 
-    function getAll(){
-      var deferred = $q.defer();
-      couchdb.allDocs({_db: DB_NAME}).$promise
-        .then(function (data) {
-          deferred.resolve(data.rows);
-        })
-        .catch(function (reason) {
-          deferred.reject(reason);
-        });
-      return deferred.promise;
-    }
-
-    function getAllObject() {
-      var deferred = $q.defer();
-      getAll()
-        .then(function (data) {
-          deferred.resolve(utility.castArrayToObject(data, 'id'));
-        })
-        .catch(function (reason) {
-          deferred.reject(reason);
-        });
-      return deferred.promise;
-    }
-
     return {
       /**
        * Read data from db and arrange it as a hash of uuid -> facility
@@ -83,7 +59,6 @@ angular.module('lmisApp')
           });
 
         return d.promise;
-      },
-      getObjects: getAllObject
+      }
     };
   });
