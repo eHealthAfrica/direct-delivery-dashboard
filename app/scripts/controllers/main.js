@@ -6,12 +6,14 @@ angular.module('lmisApp')
     $scope.productProfiles = productProfiles;
     $scope.productTypes = productTypes;
   })
-  .controller('UnopenedCtrl', function ($scope, stockcountUnopened) {
-    $scope.rows = [];
+  .controller('UnopenedCtrl', function ($scope, $filter, stockcountUnopened) {
+    $scope.mostRecent = [];
     $scope.chartData = [];
     $scope.chartFacility = '';
     $scope.loading = true;
     $scope.error = false;
+
+    var rows = [];
 
     $scope.formatDateAxisFunction = function () {
       return function (d) {
@@ -29,13 +31,13 @@ angular.module('lmisApp')
       return (product && product.count < product.min);
     };
 
-    $scope.setChartData = function(facility) {
+    $scope.setChartData = function (facility) {
       if (!facility)
         return;
 
       var products = {};
 
-      $scope.rows.forEach(function (row) {
+      rows.forEach(function (row) {
         if (row.facility == facility) {
           Object.keys(row.products).forEach(function (key) {
             if (!products[key]) {
@@ -53,7 +55,7 @@ angular.module('lmisApp')
       $scope.chartFacility = facility;
       $scope.chartData = Object.keys(products).map(function (key) {
         // sort values by date
-        products[key].values.sort(function(a, b) {
+        products[key].values.sort(function (a, b) {
           if (a[0] < b[0])
             return -1;
           else if (a[0] > b[0])
@@ -66,17 +68,34 @@ angular.module('lmisApp')
       });
     };
 
+    function setMostRecent() {
+      var recent = {};
+
+      rows.forEach(function (row) {
+        var facility = row.facility.uuid;
+        var mostRecent = recent[facility];
+        row.mostRecent = false;
+        if (!mostRecent || mostRecent.date < row.date) {
+          if (mostRecent)
+            mostRecent.mostRecent = false;
+
+          row.mostRecent = true;
+          recent[facility] = row;
+        }
+      });
+
+      $scope.mostRecent = $filter('orderBy')($filter('filter')(rows, {mostRecent: true}), ['-date', 'facility.name']);
+    }
+
     stockcountUnopened.byFacilityAndDate()
-      .then(function (rows) {
-        $scope.rows = prepare(rows.filter(function(row) {
-          return (row.facility && $scope.facilities[row.facility]);
-        }));
-        var firstChart = '';
-        $scope.rows.forEach(function(row) {
-          if (!firstChart || row.facility < firstChart)
-            firstChart = row.facility;
+      .then(function (data) {
+        rows = data.filter(function (row) {
+          return !!row.facility;
         });
-        $scope.setChartData(firstChart);
+
+        setMostRecent();
+        if ($scope.mostRecent.length)
+          $scope.setChartData($scope.mostRecent[0].facility);
       })
       .catch(function () {
         $scope.error = true;
@@ -84,26 +103,36 @@ angular.module('lmisApp')
       .finally(function () {
         $scope.loading = false;
       });
+  })
+  .controller('MainStockOutCtrl', function ($scope, stockOut) {
+    $scope.rows = [];
+    $scope.loading = true;
+    $scope.error = false;
 
-    function prepare(rows) {
-      var recent = {};
-
-      rows.forEach(function(row) {
-        // use name of facility
-        row.facility = $scope.facilities[row.facility].name;
-
-        var mostRecent = recent[row.facility];
-        row.mostRecent = false;
-        if (!mostRecent || mostRecent.date < row.date)
-        {
-          if (mostRecent)
-            mostRecent.mostRecent = false;
-
-          row.mostRecent = true;
-          recent[row.facility] = row;
-        }
+    stockOut.byDate({ limit: 10 })
+      .then(function (rows) {
+        $scope.rows = rows;
+      })
+      .catch(function () {
+        $scope.error = true;
+      })
+      .finally(function () {
+        $scope.loading = false;
       });
+  })
+  .controller('MainCCUBreakdownCtrl', function ($scope, ccuBreakdown) {
+    $scope.rows = [];
+    $scope.loading = true;
+    $scope.error = false;
 
-      return rows;
-    }
+    ccuBreakdown.byDate({ limit: 10 })
+      .then(function (rows) {
+        $scope.rows = rows;
+      })
+      .catch(function () {
+        $scope.error = true;
+      })
+      .finally(function () {
+        $scope.loading = false;
+      });
   });

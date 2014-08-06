@@ -118,7 +118,7 @@ angular.module('lmisApp')
 
     $q.all([
         CCEI.names(),
-        ccuBreakdown.all()
+        ccuBreakdown.byDate()
       ])
       .then(function (responses) {
         $scope.units = responses[0];

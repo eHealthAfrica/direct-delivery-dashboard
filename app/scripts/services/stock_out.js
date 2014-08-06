@@ -6,7 +6,7 @@ angular.module('lmisApp')
 
     return {
       /**
-       * Read data from db and arrange it in an array. Every item has the following structure:
+       * Read data from db ordered by date and arrange it in an array. Every item has the following structure:
        *
        * {
        *   "facility": string,
@@ -16,10 +16,19 @@ angular.module('lmisApp')
        * }
        *
        */
-      all: function () {
+      byDate: function (options) {
+        options = options || {};
+
+        var limit = options.limit;
+        var descending = options.descending !== undefined ? !!options.descending : true;
+
+        var params = { _db: dbName, _param: 'stock_out', _sub_param: 'by_date', descending: descending };
+        if (limit !== undefined && !isNaN(limit))
+          params.limit = parseInt(limit);
+
         var d = $q.defer();
         $q.all([
-            couchdb.allDocs({_db: dbName}).$promise,
+            couchdb.view(params).$promise,
             ProductType.all(),
             Facility.all()
           ])
@@ -28,12 +37,12 @@ angular.module('lmisApp')
             var productTypes = response[1];
             var facilities = response[2];
             d.resolve(rows.map(function (row) {
-              var productType = row.doc.productType ? productTypes[row.doc.productType.uuid || row.doc.productType] : undefined;
+              var productType = productTypes[row.value.productType];
               return {
-                facility: row.doc.facility ? facilities[row.doc.facility.uuid] : undefined,
-                created: row.doc.created,
+                facility: facilities[row.value.facility],
+                created: row.value.created,
                 productType: productType ? productType.code : undefined,
-                stockLevel: row.doc.stockLevel
+                stockLevel: row.value.stockLevel
               };
             }));
           })
