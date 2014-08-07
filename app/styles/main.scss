@@ -45,3 +45,11 @@ td .form-group .form-control-feedback {
 .table-scroller table.table-bordered > tfoot > tr > td:last-child {
   border-right: none;
 }
+
+#stock-count-summary > tbody + tbody {
+  border-top: none;
+}
+
+.pointer{
+  cursor: pointer;
+}

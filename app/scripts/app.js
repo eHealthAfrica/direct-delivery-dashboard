@@ -43,6 +43,10 @@ angular
         templateUrl: 'views/stock_out.html',
         controller: 'StockOutCtrl'
       })
+      .when('/stock-count-summary', {
+        templateUrl: 'views/stock-count-summary.html',
+        controller: 'StockCountSummaryCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
