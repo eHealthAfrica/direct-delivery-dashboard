@@ -226,52 +226,84 @@ angular.module('lmisApp')
       return deferred.promise;
     }
 
+    /**
+     * Resolves the product types of the 'unopened' property of each row and replaces it with
+     * an array of objects of the following structure:
+     *
+     * {
+     *   "productType": object,
+     *   "count": number
+     * }
+     */
+    function resolveUnopened(rows) {
+      var d = $q.defer();
+
+      $q.all([
+          ProductProfile.all(),
+          ProductType.all()
+        ])
+        .then(function (response) {
+          var productProfiles = response[0];
+          var productTypes = response[1];
+
+          rows.forEach(function (row) {
+            if (row.unopened) {
+              var unopened = {};
+              Object.keys(row.unopened).forEach(function (key) {
+                var productProfile = productProfiles[key];
+                var productType = ((productProfile && productProfile.product) ? productTypes[productProfile.product] : undefined) || ProductType.unknown;
+
+                unopened[productType.uuid] = unopened[productType.uuid] || {
+                  productType: productType || ProductType.unknown,
+                  count: 0
+                };
+
+                unopened[productType.uuid].count += row.unopened[key];
+              });
+
+              row.unopened = Object.keys(unopened).map(function (key) {
+                return unopened[key];
+              });
+            }
+          });
+
+          d.resolve(rows);
+        })
+        .catch(function (error) {
+          console.log(error);
+          d.reject(error);
+        });
+
+      return d.promise;
+    }
 
     return {
       /**
-       * Read all documents from db, expand them on unopened products and arrange them in an array
-       * with facilities resolved to their names and product types to their codes. Every item has the
-       * following structure:
-       * {
-       *   "facility": string,
-       *   "created": date,
-       *   "productType": string,
-       *   "count": number,
-       * }
+       * Returns all records with the facilities resolved to the corresponding objects from the facilities db and sorted
+       * by the 'created' property in descending order.
        */
       all: function () {
         var d = $q.defer();
         $q.all([
-          couchdb.allDocs({_db: DB_NAME}).$promise,
-          ProductProfile.all(),
-          ProductType.all(),
-          Facility.all()
-        ])
+            couchdb.allDocs({_db: DB_NAME}).$promise,
+            Facility.all()
+          ])
           .then(function (response) {
-            var rows = response[0].rows;
-            var productProfiles = response[1];
-            var productTypes = response[2];
-            var facilities = response[3];
-
-            var expanded = [];
-            rows.forEach(function (row) {
-              if (row.doc.unopened) {
-                Object.keys(row.doc.unopened).forEach(function (productProfileUUID) {
-                  var productProfile = productProfiles[productProfileUUID];
-                  var productType = (productProfile && productProfile.product) ? productTypes[productProfile.product] : undefined;
-
-                  expanded.push({
-                    facility: row.doc.facility ? facilities[row.doc.facility] : undefined,
-                    created: row.doc.created,
-                    modified: row.doc.modified,
-                    productType: productType ? productType.code : undefined,
-                    count: row.doc.unopened[productProfileUUID]
-                  });
-                });
-              }
+            var rows = response[0].rows.map(function (row) {
+              return row.doc;
             });
 
-            d.resolve(expanded);
+            var facilities = response[1];
+
+            rows.forEach(function (row) {
+              row.facility = (row.facility ? facilities[row.facility] : undefined) || Facility.unknown;
+              ['created', 'modified', 'countDate', 'dateSynced'].forEach(function (date) {
+                if (row[date])
+                  row[date] = new Date(row[date]);
+              });
+            });
+
+            d.resolve(rows);
           })
           .catch(function (error) {
             console.log(error);
@@ -336,6 +368,7 @@ angular.module('lmisApp')
       getStockCountDueDate: getStockCountDueDate,
       getDaysFromLastCountDate: getDaysFromLastCountDate,
       getSortedStockCount: getSortedStockCount,
-      hasPendingStockCount: hasPendingStockCount
+      hasPendingStockCount: hasPendingStockCount,
+      resolveUnopened: resolveUnopened
     };
   });

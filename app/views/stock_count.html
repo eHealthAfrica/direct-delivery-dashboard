@@ -13,7 +13,7 @@
     </div>
     <div class="row" ng-hide="loading || error">
       <div class="col-xs-12">
-        <h3>Totals</h3>
+        <h3>Latest</h3>
         <div class="panel panel-default">
           <div class="panel-heading">
             <form class="form-inline">
@@ -104,7 +104,7 @@
             <tr class="active">
               <td>
                 <div class="form-group has-feedback">
-                  <input type="text" class="form-control filter" ng-model="search.state"
+                  <input type="text" class="form-control filter" ng-model="search.facility.state"
                     typeahead="state for state in dataProvider.getStates($viewValue)"
                     typeahead-loading="dataProvider.loadingStates">
                   <span ng-show="dataProvider.loadingStates"
@@ -113,7 +113,7 @@
               </td>
               <td>
                 <div class="form-group has-feedback">
-                  <input type="text" class="form-control filter" ng-model="search.zone"
+                  <input type="text" class="form-control filter" ng-model="search.facility.zone"
                     typeahead="zone for zone in dataProvider.getZones($viewValue)"
                     typeahead-loading="dataProvider.loadingZones">
                   <span ng-show="dataProvider.loadingZones"
@@ -122,7 +122,7 @@
               </td>
               <td>
                 <div class="form-group has-feedback">
-                  <input type="text" class="form-control filter" ng-model="search.lga"
+                  <input type="text" class="form-control filter" ng-model="search.facility.lga"
                     typeahead="lga for lga in dataProvider.getLgas($viewValue)"
                     typeahead-loading="dataProvider.loadingLgas">
                   <span ng-show="dataProvider.loadingLgas"
@@ -131,7 +131,7 @@
               </td>
               <td>
                 <div class="form-group has-feedback">
-                  <input type="text" class="form-control filter" ng-model="search.ward"
+                  <input type="text" class="form-control filter" ng-model="search.facility.ward"
                     typeahead="ward for ward in dataProvider.getWards($viewValue)"
                     typeahead-loading="dataProvider.loadingWards">
                   <span ng-show="dataProvider.loadingWards"
@@ -140,7 +140,7 @@
               </td>
               <td>
                 <div class="form-group has-feedback">
-                  <input type="text" class="form-control filter" ng-model="search.facility"
+                  <input type="text" class="form-control filter" ng-model="search.facility.name"
                     typeahead="facility for facility in dataProvider.getFacilities($viewValue)"
                     typeahead-loading="dataProvider.loadingFacilities">
                   <span ng-show="dataProvider.loadingFacilities"
@@ -154,17 +154,17 @@
               </td>
             </tr>
           </thead>
-          <tbody>
-            <tr ng-repeat="row in filteredRows | orderBy:['-created', 'productType'] | limitTo:pagination.limit | limitTo:-pagination.count">
-              <td>{{row.state}}</td>
-              <td>{{row.zone}}</td>
-              <td>{{row.lga}}</td>
-              <td>{{row.ward}}</td>
-              <td>{{row.facility}}</td>
-              <td>{{row.created | date:SETTINGS.dateTimeFormat}}</td>
-              <td>{{row.modified | date:SETTINGS.dateTimeFormat}}</td>
-              <td>{{row.productType}}</td>
-              <td>{{row.count}}</td>
+          <tbody ng-repeat="row in filteredRows | orderBy:['-created', 'productType.code'] | limitTo:pagination.limit | limitTo:-pagination.count">
+            <tr ng-repeat="item in row.unopened | orderBy:'productType.code'">
+              <td ng-if="$index == 0" rowspan="{{row.unopened.length}}">{{row.facility.state}}</td>
+              <td ng-if="$index == 0" rowspan="{{row.unopened.length}}">{{row.facility.zone}}</td>
+              <td ng-if="$index == 0" rowspan="{{row.unopened.length}}">{{row.facility.lga}}</td>
+              <td ng-if="$index == 0" rowspan="{{row.unopened.length}}">{{row.facility.ward}}</td>
+              <td ng-if="$index == 0" rowspan="{{row.unopened.length}}">{{row.facility.name}}</td>
+              <td ng-if="$index == 0" rowspan="{{row.unopened.length}}">{{row.created | date:SETTINGS.dateTimeFormat}}</td>
+              <td ng-if="$index == 0" rowspan="{{row.unopened.length}}">{{row.modified | date:SETTINGS.dateTimeFormat}}</td>
+              <td>{{item.productType.code}}</td>
+              <td>{{item.count}}</td>
             </tr>
           </tbody>
         </table>

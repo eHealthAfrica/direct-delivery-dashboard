@@ -12,6 +12,14 @@ angular.module('lmisApp')
 
     return {
       /**
+       * Represents a unknown product type. Used for product type uuids not in the db.
+       */
+      unknown: {
+        uuid: '_unknown_',
+        code: '** Unknown **'
+      },
+
+      /**
        * Read data from db and arrange it as a hash of uuid -> product type
        */
       all: function (reload) {
