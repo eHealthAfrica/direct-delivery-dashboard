@@ -1,13 +1,12 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('stockcountUnopened', function ($q, couchdb, inventoryRulesFactory, ProductProfile, ProductType,
-                                           Facility, appConfigFactory, utility) {
+  .factory('stockcountUnopened', function ($q, couchdb, inventoryRulesFactory, ProductProfile, ProductType, Facility, appConfigFactory, utility) {
     var DB_NAME = 'stockcount',
-        DAILY = 1,
-        WEEKLY = 7,
-        BI_WEEKLY = 14,
-        MONTHLY = 30;
+      DAILY = 1,
+      WEEKLY = 7,
+      BI_WEEKLY = 14,
+      MONTHLY = 30;
 
 
     function query(group_level, descending) {
@@ -92,14 +91,14 @@ angular.module('lmisApp')
     }
 
     function groupByFacility(stockCount) {
-      var groupedStockCount  = {};
+      var groupedStockCount = {};
 
-      for(var i = 0; i < stockCount.length; i++ ){
-        if(groupedStockCount.hasOwnProperty(stockCount[i].doc.facility)){
+      for (var i = 0; i < stockCount.length; i++) {
+        if (groupedStockCount.hasOwnProperty(stockCount[i].doc.facility)) {
           groupedStockCount[stockCount[i].doc.facility].push(stockCount[i]);
         } else {
           groupedStockCount[stockCount[i].doc.facility] = [];
-          groupedStockCount[stockCount[i].doc.facility].push( stockCount[i]);
+          groupedStockCount[stockCount[i].doc.facility].push(stockCount[i]);
         }
       }
       return groupedStockCount;
@@ -107,11 +106,11 @@ angular.module('lmisApp')
 
     function getSortedStockCount(stockCountList) {
       return stockCountList
-        .sort(function (a, b){
-          if (new Date(a.doc.created).getTime() > new Date(b.doc.created).getTime()){
+        .sort(function (a, b) {
+          if (new Date(a.doc.created).getTime() > new Date(b.doc.created).getTime()) {
             return -1;
           }
-          if (new Date(a.doc.created).getTime() < new Date(b.doc.created).getTime()){
+          if (new Date(a.doc.created).getTime() < new Date(b.doc.created).getTime()) {
             return 1;
           }
           return 0;
@@ -122,13 +121,13 @@ angular.module('lmisApp')
       if (Object.prototype.toString.call(lastCountDate) !== '[object Date]') {
         throw "value provided is not a date object";
       }
-      var one_day = 1000*60*60*24;
+      var one_day = 1000 * 60 * 60 * 24;
       var difference_ms = new Date().getTime() - lastCountDate.getTime();
 
-      return Math.round(difference_ms/one_day);
+      return Math.round(difference_ms / one_day);
     }
 
-    function getStockCountDueDate(interval, reminderDay, date){
+    function getStockCountDueDate(interval, reminderDay, date) {
       var today = new Date();
       var currentDate = date || today;
       var countDate;
@@ -140,7 +139,7 @@ angular.module('lmisApp')
           break;
         case WEEKLY:
           countDate = utility.getWeekRangeByDate(currentDate, reminderDay).reminderDate;
-          if(currentDate.getTime() < countDate.getTime()){
+          if (currentDate.getTime() < countDate.getTime()) {
             //current week count date is not yet due, return previous week count date..
             countDate = new Date(countDate.getFullYear(), countDate.getMonth(), countDate.getDate() - interval);
           }
@@ -153,12 +152,12 @@ angular.module('lmisApp')
           }
           break;
         case MONTHLY:
-          var monthlyDate = (currentDate.getTime() === today.getTime())? 1 : currentDate.getDate();
+          var monthlyDate = (currentDate.getTime() === today.getTime()) ? 1 : currentDate.getDate();
           countDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), monthlyDate);
           break;
         default:
           countDate = utility.getWeekRangeByDate(currentDate, reminderDay).reminderDate;
-          if(currentDate.getTime() < countDate.getTime()){
+          if (currentDate.getTime() < countDate.getTime()) {
             //current week count date is not yet due, return previous week count date..
             countDate = new Date(countDate.getFullYear(), countDate.getMonth(), countDate.getDate() - interval);
           }
@@ -188,10 +187,10 @@ angular.module('lmisApp')
             var latestStockCount = sortedStockCount[0];
             var previousStockCount = sortedStockCount[1] ? sortedStockCount[1] : null;
 
-            if (angular.isDefined(facilities[key])){
+            if (angular.isDefined(facilities[key])) {
 
               var facilityConfig = appConfig[facilities[key].email];
-              if(angular.isDefined(facilityConfig)){
+              if (angular.isDefined(facilityConfig)) {
                 var currentDueDate = getStockCountDueDate(facilityConfig.value.facility.stockCountInterval, facilityConfig.value.facility.reminderDay);
                 var nextCountDate = currentDueDate.getTime() + new Date(1000 * 60 * 60 * 24 * facilityConfig.value.facility.stockCountInterval).getTime();
                 var daysFromLastCount = getDaysFromLastCountDate(new Date(latestStockCount.doc.countDate));
@@ -205,7 +204,7 @@ angular.module('lmisApp')
                   previousCreatedDate: previousStockCount !== null ? previousStockCount.doc.created : 'None',
                   currentDueDate: currentDueDate,
                   mostRecentCountDate: latestStockCount.doc.countDate,
-                  nextCountDate: nextCountDate ,
+                  nextCountDate: nextCountDate,
                   stockCountInterval: facilityConfig.value.facility.stockCountInterval,
                   completedCounts: groupedStockCount[key].length,
                   hasPendingStockCount: hasPendingStockCount(new Date(latestStockCount.doc.countDate), currentDueDate),
@@ -288,9 +287,9 @@ angular.module('lmisApp')
       byFacilityAndDate: function () {
         var d = $q.defer();
         $q.all([
-          query(3, true),
-          Facility.all()
-        ])
+            query(3, true),
+            Facility.all()
+          ])
           .then(function (response) {
             var queryRows = response[0].rows;
             var facilities = response[1];

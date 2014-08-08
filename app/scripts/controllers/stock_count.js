@@ -198,7 +198,7 @@ angular.module('lmisApp')
     var expandAll = function () {
       setStockCountRowCollapse();
       var facilityKeys = getFacilityKeys();
-      for (var i = 0; i < facilityKeys.length; i++){
+      for (var i = 0; i < facilityKeys.length; i++) {
         $scope.stockCountRowCollapse[facilityKeys[i]] = true;
         $scope.facilityStockCounts[facilityKeys[i]] = $scope.groupedStockCount[facilityKeys[i]];
       }
@@ -207,7 +207,7 @@ angular.module('lmisApp')
     var collapseAll = function () {
       setStockCountRowCollapse();
       var facilityKeys = getFacilityKeys();
-      for (var i = 0; i < facilityKeys.length; i++){
+      for (var i = 0; i < facilityKeys.length; i++) {
         $scope.stockCountRowCollapse[facilityKeys[i]] = false;
       }
     };
@@ -226,13 +226,13 @@ angular.module('lmisApp')
 
     $scope.toggleRow = function (facilityID) {
 
-      if($scope.stockCountRowCollapse.hasOwnProperty(facilityID)){
+      if ($scope.stockCountRowCollapse.hasOwnProperty(facilityID)) {
         var currentState = $scope.stockCountRowCollapse[facilityID];
         setStockCountRowCollapse();
         $scope.stockCountRowCollapse[facilityID] = !currentState;
         $scope.toggleAllMode = false;
       }
-      else{
+      else {
         setStockCountRowCollapse();
         $scope.stockCountRowCollapse[facilityID] = true;
         $scope.facilityStockCounts[facilityID] = $scope.groupedStockCount[facilityID];
