@@ -1,6 +1,6 @@
 'use strict';
 
-describe('factory: stockcountUnopened', function () {
+describe('factory: stockCount', function () {
   beforeEach(module('lmisApp', 'appConfigMocks', 'stockCountMocks'));
 
   var stockCountFactory,
@@ -39,8 +39,8 @@ describe('factory: stockcountUnopened', function () {
     }
   ];
 
-  beforeEach(inject(function (_stockcountUnopened_, stockCountMock, appConfigMock, _utility_) {
-    stockCountFactory = _stockcountUnopened_;
+  beforeEach(inject(function (_stockCount_, stockCountMock, appConfigMock, _utility_) {
+    stockCountFactory = _stockCount_;
     stockCount = stockCountMock;
     appConfig = appConfigMock;
     utility = _utility_;

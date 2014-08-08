@@ -6,7 +6,7 @@ angular.module('lmisApp')
     $scope.productProfiles = productProfiles;
     $scope.productTypes = productTypes;
   })
-  .controller('UnopenedCtrl', function ($scope, $filter, stockcountUnopened) {
+  .controller('UnopenedCtrl', function ($scope, $filter, stockCount) {
     $scope.mostRecent = [];
     $scope.chartData = [];
     $scope.chartFacility = '';
@@ -87,7 +87,7 @@ angular.module('lmisApp')
       $scope.mostRecent = $filter('orderBy')($filter('filter')(rows, {mostRecent: true}), ['-date', 'facility.name']);
     }
 
-    stockcountUnopened.byFacilityAndDate()
+    stockCount.byFacilityAndDate()
       .then(function (data) {
         rows = data.filter(function (row) {
           return !!row.facility;

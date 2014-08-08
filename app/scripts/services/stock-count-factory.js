@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('stockcountUnopened', function ($q, couchdb, inventoryRulesFactory, ProductProfile, ProductType, Facility, appConfigFactory, utility) {
+  .factory('stockCount', function ($q, couchdb, inventoryRulesFactory, ProductProfile, ProductType, Facility, appConfigFactory, utility) {
     var DB_NAME = 'stockcount',
       DAILY = 1,
       WEEKLY = 7,

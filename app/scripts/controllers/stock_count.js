@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('StockCountCtrl', function ($scope, $q, $filter, Pagination, Places, ProductType, Facility, stockcountUnopened) {
+  .controller('StockCountCtrl', function ($scope, $q, $filter, Pagination, Places, ProductType, Facility, stockCount) {
     var rows = [];
 
     $scope.filteredRows = [];
@@ -136,12 +136,12 @@ angular.module('lmisApp')
 
     $q.all([
         ProductType.codes(),
-        stockcountUnopened.all()
+        stockCount.all()
       ])
       .then(function (responses) {
         $scope.productTypes = responses[0];
 
-        stockcountUnopened.resolveUnopened(responses[1])
+        stockCount.resolveUnopened(responses[1])
           .then(function (resolved) {
             rows = resolved.sort(function (a, b) {
               if (a.created > b.created) return -1;
@@ -172,11 +172,11 @@ angular.module('lmisApp')
         $scope.error = true;
       })
   })
-  .controller('StockCountSummaryCtrl', function ($scope, stockcountUnopened) {
+  .controller('StockCountSummaryCtrl', function ($scope, stockCount) {
 
     $scope.facilityStockCounts = {};
     $scope.toggleAllMode = false;
-    stockcountUnopened.stockCountSummaryByFacility()
+    stockCount.stockCountSummaryByFacility()
       .then(function (data) {
         $scope.stockCountSummary = data.summary;
         $scope.groupedStockCount = data.groupedStockCount
