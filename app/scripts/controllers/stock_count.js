@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('StockCountCtrl', function ($scope, $q, $filter, Pagination, Places, ProductType, stockcountUnopened) {
-    $scope.rows = [];
+  .controller('StockCountCtrl', function ($scope, $q, $filter, Pagination, Places, ProductType, Facility, stockCount) {
+    var rows = [];
+
     $scope.filteredRows = [];
     $scope.search = {};
     $scope.pagination = new Pagination();
@@ -64,36 +65,38 @@ angular.module('lmisApp')
           break;
         case 3:
           filterBy = 'ward';
-          groupBy = 'facility';
+          groupBy = 'name';
           columnTitle = 'Facility';
           break;
         case 4:
-          filterBy = 'facility';
-          groupBy = 'facility';
+          filterBy = 'name';
+          groupBy = 'name';
           columnTitle = 'Facility';
           break;
       }
 
       if ($scope.place.search.length) {
         var search = $scope.place.search.toLowerCase();
-        $scope.rows
+        rows
           .filter(function (row) {
             var date = moment(row.created);
-            return ((row[filterBy].toLowerCase() == search) &&
+            return ((row.facility[filterBy].toLowerCase() == search) &&
               (date.isSame($scope.from.date, 'day') || date.isAfter($scope.from.date)) &&
               (date.isSame($scope.to.date, 'day') || date.isBefore($scope.to.date)))
           })
           .forEach(function (row) {
-            var key = row[groupBy];
+            var key = row.facility[groupBy];
             totals[key] = totals[key] || {
               place: key,
               values: {}
             };
 
-            // take first value, which is the most recent one as the data is
-            // sorted by date in descending order
-            if (totals[key].values[row.productType] === undefined)
-              totals[key].values[row.productType] = row.count;
+            row.unopened.forEach(function (unopened) {
+              // take first value, which is the most recent one as the data is
+              // sorted by date in descending order
+              if (totals[key].values[unopened.productType.code] === undefined)
+                totals[key].values[unopened.productType.code] = unopened.count;
+            });
           });
       }
 
@@ -114,71 +117,66 @@ angular.module('lmisApp')
     }, true);
 
     function updateFilteredRows() {
-      $scope.filteredRows = $filter('filter')($scope.rows, $scope.search);
+      $scope.filteredRows = $filter('filter')(rows, $scope.search, function (actual, expected) {
+        var matches = true;
+        Object.keys(expected).some(function (key) {
+          if (actual[key] === undefined || actual[key].toLowerCase().indexOf(expected[key].toLowerCase()) < 0) {
+            matches = false;
+            return true;
+          }
+
+          return false;
+        });
+
+        return matches;
+      });
+
       $scope.pagination.totalItemsChanged($scope.filteredRows.length);
     }
 
     $q.all([
         ProductType.codes(),
-        stockcountUnopened.all()
+        stockCount.all()
       ])
       .then(function (responses) {
         $scope.productTypes = responses[0];
 
-        var rows = responses[1];
-        var startState = '';
-        var byProductType = {};
+        stockCount.resolveUnopened(responses[1])
+          .then(function (resolved) {
+            rows = resolved.sort(function (a, b) {
+              if (a.created > b.created) return -1;
+              if (a.created < b.created) return 1;
+              return 0;
+            });
 
-        rows
-          .filter(function (row) {
-            return !!row.facility;
+            var startState = '';
+
+            rows.forEach(function (row) {
+              if (!startState.length || (row.facility.state != Facility.unknown.state && row.facility.state < startState))
+                startState = row.facility.state;
+            });
+
+            $scope.place.search = startState;
+            $scope.updateTotals();
+            updateFilteredRows();
           })
-          .forEach(function (row) {
-            if (!startState.length || row.facility.state < startState)
-              startState = row.facility.state;
-
-            var key = row.facility.uuid + '#' + row.productType + '#' + row.created;
-            byProductType[key] = byProductType[key] || {
-              state: row.facility.state,
-              zone: row.facility.zone,
-              lga: row.facility.lga,
-              ward: row.facility.ward,
-              facility: row.facility.name,
-              created: row.created,
-              modified: row.modified,
-              productType: row.productType,
-              count: 0
-            };
-
-            byProductType[key].count += row.count;
-          });
-
-        $scope.rows = Object.keys(byProductType)
-          .map(function (key) {
-            return byProductType[key];
+          .catch(function () {
+            $scope.error = true;
           })
-          .sort(function (a, b) {
-            if (a.created > b.created) return -1;
-            if (a.created < b.created) return 1;
-            return 0;
+          .finally(function () {
+            $scope.loading = false;
           });
-
-        $scope.place.search = startState;
-        $scope.updateTotals();
-        updateFilteredRows();
       })
       .catch(function () {
+        $scope.loading = false;
         $scope.error = true;
       })
-      .finally(function () {
-        $scope.loading = false;
-      });
   })
-  .controller('StockCountSummaryCtrl', function ($scope, stockcountUnopened) {
+  .controller('StockCountSummaryCtrl', function ($scope, stockCount) {
 
     $scope.facilityStockCounts = {};
     $scope.toggleAllMode = false;
-    stockcountUnopened.stockCountSummaryByFacility()
+    stockCount.stockCountSummaryByFacility()
       .then(function (data) {
         $scope.stockCountSummary = data.summary;
         $scope.groupedStockCount = data.groupedStockCount
@@ -198,7 +196,7 @@ angular.module('lmisApp')
     var expandAll = function () {
       setStockCountRowCollapse();
       var facilityKeys = getFacilityKeys();
-      for (var i = 0; i < facilityKeys.length; i++){
+      for (var i = 0; i < facilityKeys.length; i++) {
         $scope.stockCountRowCollapse[facilityKeys[i]] = true;
         $scope.facilityStockCounts[facilityKeys[i]] = $scope.groupedStockCount[facilityKeys[i]];
       }
@@ -207,7 +205,7 @@ angular.module('lmisApp')
     var collapseAll = function () {
       setStockCountRowCollapse();
       var facilityKeys = getFacilityKeys();
-      for (var i = 0; i < facilityKeys.length; i++){
+      for (var i = 0; i < facilityKeys.length; i++) {
         $scope.stockCountRowCollapse[facilityKeys[i]] = false;
       }
     };
@@ -226,13 +224,13 @@ angular.module('lmisApp')
 
     $scope.toggleRow = function (facilityID) {
 
-      if($scope.stockCountRowCollapse.hasOwnProperty(facilityID)){
+      if ($scope.stockCountRowCollapse.hasOwnProperty(facilityID)) {
         var currentState = $scope.stockCountRowCollapse[facilityID];
         setStockCountRowCollapse();
         $scope.stockCountRowCollapse[facilityID] = !currentState;
         $scope.toggleAllMode = false;
       }
-      else{
+      else {
         setStockCountRowCollapse();
         $scope.stockCountRowCollapse[facilityID] = true;
         $scope.facilityStockCounts[facilityID] = $scope.groupedStockCount[facilityID];

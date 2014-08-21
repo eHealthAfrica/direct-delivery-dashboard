@@ -12,6 +12,18 @@ angular.module('lmisApp')
 
     return {
       /**
+       * Represents a unknown facility. Used for facility uuids not in the db.
+       */
+      unknown: {
+        uuid: '_unknown_',
+        name: '** Unknown **',
+        state: '** Unknown **',
+        zone: '** Unknown **',
+        lga: '** Unknown **',
+        ward: '** Unknown **'
+      },
+
+      /**
        * Read data from db and arrange it as a hash of uuid -> facility
        */
       all: function (reload) {
