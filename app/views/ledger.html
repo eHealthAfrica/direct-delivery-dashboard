@@ -1,0 +1,96 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="row">
+      <div class="col-xs-12">
+        <h2 class="page-header">Ledger</h2>
+
+        <div class="row" ng-show="loading || error">
+          <div class="col-xs-12">
+            <div class="alert alert-info" ng-show="loading">
+              Loading ...
+            </div>
+            <div class="alert alert-danger" ng-show="error">
+              Error loading data.
+            </div>
+          </div>
+        </div>
+
+        <div class="row" ng-show="!loading && !error">
+          <div class="col-xs-12">
+            <table class="table table-bordered" ng-table="tableParams">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Batch No</th>
+                  <th >Bundle Type</th>
+                  <th>Product</th>
+                  <th>Qty</th>
+                  <th>Expiry Date</th>
+                  <th>Receiving Facility</th>
+                  <th>Date Received</th>
+                  <th>Sent From</th>
+                  <th>Record Created</th>
+                </tr>
+                <!--tr class="active">
+                  <td>
+                    <div class="form-group has-feedback">
+                      <input type="text" class="form-control filter" >
+
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group has-feedback">
+                      <select class="form-control filter" ng-model="tableModel.type" ng-change="filterList(tableModel.type)">
+                        <option value=""></option>
+                        <option value="Incoming Bundle">Incoming Bundle</option>
+                        <option value="Outgoing Bundle">Incoming Bundle</option>
+                      </select>
+
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group has-feedback">
+                      <input type="text" class="form-control filter" >
+
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group has-feedback">
+                      <input type="text" class="form-control filter" >
+
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group has-feedback">
+                      <input type="text" class="form-control filter" >
+                    </div>
+                  </td>
+                  <td colspan="5">
+                    <button type="button" class="btn btn-primary" ng-click="search = {}">
+                      Clear Filter
+                    </button>
+                  </td>
+                </tr-->
+              </thead>
+              <tbody>
+                <tr ng-repeat="row in $data">
+                  <td>{{ $index + 1 }}</td>
+                  <td>{{ row.batchNo}}</td>
+                  <td>{{ row.type}}</td>
+                  <td>{{ row.productProfile }}</td>
+                  <td>{{ row.quantity }}</td>
+                  <td>{{ row.expiryDate | date:SETTINGS.dateFormat }}</td>
+                  <td>{{ row.receivingFacility }}</td>
+                  <td>{{ row.receivedOn | date:SETTINGS.dateFormat }}</td>
+                  <td>{{ row.sendingFacility }}</td>
+                  <td>{{ row.created | date:SETTINGS.dateTimeFormat }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
