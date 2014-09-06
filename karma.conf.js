@@ -22,6 +22,7 @@ module.exports = function(config) {
       'app/bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js',
       'app/bower_components/es5-shim/es5-shim.js',
       'app/bower_components/pouchdb/dist/pouchdb-nightly.js',
+      'app/bower_components/ng-table/ng-table.js',
       'design_docs/**/*.js',
       'app/scripts/**/*.js',
       'test/mock/**/*.js',
