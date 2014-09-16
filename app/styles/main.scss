@@ -50,6 +50,21 @@ td .form-group .form-control-feedback {
   border-top: none;
 }
 
-.pointer{
+.pointer {
   cursor: pointer;
+}
+
+th.cold-store-vaccines {
+  background-color: #157085;
+  color: #FFFFFF;
+}
+
+th.dry-store-safety-boxes, th.dry-store-syringes {
+  background-color: #8B4A09;
+  color: #FFFFFF;
+}
+
+th.place-type{
+  background-color: #000000;
+  color: #ffffff;
 }

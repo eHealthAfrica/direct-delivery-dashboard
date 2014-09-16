@@ -1,0 +1,116 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h2 class="page-header">Bichi Zone Inventory</h2>
+    <div class="row" ng-show="loading || error">
+      <div class="col-xs-12">
+        <div class="alert alert-info" ng-show="loading">
+          Loading ...
+        </div>
+        <div class="alert alert-danger" ng-show="error">
+          Error loading data.
+        </div>
+      </div>
+    </div>
+    <div class="row" ng-hide="loading || error">
+        <div class="col-xs-12">
+            <h3>Summary</h3>
+            <div class="table-scroller">
+            <table class="table table-condensed table-bordered table-striped table-condensed">
+              <thead>
+                <tr>
+                  <th ng-repeat="productType in productTypes | orderBy:'style'"
+                      ng-class="productType.style">{{ productType.code }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td ng-repeat="value in totals[0].values track by $index">
+                    {{ value }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+    </div>
+     <br/><br/>
+    <div class="row" ng-hide="loading || error">
+      <div class="col-xs-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <form class="form-inline">
+              <div class="form-group">
+                <label for="placeType">Place Type:</label>
+                <select id="placeType" class="form-control" ng-model="place.type" ng-change="place.search = ''">
+                  <option value="0">State</option>
+                  <option value="1">Zone</option>
+                  <option value="2">LGA</option>
+                  <option value="3">Ward</option>
+                  <option value="4">Facility</option>
+                </select>
+              </div>
+              &nbsp;
+              <div class="form-group has-feedback">
+                <input type="text" class="form-control filter" placeholder="Place Name"
+                  ng-model="place.search"
+                  typeahead="place for place in getPlaces($viewValue)"
+                  typeahead-loading="places.loading">
+                      <span ng-show="places.loading"
+                        class="glyphicon glyphicon-refresh form-control-feedback"></span>
+              </div>
+              &nbsp;
+              <div class="form-group">
+                <div class="input-group">
+                  <input type="text" class="form-control" ng-model="from.date"
+                    datepicker-popup is-open="from.opened"/>
+                        <span class="input-group-btn">
+                          <button type="button" class="btn btn-default" ng-click="from.open($event)">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                          </button>
+                        </span>
+                </div>
+              </div>
+              &nbsp;
+              <div class="form-group">
+                <div class="input-group">
+                  <input type="text" class="form-control" ng-model="to.date"
+                    datepicker-popup is-open="to.opened"/>
+                        <span class="input-group-btn">
+                          <button type="button" class="btn btn-default" ng-click="to.open($event)">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                          </button>
+                        </span>
+                </div>
+              </div>
+              &nbsp;
+              <button type="button" class="btn btn-primary" ng-click="updateTotals()"
+                ng-disabled="!place.search.length || !from.date || !to.date">
+                Apply
+              </button>
+            </form>
+          </div>
+          <div class="table-scroller">
+            <table class="table table-condensed table-bordered table-striped table-condensed">
+              <thead>
+                <tr>
+                  <th class="place-type">{{ place.columnTitle }}</th>
+                  <th ng-repeat="productType in productTypes | orderBy:'style'"
+                      ng-class="productType.style">{{ productType.code }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="total in totals | orderBy:'place'">
+                  <td>{{ total.place }}</td>
+                  <td ng-repeat="value in total.values track by $index">
+                    {{ value }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

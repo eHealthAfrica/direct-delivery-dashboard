@@ -47,12 +47,12 @@
         <a href="#/stock-out">Stock Out</a>
       </li>
       <li ng-class="{active: isActive('/stock-count-summary')}">
-        <a href="#/stock-count-summary">Stock Count Summary</a>
+        <a href="#/stock-count-summary">Waste Count</a>
       </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li ng-show="currentUser" class="dropdown">
-        <a class="dropdown-toggle" href="#" data-toggle="dropdown">{{currentUser.name}} <span class="caret"></span></a>
+      <li ng-show="true" class="dropdown">
+        <a class="dropdown-toggle" href="#" data-toggle="dropdown">Logged in as: Rabiu<span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
           <li><a ng-click="logout()">Logout</a></li>
         </ul>
@@ -119,11 +119,13 @@
 <script src="scripts/services/zone.js"></script>
 <script src="scripts/services/lga.js"></script>
 <script src="scripts/services/ward.js"></script>
+<script src="scripts/services/product-category.js"></script>
 <script src="scripts/controllers/login.js"></script>
 <script src="scripts/controllers/main.js"></script>
 <script src="scripts/controllers/ccu_breakdown.js"></script>
 <script src="scripts/controllers/stock_count.js"></script>
 <script src="scripts/controllers/stock_out.js"></script>
+<script src="scripts/controllers/inventory.js"></script>
 <!-- endbuild -->
 </body>
 </html>
