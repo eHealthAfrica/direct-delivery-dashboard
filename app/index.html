@@ -51,8 +51,8 @@
       </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li ng-show="true" class="dropdown">
-        <a class="dropdown-toggle" href="#" data-toggle="dropdown">Logged in as: Rabiu<span class="caret"></span></a>
+      <li ng-show="currentUser" class="dropdown">
+        <a class="dropdown-toggle" href="#" data-toggle="dropdown">Logged in as: {{currentUser.name}} <span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
           <li><a ng-click="logout()">Logout</a></li>
         </ul>
