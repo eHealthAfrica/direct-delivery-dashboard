@@ -12,29 +12,29 @@
       </div>
     </div>
     <div class="row" ng-hide="loading || error">
-        <div class="col-xs-12">
-            <h3>Summary</h3>
-            <div class="table-scroller">
-            <table class="table table-condensed table-bordered table-striped table-condensed">
-              <thead>
-                <tr>
-                  <th ng-repeat="productType in productTypes | orderBy:'style'"
-                      ng-class="productType.style">{{ productType.code }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td ng-repeat="value in totals[0].values track by $index">
-                    {{ value }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+      <div class="col-xs-12">
+        <h3>Summary</h3>
+        <div class="table-scroller">
+          <table class="table table-condensed table-bordered table-striped table-condensed">
+            <thead>
+              <tr>
+                <th ng-repeat="productType in productTypes"
+                  ng-class="productType.style">{{ productType.code }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td ng-repeat="value in summary track by $index">
+                  {{ value }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-
+      </div>
     </div>
-     <br/><br/>
+    <br/><br/>
     <div class="row" ng-hide="loading || error">
       <div class="col-xs-12">
         <div class="panel panel-default">
@@ -95,8 +95,9 @@
               <thead>
                 <tr>
                   <th class="place-type">{{ place.columnTitle }}</th>
-                  <th ng-repeat="productType in productTypes | orderBy:'style'"
-                      ng-class="productType.style">{{ productType.code }}</th>
+                  <th ng-repeat="productType in productTypes"
+                    ng-class="productType.style">{{ productType.code }}
+                  </th>
                 </tr>
               </thead>
               <tbody>

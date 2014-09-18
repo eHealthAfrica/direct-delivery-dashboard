@@ -48,7 +48,7 @@ angular
         controller: 'StockCountSummaryCtrl'
       })
       .when('/inventory', {
-        templateUrl: 'views/inventory/index.html',
+        templateUrl: 'views/inventory.html',
         controller: 'InventoryCtrl'
       })
       .otherwise({

@@ -227,6 +227,31 @@ angular.module('lmisApp')
     }
 
     /**
+     * Returns only latest rows for each facility ordered by date descending. Uses 'created' date field.
+     *
+     * @param rows
+     */
+    function latest(rows) {
+      var added = [];
+
+      return rows
+        .sort(function (a, b) {
+          if (a.created > b.created) return -1;
+          if (a.created < b.created) return 1;
+          return 0;
+        })
+        .filter(function (row) {
+          var uuid = (row.facility && row.facility.uuid) || undefined;
+          if (uuid && uuid != Facility.unknown.uuid && added.indexOf(uuid) < 0) {
+            added.push(uuid);
+            return true;
+          }
+          else
+            return false;
+        });
+    }
+
+    /**
      * Resolves the product types of the 'unopened' property of each row and replaces it with
      * an array of objects of the following structure:
      *
@@ -369,6 +394,7 @@ angular.module('lmisApp')
       getDaysFromLastCountDate: getDaysFromLastCountDate,
       getSortedStockCount: getSortedStockCount,
       hasPendingStockCount: hasPendingStockCount,
-      resolveUnopened: resolveUnopened
+      resolveUnopened: resolveUnopened,
+      latest: latest
     };
   });
