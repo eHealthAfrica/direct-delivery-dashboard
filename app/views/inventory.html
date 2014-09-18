@@ -39,6 +39,8 @@
       <div class="col-xs-12">
         <div class="panel panel-default">
           <div class="panel-heading">
+            <button class="btn btn-primary pull-right" type="button"
+              ng-csv="totals" csv-header="totalsHeaders" filename="{{getFileName(title)}}">Export</button>
             <form class="form-inline">
               <div class="form-group">
                 <label for="placeType">Place Type:</label>
@@ -101,9 +103,8 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="total in totals | orderBy:'place'" ng-click="updateFor(total.place)">
-                  <td>{{ total.place }}</td>
-                  <td ng-repeat="value in total.values track by $index">
+                <tr ng-repeat="total in totals" ng-click="updateFor(total[0])">
+                  <td ng-repeat="value in total track by $index">
                     {{ value }}
                   </td>
                 </tr>

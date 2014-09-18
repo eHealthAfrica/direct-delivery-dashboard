@@ -9,6 +9,7 @@ angular.module('lmisApp')
     $scope.error = false;
     $scope.places = null;
     $scope.productTypes = [];
+    $scope.totalsHeaders = [];
     $scope.totals = [];
 
     $scope.place = {
@@ -133,16 +134,19 @@ angular.module('lmisApp')
         });
 
       $scope.place.columnTitle = columnTitle;
+      $scope.totalsHeaders[0] = columnTitle;
 
-      $scope.totals = Object.keys(totals).map(function (key) {
+      var totalsData = Object.keys(totals).map(function (key) {
         var item = totals[key];
-        return {
-          place: item.place,
-          values: $scope.productTypes.map(function (productType) {
-            return (item.values[productType.code] || 0);
-          })
-        };
+        var values = $scope.productTypes.map(function (productType) {
+          return (item.values[productType.code] || 0);
+        });
+
+        return [item.place].concat(values);
       });
+
+      // order here not in view because array is also used for CSV export
+      $scope.totals = $filter('orderBy')(totalsData, '0');
 
       $scope.summary = $scope.productTypes.map(function (productType) {
         return (summary[productType.code] || 0);
@@ -166,8 +170,7 @@ angular.module('lmisApp')
         var categories = res[1];
         var latestStockCounts = stockCount.latest(res[2]);
 
-        var productTypes = utility
-          .values(types)
+        var productTypes = utility.values(types)
           .map(function (p) {
             var style = categories[p.category];
             if (angular.isObject(style)) {
@@ -182,6 +185,12 @@ angular.module('lmisApp')
           });
 
         $scope.productTypes = $filter('orderBy')(productTypes, ['style', 'code']);
+
+        // first item will be set based on current search filter
+        // MUST be run after the above $filter call
+        $scope.totalsHeaders = [''].concat($scope.productTypes.map(function(type) {
+          return type.code;
+        }));
 
         stockCount.resolveUnopened(latestStockCounts)
           .then(function (resolved) {

@@ -6,6 +6,7 @@ angular
     'ngSanitize',
     'ngRoute',
     'ngResource',
+    'ngCsv',
     'nvd3ChartDirectives',
     'ui.bootstrap'
   ])
@@ -71,8 +72,10 @@ angular
       };
     }]);
   })
-  .run(function ($rootScope, $route, SETTINGS, Auth, State, Zone, LGA, Ward, Facility) {
+  .run(function ($rootScope, $route, SETTINGS, utility, Auth, State, Zone, LGA, Ward, Facility) {
     $rootScope.SETTINGS = SETTINGS;
+
+    $rootScope.getFileName = utility.getFileName;
 
     $rootScope.logout = function() {
       Auth.logout()
