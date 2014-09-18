@@ -46,6 +46,10 @@ td .form-group .form-control-feedback {
   border-right: none;
 }
 
+.table-hover tr {
+  cursor: pointer;
+}
+
 #stock-count-summary > tbody + tbody {
   border-top: none;
 }

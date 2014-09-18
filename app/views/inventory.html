@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-xs-12">
-    <h2 class="page-header">Bichi Zone Inventory</h2>
+    <h2 class="page-header">{{title}}</h2>
     <div class="row" ng-show="loading || error">
       <div class="col-xs-12">
         <div class="alert alert-info" ng-show="loading">
@@ -43,6 +43,7 @@
               <div class="form-group">
                 <label for="placeType">Place Type:</label>
                 <select id="placeType" class="form-control" ng-model="place.type" ng-change="place.search = ''">
+                  <option value=""></option>
                   <option value="state">State</option>
                   <option value="zone">Zone</option>
                   <option value="lga">LGA</option>
@@ -53,7 +54,7 @@
               &nbsp;
               <div class="form-group has-feedback">
                 <input type="text" class="form-control filter" placeholder="Place Name"
-                  ng-model="place.search"
+                  ng-model="place.search" ng-disabled="!place.type.length"
                   typeahead="place for place in getPlaces($viewValue)"
                   typeahead-loading="places.loading">
                       <span ng-show="places.loading"
@@ -84,14 +85,13 @@
                 </div>
               </div>
               &nbsp;
-              <button type="button" class="btn btn-primary" ng-click="updateTotals()"
-                ng-disabled="!place.search.length || !from.date || !to.date">
+              <button type="button" class="btn btn-primary" ng-click="updateTotals()">
                 Apply
               </button>
             </form>
           </div>
           <div class="table-scroller">
-            <table class="table table-condensed table-bordered table-striped table-condensed">
+            <table class="table table-condensed table-bordered table-striped table-hover">
               <thead>
                 <tr>
                   <th class="place-type">{{ place.columnTitle }}</th>
@@ -101,7 +101,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="total in totals | orderBy:'place'">
+                <tr ng-repeat="total in totals | orderBy:'place'" ng-click="updateFor(total.place)">
                   <td>{{ total.place }}</td>
                   <td ng-repeat="value in total.values track by $index">
                     {{ value }}

@@ -31,6 +31,38 @@ angular.module('lmisApp')
         }.bind(this));
     }
 
+    Places.subType = function(type) {
+      switch (type) {
+        case Places.STATE:
+          return Places.ZONE;
+        case Places.ZONE:
+          return Places.LGA;
+        case Places.LGA:
+          return Places.WARD;
+        case Places.WARD:
+          return Places.FACILITY;
+        default:
+          return undefined;
+      }
+    };
+
+    Places.typeName = function(type, plural) {
+      switch (type) {
+        case Places.STATE:
+          return plural ? 'States' : 'State';
+        case Places.ZONE:
+          return plural ? 'Zones' : 'Zone';
+        case Places.LGA:
+          return plural ? 'LGAs' : 'LGA';
+        case Places.WARD:
+          return plural ? 'Wards' : 'Ward';
+        case Places.FACILITY:
+          return plural ? 'Facilities' : 'Facility';
+        default:
+          return '';
+      }
+    };
+
     Places.STATE = 'state';
     Places.ZONE = 'zone';
     Places.LGA = 'lga';
