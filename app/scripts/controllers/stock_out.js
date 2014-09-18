@@ -31,7 +31,7 @@ angular.module('lmisApp')
 
     $scope.to = {
       opened: false,
-      date: moment().endOf('day').subtract('days', 1).toDate(),
+      date: moment().endOf('day').toDate(),
       open: function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
