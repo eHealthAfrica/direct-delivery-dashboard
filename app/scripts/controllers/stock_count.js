@@ -92,10 +92,8 @@ angular.module('lmisApp')
             };
 
             row.unopened.forEach(function (unopened) {
-              // take first value, which is the most recent one as the data is
-              // sorted by date in descending order
-              if (totals[key].values[unopened.productType.code] === undefined)
-                totals[key].values[unopened.productType.code] = unopened.count;
+              var code = unopened.productType.code;
+              totals[key].values[code] = (totals[key].values[code] || 0) + unopened.count;
             });
           });
       }
@@ -141,13 +139,9 @@ angular.module('lmisApp')
       .then(function (responses) {
         $scope.productTypes = responses[0];
 
-        stockCount.resolveUnopened(responses[1])
+        stockCount.resolveUnopened(stockCount.latest(responses[1]))
           .then(function (resolved) {
-            rows = resolved.sort(function (a, b) {
-              if (a.created > b.created) return -1;
-              if (a.created < b.created) return 1;
-              return 0;
-            });
+            rows = resolved;
 
             var startState = '';
 
