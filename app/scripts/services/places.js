@@ -10,7 +10,7 @@ angular.module('lmisApp')
       this.loading = true;
 
       var service = State;
-      switch (parseInt(type)) {
+      switch (type) {
         case Places.ZONE:
           service = Zone;
           break;
@@ -31,11 +31,11 @@ angular.module('lmisApp')
         }.bind(this));
     }
 
-    Places.STATE = 0;
-    Places.ZONE = 1;
-    Places.LGA = 2;
-    Places.WARD = 3;
-    Places.FACILITY = 4;
+    Places.STATE = 'state';
+    Places.ZONE = 'zone';
+    Places.LGA = 'lga';
+    Places.WARD = 'ward';
+    Places.FACILITY = 'facility';
 
     return Places;
   });
