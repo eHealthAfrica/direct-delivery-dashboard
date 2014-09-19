@@ -68,7 +68,12 @@ th.dry-store-safety-boxes, th.dry-store-syringes {
   color: #FFFFFF;
 }
 
-th.place-type{
+th.place-type {
   background-color: #000000;
   color: #ffffff;
+}
+
+.nvd3.nv-line .nvd3.nv-scatter .nv-groups .nv-point {
+  fill-opacity: 1;
+  stroke-opacity: 1;
 }
