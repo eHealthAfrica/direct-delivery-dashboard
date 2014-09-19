@@ -35,7 +35,7 @@
         <h3>Latest Details</h3>
         <div class="panel panel-default">
           <div class="panel-heading">
-            <button class="btn btn-primary pull-right" type="button"
+            <button class="btn btn-primary pull-right hidden-print" type="button"
               ng-csv="totals" csv-header="totalsHeaders" filename="{{getFileName(title)}}">
               Export
             </button>
@@ -85,7 +85,7 @@
                 </div>
               </div>
               &nbsp;
-              <button type="button" class="btn btn-primary" ng-click="updateTotals()">
+              <button type="button" class="btn btn-primary hidden-print" ng-click="updateTotals()">
                 Apply
               </button>
             </form>
