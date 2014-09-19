@@ -4,6 +4,7 @@ angular.module('lmisApp')
   .controller('InventoryCtrl', function ($scope, $q, $filter, utility, Places, ProductType, ProductCategory, Facility, stockCount) {
     var rows = [];
     var latestRows = [];
+    var xTickValues = [];
 
     $scope.title = 'Inventory';
     $scope.loading = true;
@@ -72,7 +73,13 @@ angular.module('lmisApp')
 
     $scope.formatDateAxisFunction = function () {
       return function (d) {
-        return d3.time.format('%Y-%m-%d')(new Date(d));
+        return moment(d).format('YYYY-MM-DD');
+      }
+    };
+
+    $scope.getXTickValues = function () {
+      return function (d) {
+        return xTickValues;
       }
     };
 
@@ -127,6 +134,8 @@ angular.module('lmisApp')
         }
       });
 
+      var minDate = NaN;
+      var maxDate = NaN;
       filter(rows, filterBy).forEach(function (row) {
         if (row.unopened) {
           row.unopened.forEach(function (unopened) {
@@ -137,6 +146,12 @@ angular.module('lmisApp')
             var date = moment(row.created).utc();
             if (date.isValid()) {
               date = date.startOf('day').toDate().getTime();
+
+              if (isNaN(minDate) || minDate > date)
+                minDate = date;
+
+              if (isNaN(maxDate) || maxDate < date)
+                maxDate = date;
 
               chartData[code][date] = (chartData[code][date] || 0) + unopened.count;
             }
@@ -174,6 +189,14 @@ angular.module('lmisApp')
       // order here not in view because array is also used for CSV export
       $scope.totals = $filter('orderBy')(totalsData, '0');
 
+      xTickValues = [];
+      if (!isNaN(minDate) && !isNaN(maxDate)) {
+        while (minDate <= maxDate) {
+          xTickValues.push(minDate);
+          minDate += 86400000;
+        }
+      }
+
       $scope.chartData = $scope.productTypes.map(function (productType) {
         var item = chartData[productType.code];
         var values = [];
@@ -181,7 +204,7 @@ angular.module('lmisApp')
         if (item) {
           values = Object.keys(item)
             .map(function (date) {
-              return [date, item[date]]
+              return [parseInt(date), item[date]]
             })
             .sort(function (a, b) {
               if (a[0] < b[0]) return -1;
