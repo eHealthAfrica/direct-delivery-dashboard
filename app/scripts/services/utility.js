@@ -90,4 +90,8 @@ angular.module('lmisApp')
       var now = $filter('date')(new Date(), 'yyyy-MM-dd-HH-mm-ss');
       return prefix + '-' + now + ext;
     };
+
+    this.isNotDesignDoc = function(doc) {
+      return doc && doc._id && doc._id.substr(0, 7) !== '_design';
+    };
   });

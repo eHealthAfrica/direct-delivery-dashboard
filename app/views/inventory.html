@@ -13,7 +13,7 @@
     </div>
     <div class="row" ng-hide="loading || error">
       <div class="col-xs-12">
-        <h3>Summary</h3>
+        <h3>Latest Summary</h3>
         <div class="table-scroller">
           <table class="table table-condensed table-bordered table-striped table-condensed">
             <thead>
@@ -32,15 +32,13 @@
             </tbody>
           </table>
         </div>
-      </div>
-    </div>
-    <br/><br/>
-    <div class="row" ng-hide="loading || error">
-      <div class="col-xs-12">
+        <h3>Latest Details</h3>
         <div class="panel panel-default">
           <div class="panel-heading">
             <button class="btn btn-primary pull-right" type="button"
-              ng-csv="totals" csv-header="totalsHeaders" filename="{{getFileName(title)}}">Export</button>
+              ng-csv="totals" csv-header="totalsHeaders" filename="{{getFileName(title)}}">
+              Export
+            </button>
             <form class="form-inline">
               <div class="form-group">
                 <label for="placeType">Place Type:</label>
@@ -110,6 +108,23 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+        <h3>Over Time</h3>
+        <div class="panel panel-primary center-block" style="width: 1024px">
+          <div class="panel-body">
+            <nvd3-line-chart
+              data="chartData"
+              width="1024"
+              height="600"
+              showXAxis="true"
+              xAxisTickFormat="formatDateAxisFunction()"
+              staggerLabels="true"
+              showYAxis="true"
+              showLegend="true"
+              margin="{right:80}">
+              <svg></svg>
+            </nvd3-line-chart>
           </div>
         </div>
       </div>

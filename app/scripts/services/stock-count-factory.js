@@ -314,9 +314,11 @@ angular.module('lmisApp')
             Facility.all()
           ])
           .then(function (response) {
-            var rows = response[0].rows.map(function (row) {
-              return row.doc;
-            });
+            var rows = response[0].rows
+              .map(function (row) {
+                return row.doc;
+              })
+              .filter(utility.isNotDesignDoc);
 
             var facilities = response[1];
 
@@ -324,7 +326,7 @@ angular.module('lmisApp')
               row.facility = (row.facility ? facilities[row.facility] : undefined) || Facility.unknown;
               ['created', 'modified', 'countDate', 'dateSynced'].forEach(function (date) {
                 if (row[date])
-                  row[date] = new Date(row[date]);
+                  row[date] = moment(row[date]).toDate();
               });
             });
 
