@@ -1,0 +1,46 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h2 class="page-header">Facilities</h2>
+    <div class="row" ng-if="facilitiesCtrl.loading || facilitiesCtrl.error">
+      <div class="col-xs-12">
+        <div class="alert alert-info" ng-show="facilitiesCtrl.loading">
+          Loading…
+        </div>
+        <div class="alert alert-danger" ng-show="facilitiesCtrl.error">
+          Error loading data.
+        </div>
+      </div>
+    </div>
+    <div class="row" ng-if="!facilitiesCtrl.loading && !facilitiesCtrl.error">
+      <div class="col-xs-12">
+        <h3>Reporting</h3>
+        <table id="facilities-reporting" class="table table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Zone</th>
+              <th>LGA</th>
+              <th>Facility</th>
+              <th>Report Date</th>
+              <th>Contact Info</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              ng-repeat="summary in facilitiesCtrl.summaries"
+              ng-class="{
+                'bg-danger': summary.isNonReporting,
+                'bg-success': !summary.isNonReporting
+              }"
+            >
+              <td></td>
+              <td></td>
+              <td ng-bind="summary.facility"></td>
+              <td ng-bind="summary.lastCountDate"></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
