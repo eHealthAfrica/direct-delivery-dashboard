@@ -8,6 +8,7 @@ angular.module('lmisApp')
     };
 
     // Get current user
+    /*
     couchdb.session().$promise
       .then(function (data) {
         set((data.userCtx && data.userCtx.name) ? data.userCtx : null);
@@ -19,6 +20,11 @@ angular.module('lmisApp')
       .finally(function () {
         $rootScope.app.init = true;
       });
+    */
+
+    // use fake user for demo purposes until new auth is implemented
+    set({ name: 'Rabiu' });
+    $rootScope.app.init = true;
 
     function set(user) {
       if (user != $rootScope.currentUser)

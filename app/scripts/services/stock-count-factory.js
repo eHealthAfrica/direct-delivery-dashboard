@@ -227,6 +227,31 @@ angular.module('lmisApp')
     }
 
     /**
+     * Returns only latest rows for each facility ordered by date descending. Uses 'created' date field.
+     *
+     * @param rows
+     */
+    function latest(rows) {
+      var added = [];
+
+      return rows
+        .sort(function (a, b) {
+          if (a.created > b.created) return -1;
+          if (a.created < b.created) return 1;
+          return 0;
+        })
+        .filter(function (row) {
+          var uuid = (row.facility && row.facility.uuid) || undefined;
+          if (uuid && uuid != Facility.unknown.uuid && added.indexOf(uuid) < 0) {
+            added.push(uuid);
+            return true;
+          }
+          else
+            return false;
+        });
+    }
+
+    /**
      * Resolves the product types of the 'unopened' property of each row and replaces it with
      * an array of objects of the following structure:
      *
@@ -289,9 +314,11 @@ angular.module('lmisApp')
             Facility.all()
           ])
           .then(function (response) {
-            var rows = response[0].rows.map(function (row) {
-              return row.doc;
-            });
+            var rows = response[0].rows
+              .map(function (row) {
+                return row.doc;
+              })
+              .filter(utility.isNotDesignDoc);
 
             var facilities = response[1];
 
@@ -299,7 +326,7 @@ angular.module('lmisApp')
               row.facility = (row.facility ? facilities[row.facility] : undefined) || Facility.unknown;
               ['created', 'modified', 'countDate', 'dateSynced'].forEach(function (date) {
                 if (row[date])
-                  row[date] = new Date(row[date]);
+                  row[date] = moment(row[date]).toDate();
               });
             });
 
@@ -369,6 +396,7 @@ angular.module('lmisApp')
       getDaysFromLastCountDate: getDaysFromLastCountDate,
       getSortedStockCount: getSortedStockCount,
       hasPendingStockCount: hasPendingStockCount,
-      resolveUnopened: resolveUnopened
+      resolveUnopened: resolveUnopened,
+      latest: latest
     };
   });

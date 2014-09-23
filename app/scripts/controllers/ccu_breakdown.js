@@ -13,7 +13,7 @@ angular.module('lmisApp')
     $scope.places = null;
 
     $scope.place = {
-      type: 0,
+      type: Places.STATE,
       columnTitle: 'Zone',
       search: ''
     };
@@ -31,7 +31,7 @@ angular.module('lmisApp')
 
     $scope.to = {
       opened: false,
-      date: moment().endOf('day').subtract('days', 1).toDate(),
+      date: moment().endOf('day').toDate(),
       open: function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
@@ -51,23 +51,23 @@ angular.module('lmisApp')
       var filterBy = 'state';
       var groupBy = 'zone';
       var columnTitle = 'Zone';
-      switch (parseInt($scope.place.type)) {
-        case 1:
+      switch ($scope.place.type) {
+        case Places.ZONE:
           filterBy = 'zone';
           groupBy = 'lga';
           columnTitle = 'LGA';
           break;
-        case 2:
+        case Places.LGA:
           filterBy = 'lga';
           groupBy = 'ward';
           columnTitle = 'Ward';
           break;
-        case 3:
+        case Places.WARD:
           filterBy = 'ward';
           groupBy = 'facility';
           columnTitle = 'Facility';
           break;
-        case 4:
+        case Places.FACILITY:
           filterBy = 'facility';
           groupBy = 'facility';
           columnTitle = 'Facility';

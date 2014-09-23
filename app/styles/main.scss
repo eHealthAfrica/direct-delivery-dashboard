@@ -23,7 +23,7 @@ td .form-group .form-control-feedback {
   overflow-x: auto;
 }
 
-.table-scroller table {
+.panel .table-scroller table {
   margin-bottom: 0;
   border: none;
 }
@@ -46,10 +46,34 @@ td .form-group .form-control-feedback {
   border-right: none;
 }
 
+.table-hover tr {
+  cursor: pointer;
+}
+
 #stock-count-summary > tbody + tbody {
   border-top: none;
 }
 
-.pointer{
+.pointer {
   cursor: pointer;
+}
+
+th.cold-store-vaccines {
+  background-color: #157085;
+  color: #FFFFFF;
+}
+
+th.dry-store-safety-boxes, th.dry-store-syringes {
+  background-color: #8B4A09;
+  color: #FFFFFF;
+}
+
+th.place-type {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.nvd3.nv-line .nvd3.nv-scatter .nv-groups .nv-point {
+  fill-opacity: 1;
+  stroke-opacity: 1;
 }
