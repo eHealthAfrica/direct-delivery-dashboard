@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('facilityReports', function($window, stockCount) {
-    function isNonReporting(lastReport) {
+  .factory('facilityReports', function($q, $window, stockCount, Facility) {
+    function isNonReporting(lastReport, threshold) {
       // Time in days before a facility is classed as non reporting
-      var threshold = 7;
+      threshold = threshold || 7;
       return lastReport > threshold;
     }
 
@@ -13,16 +13,33 @@ angular.module('lmisApp')
       return $window.moment(date).format(dateTimeString);
     }
 
-    function formatSummaries(docs) {
-      return docs.summary.map(function(summary) {
-        return {
-          facility: summary.facility,
-          isNonReporting: isNonReporting(summary.daysFromLastCountDate),
-          lastCountDate: formatDate(summary.mostRecentCountDate)
-        };
+    function formatSummaries(resolvedPromises) {
+      var summaries = resolvedPromises.summaries.summary;
+      var facilities = resolvedPromises.facilities;
+
+      return summaries.map(function(summary) {
+        if (facilities[summary.facilityUUID]) {
+          var facilityDetail = facilities[summary.facilityUUID];
+
+          return {
+            zone: facilityDetail.zone,
+            lga: facilityDetail.lga,
+            facility: summary.facility,
+            isNonReporting: isNonReporting(summary.daysFromLastCountDate),
+            lastCountDate: formatDate(summary.mostRecentCountDate),
+            contact: {
+              name: facilityDetail.contact.name,
+              phone: facilityDetail.phone,
+              email: facilityDetail.email
+            }
+          };
+        }
       })
     }
 
-    return stockCount.stockCountSummaryByFacility()
+    return $q.all({
+      summaries: stockCount.stockCountSummaryByFacility(),
+      facilities: Facility.all()
+    })
       .then(formatSummaries);
   });

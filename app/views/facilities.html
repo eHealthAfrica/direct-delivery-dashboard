@@ -32,11 +32,26 @@
                 'bg-success': !summary.isNonReporting
               }"
             >
-              <td></td>
-              <td></td>
+              <td ng-bind="summary.zone"></td>
+              <td ng-bind="summary.lga"></td>
               <td ng-bind="summary.facility"></td>
               <td ng-bind="summary.lastCountDate"></td>
-              <td></td>
+              <td>
+                <ul class="list-unstyled">
+                  <li>
+                    <i class="glyphicon glyphicon-user"></i>
+                    <span ng-bind="summary.contact.name"></span>
+                  </li>
+                  <li>
+                    <i class="glyphicon glyphicon-phone"></i>
+                    <span ng-bind="summary.contact.phone"></span>
+                  </li>
+                  <li>
+                    <i class="glyphicon glyphicon-envelope"></i>
+                    <span ng-bind="summary.contact.email"></span>
+                  </li>
+                </ul>
+              </td>
             </tr>
           </tbody>
         </table>
