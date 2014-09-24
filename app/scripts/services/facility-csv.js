@@ -6,6 +6,7 @@ angular.module('lmisApp')
       'Zone',
       'LGA',
       'Facility',
+      'Reporting',
       'Report Date',
       'Contact Name',
       'Contact Phone',
