@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="row" ng-if="!facilitiesCtrl.loading && !facilitiesCtrl.error">
-      <div class="col-xs-12">
+      <div class="col-xs-6">
         <div>
           <h3 class="pull-left">Reporting</h3>
           <button
@@ -64,6 +64,20 @@
             </tr>
           </tbody>
         </table>
+      </div>
+      <div class="col-xs-6">
+        <nvd3-pie-chart
+          data="facilitiesCtrl.chart.data"
+          id="reporting-facilities-chart"
+          x="facilitiesCtrl.chart.functions.x()"
+          y="facilitiesCtrl.chart.functions.y()"
+          width="700"
+          height="500"
+          showLabels="true"
+          tooltips="true"
+          tooltipcontent="facilitiesCtrl.chart.functions.tooltip()"
+        >
+        </nvd3-pie-chart>
       </div>
     </div>
   </div>
