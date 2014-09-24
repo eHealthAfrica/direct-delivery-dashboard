@@ -18,28 +18,27 @@ angular.module('lmisApp')
       var facilities = resolvedPromises.facilities;
 
       return summaries.map(function(summary) {
-        if (facilities[summary.facilityUUID]) {
-          var facilityDetail = facilities[summary.facilityUUID];
-
-          return {
-            zone: facilityDetail.zone,
-            lga: facilityDetail.lga,
-            facility: summary.facility,
-            isNonReporting: isNonReporting(summary.daysFromLastCountDate),
-            lastCountDate: formatDate(summary.mostRecentCountDate),
-            contact: {
-              name: facilityDetail.contact.name,
-              phone: facilityDetail.phone,
-              email: facilityDetail.email
-            }
-          };
-        }
-      })
+        var facilityDetail = facilities[summary.facilityUUID];
+        return {
+          zone: facilityDetail.zone,
+          lga: facilityDetail.lga,
+          facility: summary.facility,
+          isNonReporting: isNonReporting(summary.daysFromLastCountDate),
+          lastCountDate: formatDate(summary.mostRecentCountDate),
+          contact: {
+            name: facilityDetail.contact.name,
+            phone: facilityDetail.phone,
+            email: facilityDetail.email
+          }
+        };
+      });
     }
 
-    return $q.all({
+    var facilityPromises = {
       summaries: stockCount.stockCountSummaryByFacility(),
       facilities: Facility.all()
-    })
+    };
+
+    return $q.all(facilityPromises)
       .then(formatSummaries);
   });
