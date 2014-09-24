@@ -89,7 +89,14 @@
             >
               <td ng-bind="summary.zone"></td>
               <td ng-bind="summary.lga"></td>
-              <td ng-bind="summary.facility"></td>
+              <td>
+                <a
+                  ng-href="#/stock-count?facility={{summary.facility}}"
+                  title="Jump to stock count"
+                >
+                  <span ng-bind="summary.facility"></span>
+                </a>
+              </td>
               <td ng-bind="summary.lastCountDate"></td>
               <td>
                 <ul class="list-unstyled">

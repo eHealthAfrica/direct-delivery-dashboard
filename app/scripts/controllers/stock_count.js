@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('StockCountCtrl', function ($scope, $q, $filter, Pagination, Places, ProductType, Facility, stockCount) {
+  .controller('StockCountCtrl', function ($scope, $q, $filter, $routeParams, Pagination, Places, ProductType, Facility, stockCount) {
     var rows = [];
 
     $scope.filteredRows = [];
@@ -18,6 +18,14 @@ angular.module('lmisApp')
       columnTitle: 'Zone',
       search: ''
     };
+
+    if ($routeParams.facility) {
+      $scope.search = {
+        facility: {
+          name: $routeParams.facility
+        }
+      };
+    }
 
     $scope.from = {
       opened: false,
