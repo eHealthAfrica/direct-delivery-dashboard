@@ -34,8 +34,54 @@
             </tr>
           </thead>
           <tbody>
+            <tr>
+              <td>
+                <input
+                  type="text"
+                  class="form-control filter"
+                  placeholder="Zone"
+                  ng-model="filter.zone"
+                >
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control filter"
+                  placeholder="LGA"
+                  ng-model="filter.lga"
+                >
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control filter"
+                  placeholder="Facility"
+                  ng-model="filter.facility"
+                >
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control filter"
+                  placeholder="Date"
+                  ng-model="filter.lastCountDate"
+                >
+              </td>
+              <td>
+                <label class="checkbox-inline">
+                  <input
+                    type="checkbox"
+                    ng-model="filter.isNonReporting"
+                  > Non Reporting
+                </label>
+                <button
+                  class="btn btn-default pull-right hidden-print"
+                  ng-click="filter = {}"
+                >Clear filters</button>
+              </td>
+            </tr>
             <tr
-              ng-repeat="summary in facilitiesCtrl.summaries"
+              ng-repeat="summary in facilitiesCtrl.summaries | filter:filter"
               ng-class="{
                 'bg-danger': summary.isNonReporting,
                 'bg-success': !summary.isNonReporting

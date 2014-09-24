@@ -9,5 +9,10 @@ let g:syntastic_html_tidy_ignore_errors = [
   \ '<form> lacks "action" attribute',
   \ '<input> proprietary attribute "required"',
   \ '<select> proprietary attribute "required"',
-  \ 'unescaped & which should be written as &amp;'
+  \ 'unescaped & which should be written as &amp;',
+  \ '<nvd3-',
+  \ 'discarding unexpected <nvd3-',
+  \ 'discarding unexpected </nvd3-',
+  \ '<button> proprietary attribute "csv-header"',
+  \ '<button> proprietary attribute "filename"'
   \ ]
