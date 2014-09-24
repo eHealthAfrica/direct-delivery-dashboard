@@ -13,7 +13,16 @@
     </div>
     <div class="row" ng-if="!facilitiesCtrl.loading && !facilitiesCtrl.error">
       <div class="col-xs-12">
-        <h3>Reporting</h3>
+        <div>
+          <h3 class="pull-left">Reporting</h3>
+          <button
+            class="btn btn-primary pull-right hidden-print"
+            type="button"
+            ng-csv="facilitiesCtrl.csvData.rows"
+            csv-header="facilitiesCtrl.csvData.headers"
+            filename="facilitiesCtrl.csvData.filename"
+          >Export</button>
+        </div>
         <table id="facilities-reporting" class="table table-bordered table-condensed">
           <thead>
             <tr>
