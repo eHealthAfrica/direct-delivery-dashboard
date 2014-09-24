@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('UomService', function ($rootScope, $q, couchdb) {
+  .factory('UomFactory', function ($rootScope, $q, couchdb) {
     var dbName = 'uom';
     var allPromise = null;
 
