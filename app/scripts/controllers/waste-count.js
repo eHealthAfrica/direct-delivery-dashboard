@@ -52,11 +52,13 @@ angular.module('lmisApp')
 
     wasteCountFactory.getFormatted()
       .then(function(formattedWasteCount) {
-        $scope.wasteCount = formattedWasteCount;
         rows = formattedWasteCount;
         updateFilteredRows();
+        $scope.loading = false;
       })
       .catch(function(reason) {
+        $scope.loading = false;
+        $scope.error = true;
         console.log(reason);
       });
   });
