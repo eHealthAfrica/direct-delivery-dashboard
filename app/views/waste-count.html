@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-condensed table-responsive">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Facility</th>
+          <th>Created Date</th>
+          <th>Product</th>
+          <th>Reason</th>
+          <th>Value</th>
+
+        </tr>
+      </thead>
+      <tbody ng-repeat="rows in filteredRows">
+        <tr ng-repeat="row in rows.reasons">
+          <td ng-if="$index === 0" rowspan="{{ rows.reasons.length }}">{{ $index + 1 }}</td>
+          <td ng-if="$index === 0" rowspan="{{ rows.reasons.length }}">{{ rows.facilityName }}</td>
+          <td ng-if="$index === 0" rowspan="{{ rows.reasons.length }}">{{ rows.created }}</td>
+          <td ng-if="row.productIndex === 0" rowspan="{{ rows.productLevelList[row.key] }}">{{ row.productProfile }}</td>
+          <td>{{ row.reason }}</td>
+          <td>{{ row.value }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="text-center">
+      <pagination style="margin-top: 0" max-size="10" boundary-links="true" rotate="false"
+                  total-items="pagination.totalItems" items-per-page="pagination.itemsPerPage"
+                  ng-model="pagination.currentPage" ng-change="pagination.pageChanged()"></pagination>
+    </div>
+  </div>
+</div>
