@@ -57,7 +57,7 @@ angular.module('lmisApp')
           var formattedWasteCount = [];
           wasteCounts
             .forEach(function(wasteCount) {
-              if(angular.isDefined(facilities[wasteCount.facility])) {
+              if (angular.isDefined(facilities[wasteCount.facility])) {
                 var list = {
                   uuid: wasteCount.uuid,
                   facilityName: angular.isUndefined(facilities[wasteCount.facility]) ? wasteCount.facility : facilities[wasteCount.facility].name,
@@ -68,7 +68,8 @@ angular.module('lmisApp')
                   wasteCount: {}
                 };
 
-                (Object.keys(wasteCount.discarded)).forEach(function (productProfileUUID) {
+                if (wasteCount.discarded) {
+                  (Object.keys(wasteCount.discarded)).forEach(function(productProfileUUID) {
 
                   if (angular.isDefined(productProfiles[productProfileUUID])) {
                     var uom = uomList[productPresentation[productProfiles[productProfileUUID].presentation].uom].symbol;
@@ -88,12 +89,12 @@ angular.module('lmisApp')
                         productList: (Object.keys(wasteCount.discarded)).length
                       });
 
-                    });
+                      });
 
-                  }
+                    }
 
-                });
-
+                  });
+                }
                 formattedWasteCount.push(list);
               }
             });
