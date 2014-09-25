@@ -20,7 +20,7 @@
             type="button"
             ng-csv="facilitiesCtrl.csvData.rows"
             csv-header="facilitiesCtrl.csvData.headers"
-            filename="facilitiesCtrl.csvData.filename"
+            filename="{{facilitiesCtrl.csvData.filename}}"
           >Export</button>
         </div>
         <table id="facilities-reporting" class="table table-bordered table-condensed table-fixed">
