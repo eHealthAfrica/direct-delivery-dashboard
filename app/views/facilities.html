@@ -73,10 +73,11 @@
                   name="status"
                   ng-options="filter.value as filter.label for filter in facilitiesCtrl.reportingFilters"
                   ng-model="filter.isNonReporting"
+                  ng-init="filter.isNonReporting = ''"
                 ></select>
                 <button
                   class="btn btn-primary pull-right hidden-print"
-                  ng-click="filter = {}"
+                  ng-click="filter = {isNonReporting: ''}"
                 >Clear Filter</button>
               </td>
             </tr>
