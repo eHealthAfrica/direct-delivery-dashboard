@@ -17,11 +17,16 @@ angular.module('lmisApp')
 
     function formatSummaries(summaries) {
       return summaries.map(function(summary) {
-        summary.contactName = summary.contact.name;
-        summary.contactPhone = summary.contact.phone;
-        summary.contactEmail = summary.contact.email;
-        delete summary.contact;
-        return summary;
+        return {
+          zone: summary.zone,
+          lga: summary.lga,
+          facility: summary.facility,
+          reporting: summary.isNonReporting,
+          reportDate: summary.lastCountDate,
+          contactName: summary.contact.name,
+          contactPhone: summary.contact.phone,
+          contactEmail: summary.contact.email
+        };
       });
     }
 
