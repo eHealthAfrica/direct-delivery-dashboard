@@ -68,12 +68,12 @@
                 >
               </td>
               <td>
-                <label class="checkbox-inline">
-                  <input
-                    type="checkbox"
-                    ng-model="filter.isNonReporting"
-                  > Non Reporting
-                </label>
+                <label for="status">Status</label>
+                <select
+                  name="status"
+                  ng-options="filter.value as filter.label for filter in facilitiesCtrl.reportingFilters"
+                  ng-model="filter.isNonReporting"
+                ></select>
                 <button
                   class="btn btn-default pull-right hidden-print"
                   ng-click="filter = {}"

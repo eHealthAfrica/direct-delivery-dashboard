@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('FacilitiesCtrl', function($log, facilityReports, facilityCSV, facilityChart) {
+  .controller('FacilitiesCtrl', function($log, facilityReports, facilityCSV, facilityChart, FACILITY_FILTERS) {
     var vm = this;
     vm.loading = true;
     vm.error = false;
+    vm.reportingFilters = FACILITY_FILTERS;
 
     function bindSummaries(summaries) {
       vm.loading = false;
