@@ -83,8 +83,9 @@
             <tr
               ng-repeat="summary in facilitiesCtrl.summaries | filter:filter"
               ng-class="{
-                'bg-danger': summary.isNonReporting,
-                'bg-success': !summary.isNonReporting
+                'bg-success': summary.daysFromLastCountDate <= 7,
+                'bg-warning': summary.daysFromLastCountDate > 7 && summary.daysFromLastCountDate <= 14,
+                'bg-danger': summary.daysFromLastCountDate > 14
               }"
             >
               <td ng-bind="summary.zone"></td>

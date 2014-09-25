@@ -24,6 +24,7 @@ angular.module('lmisApp')
           lga: facilityDetail.lga,
           facility: summary.facility,
           isNonReporting: isNonReporting(summary.daysFromLastCountDate),
+          daysFromLastCountDate: summary.daysFromLastCountDate,
           lastCountDate: formatDate(summary.mostRecentCountDate),
           contact: {
             name: facilityDetail.contact.name,
