@@ -53,6 +53,9 @@ td .form-group .form-control-feedback {
 #stock-count-summary > tbody + tbody {
   border-top: none;
 }
+.nested-repeat > tbody + tbody {
+  border-top: none;
+}
 
 .pointer {
   cursor: pointer;
