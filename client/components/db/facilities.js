@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('Facility', function ($rootScope, $q, couchdb, utility) {
-    var DB_NAME = 'facilities';
+  .factory('Facility', function($rootScope, $http, $q) {
+    var URL = '/api/facilities';
     var allPromise = null;
     var names = [];
 
@@ -26,7 +26,7 @@ angular.module('lmisApp')
       /**
        * Read data from db and arrange it as a hash of uuid -> facility
        */
-      all: function (reload) {
+      all: function(reload) {
         if (!reload && allPromise)
           return allPromise;
 
@@ -34,22 +34,22 @@ angular.module('lmisApp')
         allPromise = d.promise;
         names = [];
 
-        couchdb.allDocs({_db: DB_NAME}).$promise
-          .then(function (response) {
+        $http.get(URL)
+          .success(function(data) {
             var facilities = {};
-            response.rows.forEach(function (row) {
-              facilities[row.doc.uuid] = row.doc;
-              if (names.indexOf(row.doc.name) < 0)
-                names.push(row.doc.name);
+            data.forEach(function(facility) {
+              facilities[facility.uuid] = facility;
+              if (names.indexOf(facility.name) < 0)
+                names.push(facility.name);
             });
 
             names.sort();
             d.resolve(facilities);
           })
-          .catch(function (error) {
-            console.log(error);
+          .error(function(err) {
+            console.log(err);
             allPromise = null;
-            d.reject(error);
+            d.reject(err);
           });
 
         return d.promise;
@@ -57,16 +57,16 @@ angular.module('lmisApp')
       /**
        * Returns data as array of names.
        */
-      names: function (filter, reload) {
+      names: function(filter, reload) {
         var d = $q.defer();
         var pattern = (filter && filter.length) ? new RegExp(filter, 'i') : null;
         this.all(reload)
-          .then(function () {
-            d.resolve(pattern ? names.filter(function (name) {
+          .then(function() {
+            d.resolve(pattern ? names.filter(function(name) {
               return pattern.test(name);
             }) : names);
           })
-          .catch(function (error) {
+          .catch(function(error) {
             d.reject(error);
           });
 
