@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('ProductCategory', function ($rootScope, $q, couchdb) {
-    var dbName = 'product_category';
+  .factory('ProductCategory', function($rootScope, $http, $q) {
+    var URL = '/api/product_categories';
     var allPromise = null;
     var codes = [];
 
@@ -15,14 +15,15 @@ angular.module('lmisApp')
        * Represents a unknown product type. Used for product type uuids not in the db.
        */
       unknown: {
+        _id: '_unknown_',
         uuid: '_unknown_',
         code: '** Unknown **'
       },
 
       /**
-       * Read data from db and arrange it as a hash of uuid -> product type
+       * Read data from db and arrange it as a hash of id -> product type
        */
-      all: function (reload) {
+      all: function(reload) {
         if (!reload && allPromise)
           return allPromise;
 
@@ -30,22 +31,22 @@ angular.module('lmisApp')
         allPromise = d.promise;
         codes = [];
 
-        couchdb.allDocs({_db: dbName}).$promise
-          .then(function (response) {
-            var types = {};
-            response.rows.forEach(function (row) {
-              types[row.doc.uuid] = row.doc;
-              if (row.doc.code && codes.indexOf(row.doc.code) < 0)
-                codes.push(row.doc.code);
+        $http.get(URL)
+          .success(function(data) {
+            var categories = {};
+            data.forEach(function(category) {
+              categories[category._id] = category;
+              if (category.code && codes.indexOf(category.code) < 0)
+                codes.push(category.code);
             });
 
             codes.sort();
-            d.resolve(types);
+            d.resolve(categories);
           })
-          .catch(function (error) {
-            console.log(error);
+          .error(function(err) {
+            console.log(err);
             allPromise = null;
-            d.reject(error);
+            d.reject(err);
           });
 
         return d.promise;
@@ -53,8 +54,8 @@ angular.module('lmisApp')
       /**
        * Returns css style of a given product category.
        */
-      getStyle: function (categoryName) {
-        if(!angular.isString(categoryName)){
+      getStyle: function(categoryName) {
+        if (!angular.isString(categoryName)) {
           return '';
         }
         return categoryName.split(' ').join('-').toLowerCase();

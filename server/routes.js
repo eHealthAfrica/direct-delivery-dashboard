@@ -16,6 +16,7 @@ module.exports = function(app) {
   app.use('/api/zones', require('./api/zone'));
   app.use('/api/states', require('./api/state'));
   app.use('/api/cceis', require('./api/ccei'));
+  app.use('/api/product_categories', require('./api/product_category'));
 
   app.use('/auth', require('./auth'));
   
