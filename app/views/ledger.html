@@ -17,76 +17,119 @@
 
         <div class="row" ng-show="!loading && !error">
           <div class="col-xs-12">
-            <table class="table table-bordered" ng-table="tableParams">
+            <table class="table table-bordered table-striped">
               <thead>
                 <tr>
                   <th>#</th>
+                  <th>Receiving Facility</th>
+                  <th>Sent From</th>
+                  <th>Date Received</th>
+                  <th>Record Created</th>
+                  <th>Expiry Date</th>
                   <th>Batch No</th>
-                  <th >Bundle Type</th>
+                  <th>Bundle Type</th>
                   <th>Product</th>
                   <th>Qty</th>
-                  <th>Expiry Date</th>
-                  <th>Receiving Facility</th>
-                  <th>Date Received</th>
-                  <th>Sent From</th>
-                  <th>Record Created</th>
                 </tr>
-                <!--tr class="active">
+                <tr class="active">
+                  <td>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control filter" ng-model="search.receivingFacility" >
+                  </td>
+                  <td>
+                   <div class="form-group has-feedback">
+                     <input type="text" class="form-control filter" ng-model="search.sendingFacility" >
+                    </div>
+                  </td>
                   <td>
                     <div class="form-group has-feedback">
-                      <input type="text" class="form-control filter" >
+                      <div class="input-group">
+                        <input type="text" class="form-control" ng-model="search.receivedOn"
+                               datepicker-popup is-open="to.opened"/>
+                        <span class="input-group-btn">
+                          <button type="button" class="btn btn-default" ng-click="to.open($event)">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group has-feedback">
+                      <div class="input-group">
+                        <input type="text" class="form-control" ng-model="search.created"
+                               datepicker-popup is-open="to.opened"/>
+                        <span class="input-group-btn">
+                          <button type="button" class="btn btn-default" ng-click="to.open($event)">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group has-feedback">
+                      <div class="input-group">
+                        <input type="text" class="form-control" ng-model="search.expiryDate"
+                               datepicker-popup is-open="to.opened"/>
+                        <span class="input-group-btn">
+                          <button type="button" class="btn btn-default" ng-click="to.open($event)">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group has-feedback">
+                      <input type="text" class="form-control filter" ng-model="search.batchNo" >
 
                     </div>
                   </td>
                   <td>
                     <div class="form-group has-feedback">
-                      <select class="form-control filter" ng-model="tableModel.type" ng-change="filterList(tableModel.type)">
+                      <select class="form-control filter" ng-model="search.type">
                         <option value=""></option>
                         <option value="Incoming Bundle">Incoming Bundle</option>
                         <option value="Outgoing Bundle">Incoming Bundle</option>
                       </select>
-
                     </div>
                   </td>
                   <td>
                     <div class="form-group has-feedback">
-                      <input type="text" class="form-control filter" >
+                      <input type="text" class="form-control filter" ng-model="search.productProfile" >
 
                     </div>
                   </td>
                   <td>
-                    <div class="form-group has-feedback">
-                      <input type="text" class="form-control filter" >
-
-                    </div>
-                  </td>
-                  <td>
-                    <div class="form-group has-feedback">
-                      <input type="text" class="form-control filter" >
-                    </div>
-                  </td>
-                  <td colspan="5">
                     <button type="button" class="btn btn-primary" ng-click="search = {}">
                       Clear Filter
                     </button>
                   </td>
-                </tr-->
+                </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="row in $data">
-                  <td>{{ $index + 1 }}</td>
+                <tr ng-repeat="row in filteredRows | orderBy:['-created'] | limitTo:pagination.limit | limitTo:-pagination.count">
+                  <td>{{ $index + 1 +  ((pagination.currentPage-1) * pagination.itemsPerPage) }}</td>
+                  <td>{{ row.receivingFacility }}</td>
+                  <td>{{ row.sendingFacility }}</td>
+                  <td>{{ row.receivedOn | date:SETTINGS.dateFormat }}</td>
+                  <td>{{ row.created | date:SETTINGS.dateTimeFormat }}</td>
+                  <td>{{ row.expiryDate | date:SETTINGS.dateFormat }}</td>
                   <td>{{ row.batchNo}}</td>
                   <td>{{ row.type}}</td>
                   <td>{{ row.productProfile }}</td>
                   <td>{{ row.quantity }}</td>
-                  <td>{{ row.expiryDate | date:SETTINGS.dateFormat }}</td>
-                  <td>{{ row.receivingFacility }}</td>
-                  <td>{{ row.receivedOn | date:SETTINGS.dateFormat }}</td>
-                  <td>{{ row.sendingFacility }}</td>
-                  <td>{{ row.created | date:SETTINGS.dateTimeFormat }}</td>
                 </tr>
               </tbody>
             </table>
+
+            <div class="text-center">
+              <pagination style="margin-top: 0" max-size="10" boundary-links="true" rotate="false"
+                          total-items="pagination.totalItems" items-per-page="pagination.itemsPerPage"
+                          ng-model="pagination.currentPage" ng-change="pagination.pageChanged()"></pagination>
+            </div>
           </div>
         </div>
 
