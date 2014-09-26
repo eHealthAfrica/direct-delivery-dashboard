@@ -10,6 +10,7 @@ module.exports = function(app) {
 
   // Insert routes below
   app.use('/api/users', require('./api/user'));
+
   app.use('/api/facilities', require('./api/facility'));
   app.use('/api/wards', require('./api/ward'));
   app.use('/api/lgas', require('./api/lga'));
@@ -21,6 +22,8 @@ module.exports = function(app) {
   app.use('/api/product_presentations', require('./api/product_presentation'));
   app.use('/api/product_profiles', require('./api/product_profile'));
   app.use('/api/product_types', require('./api/product_type'));
+
+  app.use('/api/app_config', require('./api/app_config'));
 
   app.use('/auth', require('./auth'));
 

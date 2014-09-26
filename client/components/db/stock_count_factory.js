@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('stockCount', function ($q, couchdb, InventoryRules, ProductProfile, ProductType, Facility, appConfigFactory, utility) {
+  .factory('stockCount', function ($q, couchdb, InventoryRules, ProductProfile, ProductType, Facility, AppConfig, utility) {
     var DB_NAME = 'stockcount',
       DAILY = 1,
       WEEKLY = 7,
@@ -84,7 +84,7 @@ angular.module('lmisApp')
       var promises = [
         Facility.all(),
         getAllStockCount(),
-        appConfigFactory.all()
+        AppConfig.all()
       ];
 
       return $q.all(promises);
@@ -177,7 +177,7 @@ angular.module('lmisApp')
         .then(function (resolved) {
           var facilities = resolved[0],
             stockCount = resolved[1].rows,
-            appConfig = utility.castArrayToObject(resolved[2].rows, 'id');
+            appConfig = utility.castArrayToObject(resolved[2], '_id');
 
           var groupedStockCount = groupByFacility(stockCount);
           var summaryHeader = [];
@@ -191,21 +191,21 @@ angular.module('lmisApp')
 
               var facilityConfig = appConfig[facilities[key].email];
               if (angular.isDefined(facilityConfig)) {
-                var currentDueDate = getStockCountDueDate(facilityConfig.value.facility.stockCountInterval, facilityConfig.value.facility.reminderDay);
-                var nextCountDate = currentDueDate.getTime() + new Date(1000 * 60 * 60 * 24 * facilityConfig.value.facility.stockCountInterval).getTime();
+                var currentDueDate = getStockCountDueDate(facilityConfig.facility.stockCountInterval, facilityConfig.facility.reminderDay);
+                var nextCountDate = currentDueDate.getTime() + new Date(1000 * 60 * 60 * 24 * facilityConfig.facility.stockCountInterval).getTime();
                 var daysFromLastCount = getDaysFromLastCountDate(new Date(latestStockCount.doc.countDate));
 
                 summaryHeader.push({
-                  facility: facilityConfig.value.facility.name,
+                  facility: facilityConfig.facility.name,
                   createdDate: latestStockCount.doc.created,
                   facilityUUID: key,
-                  reminderDay: utility.getWeekDay(facilityConfig.value.facility.reminderDay),
+                  reminderDay: utility.getWeekDay(facilityConfig.facility.reminderDay),
                   previousCountDate: previousStockCount !== null ? previousStockCount.doc.countDate : 'None',
                   previousCreatedDate: previousStockCount !== null ? previousStockCount.doc.created : 'None',
                   currentDueDate: currentDueDate,
                   mostRecentCountDate: latestStockCount.doc.countDate,
                   nextCountDate: nextCountDate,
-                  stockCountInterval: facilityConfig.value.facility.stockCountInterval,
+                  stockCountInterval: facilityConfig.facility.stockCountInterval,
                   completedCounts: groupedStockCount[key].length,
                   hasPendingStockCount: hasPendingStockCount(new Date(latestStockCount.doc.countDate), currentDueDate),
                   daysFromLastCountDate: daysFromLastCount
