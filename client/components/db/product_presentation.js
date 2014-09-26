@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('ProductPresentation', function($rootScope, $q, couchdb) {
-    var dbName = 'product_presentation';
+  .factory('ProductPresentation', function($rootScope, $http, $q) {
+    var URL = '/api/product_presentations';
     var allPromise = null;
 
     $rootScope.$on('currentUserChanged', function() {
@@ -11,7 +11,7 @@ angular.module('lmisApp')
 
     return {
       /**
-       * Read data from db and arrange it as a hash of uuid -> product profile
+       * Read data from db and arrange it as a hash of id -> product profile
        */
       all: function(reload) {
         if (!reload && allPromise)
@@ -20,18 +20,19 @@ angular.module('lmisApp')
         var d = $q.defer();
         allPromise = d.promise;
 
-        couchdb.allDocs({_db: dbName}).$promise
-          .then(function(response) {
-            var products = {};
-            response.rows.forEach(function(row) {
-              products[row.doc.uuid] = row.doc;
+        $http.get(URL)
+          .success(function(data) {
+            var presentations = {};
+            data.forEach(function(presentation) {
+              presentations[presentation._id] = presentation;
             });
-            d.resolve(products);
+
+            d.resolve(presentations);
           })
-          .catch(function(error) {
-            console.log(error);
+          .error(function(err) {
+            console.log(err);
             allPromise = null;
-            d.reject(error);
+            d.reject(err);
           });
 
         return d.promise;
