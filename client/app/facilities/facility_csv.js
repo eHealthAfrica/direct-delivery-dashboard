@@ -21,7 +21,7 @@ angular.module('lmisApp')
           zone: summary.zone,
           lga: summary.lga,
           facility: summary.facility,
-          reporting: summary.isNonReporting,
+          reporting: !summary.isNonReporting,
           reportDate: summary.lastCountDate,
           contactName: summary.contact.name,
           contactPhone: summary.contact.phone,
