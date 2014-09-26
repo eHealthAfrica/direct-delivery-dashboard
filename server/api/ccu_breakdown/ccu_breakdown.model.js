@@ -8,7 +8,9 @@ var db = new (cradle.Connection)().database('ccu_breakdown');
 exports.byDate = byDate;
 
 function byDate(options, cb) {
-  var opts = {};
+  var opts = {
+    descending: true
+  };
 
   if (options) {
     if (options.limit !== undefined && !isNaN(options.limit))
