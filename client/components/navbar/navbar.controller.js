@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('NavbarCtrl', function ($scope, $location, Auth) {
+  .controller('NavbarCtrl', function ($scope, $location, $route, Auth) {
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
@@ -14,7 +14,7 @@ angular.module('lmisApp')
 
     $scope.logout = function() {
       Auth.logout();
-      $location.path('/');
+      $route.reload()
     };
 
     $scope.isActive = function(route) {
