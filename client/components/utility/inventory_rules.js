@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('inventoryRulesFactory', function () {
+  .factory('InventoryRules', function () {
 
     // Returns the average of a list of numbers
     var average = function(things) {

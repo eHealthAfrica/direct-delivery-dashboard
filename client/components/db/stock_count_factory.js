@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('stockCount', function ($q, couchdb, inventoryRulesFactory, ProductProfile, ProductType, Facility, appConfigFactory, utility) {
+  .factory('stockCount', function ($q, couchdb, InventoryRules, ProductProfile, ProductType, Facility, appConfigFactory, utility) {
     var DB_NAME = 'stockcount',
       DAILY = 1,
       WEEKLY = 7,
@@ -59,8 +59,8 @@ angular.module('lmisApp')
           return row.products[key];
         });
 
-        inventoryRulesFactory.bufferStock(products).forEach(function (product) {
-          inventoryRulesFactory.reorderPoint(product);
+        InventoryRules.bufferStock(products).forEach(function (product) {
+          InventoryRules.reorderPoint(product);
         });
       });
 
