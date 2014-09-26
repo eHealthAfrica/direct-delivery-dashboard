@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('StockCountCtrl', function ($scope, $q, $filter, Pagination, Places, ProductType, Facility, stockCount) {
+  .controller('StockCountCtrl', function ($scope, $q, $filter, $routeParams, Pagination, Places, ProductType, Facility, stockCount) {
     var rows = [];
 
     $scope.filteredRows = [];
@@ -14,10 +14,18 @@ angular.module('lmisApp')
     $scope.places = null;
 
     $scope.place = {
-      type: 0,
+      type: Places.STATE,
       columnTitle: 'Zone',
       search: ''
     };
+
+    if ($routeParams.facility) {
+      $scope.search = {
+        facility: {
+          name: $routeParams.facility
+        }
+      };
+    }
 
     $scope.from = {
       opened: false,
@@ -32,7 +40,7 @@ angular.module('lmisApp')
 
     $scope.to = {
       opened: false,
-      date: moment().endOf('day').subtract('days', 1).toDate(),
+      date: moment().endOf('day').toDate(),
       open: function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
@@ -52,23 +60,23 @@ angular.module('lmisApp')
       var filterBy = 'state';
       var groupBy = 'zone';
       var columnTitle = 'Zone';
-      switch (parseInt($scope.place.type)) {
-        case 1:
+      switch ($scope.place.type) {
+        case Places.ZONE:
           filterBy = 'zone';
           groupBy = 'lga';
           columnTitle = 'LGA';
           break;
-        case 2:
+        case Places.LGA:
           filterBy = 'lga';
           groupBy = 'ward';
           columnTitle = 'Ward';
           break;
-        case 3:
+        case Places.WARD:
           filterBy = 'ward';
           groupBy = 'name';
           columnTitle = 'Facility';
           break;
-        case 4:
+        case Places.FACILITY:
           filterBy = 'name';
           groupBy = 'name';
           columnTitle = 'Facility';
@@ -92,10 +100,8 @@ angular.module('lmisApp')
             };
 
             row.unopened.forEach(function (unopened) {
-              // take first value, which is the most recent one as the data is
-              // sorted by date in descending order
-              if (totals[key].values[unopened.productType.code] === undefined)
-                totals[key].values[unopened.productType.code] = unopened.count;
+              var code = unopened.productType.code;
+              totals[key].values[code] = (totals[key].values[code] || 0) + unopened.count;
             });
           });
       }
@@ -141,13 +147,9 @@ angular.module('lmisApp')
       .then(function (responses) {
         $scope.productTypes = responses[0];
 
-        stockCount.resolveUnopened(responses[1])
+        stockCount.resolveUnopened(stockCount.latest(responses[1]))
           .then(function (resolved) {
-            rows = resolved.sort(function (a, b) {
-              if (a.created > b.created) return -1;
-              if (a.created < b.created) return 1;
-              return 0;
-            });
+            rows = resolved;
 
             var startState = '';
 

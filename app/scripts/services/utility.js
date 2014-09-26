@@ -2,10 +2,10 @@
 // AngularJS will instantiate a singleton by calling "new" on this function
 angular.module('lmisApp')
   .service('utility', function utility($filter) {
-    this.castArrayToObject = function(array, key){
+    this.castArrayToObject = function(array, key) {
       var newObject = {};
       key = angular.isUndefined(key) ? 'uuid' : key;
-      if(angular.isArray(array)) {
+      if (angular.isArray(array)) {
         for (var i = 0; i < array.length; i++) {
           newObject[array[i][key]] = array[i];
         }
@@ -13,8 +13,8 @@ angular.module('lmisApp')
       return newObject;
     };
 
-    this.removeFromArray = function (needle, haystack) {
-      if(angular.isArray(haystack)){
+    this.removeFromArray = function(needle, haystack) {
+      if (angular.isArray(haystack)) {
         var index = haystack.indexOf(needle);
         return index !== -1 ? haystack.splice(index, 1) : haystack;
       }
@@ -25,7 +25,7 @@ angular.module('lmisApp')
       return obj != null && hasOwnProperty.call(obj, key);
     };
 
-    this.getWeekRangeByDate = function (date, reminderDay) {
+    this.getWeekRangeByDate = function(date, reminderDay) {
       var currentDate = date;
       // First day of current week is assumed to be Sunday, if current date is
       // 19-12-2014, which is Thursday = 4, then date of first day of current week
@@ -50,7 +50,7 @@ angular.module('lmisApp')
       var reminderDate = new Date(
         currentDate.getFullYear(),
         currentDate.getMonth(),
-          firstDayOfCurrentWeek + reminderDay, 0, 0, 0
+        firstDayOfCurrentWeek + reminderDay, 0, 0, 0
       );
 
       return {
@@ -61,7 +61,7 @@ angular.module('lmisApp')
 
     };
 
-    this.getFullDate = function (date) {
+    this.getFullDate = function(date) {
       //TODO: add validation for invalid date object.
       if (!angular.isDate(date)) {
         date = new Date(date);//create date object
@@ -69,9 +69,29 @@ angular.module('lmisApp')
       return $filter('date')(date, 'yyyy-MM-dd');
     };
 
-    this.getWeekDay = function (weekDayNumber) {
+    this.getWeekDay = function(weekDayNumber) {
       var weekDay = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
       return angular.isDefined(weekDay[weekDayNumber]) ? weekDay[weekDayNumber] : null;
-    }
+    };
 
+    this.values = function(obj) {
+      var values = [];
+      for (var key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+          values.push(obj[key]);
+        }
+      }
+      return values;
+    };
+
+    this.getFileName = function(prefix, ext) {
+      prefix = (prefix || '').toLowerCase().replace(/ /g, '-');
+      ext = ext || '.csv';
+      var now = $filter('date')(new Date(), 'yyyy-MM-dd-HH-mm-ss');
+      return prefix + '-' + now + ext;
+    };
+
+    this.isNotDesignDoc = function(doc) {
+      return doc && doc._id && doc._id.substr(0, 7) !== '_design';
+    };
   });

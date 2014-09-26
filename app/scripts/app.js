@@ -6,6 +6,7 @@ angular
     'ngSanitize',
     'ngRoute',
     'ngResource',
+    'ngCsv',
     'nvd3ChartDirectives',
     'ui.bootstrap',
     'ngTable'
@@ -48,6 +49,15 @@ angular
         templateUrl: 'views/stock-count-summary.html',
         controller: 'StockCountSummaryCtrl'
       })
+      .when('/inventory', {
+        templateUrl: 'views/inventory.html',
+        controller: 'InventoryCtrl'
+      })
+      .when('/facilities', {
+        templateUrl: 'views/facilities.html',
+        controller: 'FacilitiesCtrl',
+        controllerAs: 'facilitiesCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
@@ -68,8 +78,10 @@ angular
       };
     }]);
   })
-  .run(function ($rootScope, $route, SETTINGS, Auth, State, Zone, LGA, Ward, Facility) {
+  .run(function ($rootScope, $route, SETTINGS, utility, Auth, State, Zone, LGA, Ward, Facility) {
     $rootScope.SETTINGS = SETTINGS;
+
+    $rootScope.getFileName = utility.getFileName;
 
     $rootScope.logout = function() {
       Auth.logout()

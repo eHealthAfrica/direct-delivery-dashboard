@@ -38,17 +38,26 @@
     </div>
     <ul class="nav navbar-nav">
       <li ng-class="{active: isActive('/')}"><a href="#/">Home</a></li>
+      <li ng-class="{active: isActive('/inventory')}">
+        <a href="#/inventory">Inventory</a>
+      </li>
       <li ng-class="{active: isActive('/ccu-breakdown')}">
         <a href="#/ccu-breakdown">CCU Breakdown</a>
       </li>
       <li ng-class="{active: isActive('/stock-count')}">
         <a href="#/stock-count">Stock Count</a>
       </li>
+      <li ng-class="{active: isActive('/waste-count')}">
+        <a href="#/waste-count">Waste Count</a>
+      </li>
       <li ng-class="{active: isActive('/stock-out')}">
         <a href="#/stock-out">Stock Out</a>
       </li>
-      <li ng-class="{active: isActive('/stock-count-summary')}">
+      <!--li ng-class="{active: isActive('/stock-count-summary')}">
         <a href="#/stock-count-summary">Stock Count Summary</a>
+      </li-->
+      <li ng-class="{active: isActive('/facilities')}">
+        <a href="#/facilities">Facilities</a>
       </li>
       <li ng-class="{active: isActive('/stock-count-summary')}">
         <a href="#/ledger">Ledger</a>
@@ -56,7 +65,7 @@
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li ng-show="currentUser" class="dropdown">
-        <a class="dropdown-toggle" href="#" data-toggle="dropdown">{{currentUser.name}} <span class="caret"></span></a>
+        <a class="dropdown-toggle" href="#" data-toggle="dropdown">Logged in as: {{currentUser.name}} <span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
           <li><a ng-click="logout()">Logout</a></li>
         </ul>
@@ -98,6 +107,7 @@
 <script src="bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js"></script>
 <script src="bower_components/moment/moment.js"></script>
 <script src="bower_components/pouchdb/dist/pouchdb-nightly.js"></script>
+<script src="bower_components/ng-csv/build/ng-csv.min.js"></script>
 <script src="bower_components/ng-table/ng-table.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
@@ -125,11 +135,22 @@
 <script src="scripts/services/zone.js"></script>
 <script src="scripts/services/lga.js"></script>
 <script src="scripts/services/ward.js"></script>
+<script src="scripts/services/product-category.js"></script>
+<script src="scripts/services/waste-count-factory.js"></script>
+<script src="scripts/services/uom-factory.js"></script>
+<script src="scripts/services/product_presentation.js"></script>
+<script src="scripts/services/facility-reports.js"></script>
+<script src="scripts/services/facility-csv.js"></script>
+<script src="scripts/services/facility-chart.js"></script>
+<script src="scripts/services/facility-filters.js"></script>
 <script src="scripts/controllers/login.js"></script>
 <script src="scripts/controllers/main.js"></script>
 <script src="scripts/controllers/ccu_breakdown.js"></script>
 <script src="scripts/controllers/stock_count.js"></script>
 <script src="scripts/controllers/stock_out.js"></script>
+<script src="scripts/controllers/inventory.js"></script>
+<script src="scripts/controllers/waste-count.js"></script>
+<script src="scripts/controllers/facilities.js"></script>
 <script src="scripts/controllers/legder.js"></script>
 <!-- endbuild -->
 </body>

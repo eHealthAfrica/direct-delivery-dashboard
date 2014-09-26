@@ -1,0 +1,61 @@
+<div class="row">
+  <div class="col-md-12">
+    <h2 class="page-header">Waste Count</h2>
+    <div class="row" ng-show="loading || error">
+      <div class="col-xs-12">
+        <div class="alert alert-info" ng-show="loading">
+          Loading ...
+        </div>
+        <div class="alert alert-danger" ng-show="error">
+          Error loading data.
+        </div>
+      </div>
+    </div>
+
+    <div class="row"  ng-hide="loading || error">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+
+          </div>
+          <table class="nested-repeat table table-condensed table-responsive table-bordered">
+            <thead>
+            <tr>
+              <th>#</th>
+              <th>State</th>
+              <th>Zone</th>
+              <th>LGA</th>
+              <th>Ward</th>
+              <th>Facility</th>
+              <th>Created Date</th>
+              <th>Product</th>
+              <th>Reason</th>
+              <th>Quantity</th>
+            </tr>
+            </thead>
+            <tbody ng-repeat="(parentIndex, rows) in filteredRows | limitTo:pagination.limit | limitTo:-pagination.count">
+            <tr ng-class="{'grey-bg': !(parentIndex % 2)}" ng-repeat="row in rows.reasons">
+              <td ng-if="$index === 0" rowspan="{{ rows.reasons.length }}">{{ parentIndex + 1 +  ((pagination.currentPage-1) * pagination.itemsPerPage) }}</td>
+              <td ng-if="$index === 0" rowspan="{{ rows.reasons.length }}">{{ (rows.facility).state }}</td>
+              <td ng-if="$index === 0" rowspan="{{ rows.reasons.length }}">{{ (rows.facility).zone }}</td>
+              <td ng-if="$index === 0" rowspan="{{ rows.reasons.length }}">{{ (rows.facility).lga }}</td>
+              <td ng-if="$index === 0" rowspan="{{ rows.reasons.length }}">{{ (rows.facility).ward }}</td>
+              <td ng-if="$index === 0" rowspan="{{ rows.reasons.length }}">{{ rows.facilityName }}</td>
+              <td ng-if="$index === 0" rowspan="{{ rows.reasons.length }}">{{ rows.created | date:SETTINGS.dateTimeFormat }}</td>
+              <td ng-if="row.productIndex === 0" rowspan="{{ rows.productLevelList[row.key] }}">{{ row.productProfile }}</td>
+              <td>{{ row.reason }}</td>
+              <td>{{ row.value }}</td>
+            </tr>
+            </tbody>
+          </table>
+          <div class="text-center">
+            <pagination style="margin-top: 0" max-size="10" boundary-links="true" rotate="false"
+                        total-items="pagination.totalItems" items-per-page="pagination.itemsPerPage"
+                        ng-model="pagination.currentPage" ng-change="pagination.pageChanged()"></pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

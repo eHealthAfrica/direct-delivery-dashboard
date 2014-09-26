@@ -1,0 +1,136 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h2 class="page-header">{{title}}</h2>
+    <div class="row" ng-show="loading || error">
+      <div class="col-xs-12">
+        <div class="alert alert-info" ng-show="loading">
+          Loading ...
+        </div>
+        <div class="alert alert-danger" ng-show="error">
+          Error loading data.
+        </div>
+      </div>
+    </div>
+    <div class="row" ng-hide="loading || error">
+      <div class="col-xs-12">
+        <h3>Latest Summary</h3>
+        <div class="table-scroller">
+          <table class="table table-condensed table-bordered table-striped table-condensed">
+            <thead>
+              <tr>
+                <th ng-repeat="productType in productTypes"
+                  ng-class="productType.style">{{ productType.code }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td ng-repeat="value in summary track by $index">
+                  {{ value }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Latest Details</h3>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <button class="btn btn-primary pull-right hidden-print" type="button"
+              ng-csv="totals" csv-header="totalsHeaders" filename="{{getFileName(title)}}">
+              Export
+            </button>
+            <form class="form-inline">
+              <div class="form-group">
+                <label for="placeType">Place Type:</label>
+                <select id="placeType" class="form-control" ng-model="place.type" ng-change="place.search = ''">
+                  <option value=""></option>
+                  <option value="state">State</option>
+                  <option value="zone">Zone</option>
+                  <option value="lga">LGA</option>
+                  <option value="ward">Ward</option>
+                  <option value="facility">Facility</option>
+                </select>
+              </div>
+              &nbsp;
+              <div class="form-group has-feedback">
+                <input type="text" class="form-control filter" placeholder="Place Name"
+                  ng-model="place.search" ng-disabled="!place.type.length"
+                  typeahead="place for place in getPlaces($viewValue)"
+                  typeahead-loading="places.loading">
+                      <span ng-show="places.loading"
+                        class="glyphicon glyphicon-refresh form-control-feedback"></span>
+              </div>
+              &nbsp;
+              <div class="form-group">
+                <div class="input-group">
+                  <input type="text" class="form-control" ng-model="from.date"
+                    datepicker-popup is-open="from.opened"/>
+                        <span class="input-group-btn">
+                          <button type="button" class="btn btn-default" ng-click="from.open($event)">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                          </button>
+                        </span>
+                </div>
+              </div>
+              &nbsp;
+              <div class="form-group">
+                <div class="input-group">
+                  <input type="text" class="form-control" ng-model="to.date"
+                    datepicker-popup is-open="to.opened"/>
+                        <span class="input-group-btn">
+                          <button type="button" class="btn btn-default" ng-click="to.open($event)">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                          </button>
+                        </span>
+                </div>
+              </div>
+              &nbsp;
+              <button type="button" class="btn btn-primary hidden-print" ng-click="updateTotals()">
+                Apply
+              </button>
+            </form>
+          </div>
+          <div class="table-scroller">
+            <table class="table table-condensed table-bordered table-striped table-hover">
+              <thead>
+                <tr>
+                  <th class="place-type">{{ place.columnTitle }}</th>
+                  <th ng-repeat="productType in productTypes"
+                    ng-class="productType.style">{{ productType.code }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="total in totals" ng-click="updateFor(total[0])">
+                  <td ng-repeat="value in total track by $index">
+                    {{ value }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div style="page-break-inside: avoid">
+          <h3>Over Time</h3>
+          <div class="panel panel-primary center-block" style="width: 1024px">
+            <div class="panel-body">
+              <nvd3-line-chart
+                data="chartData"
+                width="1024"
+                height="600"
+                showXAxis="true"
+                xAxisTickValues="getXTickValues()"
+                xAxisTickFormat="formatDateAxisFunction()"
+                staggerLabels="true"
+                showYAxis="true"
+                showLegend="true"
+                margin="{right:80}">
+                <svg></svg>
+              </nvd3-line-chart>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
