@@ -12,9 +12,10 @@ angular.module('lmisApp')
 
     return {
       /**
-       * Represents a unknown facility. Used for facility uuids not in the db.
+       * Represents a unknown facility. Used for facility ids not in the db.
        */
       unknown: {
+        _id: '_unknown_',
         uuid: '_unknown_',
         name: '** Unknown **',
         state: '** Unknown **',
@@ -24,7 +25,7 @@ angular.module('lmisApp')
       },
 
       /**
-       * Read data from db and arrange it as a hash of uuid -> facility
+       * Read data from db and arrange it as a hash of id -> facility
        */
       all: function(reload) {
         if (!reload && allPromise)
@@ -38,7 +39,7 @@ angular.module('lmisApp')
           .success(function(data) {
             var facilities = {};
             data.forEach(function(facility) {
-              facilities[facility.uuid] = facility;
+              facilities[facility._id] = facility;
               if (names.indexOf(facility.name) < 0)
                 names.push(facility.name);
             });

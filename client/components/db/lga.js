@@ -26,7 +26,7 @@ angular.module('lmisApp')
           .success(function(data) {
             var lgas = {};
             data.forEach(function(lga) {
-              lgas[lga.uuid] = lga.name;
+              lgas[lga._id] = lga.name;
               if (names.indexOf(lga.name) < 0)
                 names.push(lga.name);
             });

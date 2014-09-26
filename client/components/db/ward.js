@@ -26,7 +26,7 @@ angular.module('lmisApp')
           .success(function(data) {
             var wards = {};
             data.forEach(function(ward) {
-              wards[ward.uuid] = ward.name;
+              wards[ward._id] = ward.name;
               if (names.indexOf(ward.name) < 0)
                 names.push(ward.name);
             });
