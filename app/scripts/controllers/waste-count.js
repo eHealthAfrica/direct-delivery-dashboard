@@ -8,8 +8,9 @@ angular.module('lmisApp')
         controller: 'WasteCountCtrl'
       })
   })
-  .controller('WasteCountCtrl', function ($scope, wasteCountFactory, Pagination, $filter) {
+  .controller('WasteCountCtrl', function ($scope, wasteCountFactory, Pagination, $filter, utility, Places, Facility) {
     var rows = [];
+    var latestRows = [];
 
     $scope.filteredRows = [];
     $scope.search = {};
@@ -17,14 +18,18 @@ angular.module('lmisApp')
     $scope.totals = [];
     $scope.loading = true;
     $scope.error = false;
-
-    $scope.updateTotals = function () {
-      var totals = {};
-      $scope.totals = Object.keys(totals).map(function (key) {
-        var item = totals[key];
-        return {};
-      });
-    };
+    $scope.csvHeader = [
+      's/n',
+      'State',
+      'Zone',
+      'LGA',
+      'Ward',
+      'Facility',
+      'Created Date',
+      'Product',
+      'Reason',
+      'Quantity'
+    ];
 
 
 
@@ -48,6 +53,26 @@ angular.module('lmisApp')
       });
 
       $scope.pagination.totalItemsChanged($scope.filteredRows.length);
+    }
+
+    function filter(rows, filterBy) {
+      var search = $scope.place.search.toLowerCase();
+
+      return rows.filter(function (row) {
+        var date = moment(row.created);
+        var include = true;
+
+        if (search && filterBy)
+          include = include && (row.facility[filterBy].toLowerCase() == search);
+
+        if ($scope.from.date)
+          include = include && (date.isSame($scope.from.date, 'day') || date.isAfter($scope.from.date));
+
+        if ($scope.to.date)
+          include = include && (date.isSame($scope.to.date, 'day') || date.isBefore($scope.to.date));
+
+        return include;
+      });
     }
 
     wasteCountFactory.getFormatted()
