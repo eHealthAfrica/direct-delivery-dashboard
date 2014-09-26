@@ -18,6 +18,7 @@ module.exports = function(app) {
   app.use('/api/cceis', require('./api/ccei'));
   app.use('/api/product_categories', require('./api/product_category'));
   app.use('/api/product_presentations', require('./api/product_presentation'));
+  app.use('/api/product_profiles', require('./api/product_profile'));
 
   app.use('/auth', require('./auth'));
   
