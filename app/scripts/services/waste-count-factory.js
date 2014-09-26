@@ -55,42 +55,44 @@ angular.module('lmisApp')
           var formattedWasteCount = [];
           wasteCounts
             .forEach(function(wasteCount) {
+              if(angular.isDefined(facilities[wasteCount.facility])) {
+                var list = {
+                  uuid: wasteCount.uuid,
+                  facilityName: angular.isUndefined(facilities[wasteCount.facility]) ? wasteCount.facility : facilities[wasteCount.facility].name,
+                  facility: angular.isUndefined(facilities[wasteCount.facility]) ? wasteCount.facility : facilities[wasteCount.facility],
+                  created: wasteCount.created,
+                  reasons: [],
+                  productLevelList: {}
+                };
 
-              var list = {
-                uuid: wasteCount.uuid,
-                facilityName: angular.isUndefined(facilities[wasteCount.facility]) ? wasteCount.facility : facilities[wasteCount.facility].name,
-                created: wasteCount.created,
-                reasons: [],
-                productLevelList: {}
-              };
+                (Object.keys(wasteCount.discarded)).forEach(function (productProfileUUID) {
 
-              (Object.keys(wasteCount.discarded)).forEach(function(productProfileUUID) {
+                  if (angular.isDefined(productProfiles[productProfileUUID])) {
+                    var uom = uomList[productPresentation[productProfiles[productProfileUUID].presentation].uom].symbol;
+                    list.productLevelList[productProfileUUID] = (Object.keys(wasteCount.reason[productProfileUUID])).length;
 
-                if (angular.isDefined(productProfiles[productProfileUUID])) {
-                  var uom = uomList[productPresentation[productProfiles[productProfileUUID].presentation].uom].symbol;
-                  list.productLevelList[productProfileUUID] = (Object.keys(wasteCount.reason[productProfileUUID])).length;
+                    (Object.keys(wasteCount.reason[productProfileUUID])).forEach(function (reason, index) {
 
-                  (Object.keys(wasteCount.reason[productProfileUUID])).forEach(function(reason, index) {
+                      list.reasons.push({
+                        uuid: wasteCount.uuid,
+                        productIndex: index,
+                        value: wasteCount.reason[productProfileUUID][reason],
+                        key: productProfileUUID,
+                        productProfile: productProfiles[productProfileUUID].name,
+                        reason: wasteReasons[reason],
+                        uom: uom,
+                        created: wasteCount.created,
+                        productList: (Object.keys(wasteCount.discarded)).length
+                      });
 
-                    list.reasons.push({
-                      uuid: wasteCount.uuid,
-                      productIndex: index,
-                      value: wasteCount.reason[productProfileUUID][reason],
-                      key: productProfileUUID,
-                      productProfile: productProfiles[productProfileUUID].name,
-                      reason: wasteReasons[reason],
-                      uom: uom,
-                      created: wasteCount.created,
-                      productList: (Object.keys(wasteCount.discarded)).length
                     });
 
-                  });
+                  }
 
-                }
+                });
 
-              });
-
-              formattedWasteCount.push(list);
+                formattedWasteCount.push(list);
+              }
             });
 
           deferred.resolve(formattedWasteCount);
