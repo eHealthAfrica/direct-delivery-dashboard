@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('wasteCountFactory', function ($q, couchdb, ProductProfile, UomFactory, ProductPresentation, ProductType, Facility) {
-    var DB_NAME = 'discard_count';
+  .factory('wasteCountFactory', function($http, $q, ProductProfile, UomFactory, ProductPresentation, Facility) {
+    var URL = '/api/waste_count';
     var wasteReasons = [
       'VVM Stage 3',
       'Broken Vial',
@@ -14,16 +14,18 @@ angular.module('lmisApp')
     ];
 
     function getAll() {
-      var deferred = $q.defer();
-      couchdb.allDocs({_db: DB_NAME}).$promise
-        .then(function(response) {
-          deferred.resolve(getDocFromRows(response.rows))
+      var d = $q.defer();
+
+      $http.get(URL)
+        .success(function(data) {
+          d.resolve(data)
         })
-        .catch(function(reason) {
-          deferred.reject(reason);
+        .error(function(err) {
+          console.log(err);
+          d.reject(err);
         });
 
-      return deferred.promise;
+      return d.promise;
     }
 
     function getDocFromRows(rows) {
@@ -78,16 +80,16 @@ angular.module('lmisApp')
                     (Object.keys(wasteCount.reason[productProfileUUID])).forEach(function (reason, index) {
                         list.wasteCount[productTypes[productProfiles[productProfileUUID].product].code] += wasteCount.reason[productProfileUUID][reason];
                         list.reasons.push({
-                        uuid: wasteCount.uuid,
-                        productIndex: index,
-                        value: wasteCount.reason[productProfileUUID][reason],
-                        key: productProfileUUID,
-                        productProfile: productProfiles[productProfileUUID].name,
-                        reason: wasteReasons[reason],
-                        uom: uom,
-                        created: wasteCount.created,
-                        productList: (Object.keys(wasteCount.discarded)).length
-                      });
+                          uuid: wasteCount.uuid,
+                          productIndex: index,
+                          value: wasteCount.reason[productProfileUUID][reason],
+                          key: productProfileUUID,
+                          productProfile: productProfiles[productProfileUUID].name,
+                          reason: wasteReasons[reason],
+                          uom: uom,
+                          created: wasteCount.created,
+                          productList: (Object.keys(wasteCount.discarded)).length
+                        });
 
                       });
 

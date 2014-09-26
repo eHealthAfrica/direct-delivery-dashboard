@@ -22,9 +22,8 @@ module.exports = function(app) {
   app.use('/api/product_presentations', require('./api/product_presentation'));
   app.use('/api/product_profiles', require('./api/product_profile'));
   app.use('/api/product_types', require('./api/product_type'));
-
   app.use('/api/ccu_breakdown', require('./api/ccu_breakdown'));
-
+  app.use('/api/waste_count', require('./api/waste_count'));
   app.use('/api/app_config', require('./api/app_config'));
 
   app.use('/auth', require('./auth'));
