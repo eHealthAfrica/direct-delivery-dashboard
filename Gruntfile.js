@@ -139,7 +139,6 @@ module.exports = function (grunt) {
     wiredep: {
       app: {
         src: ['<%= yeoman.app %>/index.html'],
-        exclude: ['es5-shim', 'json3'],
         ignorePath: '<%= yeoman.app %>/'
       }
     },
