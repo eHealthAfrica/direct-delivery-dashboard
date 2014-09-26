@@ -15,6 +15,7 @@ module.exports = function(app) {
   app.use('/api/lgas', require('./api/lga'));
   app.use('/api/zones', require('./api/zone'));
   app.use('/api/states', require('./api/state'));
+  app.use('/api/cceis', require('./api/ccei'));
 
   app.use('/auth', require('./auth'));
   
