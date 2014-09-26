@@ -8,3 +8,7 @@ exports.removeDesignDocs = function removeDesignDocs(docs) {
     return doc && doc._id && doc._id.substr(0, 7) !== '_design';
   });
 };
+
+exports.parseBool = function parseBool(value) {
+  return (value === true || value === 'true' || value === '1' || value === 1);
+};

@@ -23,6 +23,8 @@ module.exports = function(app) {
   app.use('/api/product_profiles', require('./api/product_profile'));
   app.use('/api/product_types', require('./api/product_type'));
 
+  app.use('/api/ccu_breakdown', require('./api/ccu_breakdown'));
+
   app.use('/api/app_config', require('./api/app_config'));
 
   app.use('/auth', require('./auth'));

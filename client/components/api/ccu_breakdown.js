@@ -1,8 +1,22 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('ccuBreakdown', function($q, couchdb, CCEI, Facility) {
-    var dbName = 'ccu_breakdown';
+  .factory('ccuBreakdown', function($http, $q, CCEI, Facility) {
+    var URL = '/api/ccu_breakdown';
+
+    function request(url, params) {
+      var d = $q.defer();
+
+      $http.get(url, {params: params || {}})
+        .success(function(data) {
+          d.resolve(data);
+        })
+        .error(function(err) {
+          d.reject(err);
+        });
+
+      return d.promise;
+    }
 
     return {
       /**
@@ -16,35 +30,28 @@ angular.module('lmisApp')
        *
        */
       byDate: function(options) {
-        options = options || {};
-
-        var limit = options.limit;
-        var descending = options.descending !== undefined ? !!options.descending : true;
-
-        var params = { _db: dbName, _param: 'ccu_breakdown', _sub_param: 'by_date', descending: descending };
-        if (limit !== undefined && !isNaN(limit))
-          params.limit = parseInt(limit);
-
         var d = $q.defer();
+
         $q.all([
-            couchdb.view(params).$promise,
+            request(URL + '/by_date', options),
             CCEI.all(),
             Facility.all()
           ])
           .then(function(response) {
-            var rows = response[0].rows;
+            var rows = response[0];
             var cceis = response[1];
             var facilities = response[2];
+
             d.resolve(rows.map(function(row) {
-              var modelId = row.value.ccuProfile.dhis2_modelid;
+              var modelId = row.ccuProfile.dhis2_modelid;
               var name = modelId !== undefined ? cceis[modelId] : undefined;
               if (name === undefined)
                 name = '** Unknown (' + modelId + ') **';
 
               return {
                 name: name,
-                created: row.value.created,
-                facility: facilities[row.value.facility]
+                created: row.created,
+                facility: facilities[row.facility]
               };
             }));
           })
