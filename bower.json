@@ -24,7 +24,6 @@
     "lodash": "~2.4.1",
     "angularjs-nvd3-directives": "~0.0.7",
     "moment": "~2.8.3",
-    "pouchdb": "~3.0.6",
     "ng-csv": "~0.2.4"
   },
   "devDependencies": {
