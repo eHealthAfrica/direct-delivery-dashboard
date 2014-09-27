@@ -1,22 +1,8 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('ccuBreakdown', function($http, $q, CCEI, Facility) {
+  .factory('ccuBreakdown', function($http, $q, utility, CCEI, Facility) {
     var URL = '/api/ccu_breakdown';
-
-    function request(url, params) {
-      var d = $q.defer();
-
-      $http.get(url, {params: params || {}})
-        .success(function(data) {
-          d.resolve(data);
-        })
-        .error(function(err) {
-          d.reject(err);
-        });
-
-      return d.promise;
-    }
 
     return {
       /**
@@ -33,7 +19,7 @@ angular.module('lmisApp')
         var d = $q.defer();
 
         $q.all([
-            request(URL + '/by_date', options),
+            utility.request(URL + '/by_date', options),
             CCEI.all(),
             Facility.all()
           ])

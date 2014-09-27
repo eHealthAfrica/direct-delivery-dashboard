@@ -1,7 +1,7 @@
 'use strict';
 // AngularJS will instantiate a singleton by calling "new" on this function
 angular.module('lmisApp')
-  .service('utility', function utility($filter) {
+  .service('utility', function utility($filter, $q, $http) {
     this.castArrayToObject = function(array, key) {
       var newObject = {};
       key = angular.isUndefined(key) ? 'uuid' : key;
@@ -94,4 +94,18 @@ angular.module('lmisApp')
     this.isNotDesignDoc = function(doc) {
       return doc && doc._id && doc._id.substr(0, 7) !== '_design';
     };
+
+    this.request = function request(url, params) {
+      var d = $q.defer();
+
+      $http.get(url, {params: params || {}})
+        .success(function(data) {
+          d.resolve(data);
+        })
+        .error(function(err) {
+          d.reject(err);
+        });
+
+      return d.promise;
+    }
   });

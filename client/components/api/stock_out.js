@@ -1,22 +1,8 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('stockOut', function($http, $q, ProductType, Facility) {
+  .factory('stockOut', function($http, $q, utility, ProductType, Facility) {
     var URL = '/api/stock_out';
-
-    function request(url, params) {
-      var d = $q.defer();
-
-      $http.get(url, {params: params || {}})
-        .success(function(data) {
-          d.resolve(data);
-        })
-        .error(function(err) {
-          d.reject(err);
-        });
-
-      return d.promise;
-    }
 
     return {
       /**
@@ -34,7 +20,7 @@ angular.module('lmisApp')
         var d = $q.defer();
 
         $q.all([
-            request(URL + '/by_date', options),
+            utility.request(URL + '/by_date', options),
             ProductType.all(),
             Facility.all()
           ])
