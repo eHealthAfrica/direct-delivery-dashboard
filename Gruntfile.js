@@ -550,16 +550,12 @@ module.exports = function(grunt) {
       },
       dev: {
         constants: {
-          SETTINGS: {
-            dbUrl: 'http://dev.lomis.ehealth.org.ng:5984/'
-          }
+          SETTINGS: {}
         }
       },
       prod: {
         constants: {
-          SETTINGS: {
-            dbUrl: 'http://lomis.ehealth.org.ng:5984/'
-          }
+          SETTINGS: {}
         }
       }
     }

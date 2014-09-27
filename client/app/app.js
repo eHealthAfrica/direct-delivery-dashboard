@@ -24,11 +24,9 @@ angular.module('lmisApp', [
     return {
       // Add authorization token to headers
       request: function(config) {
-        if (config.url.indexOf(SETTINGS.dbUrl) !== 0) { // do not send auth to couch (remove when all communication goes to node server)
-          config.headers = config.headers || {};
-          if ($cookieStore.get('token')) {
-            config.headers.Authorization = 'Bearer ' + $cookieStore.get('token');
-          }
+        config.headers = config.headers || {};
+        if ($cookieStore.get('token')) {
+          config.headers.Authorization = 'Bearer ' + $cookieStore.get('token');
         }
         return config;
       },
