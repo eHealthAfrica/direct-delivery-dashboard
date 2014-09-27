@@ -57,8 +57,8 @@
                   <tbody>
                   <tr ng-repeat="facilityStockCount in facilityStockCounts[row.facilityUUID]">
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ ((facilityStockCount).doc).countDate | date: 'dd MMM yyyy' }}</td>
-                    <td>{{ ((facilityStockCount).doc).created | date: 'dd MMM yyyy HH:mm' }}</td>
+                    <td>{{ ((facilityStockCount)).countDate | date: 'dd MMM yyyy' }}</td>
+                    <td>{{ ((facilityStockCount)).created | date: 'dd MMM yyyy HH:mm' }}</td>
                   </tr>
                   </tbody>
                 </table>
