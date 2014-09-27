@@ -5,6 +5,7 @@ angular.module('lmisApp')
     $routeProvider
       .when('/stock-out', {
         templateUrl: 'app/stock_out/stock_out.html',
-        controller: 'StockOutCtrl'
+        controller: 'StockOutCtrl',
+        authenticate: true
       });
   });

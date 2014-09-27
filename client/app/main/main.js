@@ -6,6 +6,7 @@ angular.module('lmisApp')
       .when('/', {
         templateUrl: 'app/main/main.html',
         controller: 'MainCtrl',
+        authenticate: true,
         resolve: {
           facilities: ['Facility', function (Facility) {
             return Facility.all();

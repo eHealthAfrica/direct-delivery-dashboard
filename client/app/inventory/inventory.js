@@ -5,6 +5,7 @@ angular.module('lmisApp')
     $routeProvider
       .when('/inventory', {
         templateUrl: 'app/inventory/inventory.html',
-        controller: 'InventoryCtrl'
+        controller: 'InventoryCtrl',
+        authenticate: true
       });
   });

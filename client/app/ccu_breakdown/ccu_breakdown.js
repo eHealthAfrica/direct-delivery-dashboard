@@ -5,6 +5,7 @@ angular.module('lmisApp')
     $routeProvider
       .when('/ccu-breakdown', {
         templateUrl: 'app/ccu_breakdown/ccu_breakdown.html',
-        controller: 'CCUBreakdownCtrl'
+        controller: 'CCUBreakdownCtrl',
+        authenticate: true
       });
   });

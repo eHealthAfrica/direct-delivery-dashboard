@@ -6,6 +6,7 @@ angular.module('lmisApp')
       .when('/facilities', {
         templateUrl: 'app/facilities/facilities.html',
         controller: 'FacilitiesCtrl',
-        controllerAs: 'facilitiesCtrl'
+        controllerAs: 'facilitiesCtrl',
+        authenticate: true
       });
   });

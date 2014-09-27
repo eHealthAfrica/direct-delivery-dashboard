@@ -5,6 +5,7 @@ angular.module('lmisApp')
     $routeProvider
       .when('/waste-count', {
         templateUrl: 'app/waste_count/waste_count.html',
-        controller: 'WasteCountCtrl'
+        controller: 'WasteCountCtrl',
+        authenticate: true
       });
   });
