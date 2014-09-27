@@ -24,6 +24,7 @@
     "morgan": "~1.0.0",
     "passport": "~0.2.0",
     "passport-local": "~0.1.6",
+    "q": "^1.0.1",
     "serve-favicon": "~2.0.1",
     "winston": "^0.8.0"
   },

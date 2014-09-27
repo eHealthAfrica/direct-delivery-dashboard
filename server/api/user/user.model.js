@@ -6,16 +6,20 @@ var crypto = require('crypto');
 
 var db = new (cradle.Connection)().database('_users');
 
+// clear cache on db changes
+db.changes().on('change', function() {
+  db.cache.purge();
+});
+
+// exports
 exports.findById = findById;
 exports.findByName = findByName;
 exports.authenticate = authenticate;
 
 function findById(id, cb, auth) {
   db.get(id, function(err, user) {
-    if (user) {
-      delete user._rev;
-      if (!auth) clean(user);
-    }
+    if (user && !auth)
+      clean(user);
 
     cb(err, user);
   });

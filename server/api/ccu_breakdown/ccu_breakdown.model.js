@@ -13,9 +13,6 @@ function byDate(options, cb) {
   };
 
   if (options) {
-    if (options.limit !== undefined && !isNaN(options.limit))
-      opts.limit = parseInt(options.limit);
-
     if (options.descending !== undefined)
       opts.descending = utility.parseBool(options.descending);
   }

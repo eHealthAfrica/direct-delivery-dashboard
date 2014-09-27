@@ -1,11 +1,12 @@
 'use strict';
 
-var passport = require('passport');
+var _ = require('lodash');
 var config = require('../config/environment');
 var jwt = require('jsonwebtoken');
 var expressJwt = require('express-jwt');
 var compose = require('composable-middleware');
 var User = require('../api/user/user.model');
+var Facility = require('../api/facility/facility.model');
 var validateJwt = expressJwt({ secret: config.secrets.session });
 
 /**
@@ -17,21 +18,117 @@ function isAuthenticated() {
     // Validate jwt
     .use(function(req, res, next) {
       // allow access_token to be passed through query parameter as well
-      if(req.query && req.query.hasOwnProperty('access_token')) {
+      if (req.query && req.query.hasOwnProperty('access_token')) {
         req.headers.authorization = 'Bearer ' + req.query.access_token;
       }
       validateJwt(req, res, next);
     })
     // Attach user to request
     .use(function(req, res, next) {
-      User.findById(req.user._id, function (err, user) {
+      User.findById(req.user._id, function(err, user) {
         if (err) return next(err);
         if (!user) return res.send(401);
 
         req.user = user;
         next();
       });
+    })
+    // Attach lists of states, zones, lgas, wards and facilities to which user has access
+    .use(function(req, res, next) {
+      var access = {
+        states: {},
+        zones: {},
+        lgas: {},
+        wards: {},
+        facilities: []
+      };
+
+      if (req.user.access && req.user.access.level && req.user.access.items && req.user.access.items.length) {
+        var prop = req.user.access.level;
+        if (['state', 'zone', 'lga', 'ward', 'facility'].indexOf(prop) >= 0) {
+          if (prop === 'facility')
+            prop = 'name';
+
+          Facility.all(function(err, facilities) {
+            if (err) return next(err);
+
+            facilities.forEach(function(facility) {
+              if (facility[prop] && req.user.access.items.indexOf(facility[prop]) >= 0) {
+                if (facility.state) access.states[facility.state] = 1;
+                if (facility.zone) access.zones[facility.zone] = 1;
+                if (facility.lga) access.lgas[facility.lga] = 1;
+                if (facility.ward) access.wards[facility.ward] = 1;
+                access.facilities.push(facility._id);
+              }
+            });
+
+            done();
+          });
+        }
+        else
+          done();
+      }
+      else
+        done();
+
+      function done() {
+        req.access = {
+          states: _.keys(access.states),
+          zones: _.keys(access.zones),
+          lgas: _.keys(access.lgas),
+          wards: _.keys(access.wards),
+          facilities: access.facilities
+        };
+
+        next();
+      }
     });
+}
+
+/**
+ * Generic function for filtering data based on access rights of current user.
+ */
+function filterByAccess(req, level, rows, property) {
+  return rows.filter(function(row) {
+    var value = row[property];
+
+    return value && (req.access[level].indexOf(value) >= 0);
+  });
+}
+
+/**
+ * Filters data based on states access rights of current user.
+ */
+function filterByStates(req, rows, property) {
+  return filterByAccess(req, 'states', rows, property);
+}
+
+/**
+ * Filters data based on zones access rights of current user.
+ */
+function filterByZones(req, rows, property) {
+  return filterByAccess(req, 'zones', rows, property);
+}
+
+/**
+ * Filters data based on lgas access rights of current user.
+ */
+function filterByLgas(req, rows, property) {
+  return filterByAccess(req, 'lgas', rows, property);
+}
+
+/**
+ * Filters data based on wards access rights of current user.
+ */
+function filterByWards(req, rows, property) {
+  return filterByAccess(req, 'wards', rows, property);
+}
+
+/**
+ * Filters data based on facilities access rights of current user.
+ */
+function filterByFacilities(req, rows, property) {
+  return filterByAccess(req, 'facilities', rows, property);
 }
 
 /**
@@ -56,7 +153,7 @@ function hasRole(roleRequired) {
  * Returns a jwt token signed by the app secret
  */
 function signToken(id) {
-  return jwt.sign({ _id: id }, config.secrets.session, { expiresInMinutes: 60*5 });
+  return jwt.sign({ _id: id }, config.secrets.session, { expiresInMinutes: 60 * 5 });
 }
 
 /**
@@ -70,6 +167,11 @@ function setTokenCookie(req, res) {
 }
 
 exports.isAuthenticated = isAuthenticated;
+exports.filterByStates = filterByStates;
+exports.filterByZones = filterByZones;
+exports.filterByLgas = filterByLgas;
+exports.filterByWards = filterByWards;
+exports.filterByFacilities = filterByFacilities;
 exports.hasRole = hasRole;
 exports.signToken = signToken;
 exports.setTokenCookie = setTokenCookie;
