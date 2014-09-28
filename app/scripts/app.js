@@ -8,7 +8,8 @@ angular
     'ngResource',
     'ngCsv',
     'nvd3ChartDirectives',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'ngTable'
   ])
   .config(function ($httpProvider, $routeProvider) {
 

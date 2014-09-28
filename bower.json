@@ -21,6 +21,7 @@
     "angular-ui-bootstrap-bower": "~0.11.0",
     "moment": "~2.7.0",
     "pouchdb": "~2.2.3",
+    "ng-table": "~0.3.3",
     "ng-csv": "~0.2.4"
   },
   "devDependencies": {
