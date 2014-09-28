@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('InventoryCtrl', function($scope, $q, $filter, utility, Places, ProductType, ProductCategory, Facility, stockCount) {
+  .controller('InventoryCtrl', function($scope, $q, $filter, utility, Auth, Places, ProductType, ProductCategory, Facility, stockCount) {
     var rows = [];
     var latestRows = [];
     var xTickValues = [];
 
+    $scope.currentUser = Auth.getCurrentUser();
     $scope.title = 'Inventory';
     $scope.loading = true;
     $scope.error = false;
@@ -65,7 +66,7 @@ angular.module('lmisApp')
       if (!placeName || $scope.place.type == Places.FACILITY)
         return;
 
-      $scope.place.type = Places.subType($scope.place.type) || 'state';
+      $scope.place.type = Places.subType($scope.place.type) || $scope.currentUser.access.level;
       $scope.place.search = placeName;
 
       $scope.updateTotals();
@@ -87,36 +88,10 @@ angular.module('lmisApp')
       var summary = {};
       var totals = {};
       var chartData = {};
-      var filterBy = undefined;
-      var groupBy = 'state';
-      var columnTitle = 'State';
-      switch ($scope.place.type) {
-        case Places.STATE:
-          filterBy = 'state';
-          groupBy = 'zone';
-          columnTitle = 'Zone';
-          break;
-        case Places.ZONE:
-          filterBy = 'zone';
-          groupBy = 'lga';
-          columnTitle = 'LGA';
-          break;
-        case Places.LGA:
-          filterBy = 'lga';
-          groupBy = 'ward';
-          columnTitle = 'Ward';
-          break;
-        case Places.WARD:
-          filterBy = 'ward';
-          groupBy = 'name';
-          columnTitle = 'Facility';
-          break;
-        case Places.FACILITY:
-          filterBy = 'name';
-          groupBy = 'name';
-          columnTitle = 'Facility';
-          break;
-      }
+      var filterBy = Places.propertyName($scope.place.type);
+      var subType = $scope.place.type === Places.FACILITY ? Places.FACILITY : Places.subType($scope.place.type);
+      var groupBy = Places.propertyName(subType || $scope.currentUser.access.level);
+      var columnTitle = Places.typeName(subType || $scope.currentUser.access.level);
 
       filter(latestRows, filterBy).forEach(function(row) {
         var key = row.facility[groupBy];
