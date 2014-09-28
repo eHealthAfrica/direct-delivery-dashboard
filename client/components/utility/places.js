@@ -4,7 +4,7 @@
  * Utility class for managing the loading of places data (Zone, LGA, Ward, Facility).
  */
 angular.module('lmisApp')
-  .service('Places', function (State, Zone, LGA, Ward, Facility) {
+  .service('Places', function(State, Zone, LGA, Ward, Facility) {
 
     function Places(type, filter) {
       this.loading = true;
@@ -26,7 +26,7 @@ angular.module('lmisApp')
       }
 
       this.promise = service.names(filter)
-        .finally(function () {
+        .finally(function() {
           this.loading = false;
         }.bind(this));
     }
@@ -58,6 +58,20 @@ angular.module('lmisApp')
           return plural ? 'Wards' : 'Ward';
         case Places.FACILITY:
           return plural ? 'Facilities' : 'Facility';
+        default:
+          return '';
+      }
+    };
+
+    Places.propertyName = function(type) {
+      switch (type) {
+        case Places.STATE:
+        case Places.ZONE:
+        case Places.LGA:
+        case Places.WARD:
+          return type;
+        case Places.FACILITY:
+          return 'name';
         default:
           return '';
       }
