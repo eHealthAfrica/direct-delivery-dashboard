@@ -93,7 +93,7 @@ angular.module('lmisApp')
       var groupBy = Places.propertyName(subType || $scope.currentUser.access.level);
       var columnTitle = Places.typeName(subType || $scope.currentUser.access.level);
 
-      filter(latestRows, filterBy).forEach(function(row) {
+      utility.placeDateFilter(latestRows, filterBy, $scope.place.search, $scope.from.date, $scope.to.date).forEach(function(row) {
         var key = row.facility[groupBy];
         totals[key] = totals[key] || {
           place: key,
@@ -111,7 +111,7 @@ angular.module('lmisApp')
 
       var minDate = NaN;
       var maxDate = NaN;
-      filter(rows, filterBy).forEach(function(row) {
+      utility.placeDateFilter(rows, filterBy, $scope.place.search, $scope.from.date, $scope.to.date).forEach(function(row) {
         if (row.unopened) {
           row.unopened.forEach(function(unopened) {
             var code = unopened.productType.code;
@@ -191,26 +191,6 @@ angular.module('lmisApp')
         return { key: productType.code, values: values };
       });
     };
-
-    function filter(rows, filterBy) {
-      var search = $scope.place.search.toLowerCase();
-
-      return rows.filter(function(row) {
-        var date = moment(row.created);
-        var include = true;
-
-        if (search && filterBy)
-          include = include && (row.facility[filterBy].toLowerCase() == search);
-
-        if ($scope.from.date)
-          include = include && (date.isSame($scope.from.date, 'day') || date.isAfter($scope.from.date));
-
-        if ($scope.to.date)
-          include = include && (date.isSame($scope.to.date, 'day') || date.isBefore($scope.to.date));
-
-        return include;
-      });
-    }
 
     $q.all([ProductType.all(), ProductCategory.all(), stockCount.all()])
       .then(function(res) {
