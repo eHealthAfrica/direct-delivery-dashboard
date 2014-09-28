@@ -17,6 +17,87 @@
 
         <div class="row" ng-show="!loading && !error">
           <div class="col-xs-12">
+
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <form class="form-inline">
+                  <div class="form-group">
+                    <label for="placeType">Place Type:</label>
+                    <select id="placeType" class="form-control" ng-model="place.type" ng-change="place.search = ''">
+                      <option value="state">State</option>
+                      <option value="zone">Zone</option>
+                      <option value="lga">LGA</option>
+                      <option value="ward">Ward</option>
+                      <option value="facility">Facility</option>
+                    </select>
+                  </div>
+                  &nbsp;
+                  <div class="form-group has-feedback">
+                    <input type="text" class="form-control filter" placeholder="Place Name"
+                           ng-model="place.search"
+                           typeahead="place for place in getPlaces($viewValue)"
+                           typeahead-loading="places.loading">
+                      <span ng-show="places.loading"
+                            class="glyphicon glyphicon-refresh form-control-feedback"></span>
+                  </div>
+                  &nbsp;
+                  <div class="form-group">
+                    <div class="input-group">
+                      <input type="text" class="form-control" ng-model="from.date"
+                             datepicker-popup is-open="from.opened"/>
+                        <span class="input-group-btn">
+                          <button type="button" class="btn btn-default" ng-click="from.open($event)">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                          </button>
+                        </span>
+                    </div>
+                  </div>
+                  &nbsp;
+                  <div class="form-group">
+                    <div class="input-group">
+                      <input type="text" class="form-control" ng-model="to.date"
+                             datepicker-popup is-open="to.opened"/>
+                        <span class="input-group-btn">
+                          <button type="button" class="btn btn-default" ng-click="to.open($event)">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                          </button>
+                        </span>
+                    </div>
+                  </div>
+                  &nbsp;
+                  <div class="form-group">
+                   <select class="form-control filter" ng-model="ledger.filterType">
+                     <option value="Incoming Bundle">Incoming Bundle</option>
+                     <option value="Outgoing Bundle">Outgoing Bundle</option>
+                   </select>
+                  </div>
+                  &nbsp;
+                  <button type="button" class="btn btn-primary" ng-click="updateTotals()"
+                          ng-disabled="!place.search.length || !from.date || !to.date">
+                    Apply
+                  </button>
+                </form>
+              </div>
+              <div class="table-scroller">
+                <table class="table table-condensed table-bordered table-striped table-condensed">
+                  <thead>
+                  <tr>
+                    <th>{{place.columnTitle}}</th>
+                    <th ng-repeat="productType in productTypes">{{productType}}</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr ng-repeat="total in totals | orderBy:'place'">
+                    <td>{{total.place}}</td>
+                    <td ng-repeat="value in total.values track by $index">
+                      {{value}}
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
             <table class="table table-bordered table-striped">
               <thead>
                 <tr>
@@ -46,9 +127,9 @@
                     <div class="form-group has-feedback">
                       <div class="input-group">
                         <input type="text" class="form-control" ng-model="search.receivedOn"
-                               datepicker-popup is-open="to.opened"/>
+                               datepicker-popup is-open="receivedOn.opened"/>
                         <span class="input-group-btn">
-                          <button type="button" class="btn btn-default" ng-click="to.open($event)">
+                          <button type="button" class="btn btn-default" ng-click="receivedOn.open($event)">
                             <i class="glyphicon glyphicon-calendar"></i>
                           </button>
                         </span>
@@ -59,9 +140,9 @@
                     <div class="form-group has-feedback">
                       <div class="input-group">
                         <input type="text" class="form-control" ng-model="search.created"
-                               datepicker-popup is-open="to.opened"/>
+                               datepicker-popup is-open="created.opened"/>
                         <span class="input-group-btn">
-                          <button type="button" class="btn btn-default" ng-click="to.open($event)">
+                          <button type="button" class="btn btn-default" ng-click="created.open($event)">
                             <i class="glyphicon glyphicon-calendar"></i>
                           </button>
                         </span>
@@ -72,9 +153,9 @@
                     <div class="form-group has-feedback">
                       <div class="input-group">
                         <input type="text" class="form-control" ng-model="search.expiryDate"
-                               datepicker-popup is-open="to.opened"/>
+                               datepicker-popup is-open="expiryDate.opened"/>
                         <span class="input-group-btn">
-                          <button type="button" class="btn btn-default" ng-click="to.open($event)">
+                          <button type="button" class="btn btn-default" ng-click="expiryDate.open($event)">
                             <i class="glyphicon glyphicon-calendar"></i>
                           </button>
                         </span>
@@ -92,7 +173,7 @@
                       <select class="form-control filter" ng-model="search.type">
                         <option value=""></option>
                         <option value="Incoming Bundle">Incoming Bundle</option>
-                        <option value="Outgoing Bundle">Incoming Bundle</option>
+                        <option value="Outgoing Bundle">Outgoing Bundle</option>
                       </select>
                     </div>
                   </td>

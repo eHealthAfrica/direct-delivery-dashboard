@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('ledgerFactory', function ($rootScope, $q, couchdb, Facility, ProductProfile) {
+  .factory('ledgerFactory', function ($rootScope, $q, couchdb, Facility, ProductProfile, ProductType) {
     var dbName = 'bundle';
     var allPromise = null;
 
@@ -66,7 +66,8 @@ angular.module('lmisApp')
       var promises = [
         allList(),
         Facility.all(),
-        ProductProfile.all()
+        ProductProfile.all(),
+        ProductType.all()
       ];
       $q.all(promises)
         .then(function(response) {
@@ -74,22 +75,27 @@ angular.module('lmisApp')
           var facilities = response[1];
           var productProfiles = response[2];
           var bundleTypes = ['Incoming Bundle', 'Outgoing Bundle'];
+          var productType = response[3];
 
           bundles.forEach(function(bundle) {
-            bundle.receivingFacility = getFacility(bundle.receivingFacility, facilities);
-            bundle.sendingFacility = getFacility(bundle.sendingFacility, facilities);
+            bundle.receivingFacilityName = getFacility(bundle.receivingFacility, facilities);
+            bundle.sendingFacilityName = getFacility(bundle.sendingFacility, facilities);
             bundle.type = bundleTypes[parseInt(bundle.type)];
 
             bundle.bundleLines.forEach(function(bundleLine) {
+
               bundleLine.type = bundle.type;
-              bundleLine.receivedOn = bundle.receivedOn;
-              bundleLine.receivingFacility = bundle.receivingFacility;
-              bundleLine.sendingFacility = bundle.sendingFacility;
-              bundleLine.facilityName = bundle.facilityName;
+              bundleLine.receivedOn = new Date(bundle.receivedOn);
+              bundleLine.receivingFacility = bundle.receivingFacilityName;
+              bundleLine.sendingFacility = bundle.sendingFacilityName;
+              bundleLine.receivingFacilityObject = getFacilityObject(bundle.receivingFacility, facilities);
+              bundleLine.sendingFacilityObject = getFacilityObject(bundle.sendingFacility, facilities);
               bundleLine.uuid = bundle.uuid;
               bundleLine.modified = bundle.modified;
-              bundleLine.created = bundle.created;
+              bundleLine.created = new Date(bundle.created);
+              bundleLine.productCode = getProductTypeCode(bundleLine.productProfile, productType, productProfiles);
               bundleLine.productProfile = getProductProfile(bundleLine.productProfile, productProfiles);
+
               rows.push(bundleLine);
             });
           });
@@ -114,6 +120,16 @@ angular.module('lmisApp')
       return facilityName;
     }
 
+    function getFacilityObject(facility, facilityObjectList) {
+      var facilityName = '';
+      if (toString.call(facility) === '[object Object]') {
+        facilityName = facility;
+      } else {
+        facilityName = angular.isDefined(facilityObjectList[facility]) ? facilityObjectList[facility] : facility;
+      }
+      return facilityName;
+    }
+
     function getProductProfile(productProfile, productProfileObjectList) {
       var productProfileName = '';
       if (toString.call(productProfile) === '[object Object]') {
@@ -123,6 +139,16 @@ angular.module('lmisApp')
       }
 
       return productProfileName;
+    }
+
+    function getProductTypeCode(productProfile, productTypes, productProfileObjectList) {
+      var productCode = '';
+      if (toString.call(productProfile) === '[object Object]') {
+        productCode = productTypes[productProfile.product].code;
+      } else {
+        productCode = angular.isDefined(productProfileObjectList[productProfile]) ? productTypes[productProfileObjectList[productProfile].product].code : productProfile;
+      }
+      return productCode;
     }
 
     return {
