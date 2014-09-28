@@ -6,7 +6,8 @@ angular.module('lmisApp')
     $scope.productProfiles = productProfiles;
     $scope.productTypes = productTypes;
   })
-  .controller('UnopenedCtrl', function ($scope, $filter, stockCount) {
+  .controller('UnopenedCtrl', function ($scope, $filter, Auth, stockCount) {
+    $scope.currentUser = Auth.getCurrentUser();
     $scope.mostRecent = [];
     $scope.chartData = [];
     $scope.chartFacility = '';
@@ -104,7 +105,8 @@ angular.module('lmisApp')
         $scope.loading = false;
       });
   })
-  .controller('MainStockOutCtrl', function ($scope, stockOut) {
+  .controller('MainStockOutCtrl', function ($scope, Auth, stockOut) {
+    $scope.currentUser = Auth.getCurrentUser();
     $scope.rows = [];
     $scope.loading = true;
     $scope.error = false;
@@ -120,7 +122,8 @@ angular.module('lmisApp')
         $scope.loading = false;
       });
   })
-  .controller('MainCCUBreakdownCtrl', function ($scope, ccuBreakdown) {
+  .controller('MainCCUBreakdownCtrl', function ($scope, Auth, ccuBreakdown) {
+    $scope.currentUser = Auth.getCurrentUser();
     $scope.rows = [];
     $scope.loading = true;
     $scope.error = false;

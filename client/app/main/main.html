@@ -19,8 +19,8 @@
               <table class="table table-bordered">
                 <thead>
                 <tr>
-                  <th>LGA</th>
-                  <th>Ward</th>
+                  <th ng-if="currentUser.showLgas">LGA</th>
+                  <th ng-if="currentUser.showWards">Ward</th>
                   <th>Facility</th>
                   <th>Date</th>
                   <th>Product Type</th>
@@ -29,8 +29,8 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="row in rows">
-                  <td>{{row.facility.lga}}</td>
-                  <td>{{row.facility.ward}}</td>
+                  <td ng-if="currentUser.showLgas">{{row.facility.lga}}</td>
+                  <td ng-if="currentUser.showWards">{{row.facility.ward}}</td>
                   <td>{{row.facility.name}}</td>
                   <td style="white-space: nowrap;">
                     {{row.created | date:SETTINGS.dateFormat}}
@@ -66,8 +66,8 @@
               <table class="table table-bordered">
                 <thead>
                 <tr>
-                  <th>LGA</th>
-                  <th>Ward</th>
+                  <th ng-if="currentUser.showLgas">LGA</th>
+                  <th ng-if="currentUser.showWards">Ward</th>
                   <th>Facility</th>
                   <th>Date</th>
                   <th>CCU Unit</th>
@@ -75,8 +75,8 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="row in rows">
-                  <td>{{row.facility.lga}}</td>
-                  <td>{{row.facility.ward}}</td>
+                  <td ng-if="currentUser.showLgas">{{row.facility.lga}}</td>
+                  <td ng-if="currentUser.showWards">{{row.facility.ward}}</td>
                   <td>{{row.facility.name}}</td>
                   <td style="white-space: nowrap;">
                     {{row.created | date:SETTINGS.dateFormat}}
@@ -112,8 +112,8 @@
           <table class="table table-bordered">
             <thead>
             <tr>
-              <th>LGA</th>
-              <th>Ward</th>
+              <th ng-if="currentUser.showLgas">LGA</th>
+              <th ng-if="currentUser.showWards">Ward</th>
               <th>Facility</th>
               <th>Date</th>
               <th ng-repeat="type in productTypes">{{type.code}}</th>
@@ -121,8 +121,8 @@
             </thead>
             <tbody>
             <tr ng-repeat="row in mostRecent">
-              <td>{{row.facility.lga}}</td>
-              <td>{{row.facility.ward}}</td>
+              <td ng-if="currentUser.showLgas">{{row.facility.lga}}</td>
+              <td ng-if="currentUser.showWards">{{row.facility.ward}}</td>
               <td style="cursor: pointer;" ng-click="setChartData(row.facility)">
                 {{row.facility.name}}
               </td>
