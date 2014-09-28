@@ -11,7 +11,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 // fix for cradle's 'forEach' function
 // remove and update cradle when it has been fixed
 //
-var cradleResponse = require('../node_modules/cradle/lib/cradle/response');
+var cradleResponse = require('cradle/lib/cradle/response');
 cradleResponse.collectionPrototype.forEach = function(f) {
   for (var i = 0, value; i < this.length; i++) {
     value = this[i].doc;
