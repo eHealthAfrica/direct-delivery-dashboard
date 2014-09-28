@@ -107,5 +107,39 @@ angular.module('lmisApp')
         });
 
       return d.promise;
-    }
+    };
+
+    this.objectComparator = function objectComparator(actual, expected) {
+      var matches = true;
+      Object.keys(expected).some(function(key) {
+        if (actual[key] === undefined || actual[key].toLowerCase().indexOf(expected[key].toLowerCase()) < 0) {
+          matches = false;
+          return true;
+        }
+
+        return false;
+      });
+
+      return matches;
+    };
+
+    this.placeDateFilter = function placeDateFilter(rows, placeType, placeSearch, dateFrom, dateTo) {
+      placeSearch = placeSearch.toLowerCase();
+
+      return rows.filter(function(row) {
+        var date = moment(row.created);
+        var include = true;
+
+        if (placeSearch && placeType)
+          include = include && (row.facility[placeType].toLowerCase() === placeSearch);
+
+        if (dateFrom)
+          include = include && (date.isSame(dateFrom, 'day') || date.isAfter(dateFrom));
+
+        if (dateTo)
+          include = include && (date.isSame(dateTo, 'day') || date.isBefore(dateTo));
+
+        return include;
+      });
+    };
   });

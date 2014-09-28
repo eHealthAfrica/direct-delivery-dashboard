@@ -18,7 +18,7 @@ angular.module('lmisApp')
 
     $scope.place = {
       type: '',
-      columnTitle: 'LGA',
+      columnTitle: '',
       search: ''
     };
 

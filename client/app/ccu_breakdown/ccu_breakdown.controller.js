@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('CCUBreakdownCtrl', function($scope, $q, $filter, Pagination, Places, CCEI, ccuBreakdown) {
+  .controller('CCUBreakdownCtrl', function($scope, $q, $filter, utility, Auth, Pagination, Places, CCEI, ccuBreakdown) {
+    $scope.currentUser = Auth.getCurrentUser();
     $scope.rows = [];
     $scope.filteredRows = [];
     $scope.search = {};
@@ -13,8 +14,8 @@ angular.module('lmisApp')
     $scope.places = null;
 
     $scope.place = {
-      type: Places.STATE,
-      columnTitle: 'Zone',
+      type: '',
+      columnTitle: '',
       search: ''
     };
 
@@ -48,52 +49,21 @@ angular.module('lmisApp')
 
     $scope.updateTotals = function() {
       var totals = {};
-      var filterBy = 'state';
-      var groupBy = 'zone';
-      var columnTitle = 'Zone';
-      switch ($scope.place.type) {
-        case Places.ZONE:
-          filterBy = 'zone';
-          groupBy = 'lga';
-          columnTitle = 'LGA';
-          break;
-        case Places.LGA:
-          filterBy = 'lga';
-          groupBy = 'ward';
-          columnTitle = 'Ward';
-          break;
-        case Places.WARD:
-          filterBy = 'ward';
-          groupBy = 'facility';
-          columnTitle = 'Facility';
-          break;
-        case Places.FACILITY:
-          filterBy = 'facility';
-          groupBy = 'facility';
-          columnTitle = 'Facility';
-          break;
-      }
+      var filterBy = Places.propertyName($scope.place.type);
+      var subType = $scope.place.type === Places.FACILITY ? Places.FACILITY : Places.subType($scope.place.type);
+      var groupBy = Places.propertyName(subType || $scope.currentUser.access.level);
+      var columnTitle = Places.typeName(subType || $scope.currentUser.access.level);
 
-      if ($scope.place.search.length) {
-        var search = $scope.place.search.toLowerCase();
-        $scope.rows
-          .filter(function(row) {
-            var date = moment(row.created);
-            return ((row[filterBy].toLowerCase() == search) &&
-                    (date.isSame($scope.from.date, 'day') || date.isAfter($scope.from.date)) &&
-                    (date.isSame($scope.to.date, 'day') || date.isBefore($scope.to.date)))
-          })
-          .forEach(function(row) {
-            var key = row[groupBy];
-            totals[key] = totals[key] || {
-              place: key,
-              values: {}
-            };
+      utility.placeDateFilter($scope.rows, filterBy, $scope.place.search, $scope.from.date, $scope.to.date).forEach(function(row) {
+        var key = row.facility[groupBy];
+        totals[key] = totals[key] || {
+          place: key,
+          values: {}
+        };
 
-            var value = totals[key].values[row.name] || 0;
-            totals[key].values[row.name] = value + 1;
-          });
-      }
+        var value = totals[key].values[row.name] || 0;
+        totals[key].values[row.name] = value + 1;
+      });
 
       $scope.place.columnTitle = columnTitle;
       $scope.totals = Object.keys(totals).map(function(key) {
@@ -112,7 +82,7 @@ angular.module('lmisApp')
     }, true);
 
     function updateFilteredRows() {
-      $scope.filteredRows = $filter('filter')($scope.rows, $scope.search);
+      $scope.filteredRows = $filter('filter')($scope.rows, $scope.search, utility.objectComparator);
       $scope.pagination.totalItemsChanged($scope.filteredRows.length);
     }
 
@@ -124,27 +94,11 @@ angular.module('lmisApp')
         $scope.units = responses[0];
 
         var rows = responses[1];
-        var startState = '';
         $scope.rows = rows
           .filter(function(row) {
             return !!row.facility;
-          })
-          .map(function(row) {
-            if (!startState.length || row.facility.state < startState)
-              startState = row.facility.state;
-
-            return {
-              state: row.facility.state,
-              zone: row.facility.zone,
-              lga: row.facility.lga,
-              ward: row.facility.ward,
-              facility: row.facility.name,
-              created: row.created,
-              name: row.name
-            };
           });
 
-        $scope.place.search = startState;
         $scope.updateTotals();
         updateFilteredRows();
       })

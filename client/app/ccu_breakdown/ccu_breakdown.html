@@ -20,17 +20,18 @@
               <div class="form-group">
                 <label for="placeType">Place Type:</label>
                 <select id="placeType" class="form-control" ng-model="place.type" ng-change="place.search = ''">
-                  <option value="state">State</option>
-                  <option value="zone">Zone</option>
-                  <option value="lga">LGA</option>
-                  <option value="ward">Ward</option>
+                  <option value=""></option>
+                  <option ng-if="currentUser.showStates" value="state">State</option>
+                  <option ng-if="currentUser.showZones" value="zone">Zone</option>
+                  <option ng-if="currentUser.showLgas" value="lga">LGA</option>
+                  <option ng-if="currentUser.showWards" value="ward">Ward</option>
                   <option value="facility">Facility</option>
                 </select>
               </div>
               &nbsp;
               <div class="form-group has-feedback">
                 <input type="text" class="form-control filter" placeholder="Place Name"
-                  ng-model="place.search"
+                  ng-model="place.search" ng-disabled="!place.type.length"
                   typeahead="place for place in getPlaces($viewValue)"
                   typeahead-loading="places.loading">
                       <span ng-show="places.loading"
@@ -61,8 +62,7 @@
                 </div>
               </div>
               &nbsp;
-              <button type="button" class="btn btn-primary" ng-click="updateTotals()"
-                ng-disabled="!place.search.length || !from.date || !to.date">
+              <button type="button" class="btn btn-primary" ng-click="updateTotals()">
                 Apply
               </button>
             </form>
@@ -91,45 +91,45 @@
         <table class="table table-condensed table-bordered table-striped table-condensed">
           <thead>
             <tr>
-              <th style="width: 14%">State</th>
-              <th style="width: 14%">Zone</th>
-              <th style="width: 14%">LGA</th>
-              <th style="width: 14%">Ward</th>
+              <th ng-if="currentUser.showStates" style="width: 14%">State</th>
+              <th ng-if="currentUser.showZones" style="width: 14%">Zone</th>
+              <th ng-if="currentUser.showLgas" style="width: 14%">LGA</th>
+              <th ng-if="currentUser.showWards" style="width: 14%">Ward</th>
               <th style="width: 14%">Facility</th>
               <th style="width: 15%">Date</th>
               <th style="width: 15%">CCU Unit</th>
             </tr>
             <tr class="active">
-              <td>
+              <td ng-if="currentUser.showStates">
                 <div class="form-group has-feedback">
-                  <input type="text" class="form-control filter" ng-model="search.state"
+                  <input type="text" class="form-control filter" ng-model="search.facility.state"
                     typeahead="state for state in dataProvider.getStates($viewValue)"
                     typeahead-loading="dataProvider.loadingStates">
                   <span ng-show="dataProvider.loadingStates"
                     class="glyphicon glyphicon-refresh form-control-feedback"></span>
                 </div>
               </td>
-              <td>
+              <td ng-if="currentUser.showZones">
                 <div class="form-group has-feedback">
-                  <input type="text" class="form-control filter" ng-model="search.zone"
+                  <input type="text" class="form-control filter" ng-model="search.facility.zone"
                     typeahead="zone for zone in dataProvider.getZones($viewValue)"
                     typeahead-loading="dataProvider.loadingZones">
                   <span ng-show="dataProvider.loadingZones"
                     class="glyphicon glyphicon-refresh form-control-feedback"></span>
                 </div>
               </td>
-              <td>
+              <td ng-if="currentUser.showLgas">
                 <div class="form-group has-feedback">
-                  <input type="text" class="form-control filter" ng-model="search.lga"
+                  <input type="text" class="form-control filter" ng-model="search.facility.lga"
                     typeahead="lga for lga in dataProvider.getLgas($viewValue)"
                     typeahead-loading="dataProvider.loadingLgas">
                   <span ng-show="dataProvider.loadingLgas"
                     class="glyphicon glyphicon-refresh form-control-feedback"></span>
                 </div>
               </td>
-              <td>
+              <td ng-if="currentUser.showWards">
                 <div class="form-group has-feedback">
-                  <input type="text" class="form-control filter" ng-model="search.ward"
+                  <input type="text" class="form-control filter" ng-model="search.facility.ward"
                     typeahead="ward for ward in dataProvider.getWards($viewValue)"
                     typeahead-loading="dataProvider.loadingWards">
                   <span ng-show="dataProvider.loadingWards"
@@ -138,7 +138,7 @@
               </td>
               <td>
                 <div class="form-group has-feedback">
-                  <input type="text" class="form-control filter" ng-model="search.facility"
+                  <input type="text" class="form-control filter" ng-model="search.facility.name"
                     typeahead="facility for facility in dataProvider.getFacilities($viewValue)"
                     typeahead-loading="dataProvider.loadingFacilities">
                   <span ng-show="dataProvider.loadingFacilities"
@@ -154,11 +154,11 @@
           </thead>
           <tbody>
             <tr ng-repeat="row in filteredRows | orderBy:['-created', 'name'] | limitTo:pagination.limit | limitTo:-pagination.count">
-              <td>{{row.state}}</td>
-              <td>{{row.zone}}</td>
-              <td>{{row.lga}}</td>
-              <td>{{row.ward}}</td>
-              <td>{{row.facility}}</td>
+              <td ng-if="currentUser.showStates">{{row.facility.state}}</td>
+              <td ng-if="currentUser.showZones">{{row.facility.zone}}</td>
+              <td ng-if="currentUser.showLgas">{{row.facility.lga}}</td>
+              <td ng-if="currentUser.showWards">{{row.facility.ward}}</td>
+              <td>{{row.facility.name}}</td>
               <td>{{row.created | date:SETTINGS.dateTimeFormat}}</td>
               <td>{{row.name}}</td>
             </tr>
