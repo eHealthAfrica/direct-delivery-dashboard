@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q) {
+  .factory('Auth', function Auth($location, $rootScope, $http, $cookieStore, $q, Places, User) {
     var currentUser = {};
 
     if ($cookieStore.get('token')) {
@@ -11,8 +11,26 @@ angular.module('lmisApp')
     function set(user) {
       if (user != currentUser) {
         currentUser = user;
+
+        if (user.$promise)
+        {
+          user.$promise.finally(function() {
+            setAccess();
+          })
+        }
+        else
+          setAccess();
+
         $rootScope.$emit('currentUserChanged', user);
       }
+    }
+
+    function setAccess() {
+      currentUser.access = currentUser.access || {};
+      currentUser.showStates = currentUser.access.level === Places.STATE;
+      currentUser.showZones = currentUser.showStates || currentUser.access.level === Places.ZONE;
+      currentUser.showLgas = currentUser.showZones || currentUser.access.level === Places.LGA;
+      currentUser.showWards = currentUser.showLgas || currentUser.access.level === Places.WARD;
     }
 
     return {
