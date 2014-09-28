@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('FacilitiesCtrl', function($log, facilityReports, facilityCSV, facilityChart, FACILITY_FILTERS) {
+  .controller('FacilitiesCtrl', function($log, Auth, facilityReports, facilityCSV, facilityChart, FACILITY_FILTERS) {
     var vm = this;
+    vm.currentUser = Auth.getCurrentUser();
     vm.loading = true;
     vm.error = false;
     vm.reportingFilters = FACILITY_FILTERS;

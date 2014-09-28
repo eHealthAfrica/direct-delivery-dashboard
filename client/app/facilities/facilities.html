@@ -26,8 +26,8 @@
         <table id="facilities-reporting" class="table table-bordered table-condensed table-fixed">
           <thead>
             <tr>
-              <th style="width: 12%">Zone</th>
-              <th style="width: 12%">LGA</th>
+              <th ng-if="facilitiesCtrl.currentUser.showZones" style="width: 12%">Zone</th>
+              <th ng-if="facilitiesCtrl.currentUser.showLgas" style="width: 12%">LGA</th>
               <th style="width: 15%">Facility</th>
               <th style="width: 15%">Report Date</th>
               <th style="width: 46%">Contact Info</th>
@@ -35,7 +35,7 @@
           </thead>
           <tbody>
             <tr class="active">
-              <td>
+              <td ng-if="facilitiesCtrl.currentUser.showZones">
                 <input
                   type="text"
                   class="form-control filter"
@@ -43,7 +43,7 @@
                   ng-model="filter.zone"
                 >
               </td>
-              <td>
+              <td ng-if="facilitiesCtrl.currentUser.showLgas">
                 <input
                   type="text"
                   class="form-control filter"
@@ -89,8 +89,8 @@
                 'bg-danger': summary.daysFromLastCountDate > 14
               }"
             >
-              <td ng-bind="summary.zone"></td>
-              <td ng-bind="summary.lga"></td>
+              <td ng-if="facilitiesCtrl.currentUser.showZones" ng-bind="summary.zone"></td>
+              <td ng-if="facilitiesCtrl.currentUser.showLgas" ng-bind="summary.lga"></td>
               <td>
                 <a
                   ng-href="/stock-count?facility={{summary.facility}}"
