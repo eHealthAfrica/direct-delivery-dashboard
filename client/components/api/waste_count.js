@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('wasteCountFactory', function($http, $q, ProductProfile, UomFactory, ProductPresentation, Facility) {
+  .factory('wasteCountFactory', function($http, $q, ProductProfile, UomFactory, ProductType, ProductPresentation, Facility) {
     var URL = '/api/waste_count';
     var wasteReasons = [
       'VVM Stage 3',
