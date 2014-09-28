@@ -35,11 +35,15 @@ angular.module('lmisApp')
       });
     }
 
-    var facilityPromises = {
-      summaries: stockCount.stockCountSummaryByFacility(),
-      facilities: Facility.all()
-    };
+    return {
+      load: function() {
+        var facilityPromises = {
+          summaries: stockCount.stockCountSummaryByFacility(),
+          facilities: Facility.all()
+        };
 
-    return $q.all(facilityPromises)
-      .then(formatSummaries);
+        return $q.all(facilityPromises)
+          .then(formatSummaries);
+      }
+    };
   });

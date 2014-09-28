@@ -29,7 +29,7 @@ angular.module('lmisApp')
       $log.error('Error loading facilities', reason);
     }
 
-    facilityReports
+    facilityReports.load()
       .then(bindSummaries)
       .then(bindFacilityChart)
       .then(bindCSVData)
