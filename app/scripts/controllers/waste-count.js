@@ -20,6 +20,19 @@ angular.module('lmisApp')
     $scope.loading = true;
     $scope.error = false;
     $scope.places = null;
+    $scope.showDetails = false;
+
+    $scope.showDetail = function(place) {
+      if (place === undefined) {
+        $scope.showDetails = false;
+      } else if ($scope.showDetails && $scope.search.facility[$scope.place.columnTitle.toLowerCase()] === place) {
+        $scope.showDetails = false;
+      } else {
+        $scope.search.facility = {};
+        $scope.search.facility[$scope.place.columnTitle.toLowerCase()] = place;
+        $scope.showDetails = true;
+      }
+    };
 
     $scope.place = {
       type: Places.STATE,
@@ -29,7 +42,7 @@ angular.module('lmisApp')
 
     $scope.from = {
       opened: false,
-      date: moment().startOf('day').subtract('days', 7).toDate(),
+      date: moment().startOf('day').subtract('days', 30).toDate(),
       open: function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
@@ -96,6 +109,12 @@ angular.module('lmisApp')
 
       if ($scope.place.search.length) {
         var search = $scope.place.search.toLowerCase();
+        $scope.search = {};
+        if (angular.isUndefined($scope.search.facility)){
+          $scope.search.facility = {};
+        }
+        $scope.search.facility[filterBy] = search;
+        $scope.search.created = $scope.from.date;
         rows
           .filter(function (row) {
             var date = moment(row.created);
@@ -147,10 +166,11 @@ angular.module('lmisApp')
       updateFilteredRows();
     }, true);
 
+
+
     function updateFilteredRows() {
       $scope.filteredRows = $filter('filter')(rows, $scope.search, function (actual, expected) {
         var matches = true;
-        console.log(expected, actual);
         Object.keys(expected).some(function (key) {
           if (angular.isArray(actual)) {
             actual.some(function(actualKey) {
@@ -160,7 +180,7 @@ angular.module('lmisApp')
               }
             });
           } else  if (actual[key] === undefined || actual[key].toLowerCase().indexOf(expected[key].toLowerCase()) < 0) {
-            console.log(expected[key], actual[key]);
+
             matches = false;
             return true;
           }
@@ -169,7 +189,12 @@ angular.module('lmisApp')
 
         if (angular.isDate(actual) || angular.isDate(expected)) {
           var date = moment(Date.parse(actual));
-          matches = date.isSame(expected, 'day');
+          if ($scope.place.search.length) {
+            matches = ((date.isSame($scope.from.date, 'day') || date.isAfter($scope.from.date)) &&
+              (date.isSame($scope.to.date, 'day') || date.isBefore($scope.to.date)));
+          } else {
+            matches = date.isSame(expected, 'day');
+          }
         }
 
         return matches;
