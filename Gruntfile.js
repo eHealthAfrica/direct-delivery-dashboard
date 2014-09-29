@@ -138,13 +138,11 @@ module.exports = function (grunt) {
     // Automatically inject Bower components into the app
     wiredep: {
       app: {
-        src: ['<%= yeoman.app %>/index.html'],
-        exclude: ['es5-shim', 'json3'],
+        src: '<%= yeoman.app %>/index.html',
+        exclude: [
+          'bootstrap-sass-official'
+        ],
         ignorePath: '<%= yeoman.app %>/'
-      },
-      sass: {
-        src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-        ignorePath: '<%= yeoman.app %>/bower_components/'
       }
     },
 
@@ -341,24 +339,17 @@ module.exports = function (grunt) {
         dest: '<%= yeoman.app %>/scripts/config.js',
         template: grunt.file.read('.ngconstant.tpl.ejs'),
         constants: {
-          SETTINGS: {
-            dateFormat: 'yyyy-MM-dd',
-            dateTimeFormat: 'yyyy-MM-dd HH:mm'
-          }
+          SETTINGS: grunt.file.readJSON('config/common.json')
         }
       },
       dev: {
         constants: {
-          SETTINGS: {
-            dbUrl: 'http://dev.lomis.ehealth.org.ng:5984/'
-          }
+          SETTINGS: grunt.file.readJSON('config/dev.json')
         }
       },
       prod: {
         constants: {
-          SETTINGS: {
-            dbUrl: 'http://lomis.ehealth.org.ng:5984/'
-          }
+          SETTINGS: grunt.file.readJSON('config/prod.json')
         }
       }
     },
