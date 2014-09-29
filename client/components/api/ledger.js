@@ -1,70 +1,32 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('ledgerFactory', function ($rootScope, $q, couchdb, Facility, ProductProfile, ProductType) {
-    var dbName = 'bundle';
+  .factory('ledgerFactory', function($rootScope, $http, $q, utility, Facility, ProductProfile, ProductType) {
+    var URL = '/api/bundles';
     var allPromise = null;
 
     $rootScope.$on('currentUserChanged', function() {
       allPromise = null;
     });
 
-    /**
-     * Read data from db and arrange it as a hash of uuid -> product profile
-     */
     function all(reload) {
-      if (!reload && allPromise)
-        return allPromise;
+      var promise = allPromise;
 
-      var d = $q.defer();
-      allPromise = d.promise;
-
-      couchdb.allDocs({_db: dbName}).$promise
-        .then(function (response) {
-          var bundles = {};
-          response.rows.forEach(function (row) {
-            bundles[row.doc.uuid] = row.doc;
-          });
-          d.resolve(bundles);
-        })
-        .catch(function (error) {
-          console.log(error);
+      if (reload || !promise) {
+        promise = allPromise = utility.request(URL);
+        promise.catch(function(err) {
           allPromise = null;
-          d.reject(error);
         });
+      }
 
-      return d.promise;
-    }
-
-    function allList(reload) {
-      if (!reload && allPromise)
-        return allPromise;
-
-      var d = $q.defer();
-      allPromise = d.promise;
-
-      couchdb.allDocs({_db: dbName}).$promise
-        .then(function (response) {
-          var bundles = [];
-          response.rows.forEach(function (row) {
-            bundles.push( row.doc );
-          });
-          d.resolve(bundles);
-        })
-        .catch(function (error) {
-          console.log(error);
-          allPromise = null;
-          d.reject(error);
-        });
-
-      return d.promise;
+      return promise;
     }
 
     function getFormattedBundleLines() {
       var deferred = $q.defer();
       var rows = [];
       var promises = [
-        allList(),
+        all(),
         Facility.all(),
         ProductProfile.all(),
         ProductType.all()
@@ -80,6 +42,8 @@ angular.module('lmisApp')
           bundles.forEach(function(bundle) {
             bundle.receivingFacilityName = getFacility(bundle.receivingFacility, facilities);
             bundle.sendingFacilityName = getFacility(bundle.sendingFacility, facilities);
+            bundle.receivingFacilityObject = getFacilityObject(bundle.receivingFacility, facilities);
+            bundle.sendingFacilityObject = getFacilityObject(bundle.sendingFacility, facilities);
             bundle.type = bundleTypes[parseInt(bundle.type)];
 
             bundle.bundleLines.forEach(function(bundleLine) {
@@ -88,8 +52,8 @@ angular.module('lmisApp')
               bundleLine.receivedOn = new Date(bundle.receivedOn);
               bundleLine.receivingFacility = bundle.receivingFacilityName;
               bundleLine.sendingFacility = bundle.sendingFacilityName;
-              bundleLine.receivingFacilityObject = getFacilityObject(bundle.receivingFacility, facilities);
-              bundleLine.sendingFacilityObject = getFacilityObject(bundle.sendingFacility, facilities);
+              bundleLine.receivingFacilityObject = bundle.receivingFacilityObject;
+              bundleLine.sendingFacilityObject = bundle.sendingFacilityObject;
               bundleLine.uuid = bundle.uuid;
               bundleLine.modified = bundle.modified;
               bundleLine.created = new Date(bundle.created);
@@ -106,7 +70,6 @@ angular.module('lmisApp')
           deferred.reject(reason);
         });
 
-
       return deferred.promise;
     }
 
@@ -114,7 +77,8 @@ angular.module('lmisApp')
       var facilityName = '';
       if (toString.call(facility) === '[object Object]') {
         facilityName = facility.name;
-      } else {
+      }
+      else {
         facilityName = angular.isDefined(facilityObjectList[facility]) ? facilityObjectList[facility].name : facility;
       }
       return facilityName;
@@ -124,7 +88,8 @@ angular.module('lmisApp')
       var facilityName = '';
       if (toString.call(facility) === '[object Object]') {
         facilityName = facility;
-      } else {
+      }
+      else {
         facilityName = angular.isDefined(facilityObjectList[facility]) ? facilityObjectList[facility] : facility;
       }
       return facilityName;
@@ -134,7 +99,8 @@ angular.module('lmisApp')
       var productProfileName = '';
       if (toString.call(productProfile) === '[object Object]') {
         productProfileName = productProfile.name;
-      } else {
+      }
+      else {
         productProfileName = angular.isDefined(productProfileObjectList[productProfile]) ? productProfileObjectList[productProfile].name : productProfile;
       }
 
@@ -145,14 +111,15 @@ angular.module('lmisApp')
       var productCode = '';
       if (toString.call(productProfile) === '[object Object]') {
         productCode = productTypes[productProfile.product].code;
-      } else {
+      }
+      else {
         productCode = angular.isDefined(productProfileObjectList[productProfile]) ? productTypes[productProfileObjectList[productProfile].product].code : productProfile;
       }
       return productCode;
     }
 
     return {
-      all: allList,
+      all: all,
       getFormattedBundleLines: getFormattedBundleLines,
       getFacility: getFacility,
       getProductProfile: getProductProfile

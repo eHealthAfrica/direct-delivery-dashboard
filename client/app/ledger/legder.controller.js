@@ -1,14 +1,7 @@
 'use strict';
 
 angular.module('lmisApp')
-  .config(function($routeProvider) {
-    $routeProvider
-      .when('/ledger', {
-        templateUrl: 'views/ledger.html',
-        controller: 'ledgerCtrl'
-      });
-  })
-  .controller('ledgerCtrl', function ($scope, $q, ledgerFactory, Pagination, $filter, Places, ProductType, Facility) {
+  .controller('LedgerCtrl', function($scope, $q, ledgerFactory, Pagination, $filter, Places, ProductType, Facility) {
     var rows = [];
     $scope.filteredRows = [];
     $scope.search = {};
@@ -28,7 +21,7 @@ angular.module('lmisApp')
     $scope.from = {
       opened: false,
       date: moment().startOf('day').subtract('days', 7).toDate(),
-      open: function ($event) {
+      open: function($event) {
         $event.preventDefault();
         $event.stopPropagation();
 
@@ -39,7 +32,7 @@ angular.module('lmisApp')
     $scope.to = {
       opened: false,
       date: moment().endOf('day').toDate(),
-      open: function ($event) {
+      open: function($event) {
         $event.preventDefault();
         $event.stopPropagation();
 
@@ -50,7 +43,7 @@ angular.module('lmisApp')
     $scope.created = {
       opened: false,
       date: moment().endOf('day').toDate(),
-      open: function ($event) {
+      open: function($event) {
         $event.preventDefault();
         $event.stopPropagation();
 
@@ -61,7 +54,7 @@ angular.module('lmisApp')
     $scope.receivedOn = {
       opened: false,
       date: moment().endOf('day').toDate(),
-      open: function ($event) {
+      open: function($event) {
         $event.preventDefault();
         $event.stopPropagation();
 
@@ -72,7 +65,7 @@ angular.module('lmisApp')
     $scope.expiryDate = {
       opened: false,
       date: moment().endOf('day').toDate(),
-      open: function ($event) {
+      open: function($event) {
         $event.preventDefault();
         $event.stopPropagation();
 
@@ -80,13 +73,13 @@ angular.module('lmisApp')
       }
     };
 
-    $scope.getPlaces = function (filter) {
+    $scope.getPlaces = function(filter) {
       $scope.places = new Places($scope.place.type, filter);
 
       return $scope.places.promise;
     };
 
-    $scope.updateTotals = function () {
+    $scope.updateTotals = function() {
       var totals = {};
       var filterBy = 'state';
       var filterType = angular.isUndefined($scope.ledger.filterType) ? 'Incoming Bundle' : $scope.ledger.filterType;
@@ -119,7 +112,7 @@ angular.module('lmisApp')
       if ($scope.place.search.length) {
         var search = $scope.place.search.toLowerCase();
         rows
-          .filter(function (row) {
+          .filter(function(row) {
             var date = moment(row.created);
 
             var facilityName = filterType === 'Incoming Bundle' ? row.receivingFacilityObject[filterBy] : row.sendingFacilityObject[filterBy];
@@ -127,10 +120,10 @@ angular.module('lmisApp')
               return false;
             }
             return ((facilityName.toLowerCase() === search) &&
-              (date.isSame($scope.from.date, 'day') || date.isAfter($scope.from.date)) &&
-              (date.isSame($scope.to.date, 'day') || date.isBefore($scope.to.date)))
+                    (date.isSame($scope.from.date, 'day') || date.isAfter($scope.from.date)) &&
+                    (date.isSame($scope.to.date, 'day') || date.isBefore($scope.to.date)))
           })
-          .forEach(function (row) {
+          .forEach(function(row) {
             var key = filterType === 'Incoming Bundle' ? row.receivingFacilityObject[groupBy] : row.sendingFacilityObject[groupBy];
             totals[key] = totals[key] || {
               place: key,
@@ -145,23 +138,23 @@ angular.module('lmisApp')
       }
 
       $scope.place.columnTitle = columnTitle;
-      $scope.totals = Object.keys(totals).map(function (key) {
+      $scope.totals = Object.keys(totals).map(function(key) {
         var item = totals[key];
         return {
           place: item.place,
-          values: $scope.productTypes.map(function (productType) {
+          values: $scope.productTypes.map(function(productType) {
             return (item.values[productType] || 0);
           })
         };
       });
     };
 
-    $scope.$watch('search', function () {
+    $scope.$watch('search', function() {
       updateFilteredRows();
     }, true);
 
     function updateFilteredRows() {
-      $scope.filteredRows = $filter('filter')(rows, $scope.search, function (actual, expected) {
+      $scope.filteredRows = $filter('filter')(rows, $scope.search, function(actual, expected) {
 
         var matches = true;
 
@@ -189,9 +182,9 @@ angular.module('lmisApp')
         $scope.productTypes = response[1];
         var startState = '';
 
-        rows.forEach(function (row) {
+        rows.forEach(function(row) {
           if (!startState.length || (row.receivingFacilityObject.state != Facility.unknown.state && row.receivingFacilityObject.state < startState))
-            startState = row.receivingFacilityObject.state;
+            startState = row.receivingFacilityObject.state || '';
         });
 
         $scope.place.search = startState;
@@ -205,6 +198,5 @@ angular.module('lmisApp')
         $scope.error = true;
         console.log(reason);
       });
-
 
   });

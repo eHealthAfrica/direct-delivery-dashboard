@@ -103,6 +103,7 @@ angular.module('lmisApp')
           d.resolve(data);
         })
         .error(function(err) {
+          console.log(err);
           d.reject(err);
         });
 
