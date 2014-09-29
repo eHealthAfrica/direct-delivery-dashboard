@@ -79,7 +79,7 @@
               </thead>
               <tbody>
               <tr ng-repeat="total in totals | orderBy:'place'">
-                <td>{{total.place}}</td>
+                <td><span ng-click="showDetail(total.place)" class="btn-link">{{total.place}}</span></td>
                 <td ng-repeat="value in total.values track by $index">
                   {{value}}
                 </td>
@@ -88,9 +88,14 @@
             </table>
           </div>
         </div>
-        <h3>Details</h3>
+        <div ng-if="showDetails">
+          <h3 class="pull-left">Details</h3>
+          <h3 class="pull-right pointer" ng-click="showDetail()"><span class="glyphicon glyphicon-remove-circle text-danger"></span></h3>
+          <div class="clearfix"></div>
+        </div>
 
-        <div class="panel panel-default">
+
+        <div class="panel panel-default" ng-if="showDetails">
           <table class="nested-repeat table table-condensed table-responsive table-bordered">
             <thead>
             <tr>
