@@ -4,6 +4,7 @@ angular.module('lmisApp')
   .factory('Facility', function($rootScope, $http, $q) {
     var URL = '/api/facilities';
     var allPromise = null;
+    var unrestrictedPromise = null;
     var names = [];
 
     $rootScope.$on('currentUserChanged', function() {
@@ -25,7 +26,7 @@ angular.module('lmisApp')
       },
 
       /**
-       * Read data from db and arrange it as a hash of id -> facility
+       * Read data from db and arrange it as a hash of id -> facility.
        */
       all: function(reload) {
         if (!reload && allPromise)
@@ -69,6 +70,33 @@ angular.module('lmisApp')
           })
           .catch(function(error) {
             d.reject(error);
+          });
+
+        return d.promise;
+      },
+      /**
+       * Returns unrestricted list of facilities arranged as a hash of id -> facility.
+       */
+      unrestricted: function(reload) {
+        if (!reload && unrestrictedPromise)
+          return unrestrictedPromise;
+
+        var d = $q.defer();
+        unrestrictedPromise = d.promise;
+
+        $http.get(URL + '/unrestricted')
+          .success(function(data) {
+            var facilities = {};
+            data.forEach(function(facility) {
+              facilities[facility._id] = facility;
+            });
+
+            d.resolve(facilities);
+          })
+          .error(function(err) {
+            console.log(err);
+            unrestrictedPromise = null;
+            d.reject(err);
           });
 
         return d.promise;

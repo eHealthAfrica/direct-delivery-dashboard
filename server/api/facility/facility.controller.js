@@ -12,3 +12,12 @@ exports.index = function(req, res, next) {
     res.json(auth.filterByFacilities(req, facilities, '_id'));
   });
 };
+
+// get unrestricted list of facilities (not filtered by access rights)
+exports.unrestricted = function(req, res, next) {
+  Facility.all(function(err, facilities) {
+    if (err) return next(err);
+
+    res.json(facilities);
+  });
+};
