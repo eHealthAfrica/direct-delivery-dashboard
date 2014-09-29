@@ -63,13 +63,6 @@
                 </div>
               </div>
               &nbsp;
-              <div class="form-group">
-                <select class="form-control filter" ng-model="ledger.filterType">
-                  <option value="Incoming Bundle">Incoming Bundle</option>
-                  <option value="Outgoing Bundle">Outgoing Bundle</option>
-                </select>
-              </div>
-              &nbsp;
               <button type="button" class="btn btn-primary" ng-click="updateTotals()"
                       ng-disabled="!place.search.length || !from.date || !to.date">
                 Apply
