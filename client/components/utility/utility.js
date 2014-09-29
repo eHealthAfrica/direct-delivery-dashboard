@@ -131,13 +131,13 @@ angular.module('lmisApp')
         var date = moment(row.created);
         var include = true;
 
-        if (placeSearch && placeType)
+        if (include && placeSearch && placeType)
           include = include && (row.facility[placeType].toLowerCase() === placeSearch);
 
-        if (dateFrom)
+        if (include && dateFrom)
           include = include && (date.isSame(dateFrom, 'day') || date.isAfter(dateFrom));
 
-        if (dateTo)
+        if (include && dateTo)
           include = include && (date.isSame(dateTo, 'day') || date.isBefore(dateTo));
 
         return include;

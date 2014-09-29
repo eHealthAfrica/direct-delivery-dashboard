@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('LedgerCtrl', function($scope, $q, ledgerFactory, Pagination, $filter, Places, ProductType, Facility) {
+  .controller('LedgerCtrl', function($scope, $q, Auth, ledgerFactory, Pagination, $filter, Places, ProductType, Facility) {
     var rows = [];
+
+    $scope.currentUser = Auth.getCurrentUser();
     $scope.filteredRows = [];
     $scope.search = {};
     $scope.ledger = {filterType: 'Incoming Bundle'};
@@ -13,14 +15,14 @@ angular.module('lmisApp')
     $scope.totals = [];
 
     $scope.place = {
-      type: Places.STATE,
-      columnTitle: 'Zone',
+      type: '',
+      columnTitle: '',
       search: ''
     };
 
     $scope.from = {
       opened: false,
-      date: moment().startOf('day').subtract('days', 7).toDate(),
+      date: moment().startOf('day').subtract(7, 'days').toDate(),
       open: function($event) {
         $event.preventDefault();
         $event.stopPropagation();
@@ -81,61 +83,44 @@ angular.module('lmisApp')
 
     $scope.updateTotals = function() {
       var totals = {};
-      var filterBy = 'state';
+      var filterBy = Places.propertyName($scope.place.type);
+      var subType = $scope.place.type === Places.FACILITY ? Places.FACILITY : Places.subType($scope.place.type);
+      var groupBy = Places.propertyName(subType || $scope.currentUser.access.level);
+      var columnTitle = Places.typeName(subType || $scope.currentUser.access.level);
       var filterType = angular.isUndefined($scope.ledger.filterType) ? 'Incoming Bundle' : $scope.ledger.filterType;
-      var groupBy = 'zone';
 
-      var columnTitle = 'Zone';
-      switch ($scope.place.type) {
-        case Places.ZONE:
-          filterBy = 'zone';
-          groupBy = 'lga';
-          columnTitle = 'LGA';
-          break;
-        case Places.LGA:
-          filterBy = 'lga';
-          groupBy = 'ward';
-          columnTitle = 'Ward';
-          break;
-        case Places.WARD:
-          filterBy = 'ward';
-          groupBy = 'name';
-          columnTitle = 'Facility';
-          break;
-        case Places.FACILITY:
-          filterBy = 'name';
-          groupBy = 'name';
-          columnTitle = 'Facility';
-          break;
-      }
+      var search = $scope.place.search.toLowerCase();
+      rows
+        .filter(function(row) {
+          var date = moment(row.created);
+          var include = true;
 
-      if ($scope.place.search.length) {
-        var search = $scope.place.search.toLowerCase();
-        rows
-          .filter(function(row) {
-            var date = moment(row.created);
-
-            var facilityName = filterType === 'Incoming Bundle' ? row.receivingFacilityObject[filterBy] : row.sendingFacilityObject[filterBy];
-            if (facilityName === undefined) {
+          if (include && search && filterBy) {
+            var placeName = filterType === 'Incoming Bundle' ? row.receivingFacilityObject[filterBy] : row.sendingFacilityObject[filterBy];
+            if (placeName === undefined)
               return false;
-            }
-            return ((facilityName.toLowerCase() === search) &&
-                    (date.isSame($scope.from.date, 'day') || date.isAfter($scope.from.date)) &&
-                    (date.isSame($scope.to.date, 'day') || date.isBefore($scope.to.date)))
-          })
-          .forEach(function(row) {
-            var key = filterType === 'Incoming Bundle' ? row.receivingFacilityObject[groupBy] : row.sendingFacilityObject[groupBy];
-            totals[key] = totals[key] || {
-              place: key,
-              values: {}
-            };
 
-            var code = row.productCode;
-            totals[key].values[code] = (totals[key].values[code] || 0) + row.quantity;
+            include = include && placeName && (placeName.toLowerCase() === search);
+          }
 
-          });
+          if (include && $scope.from.date)
+            include = include && (date.isSame($scope.from.date, 'day') || date.isAfter($scope.from.date));
 
-      }
+          if (include && $scope.to.date)
+            include = include && (date.isSame($scope.to.date, 'day') || date.isBefore($scope.to.date));
+
+          return include;
+        })
+        .forEach(function(row) {
+          var key = filterType === 'Incoming Bundle' ? row.receivingFacilityObject[groupBy] : row.sendingFacilityObject[groupBy];
+          totals[key] = totals[key] || {
+            place: key,
+            values: {}
+          };
+
+          var code = row.productCode;
+          totals[key].values[code] = (totals[key].values[code] || 0) + row.quantity;
+        });
 
       $scope.place.columnTitle = columnTitle;
       $scope.totals = Object.keys(totals).map(function(key) {
@@ -180,23 +165,15 @@ angular.module('lmisApp')
       .then(function(response) {
         rows = response[0];
         $scope.productTypes = response[1];
-        var startState = '';
 
-        rows.forEach(function(row) {
-          if (!startState.length || (row.receivingFacilityObject.state != Facility.unknown.state && row.receivingFacilityObject.state < startState))
-            startState = row.receivingFacilityObject.state || '';
-        });
-
-        $scope.place.search = startState;
         $scope.updateTotals();
-
         updateFilteredRows();
-        $scope.loading = false;
       })
       .catch(function(reason) {
-        $scope.loading = false;
         $scope.error = true;
         console.log(reason);
+      })
+      .finally(function() {
+        $scope.loading = false;
       });
-
   });
