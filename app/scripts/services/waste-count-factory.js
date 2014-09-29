@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('wasteCountFactory', function ($q, couchdb, ProductProfile, UomFactory, ProductPresentation, Facility) {
+  .factory('wasteCountFactory', function ($q, couchdb, ProductProfile, UomFactory, ProductPresentation, ProductType, Facility) {
     var DB_NAME = 'discard_count';
     var wasteReasons = [
       'VVM Stage 3',
@@ -42,7 +42,8 @@ angular.module('lmisApp')
         Facility.all(),
         ProductProfile.all(),
         UomFactory.all(),
-        ProductPresentation.all()
+        ProductPresentation.all(),
+        ProductType.all()
       ];
 
       $q.all(promises)
@@ -51,7 +52,8 @@ angular.module('lmisApp')
               facilities = resolved[1],
               productProfiles = resolved[2],
               uomList = resolved[3],
-              productPresentation = resolved[4];
+              productPresentation = resolved[4],
+              productTypes = resolved[5];
           var formattedWasteCount = [];
           wasteCounts
             .forEach(function(wasteCount) {
@@ -62,7 +64,8 @@ angular.module('lmisApp')
                   facility: angular.isUndefined(facilities[wasteCount.facility]) ? wasteCount.facility : facilities[wasteCount.facility],
                   created: wasteCount.created,
                   reasons: [],
-                  productLevelList: {}
+                  productLevelList: {},
+                  wasteCount: {}
                 };
 
                 (Object.keys(wasteCount.discarded)).forEach(function (productProfileUUID) {
@@ -70,10 +73,10 @@ angular.module('lmisApp')
                   if (angular.isDefined(productProfiles[productProfileUUID])) {
                     var uom = uomList[productPresentation[productProfiles[productProfileUUID].presentation].uom].symbol;
                     list.productLevelList[productProfileUUID] = (Object.keys(wasteCount.reason[productProfileUUID])).length;
-
+                    list.wasteCount[productTypes[productProfiles[productProfileUUID].product].code] = 0;
                     (Object.keys(wasteCount.reason[productProfileUUID])).forEach(function (reason, index) {
-
-                      list.reasons.push({
+                        list.wasteCount[productTypes[productProfiles[productProfileUUID].product].code] += wasteCount.reason[productProfileUUID][reason];
+                        list.reasons.push({
                         uuid: wasteCount.uuid,
                         productIndex: index,
                         value: wasteCount.reason[productProfileUUID][reason],
