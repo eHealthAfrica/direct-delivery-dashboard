@@ -40,6 +40,7 @@ function isAuthenticated() {
         zones: {},
         lgas: {},
         wards: {},
+        facilityNames: {},
         facilities: []
       };
 
@@ -58,6 +59,7 @@ function isAuthenticated() {
                 if (facility.zone) access.zones[facility.zone] = 1;
                 if (facility.lga) access.lgas[facility.lga] = 1;
                 if (facility.ward) access.wards[facility.ward] = 1;
+                if (facility.name) access.facilityNames[facility.name] = 1;
                 access.facilities.push(facility._id);
               }
             });
@@ -77,6 +79,7 @@ function isAuthenticated() {
           zones: _.keys(access.zones),
           lgas: _.keys(access.lgas),
           wards: _.keys(access.wards),
+          facilityNames: _.keys(access.facilityNames),
           facilities: access.facilities
         };
 
@@ -122,6 +125,13 @@ function filterByLgas(req, rows, property) {
  */
 function filterByWards(req, rows, property) {
   return filterByAccess(req, 'wards', rows, property);
+}
+
+/**
+ * Filters data based on facility names access rights of current user.
+ */
+function filterByFacilityNames(req, rows, property) {
+  return filterByAccess(req, 'facilityNames', rows, property);
 }
 
 /**
@@ -171,6 +181,7 @@ exports.filterByStates = filterByStates;
 exports.filterByZones = filterByZones;
 exports.filterByLgas = filterByLgas;
 exports.filterByWards = filterByWards;
+exports.filterByFacilityNames = filterByFacilityNames;
 exports.filterByFacilities = filterByFacilities;
 exports.hasRole = hasRole;
 exports.signToken = signToken;
