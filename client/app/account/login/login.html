@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-md-4 col-md-offset-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Login</h3>
+      </div>
+      <div class="panel-body">
+        <form class="form" name="form" ng-submit="login(form)" novalidate>
+          <fieldset>
+            <div class="form-group">
+              <label>Username</label>
+              <input name="username" class="form-control" ng-model="user.username" required>
+            </div>
+
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" name="password" class="form-control" ng-model="user.password" required>
+            </div>
+
+            <div class="form-group has-error">
+              <p class="help-block"
+                 ng-show="form.username.$error.required && form.password.$error.required && submitted">
+                Please enter your username and password.
+              </p>
+
+              <p class="help-block">{{ errors.other }}</p>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" ng-disabled="busy">
+              Login
+            </button>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

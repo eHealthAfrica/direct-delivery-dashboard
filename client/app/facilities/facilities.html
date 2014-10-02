@@ -1,0 +1,139 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h2 class="page-header">Facilities</h2>
+    <div class="row" ng-if="facilitiesCtrl.loading || facilitiesCtrl.error">
+      <div class="col-xs-12">
+        <div class="alert alert-info" ng-show="facilitiesCtrl.loading">
+          Loading…
+        </div>
+        <div class="alert alert-danger" ng-show="facilitiesCtrl.error">
+          Error loading data.
+        </div>
+      </div>
+    </div>
+    <div class="row" ng-if="!facilitiesCtrl.loading && !facilitiesCtrl.error">
+      <div class="col-xs-7">
+        <div>
+          <h3 class="pull-left">Reporting</h3>
+          <button
+            class="btn btn-primary pull-right hidden-print"
+            type="button"
+            ng-csv="facilitiesCtrl.csvData.rows"
+            csv-header="facilitiesCtrl.csvData.headers"
+            filename="{{facilitiesCtrl.csvData.filename}}"
+          >Export</button>
+        </div>
+        <table id="facilities-reporting" class="table table-bordered table-condensed table-fixed">
+          <thead>
+            <tr>
+              <th ng-if="facilitiesCtrl.currentUser.showZones" style="width: 12%">Zone</th>
+              <th ng-if="facilitiesCtrl.currentUser.showLgas" style="width: 12%">LGA</th>
+              <th style="width: 15%">Facility</th>
+              <th style="width: 12%">Report Date</th>
+              <th style="width: 49%">Contact Info</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="active">
+              <td ng-if="facilitiesCtrl.currentUser.showZones">
+                <input
+                  type="text"
+                  class="form-control filter"
+                  placeholder="Zone"
+                  ng-model="filter.zone"
+                >
+              </td>
+              <td ng-if="facilitiesCtrl.currentUser.showLgas">
+                <input
+                  type="text"
+                  class="form-control filter"
+                  placeholder="LGA"
+                  ng-model="filter.lga"
+                >
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control filter"
+                  placeholder="Facility"
+                  ng-model="filter.facility"
+                >
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control filter"
+                  placeholder="Date"
+                  ng-model="filter.lastCountDate"
+                >
+              </td>
+              <td>
+                <label for="status">Status</label>
+                <select
+                  name="status"
+                  ng-options="filter.value as filter.label for filter in facilitiesCtrl.reportingFilters"
+                  ng-model="filter.isNonReporting"
+                  ng-init="filter.isNonReporting = ''"
+                ></select>
+                <button
+                  class="btn btn-primary pull-right hidden-print"
+                  ng-click="filter = {isNonReporting: ''}"
+                >Clear Filter</button>
+              </td>
+            </tr>
+            <tr
+              ng-repeat="summary in facilitiesCtrl.summaries | filter:filter"
+              ng-class="{
+                'bg-success': summary.daysFromLastCountDate <= 7,
+                'bg-warning': summary.daysFromLastCountDate > 7 && summary.daysFromLastCountDate <= 14,
+                'bg-danger': summary.daysFromLastCountDate > 14
+              }"
+            >
+              <td ng-if="facilitiesCtrl.currentUser.showZones" ng-bind="summary.zone"></td>
+              <td ng-if="facilitiesCtrl.currentUser.showLgas" ng-bind="summary.lga"></td>
+              <td>
+                <a
+                  ng-href="/stock-count?facility={{summary.facility}}"
+                  title="Jump to stock count"
+                >
+                  <span ng-bind="summary.facility"></span>
+                </a>
+              </td>
+              <td ng-bind="summary.lastCountDate"></td>
+              <td>
+                <ul class="list-unstyled">
+                  <li>
+                    <i class="glyphicon glyphicon-user small"></i>
+                    <span ng-bind="summary.contact.name"></span>
+                  </li>
+                  <li>
+                    <i class="glyphicon glyphicon-phone small"></i>
+                    <span ng-bind="summary.contact.phone"></span>
+                  </li>
+                  <li>
+                    <i class="glyphicon glyphicon-envelope small"></i>
+                    <span ng-bind="summary.contact.email"></span>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-xs-5">
+        <nvd3-pie-chart
+          data="facilitiesCtrl.chart.data"
+          id="reporting-facilities-chart"
+          x="facilitiesCtrl.chart.functions.x()"
+          y="facilitiesCtrl.chart.functions.y()"
+          width="500"
+          height="500"
+          showLabels="true"
+          tooltips="true"
+          tooltipcontent="facilitiesCtrl.chart.functions.tooltip()"
+        >
+        </nvd3-pie-chart>
+      </div>
+    </div>
+  </div>
+</div>
