@@ -34,4 +34,10 @@ user="travisci"
 root="/home/$user/lmis-dashboard"
 
 rsync -avz -e ssh "$dist/" $user@$host:$root/$now/
-ssh $user@$host ln -fsn "$root/$now" "$root/latest"
+ssh -T $user@$host << EOF
+  cd "$root/$now" &&
+  npm install --production &&
+  sudo supervisorctl stop lmisdb &&
+  ln -fsn "$root/$now" "$root/latest" &&
+  sudo supervisorctl start lmisdb
+EOF
