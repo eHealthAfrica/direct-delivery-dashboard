@@ -15,6 +15,7 @@ module.exports = {
 
   // CouchDB connection options
   couch: {
-    host: 'http://lomis.ehealth.org.ng'
+    host:   process.env.COUCH_HOST ||
+            'http://lomis.ehealth.org.ng'
   }
 };
