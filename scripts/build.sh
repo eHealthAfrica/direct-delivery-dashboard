@@ -10,7 +10,7 @@ build() { info "Peforming $1 build"; }
 
 if [[ "$TRAVIS_TAG" ]]; then
   build "release"
-  grunt build:prod
+  grunt build
 else
   build "snapshot"
   grunt build
