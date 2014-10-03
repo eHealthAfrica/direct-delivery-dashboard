@@ -76,9 +76,9 @@ angular.module('lmisApp')
                   if (angular.isDefined(productProfiles[productProfileUUID])) {
                     var uom = uomList[productPresentation[productProfiles[productProfileUUID].presentation].uom].symbol;
                     list.productLevelList[productProfileUUID] = (Object.keys(wasteCount.reason[productProfileUUID])).length;
-                    list.wasteCount[productTypes[productProfiles[productProfileUUID].product].code] = 0;
-                    (Object.keys(wasteCount.reason[productProfileUUID])).forEach(function (reason, index) {
-                        list.wasteCount[productTypes[productProfiles[productProfileUUID].product].code] += wasteCount.reason[productProfileUUID][reason];
+
+                    (Object.keys(wasteCount.reason[productProfileUUID]))
+                      .forEach(function (reason, index) {
                         list.reasons.push({
                           uuid: wasteCount.uuid,
                           productIndex: index,
@@ -88,7 +88,8 @@ angular.module('lmisApp')
                           reason: wasteReasons[reason],
                           uom: uom,
                           created: wasteCount.created,
-                          productList: (Object.keys(wasteCount.discarded)).length
+                          productList: (Object.keys(wasteCount.discarded)).length,
+                          productType: productTypes[productProfiles[productProfileUUID].product].code
                         });
 
                       });

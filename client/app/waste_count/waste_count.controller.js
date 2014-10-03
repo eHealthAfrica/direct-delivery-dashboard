@@ -96,6 +96,15 @@ angular.module('lmisApp')
       var groupBy = Places.propertyName(subType || $scope.currentUser.access.level);
       var columnTitle = Places.typeName(subType || $scope.currentUser.access.level);
 
+      if ($scope.place.search.length) {
+        $scope.search = {};
+        if (angular.isUndefined($scope.search.facility)){
+          $scope.search.facility = {};
+        }
+        $scope.search.facility[filterBy] = $scope.place.search;
+        $scope.search.created = $scope.from.date;
+      }
+
       utility.placeDateFilter(rows, filterBy, $scope.place.search, $scope.from.date, $scope.to.date).forEach(function(row) {
         var key = row.facility[groupBy];
         totals[key] = totals[key] || {
@@ -103,8 +112,9 @@ angular.module('lmisApp')
           values: {}
         };
 
-        (Object.keys(row.wasteCount)).forEach(function(code) {
-          totals[key].values[code] = (totals[key].values[code] || 0) + row.wasteCount[code];
+        row.reasons.forEach(function(reason) {
+          var code = reason.productType;
+          totals[key].values[code] = (totals[key].values[code] || 0) + reason.value;
         });
       });
 
@@ -125,7 +135,36 @@ angular.module('lmisApp')
     }, true);
 
     function updateFilteredRows() {
-      $scope.filteredRows = $filter('filter')(rows, $scope.search, utility.objectComparator);
+      $scope.filteredRows = $filter('filter')(rows, $scope.search, function (actual, expected) {
+        var matches = true;
+        Object.keys(expected).some(function (key) {
+          if (angular.isArray(actual)) {
+            actual.some(function (actualKey) {
+              if (actualKey[key] === undefined || actualKey[key].toLowerCase().indexOf(expected[key].toLowerCase()) < 0) {
+                matches = false;
+                return true;
+              }
+            });
+          } else if (actual[key] === undefined || actual[key].toLowerCase().indexOf(expected[key].toLowerCase()) < 0) {
+
+            matches = false;
+            return true;
+          }
+          return false;
+        });
+
+        if (angular.isDate(actual) || angular.isDate(expected)) {
+          var date = moment(Date.parse(actual));
+          if ($scope.place.search.length) {
+            matches = ((date.isSame($scope.from.date, 'day') || date.isAfter($scope.from.date)) &&
+              (date.isSame($scope.to.date, 'day') || date.isBefore($scope.to.date)));
+          } else {
+            matches = date.isSame(expected, 'day');
+          }
+        }
+
+        return matches;
+      });
       $scope.pagination.totalItemsChanged($scope.filteredRows.length);
     }
 
