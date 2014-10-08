@@ -12,7 +12,7 @@ angular.module('lmisApp')
 
     return {
       /**
-       * Read data from db and arrange it as a hash of dhis2_modelid -> name
+       * Read data from db and arrange it as a hash of dhis2_modelid -> model name
        */
       all: function(reload) {
         if (!reload && allPromise)
@@ -26,9 +26,12 @@ angular.module('lmisApp')
           .success(function(data) {
             var cceis = {};
             data.forEach(function(ccei) {
-              cceis[ccei.dhis2_modelid] = ccei.name;
-              if (ccei.name && names.indexOf(ccei.name) < 0)
-                names.push(ccei.name);
+              var name = (ccei.Manufacturer && ccei.ModelName) ? (ccei.Manufacturer + ' - ' + ccei.ModelName) : undefined;
+              if (ccei.dhis2_modelid && name) {
+                cceis[ccei.dhis2_modelid] = name;
+                if (names.indexOf(name) < 0)
+                  names.push(name);
+              }
             });
 
             names.sort();
@@ -43,7 +46,7 @@ angular.module('lmisApp')
         return d.promise;
       },
       /**
-       * Returns data as array of names.
+       * Returns data as array of model names.
        */
       names: function(filter, reload) {
         var d = $q.defer();
