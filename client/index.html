@@ -34,7 +34,19 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <!-- Add your site or application content here -->
-<div class="container-fluid" ng-view=""></div>
+<div class="container-fluid">
+  <div ng-hide="loadingView || loadViewError" ng-view=""></div>
+  <div ng-show="loadViewError" ng-include="'load-error.html'"></div>
+  <div ng-show="loadingView" class="preloader">
+    <img src="assets/images/preloader.gif">
+  </div>
+</div>
+
+<script type="text/ng-template" id="load-error.html">
+  <div class="alert alert-danger">
+    Error loading data.
+  </div>
+</script>
 
 <!--[if lt IE 9]>
 <script src="bower_components/es5-shim/es5-shim.js"></script>
