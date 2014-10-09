@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisApp')
-  .factory('stockCount', function($q, $http, InventoryRules, ProductProfile, ProductType, Facility, AppConfig, utility) {
+  .factory('stockCount', function($q, $http, InventoryRules, ProductProfile, ProductType, Facility, AppConfig, utility, ProductCategory) {
     var URL = '/api/stock_count',
       DAILY = 1,
       WEEKLY = 7,
@@ -236,11 +236,13 @@ angular.module('lmisApp')
 
       $q.all([
           ProductProfile.all(),
-          ProductType.all()
+          ProductType.all(),
+          ProductCategory.all()
         ])
         .then(function(response) {
           var productProfiles = response[0];
           var productTypes = response[1];
+          var productCategories = response[2];
 
           rows.forEach(function(row) {
             if (row.unopened) {
@@ -248,9 +250,11 @@ angular.module('lmisApp')
               Object.keys(row.unopened).forEach(function(key) {
                 var productProfile = productProfiles[key];
                 var productType = ((productProfile && productProfile.product) ? productTypes[productProfile.product] : undefined) || ProductType.unknown;
+                var productCategory = ((productProfile && productProfile.category) ? productCategories[productProfile.category] : undefined) || ProductCategory.unknown;
 
                 unopened[productType.uuid] = unopened[productType.uuid] || {
                   productType: productType || ProductType.unknown,
+                  productCategory: productCategory || ProductCategory.unknown,
                   count: 0
                 };
 
