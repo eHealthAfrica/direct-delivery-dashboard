@@ -155,7 +155,7 @@
             </tr>
           </thead>
           <tbody ng-repeat="row in filteredRows | orderBy:['-created', 'productType.code'] | limitTo:pagination.limit | limitTo:-pagination.count">
-            <tr ng-repeat="item in row.unopened | orderBy:'productType.code'">
+            <tr ng-repeat="item in row.unopened | orderBy:['productCategory.name', 'productType.code']">
               <td ng-if="$index == 0 && currentUser.showStates" rowspan="{{row.unopened.length}}">{{row.facility.state}}</td>
               <td ng-if="$index == 0 && currentUser.showZones" rowspan="{{row.unopened.length}}">{{row.facility.zone}}</td>
               <td ng-if="$index == 0 && currentUser.showLgas" rowspan="{{row.unopened.length}}">{{row.facility.lga}}</td>
