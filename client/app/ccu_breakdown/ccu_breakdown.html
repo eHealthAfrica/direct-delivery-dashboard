@@ -1,4 +1,75 @@
 <div class="row">
+  <div class="col-md-12">
+    <h2 class="page-header">CCE Breakdown</h2>
+    <div class="row" ng-show="loading || error">
+      <div class="col-xs-12">
+        <div class="alert alert-info" ng-show="loading">
+          Loading ...
+        </div>
+        <div class="alert alert-danger" ng-show="error">
+          Error loading data.
+        </div>
+      </div>
+    </div>
+    <div class="row" ng-hide="loading || error">
+      <div class="col-xs-12">
+        <h3>Detail</h3>
+
+        <div class="panel panel-default">
+
+          <table class="table table-condensed table-bordered table-striped table-condensed">
+            <thead>
+            <tr>
+              <th ng-if="currentUser.showStates">State</th>
+              <th ng-if="currentUser.showZones">Zone</th>
+              <th ng-if="currentUser.showLgas">LGA</th>
+              <th ng-if="currentUser.showWards">Ward</th>
+              <th>Facility</th>
+              <th>Date</th>
+              <th>CCE Unit</th>
+              <th>Last Fault</th>
+              <th>Status</th>
+              <th>Contact</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="row in filteredRows | orderBy:['-created', 'name']">
+              <td ng-if="currentUser.showStates">{{row.state}}</td>
+              <td ng-if="currentUser.showZones">{{row.zone}}</td>
+              <td ng-if="currentUser.showLgas">{{row.lga}}</td>
+              <td ng-if="currentUser.showWards">{{row.ward}}</td>
+              <td>{{row.facility}}</td>
+              <td>{{row.created | date:SETTINGS.dateTimeFormat}}</td>
+              <td>{{ row.manufacturer }} - {{row.name}}</td>
+              <td>{{row.lastFault}}</td>
+              <td>{{row.statusText}}</td>
+              <td>
+                <ul class="list-unstyled">
+                  <li>
+                    <i class="glyphicon glyphicon-user"></i>
+                    <span ng-bind="row.contact.name"></span>
+                  </li>
+                  <li>
+                    <i class="glyphicon glyphicon-phone"></i>
+                    <span ng-bind="row.contact.phone"></span>
+                  </li>
+                  <li>
+                    <i class="glyphicon glyphicon-envelope"></i>
+                    <span ng-bind="row.contact.email"></span>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!--
+<div class="row">
   <div class="col-xs-12">
     <h2 class="page-header">CCU Breakdown</h2>
     <div class="row" ng-show="loading || error">
@@ -173,3 +244,4 @@
     </div>
   </div>
 </div>
+-->
