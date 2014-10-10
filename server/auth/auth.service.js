@@ -95,6 +95,9 @@ function filterByAccess(req, level, rows, property) {
   return rows.filter(function(row) {
     var value = row[property];
 
+    if (toString.call(row[property]) === '[object Object]')
+      value = row[property]._id;
+
     return value && (req.access[level].indexOf(value) >= 0);
   });
 }
