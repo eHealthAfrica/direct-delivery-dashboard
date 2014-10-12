@@ -6,6 +6,13 @@ angular.module('lmisApp')
       .when('/stock-count-summary', {
         templateUrl: 'app/stock_count_summary/stock_count_summary.html',
         controller: 'StockCountSummaryCtrl',
-        authenticate: true
+        authenticate: true,
+        resolve: {
+          stockCountSummary: [
+            'stockCount', function(stockCount) {
+              return stockCount.stockCountSummaryByFacility()
+            }
+          ]
+        }
       });
   });

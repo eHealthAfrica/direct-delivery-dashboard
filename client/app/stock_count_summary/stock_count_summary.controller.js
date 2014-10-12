@@ -1,17 +1,11 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('StockCountSummaryCtrl', function($scope, stockCount) {
+  .controller('StockCountSummaryCtrl', function($scope, stockCountSummary) {
+    $scope.stockCountSummary = stockCountSummary.summary;
+    $scope.groupedStockCount = stockCountSummary.groupedStockCount;
     $scope.facilityStockCounts = {};
     $scope.toggleAllMode = false;
-    stockCount.stockCountSummaryByFacility()
-      .then(function(data) {
-        $scope.stockCountSummary = data.summary;
-        $scope.groupedStockCount = data.groupedStockCount
-      })
-      .catch(function(reason) {
-        console.error(reason);
-      });
 
     var setStockCountRowCollapse = function() {
       $scope.stockCountRowCollapse = {};
