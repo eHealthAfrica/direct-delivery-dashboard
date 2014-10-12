@@ -1,15 +1,12 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('FacilitiesCtrl', function($log, Auth, facilityReports, facilityCSV, facilityChart, FACILITY_FILTERS) {
+  .controller('FacilitiesCtrl', function($q, Auth, facilityCSV, facilityChart, FACILITY_FILTERS, summaries) {
     var vm = this;
     vm.currentUser = Auth.getCurrentUser();
-    vm.loading = true;
-    vm.error = false;
     vm.reportingFilters = FACILITY_FILTERS;
 
     function bindSummaries(summaries) {
-      vm.loading = false;
       vm.summaries = summaries;
       return angular.copy(summaries);
     }
@@ -24,15 +21,11 @@ angular.module('lmisApp')
       vm.csvData = facilityCSV(summaries);
     }
 
-    function handleError(reason) {
-      vm.loading = false;
-      vm.error = true;
-      $log.error('Error loading facilities', reason);
-    }
-
-    facilityReports.load()
+    var d = $q.defer();
+    d.promise
       .then(bindSummaries)
       .then(bindFacilityChart)
-      .then(bindCSVData)
-      .catch(handleError);
+      .then(bindCSVData);
+
+    d.resolve(summaries);
   });
