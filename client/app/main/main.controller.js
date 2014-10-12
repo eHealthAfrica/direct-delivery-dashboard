@@ -9,13 +9,11 @@ angular.module('lmisApp')
     $scope.ccuBreakdowns = ccuBreakdowns;
   })
   .controller('UnopenedCtrl', function($scope, $filter) {
+    var rows = $scope.stockCounts;
+
     $scope.mostRecent = [];
     $scope.chartData = [];
     $scope.chartFacility = '';
-
-    var rows = $scope.stockCounts.filter(function(row) {
-      return !!row.facility;
-    });
 
     $scope.formatDateAxisFunction = function() {
       return function(d) {

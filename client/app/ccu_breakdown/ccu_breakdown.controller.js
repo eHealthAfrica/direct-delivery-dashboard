@@ -5,10 +5,7 @@ angular.module('lmisApp')
     $scope.currentUser = Auth.getCurrentUser();
     $scope.pagination = new Pagination();
     $scope.units = cceis;
-    $scope.rows = ccuBreakdowns.filter(function(row) {
-      return !!row.facility;
-    });
-
+    $scope.rows = ccuBreakdowns;
     $scope.filteredRows = [];
     $scope.search = {};
     $scope.totals = [];

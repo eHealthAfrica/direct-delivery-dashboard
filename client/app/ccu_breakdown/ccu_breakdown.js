@@ -15,7 +15,12 @@ angular.module('lmisApp')
           ],
           ccuBreakdowns: [
             'ccuBreakdown', function(ccuBreakdown) {
-              return ccuBreakdown.byDate();
+              return ccuBreakdown.byDate()
+                .then(function(rows) {
+                  return rows.filter(function(row) {
+                    return !!row.facility;
+                  });
+                });
             }
           ]
         }

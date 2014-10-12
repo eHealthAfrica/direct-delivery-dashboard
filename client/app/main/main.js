@@ -15,7 +15,12 @@ angular.module('lmisApp')
           ],
           stockCounts: [
             'stockCount', function(stockCount) {
-              return stockCount.byFacilityAndDate();
+              return stockCount.byFacilityAndDate()
+                .then(function(rows) {
+                  return rows.filter(function(row) {
+                    return !!row.facility;
+                  });
+                });
             }
           ],
           stockOuts: [
