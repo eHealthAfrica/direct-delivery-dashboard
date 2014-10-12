@@ -82,7 +82,7 @@ angular.module('lmisApp')
     }, true);
 
     function updateFilteredRows() {
-      $scope.filteredRows = $filter('filter')($scope.rows, $scope.search, utility.objectComparator);
+      $scope.filteredRows = $filter('filter')($scope.rows, $scope.search, utility.comparator);
       $scope.pagination.totalItemsChanged($scope.filteredRows.length);
     }
 

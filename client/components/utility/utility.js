@@ -110,6 +110,10 @@ angular.module('lmisApp')
       return d.promise;
     };
 
+    this.stringComparator = function stringComparator(actual, expected) {
+      return (actual.toLowerCase().indexOf(expected.toLowerCase()) >= 0);
+    };
+
     this.objectComparator = function objectComparator(actual, expected) {
       var matches = true;
       Object.keys(expected).some(function(key) {
@@ -123,6 +127,15 @@ angular.module('lmisApp')
 
       return matches;
     };
+
+    this.comparator = function comparator(actual, expected) {
+      if (angular.isString(actual) && angular.isString(expected))
+        return this.stringComparator(actual, expected);
+      else if (angular.isObject(actual) && angular.isObject(expected))
+        return this.objectComparator(actual, expected);
+      else
+        return (actual == expected);
+    }.bind(this);
 
     this.placeDateFilter = function placeDateFilter(rows, placeType, placeSearch, dateFrom, dateTo) {
       placeSearch = placeSearch.toLowerCase();
