@@ -6,6 +6,18 @@ angular.module('lmisApp')
       .when('/waste-count', {
         templateUrl: 'app/waste_count/waste_count.html',
         controller: 'WasteCountCtrl',
-        authenticate: true
+        authenticate: true,
+        resolve: {
+          productTypes: [
+            'ProductType', function(ProductType) {
+              return ProductType.codes();
+            }
+          ],
+          wasteCounts: [
+            'wasteCountFactory', function(wasteCountFactory) {
+              return wasteCountFactory.getFormatted();
+            }
+          ]
+        }
       });
   });
