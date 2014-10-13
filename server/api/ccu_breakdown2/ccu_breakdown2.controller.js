@@ -9,6 +9,6 @@ exports.all = function(req, res, next) {
   CCUBreakdown.all(function(err, ccu_breakdown2) {
     if (err) return next(err);
 
-    res.json(auth.filterByFacilities(req, ccu_breakdown2, 'facility'));
+    res.json(auth.filterByFacilities(req, ccu_breakdown2, 'facility._id'));
   });
 };
