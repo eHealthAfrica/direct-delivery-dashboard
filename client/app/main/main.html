@@ -94,7 +94,10 @@
 </div>
 <div class="row" ng-controller="UnopenedCtrl">
   <div class="col-xs-12">
-    <h2 class="page-header">Stock Count</h2>
+    <div>
+      <h2 class="page-header">Stock Count</h2>
+    </div>
+
     <div class="row" ng-show="loading || error">
       <div class="col-xs-12">
         <div class="alert alert-info" ng-show="loading">
@@ -107,7 +110,12 @@
     </div>
     <div class="row" ng-hide="loading || error">
       <div class="col-xs-12">
-        <h3>Most recent</h3>
+        <h3>Most recent
+          <div class="pull-right normalize-text">
+            <i class="fa fa-square-o fa-lg bg-danger"></i> Out of stock
+          </div>
+          <div class="clearfix"></div>
+        </h3>
         <div style="overflow: auto;">
           <table class="table table-bordered">
             <thead>
