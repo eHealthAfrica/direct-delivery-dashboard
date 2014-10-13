@@ -1,6 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
+_.mixin(require("lodash-deep"));
 var config = require('../config/environment');
 var jwt = require('jsonwebtoken');
 var expressJwt = require('express-jwt');
@@ -93,10 +94,7 @@ function isAuthenticated() {
  */
 function filterByAccess(req, level, rows, property) {
   return rows.filter(function(row) {
-    var value = row[property];
-
-    if (toString.call(row[property]) === '[object Object]')
-      value = row[property]._id;
+    var value = _.deepGet(row, property);
 
     return value && (req.access[level].indexOf(value) >= 0);
   });
