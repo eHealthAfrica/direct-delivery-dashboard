@@ -4,15 +4,10 @@ angular.module('lmisApp')
   .factory('ccuBreakdown', function($http, $q, utility, CCEI, Facility) {
     var URL = '/api/ccu_breakdown';
     var URL2 = '/api/ccu_breakdown2';
-    var allPromise = null;
+
 
     function all(reload) {
-
-      if (!reload && allPromise)
-        return allPromise;
-
       var deferred = $q.defer();
-      allPromise = deferred.promise;
 
       $http.get(URL2)
         .success(function (response) {
@@ -20,7 +15,6 @@ angular.module('lmisApp')
         })
         .error(function (error) {
           console.log(error);
-          allPromise = null;
           deferred.reject(error);
         });
 
