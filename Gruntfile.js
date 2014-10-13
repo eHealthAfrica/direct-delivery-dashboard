@@ -447,6 +447,10 @@ module.exports = function(grunt) {
       prod: {
         NODE_ENV: 'production'
       },
+      dist: {
+        NODE_ENV: 'production',
+        NODE_CONFIG: 'development'
+      },
       all: localConfig
     },
 
@@ -574,8 +578,12 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('serve', function(target) {
-    if (target === 'dist') {
+    if (target === 'prod') {
       return grunt.task.run(['build', 'env:all', 'env:prod', 'express:prod', 'wait', 'open', 'express-keepalive']);
+    }
+
+    if (target === 'dist') {
+      return grunt.task.run(['build', 'env:all', 'env:dist', 'express:prod', 'wait', 'open', 'express-keepalive']);
     }
 
     if (target === 'debug') {
