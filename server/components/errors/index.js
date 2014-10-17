@@ -1,8 +1,8 @@
+'use strict';
+
 /**
  * Error responses
  */
-
-'use strict';
 
 module.exports[404] = function pageNotFound(req, res) {
   var viewFilePath = '404';
@@ -18,3 +18,28 @@ module.exports[404] = function pageNotFound(req, res) {
     res.render(viewFilePath);
   });
 };
+
+/**
+ * Validation errors
+ */
+function ValidationError() {
+  Error.call(this);
+
+  this.name = 'ValidationError';
+}
+
+ValidationError.prototype = Object.create(Error.prototype);
+ValidationError.prototype.constructor = Error;
+
+ValidationError.prototype.errors = {};
+Object.defineProperty(ValidationError.prototype, 'length', {
+  get: function() {
+    return Object.keys(this.errors).length;
+  }
+});
+
+ValidationError.prototype.required = function(field) {
+  this.errors[field] = 'required';
+};
+
+module.exports.ValidationError = ValidationError;
