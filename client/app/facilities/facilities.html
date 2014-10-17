@@ -1,17 +1,7 @@
 <div class="row">
   <div class="col-xs-12">
     <h2 class="page-header">Facilities</h2>
-    <div class="row" ng-if="facilitiesCtrl.loading || facilitiesCtrl.error">
-      <div class="col-xs-12">
-        <div class="alert alert-info" ng-show="facilitiesCtrl.loading">
-          Loading…
-        </div>
-        <div class="alert alert-danger" ng-show="facilitiesCtrl.error">
-          Error loading data.
-        </div>
-      </div>
-    </div>
-    <div class="row" ng-if="!facilitiesCtrl.loading && !facilitiesCtrl.error">
+    <div class="row">
       <div class="col-xs-7">
         <div>
           <h3 class="pull-left">Reporting</h3>

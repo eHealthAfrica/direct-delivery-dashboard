@@ -1,17 +1,15 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('LedgerCtrl', function($scope, $q, Auth, ledgerFactory, Pagination, $filter, Places, ProductType, Facility) {
-    var rows = [];
+  .controller('LedgerCtrl', function($scope, Auth, Pagination, $filter, Places, bundleLines, productTypes) {
+    var rows = bundleLines;
 
     $scope.currentUser = Auth.getCurrentUser();
+    $scope.productTypes = productTypes;
+    $scope.pagination = new Pagination();
     $scope.filteredRows = [];
     $scope.search = {};
     $scope.ledger = {filterType: 'Incoming Bundle'};
-    $scope.pagination = new Pagination();
-    $scope.loading = true;
-    $scope.error = false;
-    $scope.productTypes = [];
     $scope.totals = [];
 
     $scope.place = {
@@ -161,19 +159,6 @@ angular.module('lmisApp')
       $scope.pagination.totalItemsChanged($scope.filteredRows.length);
     }
 
-    $q.all([ledgerFactory.getFormattedBundleLines(), ProductType.codes()])
-      .then(function(response) {
-        rows = response[0];
-        $scope.productTypes = response[1];
-
-        $scope.updateTotals();
-        updateFilteredRows();
-      })
-      .catch(function(reason) {
-        $scope.error = true;
-        console.log(reason);
-      })
-      .finally(function() {
-        $scope.loading = false;
-      });
+    $scope.updateTotals();
+    updateFilteredRows();
   });

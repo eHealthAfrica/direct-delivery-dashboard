@@ -1,17 +1,15 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('WasteCountCtrl', function($q, $scope, Auth, wasteCountFactory, Pagination, $filter, utility, Places, ProductType, Facility) {
-    var rows = [];
+  .controller('WasteCountCtrl', function($scope, Auth, Pagination, $filter, utility, Places, productTypes, wasteCounts) {
+    var rows = wasteCounts;
 
     $scope.currentUser = Auth.getCurrentUser();
+    $scope.pagination = new Pagination();
+    $scope.productTypes = productTypes;
     $scope.filteredRows = [];
     $scope.search = {};
-    $scope.pagination = new Pagination();
     $scope.totals = [];
-    $scope.productTypes = [];
-    $scope.loading = true;
-    $scope.error = false;
     $scope.places = null;
     $scope.showDetails = false;
 
@@ -52,7 +50,7 @@ angular.module('lmisApp')
 
     $scope.from = {
       opened: false,
-      date: moment().startOf('day').subtract('days', 30).toDate(),
+      date: moment().startOf('day').subtract(30, 'days').toDate(),
       open: function($event) {
         $event.preventDefault();
         $event.stopPropagation();
@@ -98,7 +96,7 @@ angular.module('lmisApp')
 
       if ($scope.place.search.length) {
         $scope.search = {};
-        if (angular.isUndefined($scope.search.facility)){
+        if (angular.isUndefined($scope.search.facility)) {
           $scope.search.facility = {};
         }
         $scope.search.facility[filterBy] = $scope.place.search;
@@ -135,17 +133,18 @@ angular.module('lmisApp')
     }, true);
 
     function updateFilteredRows() {
-      $scope.filteredRows = $filter('filter')(rows, $scope.search, function (actual, expected) {
+      $scope.filteredRows = $filter('filter')(rows, $scope.search, function(actual, expected) {
         var matches = true;
-        Object.keys(expected).some(function (key) {
+        Object.keys(expected).some(function(key) {
           if (angular.isArray(actual)) {
-            actual.some(function (actualKey) {
+            actual.some(function(actualKey) {
               if (actualKey[key] === undefined || actualKey[key].toLowerCase().indexOf(expected[key].toLowerCase()) < 0) {
                 matches = false;
                 return true;
               }
             });
-          } else if (actual[key] === undefined || actual[key].toLowerCase().indexOf(expected[key].toLowerCase()) < 0) {
+          }
+          else if (actual[key] === undefined || actual[key].toLowerCase().indexOf(expected[key].toLowerCase()) < 0) {
 
             matches = false;
             return true;
@@ -157,8 +156,9 @@ angular.module('lmisApp')
           var date = moment(Date.parse(actual));
           if ($scope.place.search.length) {
             matches = ((date.isSame($scope.from.date, 'day') || date.isAfter($scope.from.date)) &&
-              (date.isSame($scope.to.date, 'day') || date.isBefore($scope.to.date)));
-          } else {
+                       (date.isSame($scope.to.date, 'day') || date.isBefore($scope.to.date)));
+          }
+          else {
             matches = date.isSame(expected, 'day');
           }
         }
@@ -168,19 +168,6 @@ angular.module('lmisApp')
       $scope.pagination.totalItemsChanged($scope.filteredRows.length);
     }
 
-    $q.all([wasteCountFactory.getFormatted(), ProductType.codes()])
-      .then(function(response) {
-        rows = response[0];
-        $scope.productTypes = response[1];
-
-        $scope.updateTotals();
-        updateFilteredRows();
-      })
-      .catch(function(reason) {
-        $scope.error = true;
-        console.log(reason);
-      })
-      .finally(function() {
-        $scope.loading = false;
-      });
+    $scope.updateTotals();
+    updateFilteredRows();
   });

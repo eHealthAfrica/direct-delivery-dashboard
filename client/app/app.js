@@ -47,17 +47,29 @@ angular.module('lmisApp', [
   })
 
   .run(function($rootScope, $location, SETTINGS, utility, Auth, State, Zone, LGA, Ward, Facility) {
+    $rootScope.loadingView = true;
+    $rootScope.loadViewError = false;
     $rootScope.SETTINGS = SETTINGS;
-
     $rootScope.getFileName = utility.getFileName;
 
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$routeChangeStart', function(event, next) {
+      $rootScope.loadingView = true;
+      $rootScope.loadViewError = false;
       Auth.isLoggedInAsync(function(loggedIn) {
         if (next.authenticate && !loggedIn) {
           $location.path('/login');
         }
       });
+    });
+
+    $rootScope.$on('$routeChangeSuccess', function(event) {
+      $rootScope.loadingView = false;
+    });
+
+    $rootScope.$on('$routeChangeError', function(event) {
+      $rootScope.loadingView = false;
+      $rootScope.loadViewError = true;
     });
 
     $rootScope.dataProvider = {

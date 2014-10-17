@@ -1,17 +1,15 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('StockCountCtrl', function($scope, $q, $filter, $routeParams, utility, Auth, Pagination, Places, ProductType, Facility, stockCount) {
-    var rows = [];
+  .controller('StockCountCtrl', function($scope, $filter, $routeParams, utility, Auth, Pagination, Places, stockCounts, productTypes) {
+    var rows = stockCounts;
 
     $scope.currentUser = Auth.getCurrentUser();
+    $scope.productTypes = productTypes;
+    $scope.pagination = new Pagination();
     $scope.filteredRows = [];
     $scope.search = {};
-    $scope.pagination = new Pagination();
     $scope.totals = [];
-    $scope.productTypes = [];
-    $scope.loading = true;
-    $scope.error = false;
     $scope.places = null;
 
     $scope.place = {
@@ -97,29 +95,6 @@ angular.module('lmisApp')
       $scope.pagination.totalItemsChanged($scope.filteredRows.length);
     }
 
-    $q.all([
-        ProductType.codes(),
-        stockCount.all()
-      ])
-      .then(function(responses) {
-        $scope.productTypes = responses[0];
-
-        stockCount.resolveUnopened(stockCount.latest(responses[1]))
-          .then(function(resolved) {
-            rows = resolved;
-
-            $scope.updateTotals();
-            updateFilteredRows();
-          })
-          .catch(function() {
-            $scope.error = true;
-          })
-          .finally(function() {
-            $scope.loading = false;
-          });
-      })
-      .catch(function() {
-        $scope.loading = false;
-        $scope.error = true;
-      })
+    $scope.updateTotals();
+    updateFilteredRows();
   });

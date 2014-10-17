@@ -1,16 +1,14 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('CCUBreakdownCtrl', function($scope, $q, $filter, utility, Auth, Pagination, Places, CCEI, ccuBreakdown) {
+  .controller('CCUBreakdownCtrl', function($scope, $filter, utility, Auth, Pagination, Places, cceis, ccuBreakdowns) {
     $scope.currentUser = Auth.getCurrentUser();
-    $scope.rows = [];
+    $scope.pagination = new Pagination();
+    $scope.units = cceis;
+    $scope.rows = ccuBreakdowns;
     $scope.filteredRows = [];
     $scope.search = {};
-    $scope.pagination = new Pagination();
     $scope.totals = [];
-    $scope.units = [];
-    $scope.loading = true;
-    $scope.error = false;
     $scope.places = null;
 
     $scope.place = {
@@ -86,26 +84,6 @@ angular.module('lmisApp')
       $scope.pagination.totalItemsChanged($scope.filteredRows.length);
     }
 
-    $q.all([
-        CCEI.names(),
-        ccuBreakdown.byDate()
-      ])
-      .then(function(responses) {
-        $scope.units = responses[0];
-
-        var rows = responses[1];
-        $scope.rows = rows
-          .filter(function(row) {
-            return !!row.facility;
-          });
-
-        $scope.updateTotals();
-        updateFilteredRows();
-      })
-      .catch(function() {
-        $scope.error = true;
-      })
-      .finally(function() {
-        $scope.loading = false;
-      });
+    $scope.updateTotals();
+    updateFilteredRows();
   });
