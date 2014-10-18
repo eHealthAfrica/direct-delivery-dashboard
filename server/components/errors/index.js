@@ -26,12 +26,12 @@ function ValidationError() {
   Error.call(this);
 
   this.name = 'ValidationError';
+  this.errors = {};
 }
 
 ValidationError.prototype = Object.create(Error.prototype);
 ValidationError.prototype.constructor = Error;
 
-ValidationError.prototype.errors = {};
 Object.defineProperty(ValidationError.prototype, 'length', {
   get: function() {
     return Object.keys(this.errors).length;
