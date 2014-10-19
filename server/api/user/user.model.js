@@ -26,7 +26,7 @@ function id(name) {
 function exists(name, cb) {
   findByName(name, function(err, user) {
     if (err) {
-      if (err.error = 'not_found')
+      if (err.error == 'not_found')
         return cb(null, false);
       else
         return cb(err);
