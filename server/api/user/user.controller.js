@@ -17,6 +17,17 @@ exports.me = function(req, res, next) {
 };
 
 /**
+ * Create a user
+ */
+exports.create = function(req, res, next) {
+  User.create(req.body, function(err, user) {
+    if (err) return next(err);
+
+    res.json(user);
+  });
+};
+
+/**
  * Authentication callback
  */
 exports.authCallback = function(req, res, next) {

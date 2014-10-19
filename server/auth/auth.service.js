@@ -150,12 +150,10 @@ function hasRole(roleRequired) {
   return compose()
     .use(isAuthenticated())
     .use(function meetsRequirements(req, res, next) {
-      if (config.userRoles.indexOf(req.user.role) >= config.userRoles.indexOf(roleRequired)) {
+      if (req.user.roles && req.user.roles.indexOf(roleRequired) >= 0)
         next();
-      }
-      else {
+      else
         res.send(403);
-      }
     });
 }
 
@@ -171,7 +169,7 @@ function signToken(id) {
  */
 function setTokenCookie(req, res) {
   if (!req.user) return res.json(404, { message: 'Something went wrong, please try again.'});
-  var token = signToken(req.user._id, req.user.role);
+  var token = signToken(req.user._id);
   res.cookie('token', JSON.stringify(token));
   res.redirect('/');
 }

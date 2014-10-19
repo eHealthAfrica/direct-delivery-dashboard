@@ -13,6 +13,8 @@ db.changes().on('change', function() {
 });
 
 // exports
+exports.db = db;
+exports.id = id;
 exports.create = create;
 exports.remove = remove;
 exports.findById = findById;
