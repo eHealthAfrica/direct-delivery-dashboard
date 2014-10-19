@@ -9,10 +9,17 @@ var db = new (cradle.Connection)().database('facilities');
 // use promises for caching across all requests
 var allPromise = null;
 
-// clear cache on db changes
-db.changes().on('change', function() {
-  db.cache.purge();
-  allPromise = null;
+db.exists(function(err, exists) {
+  if (err) throw err;
+
+  if (!exists)
+    db.create();
+
+  // clear cache on db changes
+  db.changes().on('change', function() {
+    db.cache.purge();
+    allPromise = null;
+  });
 });
 
 // exports
