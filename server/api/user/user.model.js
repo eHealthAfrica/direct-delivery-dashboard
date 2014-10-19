@@ -1,8 +1,9 @@
 'use strict';
 
-var logger = require('winston');
-var cradle = require('cradle');
-var crypto = require('crypto');
+var logger = require('winston'),
+  cradle = require('cradle'),
+  crypto = require('crypto'),
+  errors = require('../../components/errors');
 
 var db = new (cradle.Connection)().database('_users');
 
@@ -12,9 +13,74 @@ db.changes().on('change', function() {
 });
 
 // exports
+exports.create = create;
+exports.remove = remove;
 exports.findById = findById;
 exports.findByName = findByName;
 exports.authenticate = authenticate;
+
+function id(name) {
+  return 'org.couchdb.user:' + name;
+}
+
+function exists(name, cb) {
+  findByName(name, function(err, user) {
+    if (err) {
+      if (err.error = 'not_found')
+        return cb(null, false);
+      else
+        return cb(err);
+    }
+
+    cb(null, true, user);
+  });
+}
+
+function create(data, cb) {
+  var error = new errors.ValidationError();
+
+  data = data || {};
+
+  var name = String.prototype.trim.apply(data.name || '').toLowerCase();
+
+  if (!name) error.required('name');
+  if (!data.password && !data.password_scheme) error.required('password');
+
+  if (error.length) return cb(error);
+
+  exists(name, function(err, exists) {
+    if (err) return cb(err);
+    if (exists) {
+      error.unique('name');
+      return cb(error);
+    }
+
+    var user = {
+      name: name,
+      password: data.password,
+      type: 'user',
+      roles: data.roles || [],
+      access: data.access || {}
+    };
+
+    db.save(id(name), user, function(err, res) {
+      if (err) return cb(err);
+
+      user._id = res.id;
+      user._rev = res.rev;
+      cb(null, clean(user));
+    });
+  });
+}
+
+function remove(name, cb) {
+  exists(name, function(err, exists, user) {
+    if (err) return cb(err);
+    if (!exists) return cb();
+
+    db.remove(user._id, user._rev, cb);
+  });
+}
 
 function findById(id, cb, auth) {
   db.get(id, function(err, user) {
@@ -26,7 +92,7 @@ function findById(id, cb, auth) {
 }
 
 function findByName(name, cb, auth) {
-  findById('org.couchdb.user:' + name, cb, auth);
+  findById(id(name), cb, auth);
 }
 
 function authenticate(name, password, cb) {
@@ -61,4 +127,6 @@ function clean(user) {
   delete user.salt;
   delete user.iterations;
   delete user.derived_key;
+
+  return user;
 }

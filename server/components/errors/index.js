@@ -42,4 +42,8 @@ ValidationError.prototype.required = function(field) {
   this.errors[field] = 'required';
 };
 
+ValidationError.prototype.unique = function(field) {
+  this.errors[field] = 'unique';
+};
+
 module.exports.ValidationError = ValidationError;
