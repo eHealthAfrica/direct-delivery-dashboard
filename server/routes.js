@@ -31,6 +31,15 @@ module.exports = function(app) {
 
   app.use('/auth', require('./auth'));
 
+  // Controllers error handler
+  app.use(function(err, req, res, next) {
+    if (err instanceof errors.ValidationError)
+      return res.json(400, err);
+
+    console.error(err.stack || err);
+    res.send(500);
+  });
+
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')
     .get(errors[404]);
