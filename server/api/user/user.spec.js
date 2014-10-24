@@ -72,6 +72,8 @@ describe('Users', function() {
 
   afterEach(remove(testUser.name));
 
+  after(remove(testAdmin.name));
+
   describe('User Model', function() {
     describe('create', function() {
       it('should correctly validate data', function(done) {
@@ -127,6 +129,51 @@ describe('Users', function() {
           adminAuth.Authorization = 'Bearer ' + res.body.token;
           done();
         });
+    });
+
+    describe('GET /api/users', function() {
+      var u1 = 'u' + Math.round(Math.random() * 100);
+      var u2 = 'u' + Math.round(Math.random() * 100);
+      var u3 = 'u' + Math.round(Math.random() * 100);
+      var clean = [remove(u1), remove(u2), remove(u3)];
+
+      before(function(done) {
+        async.series(clean.concat([
+          create({'name': u1, 'password': 'p', 'type': 'user', roles: []}),
+          create({'name': u2, 'password': 'p', 'type': 'user', roles: []}),
+          create({'name': u3, 'password': 'p', 'type': 'user', roles: []})
+        ]), done);
+      });
+
+      after(function(done) {
+        async.series(clean, done);
+      });
+
+      it('should respond with a JSON object with the list of existing users', function(done) {
+        admin
+          .get('/api/users')
+          .set(adminAuth)
+          .expect(200)
+          .expect('Content-Type', /json/)
+          .end(function(err, res) {
+            if (err) return done(err);
+
+            (res.body.length >= 3).should.be.true;
+
+            var u1ok = false, u2ok = false, u3ok = false;
+            res.body.forEach(function(u) {
+              if (u.name == u1) u1ok = true;
+              if (u.name == u2) u2ok = true;
+              if (u.name == u3) u3ok = true;
+            });
+
+            u1ok.should.be.true;
+            u2ok.should.be.true;
+            u3ok.should.be.true;
+
+            done();
+          });
+      });
     });
 
     describe('POST /api/users', function() {

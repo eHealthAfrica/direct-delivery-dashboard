@@ -1,0 +1,43 @@
+<div class="row">
+  <div ng-switch="usersCtrl.viewState" class="col-xs-12">
+    <h2 class="page-header">Users
+      <button ng-switch-when="list" type="button" class="btn btn-primary btn-small pull-right"
+              ng-click="usersCtrl.viewState = 'create'">
+        <span class="glyphicon glyphicon-plus"></span>
+      </button>
+    </h2>
+    <table ng-switch-when="list" class="table table-condensed table-striped table-bordered">
+      <thead>
+      <tr>
+        <th>Username</th>
+        <th>Roles</th>
+        <th>Access Level</th>
+        <th>Access Items</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="user in usersCtrl.users">
+        <td>{{user.name}}</td>
+        <td>{{user.roles.join(', ')}}</td>
+        <td>{{user.access.level}}</td>
+        <td>{{user.access.items.join(', ')}}</td>
+      </tr>
+      </tbody>
+    </table>
+    <div ng-switch-when="create" ng-controller="CreateUserCtrl as createUserCtrl">
+      <form class="panel-group" name="userForm" novalidate>
+        <div class="form-group">
+          <label for="name">Username</label>
+          <input id="name" name="name" type="text" class="form-control" ng-model="createUserCtrl.user.name">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" class="form-control" ng-model="createUserCtrl.user.password">
+        </div>
+        <button type="submit" class="btn btn-primary" ng-click="createUserCtrl.create(userForm)">Create</button>
+        <button type="button" class="btn btn-default" ng-click="usersCtrl.viewState = 'list'">Cancel</button>
+      </form>
+      <alert ng-if="createUserCtrl.errors" type="danger">{{createUserCtrl.errors}}</alert>
+    </div>
+  </div>
+</div>

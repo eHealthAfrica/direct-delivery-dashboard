@@ -1,15 +1,21 @@
 'use strict';
 
-var logger = require('winston'),
-  cradle = require('cradle'),
-  crypto = require('crypto'),
-  errors = require('../../components/errors');
+var logger = require('winston');
+var q = require('q');
+var cradle = require('cradle');
+var crypto = require('crypto');
+var utility = require('../../components/utility');
+var errors = require('../../components/errors');
 
 var db = new (cradle.Connection)().database('_users');
+
+// use promises for caching across all requests
+var allPromise = null;
 
 // clear cache on db changes
 db.changes().on('change', function() {
   db.cache.purge();
+  allPromise = null;
 });
 
 // exports
@@ -17,6 +23,7 @@ exports.db = db;
 exports.id = id;
 exports.create = create;
 exports.remove = remove;
+exports.all = all;
 exports.findById = findById;
 exports.findByName = findByName;
 exports.authenticate = authenticate;
@@ -82,6 +89,35 @@ function remove(name, cb) {
 
     db.remove(user._id, user._rev, cb);
   });
+}
+
+function all(cb) {
+  if (!allPromise) {
+    var d = q.defer();
+    allPromise = d.promise;
+
+    db.all({include_docs: true}, function(err, rows) {
+      if (err)
+        d.reject(err);
+      else
+        d.resolve(
+          utility
+            .removeDesignDocs(rows.toArray())
+            .map(function(row) {
+              return clean(row);
+            })
+        );
+    });
+  }
+
+  allPromise
+    .then(function(rows) {
+      cb(null, rows);
+    })
+    .catch(function(err) {
+      allPromise = null;
+      cb(err);
+    })
 }
 
 function findById(id, cb, auth) {

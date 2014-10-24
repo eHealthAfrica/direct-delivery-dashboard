@@ -4,6 +4,17 @@ var User = require('./user.model');
 var config = require('../../config/environment');
 
 /**
+ * Get all users
+ */
+exports.all = function(req, res, next) {
+  User.all(function(err, users) {
+    if (err) return next(err);
+
+    res.json(users);
+  });
+};
+
+/**
  * Get my info
  */
 exports.me = function(req, res, next) {
