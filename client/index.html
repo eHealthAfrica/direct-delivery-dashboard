@@ -35,6 +35,7 @@
 
 <!-- Add your site or application content here -->
 <div class="container-fluid">
+  <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
   <div ng-hide="loadingView || loadViewError" ng-view=""></div>
   <div ng-show="loadViewError" ng-include="'load-error.html'"></div>
   <div ng-show="loadingView" class="preloader">
@@ -123,6 +124,7 @@
 <script src="components/modal/modal.service.js"></script>
 <script src="components/navbar/navbar.controller.js"></script>
 <script src="components/pagination/pagination.js"></script>
+<script src="components/utility/alerts.js"></script>
 <script src="components/utility/inventory_rules.js"></script>
 <script src="components/utility/places.js"></script>
 <script src="components/utility/utility.js"></script>

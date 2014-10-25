@@ -8,7 +8,8 @@ angular.module('lmisApp', [
     'ngRoute',
     'ngCsv',
     'nvd3ChartDirectives',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'alerts'
   ])
   .config(function($routeProvider, $locationProvider, $httpProvider) {
     $routeProvider
@@ -46,11 +47,14 @@ angular.module('lmisApp', [
     };
   })
 
-  .run(function($rootScope, $location, SETTINGS, utility, Auth, State, Zone, LGA, Ward, Facility) {
+  .run(function($rootScope, $location, SETTINGS, utility, Alerts, Auth, State, Zone, LGA, Ward, Facility) {
     $rootScope.loadingView = true;
     $rootScope.loadViewError = false;
     $rootScope.SETTINGS = SETTINGS;
     $rootScope.getFileName = utility.getFileName;
+
+    // alerts
+    $rootScope.closeAlert = Alerts.close;
 
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$routeChangeStart', function(event, next) {
