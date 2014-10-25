@@ -182,7 +182,9 @@ angular.module('lmisApp')
 
         return errors;
       }
+      else if (err.status == 0)
+        return {_: 'Failed to connect to server.'}
       else
-        return {_: err.toString()};
+        return {_: JSON.stringify(err)};
     }
   });
