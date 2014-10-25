@@ -35,13 +35,17 @@
 
 <!-- Add your site or application content here -->
 <div class="container-fluid">
-  <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" ng-bind="alert.msg"></alert>
+  <div ng-include="'alerts.html'"></div>
   <div ng-hide="loadingView || loadViewError" ng-view=""></div>
   <div ng-show="loadViewError" ng-include="'load-error.html'"></div>
   <div ng-show="loadingView" class="preloader">
     <img src="assets/images/preloader.gif">
   </div>
 </div>
+
+<script type="text/ng-template" id="alerts.html">
+  <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+</script>
 
 <script type="text/ng-template" id="load-error.html">
   <div class="alert alert-danger">
