@@ -77,12 +77,15 @@
                 <span class="help-block"
                       ng-show="userForm.access_level.$error.required && form.submitted">required</span>
               </div>
-              <div class="form-group" ng-class="{'has-error': userForm.access_items.$invalid && form.submitted}">
+              <div ng-show="model.access.level" class="form-group"
+                   ng-class="{'has-error': userForm.access_items.$invalid && form.submitted}">
                 <label for="access_items">Access Items</label>
-                <select id="access_items" name="access_items" class="form-control" ng-model="model.access.items"
-                        ng-options="item for item in form.accessItems" ng-disabled="!model.access.level"
-                        multiple required>
-                </select>
+                <ui-select name="access_items" ng-model="model.access.items" multiple required>
+                  <ui-select-match>{{$item}}</ui-select-match>
+                  <ui-select-choices repeat="item in form.accessItems | filter:$select.search">
+                    {{item}}
+                  </ui-select-choices>
+                </ui-select>
                 <span class="help-block"
                       ng-show="userForm.access_items.$error.required && form.submitted">required</span>
               </div>

@@ -9,11 +9,12 @@ angular.module('lmisApp', [
     'ngCsv',
     'nvd3ChartDirectives',
     'ui.bootstrap',
+    'ui.select',
     'pwCheck',
     'remoteError',
     'alerts'
   ])
-  .config(function($routeProvider, $locationProvider, $httpProvider) {
+  .config(function($routeProvider, $locationProvider, $httpProvider, uiSelectConfig) {
     $routeProvider
       .otherwise({
         redirectTo: '/'
@@ -21,6 +22,7 @@ angular.module('lmisApp', [
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
+    uiSelectConfig.theme = 'bootstrap';
   })
 
   .factory('authInterceptor', function($rootScope, $q, $cookieStore, $location, SETTINGS) {
