@@ -32,8 +32,7 @@ angular.module('lmisApp')
       // = 19 - 4 = 15-12-2014 which is Sunday
       var firstDayOfCurrentWeek = currentDate.getDate() - currentDate.getDay();
       var FIRST_DAY_AND_LAST_DAY_DIFF = 6;
-      var lastDayOfCurrentWeek = firstDayOfCurrentWeek +
-        FIRST_DAY_AND_LAST_DAY_DIFF;
+      var lastDayOfCurrentWeek = firstDayOfCurrentWeek + FIRST_DAY_AND_LAST_DAY_DIFF;
 
       var firstDayDateOfCurrentWeek = new Date(
         currentDate.getFullYear(),
@@ -156,4 +155,34 @@ angular.module('lmisApp')
         return include;
       });
     };
+
+    this.processRemoteErrors = function(form, err) {
+      if (err.status == 400) {
+        var errors = {};
+        for (var prop in err.data.errors) {
+          var formProp = prop.replace(/\./g, '_');
+          if (form[prop]) {
+            var msg = '';
+            switch (err.data.errors[prop]) {
+              case 'required':
+              case 'invalid':
+                msg = err.data.errors[prop];
+                break;
+              case 'unique':
+                msg = 'already used';
+                break;
+            }
+
+            if (msg) {
+              form[formProp].$setValidity('remote', false);
+              errors[formProp] = msg;
+            }
+          }
+        }
+
+        return errors;
+      }
+      else
+        return {_: err.toString()};
+    }
   });

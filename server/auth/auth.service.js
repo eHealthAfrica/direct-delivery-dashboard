@@ -92,6 +92,9 @@ function isAuthenticated() {
  * Generic function for filtering data based on access rights of current user.
  */
 function filterByAccess(req, level, rows, property) {
+  if (User.hasRole(req.user, 'admin'))
+    return rows;
+
   return rows.filter(function(row) {
     var value = row[property];
 
@@ -150,7 +153,7 @@ function hasRole(roleRequired) {
   return compose()
     .use(isAuthenticated())
     .use(function meetsRequirements(req, res, next) {
-      if (req.user.roles && req.user.roles.indexOf(roleRequired) >= 0)
+      if (User.hasRole(req.user, roleRequired))
         next();
       else
         res.send(403);

@@ -6,7 +6,7 @@ angular.module('lmisApp')
       .when('/users', {
         templateUrl: 'app/users/users.html',
         controller: 'UsersCtrl',
-        controllerAs: 'usersCtrl',
+        controllerAs: 'main',
         authenticate: true,
         resolve: {
           states: ['State', function(State) {

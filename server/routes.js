@@ -33,8 +33,14 @@ module.exports = function(app) {
 
   // Controllers error handler
   app.use(function(err, req, res, next) {
-    if (err instanceof errors.ValidationError)
-      return res.json(400, err);
+    switch (err.name) {
+      case 'UnauthorizedError':
+        return res.send(401);
+        break;
+      case 'ValidationError':
+        return res.json(400, err);
+        break;
+    }
 
     console.error(err.stack || err);
     res.send(500);

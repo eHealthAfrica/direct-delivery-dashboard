@@ -27,6 +27,7 @@ exports.all = all;
 exports.findById = findById;
 exports.findByName = findByName;
 exports.authenticate = authenticate;
+exports.hasRole = hasRole;
 
 function id(name) {
   return 'org.couchdb.user:' + name;
@@ -74,6 +75,10 @@ function create(data, cb) {
 
     db.save(id(name), user, function(err, res) {
       if (err) return cb(err);
+
+      // new model is cached without the auth data
+      // remove from cache to force loading it from db
+      db.cache.purge(res.id);
 
       user._id = res.id;
       user._rev = res.rev;
@@ -158,6 +163,10 @@ function authenticate(name, password, cb) {
         return cb(new Error('Invalid username or password.'));
     })
   }, true);
+}
+
+function hasRole(user, role) {
+  return user && role && user.roles && user.roles.indexOf(role) >= 0;
 }
 
 function clean(user) {

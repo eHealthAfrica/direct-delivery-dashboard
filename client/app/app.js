@@ -9,6 +9,8 @@ angular.module('lmisApp', [
     'ngCsv',
     'nvd3ChartDirectives',
     'ui.bootstrap',
+    'pwCheck',
+    'remoteError',
     'alerts'
   ])
   .config(function($routeProvider, $locationProvider, $httpProvider) {

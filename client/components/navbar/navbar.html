@@ -37,6 +37,7 @@
           Logged in as: {{getCurrentUser().name}} <span class="caret"></span>
         </a>
         <ul class="dropdown-menu" role="menu">
+          <li ng-show="isAdmin()"><a href="/users">Users</a></li>
           <li><a ng-click="logout()">Logout</a></li>
         </ul>
       </li>
