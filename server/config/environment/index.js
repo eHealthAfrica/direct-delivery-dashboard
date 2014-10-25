@@ -26,14 +26,12 @@ var all = {
     session: 'lmis-dashboard-secret'
   },
 
-  // List of user roles
-  userRoles: ['guest', 'user', 'admin'],
-
   // CouchDB connection options
   couch: {
     host: '',
     port: 5984,
-    auth: null
+    auth: null,
+    forceSave: false
   }
 };
 

@@ -5,6 +5,6 @@
 module.exports = {
   // CouchDB connection options
   couch: {
-    host: 'http://dev.lomis.ehealth.org.ng'
+    host: 'http://127.0.0.1'
   }
 };

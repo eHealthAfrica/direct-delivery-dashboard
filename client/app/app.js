@@ -8,9 +8,13 @@ angular.module('lmisApp', [
     'ngRoute',
     'ngCsv',
     'nvd3ChartDirectives',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'ui.select',
+    'pwCheck',
+    'remoteError',
+    'alerts'
   ])
-  .config(function($routeProvider, $locationProvider, $httpProvider) {
+  .config(function($routeProvider, $locationProvider, $httpProvider, uiSelectConfig) {
     $routeProvider
       .otherwise({
         redirectTo: '/'
@@ -18,6 +22,7 @@ angular.module('lmisApp', [
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
+    uiSelectConfig.theme = 'bootstrap';
   })
 
   .factory('authInterceptor', function($rootScope, $q, $cookieStore, $location, SETTINGS) {
@@ -46,11 +51,14 @@ angular.module('lmisApp', [
     };
   })
 
-  .run(function($rootScope, $location, SETTINGS, utility, Auth, State, Zone, LGA, Ward, Facility) {
+  .run(function($rootScope, $location, SETTINGS, utility, Alerts, Auth, State, Zone, LGA, Ward, Facility) {
     $rootScope.loadingView = true;
     $rootScope.loadViewError = false;
     $rootScope.SETTINGS = SETTINGS;
     $rootScope.getFileName = utility.getFileName;
+
+    // alerts
+    $rootScope.closeAlert = Alerts.close;
 
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$routeChangeStart', function(event, next) {

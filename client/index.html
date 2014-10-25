@@ -16,6 +16,7 @@
   <!-- build:css(client) app/vendor.css -->
   <!-- bower:css -->
   <link rel="stylesheet" href="bower_components/nvd3/src/nv.d3.css" />
+  <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css" />
   <!-- endbower -->
   <!-- endbuild -->
   <!-- build:css({.tmp,client}) app/app.css -->
@@ -35,12 +36,17 @@
 
 <!-- Add your site or application content here -->
 <div class="container-fluid">
+  <div ng-include="'alerts.html'"></div>
   <div ng-hide="loadingView || loadViewError" ng-view=""></div>
   <div ng-show="loadViewError" ng-include="'load-error.html'"></div>
   <div ng-show="loadingView" class="preloader">
     <img src="assets/images/preloader.gif">
   </div>
 </div>
+
+<script type="text/ng-template" id="alerts.html">
+  <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+</script>
 
 <script type="text/ng-template" id="load-error.html">
   <div class="alert alert-danger">
@@ -67,6 +73,7 @@
 <script src="bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js"></script>
 <script src="bower_components/moment/moment.js"></script>
 <script src="bower_components/ng-csv/build/ng-csv.min.js"></script>
+<script src="bower_components/angular-ui-select/dist/select.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -97,6 +104,8 @@
 <script src="app/stock_count_summary/stock_count_summary.js"></script>
 <script src="app/stock_out/stock_out.controller.js"></script>
 <script src="app/stock_out/stock_out.js"></script>
+<script src="app/users/users.controller.js"></script>
+<script src="app/users/users.js"></script>
 <script src="app/waste_count/waste_count.controller.js"></script>
 <script src="app/waste_count/waste_count.js"></script>
 <script src="components/api/app_config.js"></script>
@@ -121,8 +130,11 @@
 <script src="components/modal/modal.service.js"></script>
 <script src="components/navbar/navbar.controller.js"></script>
 <script src="components/pagination/pagination.js"></script>
+<script src="components/utility/alerts.js"></script>
 <script src="components/utility/inventory_rules.js"></script>
 <script src="components/utility/places.js"></script>
+<script src="components/utility/pw-check.js"></script>
+<script src="components/utility/remote-error.js"></script>
 <script src="components/utility/utility.js"></script>
 <!-- endinjector -->
 <!-- endbuild -->

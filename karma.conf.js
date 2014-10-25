@@ -20,6 +20,7 @@ module.exports = function(config) {
       'client/bower_components/angular-sanitize/angular-sanitize.js',
       'client/bower_components/angular-route/angular-route.js',
       'client/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+      'client/bower_components/angular-ui-select/dist/select.js',
       'client/bower_components/lodash/dist/lodash.compat.js',
       'client/bower_components/ng-csv/build/ng-csv.min.js',
       'client/bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js',
