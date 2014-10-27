@@ -7,7 +7,6 @@ angular.module('lmisApp')
     vm.reportingFilters = FACILITY_FILTERS;
 
     function bindSummaries(summaries) {
-      console.log(summaries);
       vm.summaries = summaries;
       return angular.copy(summaries);
     }

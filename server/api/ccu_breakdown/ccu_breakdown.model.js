@@ -3,7 +3,7 @@
 var cradle = require('cradle');
 var utility = require('../../components/utility');
 
-var db = new (cradle.Connection)().database('ccu_breakdown');
+var db = new (cradle.Connection)().database('ccu_breakdown2');
 
 exports.byDate = byDate;
 
