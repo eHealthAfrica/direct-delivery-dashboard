@@ -3,7 +3,7 @@
     <h2 class="page-header">Ledger</h2>
     <div class="row">
       <div class="col-xs-12">
-        <h3>Product Summary</h3>
+        <h3>Summary</h3>
         <div class="panel panel-default">
           <div class="panel-heading">
             <form class="form-inline">
@@ -88,8 +88,8 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Receiving Facility</th>
               <th>Sent From</th>
+              <th>Receiving Facility</th>
               <th>Date Received</th>
               <th>Record Created</th>
               <th>Expiry Date</th>
@@ -102,12 +102,12 @@
               <td>
               </td>
               <td>
-                <input type="text" class="form-control filter" ng-model="search.receivingFacility" >
-              </td>
-              <td>
                <div class="form-group has-feedback">
                  <input type="text" class="form-control filter" ng-model="search.sendingFacility" >
                 </div>
+              </td>
+              <td>
+                <input type="text" class="form-control filter" ng-model="search.receivingFacility" >
               </td>
               <td>
                 <div class="form-group has-feedback">
