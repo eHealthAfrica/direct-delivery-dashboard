@@ -50,67 +50,71 @@
       </form>
     </div>
 
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Summary</h3>
-      </div>
-      <div class="table-scroller">
-        <table class="table table-condensed table-bordered table-striped table-condensed">
-          <thead>
-          <tr>
-            <th ng-repeat="productType in productTypes" ng-class="productType.style">{{productType.code}}</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td ng-repeat="value in summary track by $index">{{value}}</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <alert ng-hide="filteredRows.length" type="info">No data.</alert>
 
-    <div class="panel panel-default">
-      <div class="panel-heading clearfix">
-        <button class="btn btn-primary btn-xs pull-right hidden-print" type="button"
-                ng-csv="totals" csv-header="totalsHeaders" filename="{{getFileName(title)}}">
-          Export
-        </button>
-        <h3 class="panel-title">Details</h3>
+    <div ng-show="filteredRows.length">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Summary</h3>
+        </div>
+        <div class="table-scroller">
+          <table class="table table-condensed table-bordered table-striped table-condensed">
+            <thead>
+            <tr>
+              <th ng-repeat="productType in productTypes" ng-class="productType.style">{{productType.code}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td ng-repeat="value in summary track by $index">{{value}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div class="table-scroller">
-        <table class="table table-condensed table-bordered table-striped table-hover">
-          <thead>
-          <tr>
-            <th class="place-type">{{place.columnTitle}}</th>
-            <th ng-repeat="productType in productTypes" ng-class="productType.style">{{productType.code}}</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr ng-repeat="total in totals" ng-click="updateFor(total[0])">
-            <td ng-repeat="value in total track by $index">{{value}}</td>
-          </tr>
-          </tbody>
-        </table>
+
+      <div class="panel panel-default">
+        <div class="panel-heading clearfix">
+          <button class="btn btn-primary btn-xs pull-right hidden-print" type="button"
+                  ng-csv="totals" csv-header="totalsHeaders" filename="{{getFileName(title)}}">
+            Export
+          </button>
+          <h3 class="panel-title">Details</h3>
+        </div>
+        <div class="table-scroller">
+          <table class="table table-condensed table-bordered table-striped table-hover">
+            <thead>
+            <tr>
+              <th class="place-type">{{place.columnTitle}}</th>
+              <th ng-repeat="productType in productTypes" ng-class="productType.style">{{productType.code}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="total in totals" ng-click="updateFor(total[0])">
+              <td ng-repeat="value in total track by $index">{{value}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-    <div class="panel panel-primary center-block" style="width: 1024px; page-break-inside: avoid;">
-      <div class="panel-heading">
-        <h3 class="panel-title">Over Time</h3>
-      </div>
-      <div class="panel-body">
-        <nvd3-line-chart
-          data="chartData"
-          height="600"
-          showXAxis="true"
-          xAxisTickValues="getXTickValues()"
-          xAxisTickFormat="formatDateAxisFunction()"
-          staggerLabels="true"
-          showYAxis="true"
-          showLegend="true"
-          margin="{right:80}">
-          <svg></svg>
-        </nvd3-line-chart>
+      <div class="panel panel-primary center-block" style="width: 1024px; page-break-inside: avoid;">
+        <div class="panel-heading">
+          <h3 class="panel-title">Over Time</h3>
+        </div>
+        <div class="panel-body">
+          <nvd3-line-chart
+            data="chartData"
+            height="600"
+            showXAxis="true"
+            xAxisTickValues="getXTickValues()"
+            xAxisTickFormat="formatDateAxisFunction()"
+            staggerLabels="true"
+            showYAxis="true"
+            showLegend="true"
+            margin="{right:80}">
+            <svg></svg>
+          </nvd3-line-chart>
+        </div>
       </div>
     </div>
   </div>
