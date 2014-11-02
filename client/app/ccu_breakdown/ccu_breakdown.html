@@ -72,125 +72,118 @@
 <div class="row">
   <div class="col-xs-12">
     <h2 class="page-header">CCU Breakdown</h2>
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="well hidden-print">
-          <form class="form-inline">
-            <div class="form-group">
-              <label for="placeType">Place Type:</label>
-              <select id="placeType" class="form-control" ng-model="place.type" ng-change="place.search = ''">
-                <option value=""></option>
-                <option ng-if="currentUser.showStates" value="state">State</option>
-                <option ng-if="currentUser.showZones" value="zone">Zone</option>
-                <option ng-if="currentUser.showLgas" value="lga">LGA</option>
-                <option ng-if="currentUser.showWards" value="ward">Ward</option>
-                <option value="facility">Facility</option>
-              </select>
-            </div>
-            &nbsp;
-            <div class="form-group has-feedback">
-              <input type="text" class="form-control filter" placeholder="Place Name"
-                     ng-model="place.search" ng-disabled="!place.type.length"
-                     typeahead="place for place in getPlaces($viewValue)"
-                     typeahead-loading="places.loading">
-              <span ng-show="places.loading"
-                    class="glyphicon glyphicon-refresh form-control-feedback"></span>
-            </div>
-            &nbsp;
-            <div class="form-group">
-              <div class="input-group">
-                <input type="text" class="form-control" ng-model="from.date"
-                       datepicker-popup is-open="from.opened"/>
-                <span class="input-group-btn">
-                  <button type="button" class="btn btn-default" ng-click="from.open($event)">
-                    <i class="glyphicon glyphicon-calendar"></i>
-                  </button>
-                </span>
-              </div>
-            </div>
-            &nbsp;
-            <div class="form-group">
-              <div class="input-group">
-                <input type="text" class="form-control" ng-model="to.date"
-                       datepicker-popup is-open="to.opened"/>
-                <span class="input-group-btn">
-                  <button type="button" class="btn btn-default" ng-click="to.open($event)">
-                    <i class="glyphicon glyphicon-calendar"></i>
-                  </button>
-                </span>
-              </div>
-            </div>
-            &nbsp;
-            <button type="button" class="btn btn-primary" ng-click="update()">
-              Apply
-            </button>
-          </form>
+    <div class="well hidden-print">
+      <form class="form-inline">
+        <div class="form-group">
+          <label for="placeType">Place Type:</label>
+          <select id="placeType" class="form-control" ng-model="place.type" ng-change="place.search = ''">
+            <option value=""></option>
+            <option ng-if="currentUser.showStates" value="state">State</option>
+            <option ng-if="currentUser.showZones" value="zone">Zone</option>
+            <option ng-if="currentUser.showLgas" value="lga">LGA</option>
+            <option ng-if="currentUser.showWards" value="ward">Ward</option>
+            <option value="facility">Facility</option>
+          </select>
         </div>
-
-        <alert ng-hide="filteredRows.length" type="info">No data.</alert>
-
-        <div ng-show="filteredRows.length">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">Summary</h3>
-            </div>
-            <div class="table-scroller">
-              <table class="table table-condensed table-bordered table-striped table-condensed">
-                <thead>
-                <tr>
-                  <th>{{place.columnTitle}}</th>
-                  <th ng-repeat="unit in units">{{unit}}</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="total in totals | orderBy:'place'">
-                  <td>{{total.place}}</td>
-                  <td ng-repeat="value in total.values track by $index">
-                    {{value}}
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
+        &nbsp;
+        <div class="form-group has-feedback">
+          <input type="text" class="form-control filter" placeholder="Place Name"
+                 ng-model="place.search" ng-disabled="!place.type.length"
+                 typeahead="place for place in getPlaces($viewValue)"
+                 typeahead-loading="places.loading">
+          <span ng-show="places.loading" class="glyphicon glyphicon-refresh form-control-feedback"></span>
+        </div>
+        &nbsp;
+        <div class="form-group">
+          <div class="input-group">
+            <input type="text" class="form-control" ng-model="from.date" datepicker-popup is-open="from.opened"/>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="from.open($event)">
+                <i class="glyphicon glyphicon-calendar"></i>
+              </button>
+            </span>
           </div>
-
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">Details</h3>
-            </div>
-            <div class="table-scroller">
-              <table class="table table-condensed table-bordered table-striped">
-                <thead>
-                <tr>
-                  <th ng-if="currentUser.showStates" style="width: 14%">State</th>
-                  <th ng-if="currentUser.showZones" style="width: 14%">Zone</th>
-                  <th ng-if="currentUser.showLgas" style="width: 14%">LGA</th>
-                  <th ng-if="currentUser.showWards" style="width: 14%">Ward</th>
-                  <th style="width: 14%">Facility</th>
-                  <th style="width: 15%">Date</th>
-                  <th style="width: 15%">CCU Unit</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr
-                  ng-repeat="row in filteredRows | orderBy:['-created', 'name'] | limitTo:pagination.limit | limitTo:-pagination.count">
-                  <td ng-if="currentUser.showStates">{{row.facility.state}}</td>
-                  <td ng-if="currentUser.showZones">{{row.facility.zone}}</td>
-                  <td ng-if="currentUser.showLgas">{{row.facility.lga}}</td>
-                  <td ng-if="currentUser.showWards">{{row.facility.ward}}</td>
-                  <td>{{row.facility.name}}</td>
-                  <td>{{row.created | date:SETTINGS.dateTimeFormat}}</td>
-                  <td>{{row.name}}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="panel-footer text-center">
-              <pagination style="margin-top: 0" max-size="10" boundary-links="true" rotate="false"
-                          total-items="pagination.totalItems" items-per-page="pagination.itemsPerPage"
-                          ng-model="pagination.currentPage" ng-change="pagination.pageChanged()"></pagination>
-            </div>
+        </div>
+        &nbsp;
+        <div class="form-group">
+          <div class="input-group">
+            <input type="text" class="form-control" ng-model="to.date" datepicker-popup is-open="to.opened"/>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="to.open($event)">
+                <i class="glyphicon glyphicon-calendar"></i>
+              </button>
+            </span>
           </div>
+        </div>
+        &nbsp;
+        <button type="button" class="btn btn-primary" ng-click="update()">
+          Apply
+        </button>
+      </form>
+    </div>
+
+    <alert ng-hide="filteredRows.length" type="info">No data.</alert>
+
+    <div ng-show="filteredRows.length">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Summary</h3>
+        </div>
+        <div class="table-scroller">
+          <table class="table table-condensed table-bordered table-striped table-condensed">
+            <thead>
+            <tr>
+              <th>{{place.columnTitle}}</th>
+              <th ng-repeat="unit in units">{{unit}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="total in totals | orderBy:'place'">
+              <td>{{total.place}}</td>
+              <td ng-repeat="value in total.values track by $index">
+                {{value}}
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Details</h3>
+        </div>
+        <div class="table-scroller">
+          <table class="table table-condensed table-bordered table-striped">
+            <thead>
+            <tr>
+              <th ng-if="currentUser.showStates" style="width: 14%">State</th>
+              <th ng-if="currentUser.showZones" style="width: 14%">Zone</th>
+              <th ng-if="currentUser.showLgas" style="width: 14%">LGA</th>
+              <th ng-if="currentUser.showWards" style="width: 14%">Ward</th>
+              <th style="width: 14%">Facility</th>
+              <th style="width: 15%">Date</th>
+              <th style="width: 15%">CCU Unit</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr
+              ng-repeat="row in filteredRows | orderBy:['-created', 'name'] | limitTo:pagination.limit | limitTo:-pagination.count">
+              <td ng-if="currentUser.showStates">{{row.facility.state}}</td>
+              <td ng-if="currentUser.showZones">{{row.facility.zone}}</td>
+              <td ng-if="currentUser.showLgas">{{row.facility.lga}}</td>
+              <td ng-if="currentUser.showWards">{{row.facility.ward}}</td>
+              <td>{{row.facility.name}}</td>
+              <td>{{row.created | date:SETTINGS.dateTimeFormat}}</td>
+              <td>{{row.name}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="panel-footer text-center">
+          <pagination style="margin-top: 0" max-size="10" boundary-links="true" rotate="false"
+                      total-items="pagination.totalItems" items-per-page="pagination.itemsPerPage"
+                      ng-model="pagination.currentPage" ng-change="pagination.pageChanged()"></pagination>
         </div>
       </div>
     </div>
