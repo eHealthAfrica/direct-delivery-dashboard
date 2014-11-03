@@ -1,6 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
+_.mixin(require("lodash-deep"));
 var config = require('../config/environment');
 var jwt = require('jsonwebtoken');
 var expressJwt = require('express-jwt');
@@ -96,7 +97,7 @@ function filterByAccess(req, level, rows, property) {
     return rows;
 
   return rows.filter(function(row) {
-    var value = row[property];
+    var value = _.deepGet(row, property);
 
     return value && (req.access[level].indexOf(value) >= 0);
   });
