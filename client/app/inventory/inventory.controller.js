@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('InventoryCtrl', function($scope, $filter, utility, Auth, Places, productTypes, stockCounts) {
-    var rows = stockCounts.rows;
-    var latestRows = stockCounts.latestRows;
+  .controller('InventoryCtrl', function($scope, $filter, utility, Auth, Places, stockCount, productTypes, stockCounts) {
+    var rows = stockCounts;
     var xTickValues = [];
 
     $scope.currentUser = Auth.getCurrentUser();
     $scope.productTypes = productTypes;
+    $scope.filteredRows = [];
     $scope.totalsHeaders = [''].concat(productTypes.map(function(type) {
       return type.code;
     }));
@@ -90,7 +90,11 @@ angular.module('lmisApp')
       var groupBy = Places.propertyName(subType || $scope.currentUser.access.level);
       var columnTitle = Places.typeName(subType || $scope.currentUser.access.level);
 
-      utility.placeDateFilter(latestRows, filterBy, $scope.place.search, $scope.from.date, $scope.to.date).forEach(function(row) {
+      var minDate = NaN;
+      var maxDate = NaN;
+      $scope.filteredRows = utility.placeDateFilter(rows, filterBy, $scope.place.search, $scope.from.date, $scope.to.date);
+
+      stockCount.latest($scope.filteredRows).forEach(function(row) {
         var key = row.facility[groupBy];
         totals[key] = totals[key] || {
           place: key,
@@ -106,9 +110,7 @@ angular.module('lmisApp')
         }
       });
 
-      var minDate = NaN;
-      var maxDate = NaN;
-      utility.placeDateFilter(rows, filterBy, $scope.place.search, $scope.from.date, $scope.to.date).forEach(function(row) {
+      $scope.filteredRows.forEach(function(row) {
         if (row.unopened) {
           row.unopened.forEach(function(unopened) {
             var code = unopened.productType.code;

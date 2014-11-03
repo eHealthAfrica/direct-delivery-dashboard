@@ -41,6 +41,14 @@ td .form-group .form-control-feedback {
   border: none;
 }
 
+.panel-footer {
+  line-height: 1;
+}
+
+.panel-footer > .pagination {
+  margin: 0;
+}
+
 .table-scroller table.table-bordered > thead > tr > th:first-child,
 .table-scroller table.table-bordered > thead > tr > td:first-child,
 .table-scroller table.table-bordered > tbody > tr > th:first-child,
