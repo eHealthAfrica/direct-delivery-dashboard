@@ -1,0 +1,106 @@
+<div class="row">
+  <div ng-switch="main.viewState" class="col-xs-12">
+    <h2 class="page-header">Users
+      <button ng-switch-when="list" type="button" class="btn btn-primary btn-small pull-right"
+              ng-click="main.viewState = 'create'">
+        <span class="glyphicon glyphicon-plus"></span>
+      </button>
+    </h2>
+    <div ng-switch-when="list">
+      <div ng-include="'app/users/list.html'"></div>
+    </div>
+    <div ng-switch-when="create" ng-controller="CreateUserCtrl as create" ng-init="model = create.user">
+      <div ng-include="'app/users/form.html'"></div>
+    </div>
+  </div>
+</div>
+
+<script id="app/users/list.html" type="text/ng-template">
+  <table class="table table-condensed table-striped table-bordered">
+    <thead>
+    <tr>
+      <th>Username</th>
+      <th>Roles</th>
+      <th>Access Level</th>
+      <th>Access Items</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="user in main.users | orderBy:'name'">
+      <td>{{user.name}}</td>
+      <td>{{user.roles.join(', ') || '-'}}</td>
+      <td>{{user.access.level || '-'}}</td>
+      <td>{{user.access.items.join(', ') || '-'}}</td>
+    </tr>
+    </tbody>
+  </table>
+</script>
+
+<script id="app/users/form.html" type="text/ng-template">
+  <div class="container" ng-controller="UserFormCtrl as form" ng-init="form.user = model">
+    <div class="row">
+      <div class="col-md-6 col-md-push-3">
+        <div class="panel panel-default">
+          <div class="panel-heading">Create User</div>
+          <div class="panel-body">
+            <form name="userForm" novalidate>
+              <div class="form-group" ng-class="{'has-error': userForm.name.$invalid && form.submitted}">
+                <label for="name">Username</label>
+                <input id="name" name="name" type="text" class="form-control" ng-model="model.name"
+                       remote-error required>
+                <span class="help-block" ng-show="userForm.name.$error.required && form.submitted">required</span>
+                <span class="help-block"
+                      ng-show="userForm.name.$error.remote && form.submitted">{{form.errors.name}}</span>
+              </div>
+              <div class="form-group" ng-class="{'has-error': userForm.password.$invalid && form.submitted}">
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" class="form-control" ng-model="model.password"
+                       required>
+                <span class="help-block" ng-show="userForm.password.$error.required && form.submitted">required</span>
+              </div>
+              <div class="form-group" ng-class="{'has-error': userForm.passwordRepeat.$invalid && form.submitted}">
+                <label for="passwordRepeat">Confirm Password</label>
+                <input id="passwordRepeat" name="passwordRepeat" type="password" class="form-control"
+                       ng-model="model.passwordRepeat" pw-check="password">
+                <span class="help-block" ng-show="userForm.passwordRepeat.$error.pwmatch && form.submitted">passwords don't match</span>
+              </div>
+              <div class="form-group" ng-class="{'has-error': userForm.access_level.$invalid && form.submitted}">
+                <label for="access_level">Access Level</label>
+                <select id="access_level" name="access_level" class="form-control" ng-model="model.access.level"
+                        ng-change="form.selectedAccessLevel(model.access.level)" required>
+                  <option value="">-- Please select --</option>
+                  <option value="state">State</option>
+                  <option value="zone">Zone</option>
+                  <option value="lga">LGA</option>
+                  <option value="ward">Ward</option>
+                </select>
+                <span class="help-block"
+                      ng-show="userForm.access_level.$error.required && form.submitted">required</span>
+              </div>
+              <div ng-show="model.access.level" class="form-group"
+                   ng-class="{'has-error': userForm.access_items.$invalid && form.submitted}">
+                <label for="access_items">Access Items</label>
+                <ui-select name="access_items" ng-model="model.access.items" multiple required>
+                  <ui-select-match>{{$item}}</ui-select-match>
+                  <ui-select-choices repeat="item in form.accessItems | filter:$select.search">
+                    {{item}}
+                  </ui-select-choices>
+                </ui-select>
+                <span class="help-block"
+                      ng-show="userForm.access_items.$error.required && form.submitted">required</span>
+              </div>
+              <button type="submit" class="btn btn-primary" ng-click="form.submit(userForm)" ng-disabled="form.saving">
+                Save
+              </button>
+              <button type="button" class="btn btn-default" ng-click="main.viewState = 'list'"
+                      ng-disabled="form.saving">
+                Cancel
+              </button>
+            </form>
+          </div>
+        </div>
+        <alert ng-if="form.errors._" type="danger">{{form.errors._}}</alert>
+      </div>
+    </div>
+  </div>
+</script>

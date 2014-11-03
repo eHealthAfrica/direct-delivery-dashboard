@@ -102,6 +102,16 @@ tr.grey-bg{
   background: #f5f5f5;
 }
 
+.normalize-text{
+  font-size: .6em;
+  font-weight: normal;
+}
+
+.preloader {
+  width: 80px;
+  margin: 20px auto;
+}
+
 // Component styles are injected through grunt
 // injector
 @import 'modal/modal.scss';

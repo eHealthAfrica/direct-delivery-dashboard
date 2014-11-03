@@ -1,16 +1,14 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('StockOutCtrl', function($scope, $q, $filter, utility, Auth, Pagination, Places, ProductType, stockOut) {
+  .controller('StockOutCtrl', function($scope, $filter, utility, Auth, Pagination, Places, productTypes, stockOuts) {
     $scope.currentUser = Auth.getCurrentUser();
-    $scope.rows = [];
+    $scope.productTypes = productTypes;
+    $scope.rows = stockOuts;
+    $scope.pagination = new Pagination();
     $scope.filteredRows = [];
     $scope.search = {};
-    $scope.pagination = new Pagination();
     $scope.totals = [];
-    $scope.productTypes = [];
-    $scope.loading = true;
-    $scope.error = false;
     $scope.places = null;
 
     $scope.place = {
@@ -82,30 +80,10 @@ angular.module('lmisApp')
     }, true);
 
     function updateFilteredRows() {
-      $scope.filteredRows = $filter('filter')($scope.rows, $scope.search, utility.objectComparator);
+      $scope.filteredRows = $filter('filter')($scope.rows, $scope.search, utility.comparator);
       $scope.pagination.totalItemsChanged($scope.filteredRows.length);
     }
 
-    $q.all([
-        ProductType.codes(),
-        stockOut.byDate()
-      ])
-      .then(function(responses) {
-        $scope.productTypes = responses[0];
-
-        var rows = responses[1];
-        $scope.rows = rows
-          .filter(function(row) {
-            return !!row.facility;
-          });
-
-        $scope.updateTotals();
-        updateFilteredRows();
-      })
-      .catch(function() {
-        $scope.error = true;
-      })
-      .finally(function() {
-        $scope.loading = false;
-      });
+    $scope.updateTotals();
+    updateFilteredRows();
   });

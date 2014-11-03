@@ -9,26 +9,27 @@
   "license": "ISC",
   "private": true,
   "dependencies": {
-    "angular": ">=1.2.*",
+    "angular": "1.2.x",
     "json3": "~3.3.1",
     "es5-shim": "~3.0.1",
     "jquery": "~1.11.0",
     "bootstrap-sass-official": "~3.1.1",
     "bootstrap": "~3.1.1",
-    "angular-resource": ">=1.2.*",
-    "angular-cookies": ">=1.2.*",
-    "angular-sanitize": ">=1.2.*",
-    "angular-route": ">=1.2.*",
+    "angular-resource": "1.2.x",
+    "angular-cookies": "1.2.x",
+    "angular-sanitize": "1.2.x",
+    "angular-route": "1.2.x",
     "angular-bootstrap": "~0.11.0",
     "font-awesome": ">=4.1.0",
     "lodash": "~2.4.1",
     "angularjs-nvd3-directives": "~0.0.7",
     "moment": "~2.8.3",
-    "ng-csv": "~0.2.4"
+    "ng-csv": "~0.2.4",
+    "angular-ui-select": "~0.8.3"
   },
   "devDependencies": {
-    "angular-mocks": ">=1.2.*",
-    "angular-scenario": ">=1.2.*"
+    "angular-mocks": "1.2.x",
+    "angular-scenario": "1.2.x"
   },
   "keywords": [
     "lmis",

@@ -3,17 +3,7 @@
     <div class="row" ng-controller="MainStockOutCtrl">
       <div class="col-xs-12">
         <h2 class="page-header">Stock Out Alerts</h2>
-        <div class="row" ng-show="loading || error">
-          <div class="col-xs-12">
-            <div class="alert alert-info" ng-show="loading">
-              Loading ...
-            </div>
-            <div class="alert alert-danger" ng-show="error">
-              Error loading data.
-            </div>
-          </div>
-        </div>
-        <div class="row" ng-hide="loading || error">
+        <div class="row">
           <div class="col-xs-12">
             <div style="overflow: auto;">
               <table class="table table-bordered">
@@ -50,17 +40,7 @@
     <div class="row" ng-controller="MainCCUBreakdownCtrl">
       <div class="col-xs-12">
         <h2 class="page-header">CCU Breakdown Alerts</h2>
-        <div class="row" ng-show="loading || error">
-          <div class="col-xs-12">
-            <div class="alert alert-info" ng-show="loading">
-              Loading ...
-            </div>
-            <div class="alert alert-danger" ng-show="error">
-              Error loading data.
-            </div>
-          </div>
-        </div>
-        <div class="row" ng-hide="loading || error">
+        <div class="row">
           <div class="col-xs-12">
             <div style="overflow: auto;">
               <table class="table table-bordered">
@@ -95,19 +75,14 @@
 <div class="row" ng-controller="UnopenedCtrl">
   <div class="col-xs-12">
     <h2 class="page-header">Stock Count</h2>
-    <div class="row" ng-show="loading || error">
+    <div class="row">
       <div class="col-xs-12">
-        <div class="alert alert-info" ng-show="loading">
-          Loading ...
-        </div>
-        <div class="alert alert-danger" ng-show="error">
-          Error loading data.
-        </div>
-      </div>
-    </div>
-    <div class="row" ng-hide="loading || error">
-      <div class="col-xs-12">
-        <h3>Most recent</h3>
+        <h3>Most recent
+          <div class="pull-right normalize-text">
+            <i class="fa fa-square-o fa-lg bg-danger"></i> Out of stock
+          </div>
+          <div class="clearfix"></div>
+        </h3>
         <div style="overflow: auto;">
           <table class="table table-bordered">
             <thead>

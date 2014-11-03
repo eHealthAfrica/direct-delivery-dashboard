@@ -32,8 +32,7 @@ angular.module('lmisApp')
       // = 19 - 4 = 15-12-2014 which is Sunday
       var firstDayOfCurrentWeek = currentDate.getDate() - currentDate.getDay();
       var FIRST_DAY_AND_LAST_DAY_DIFF = 6;
-      var lastDayOfCurrentWeek = firstDayOfCurrentWeek +
-        FIRST_DAY_AND_LAST_DAY_DIFF;
+      var lastDayOfCurrentWeek = firstDayOfCurrentWeek + FIRST_DAY_AND_LAST_DAY_DIFF;
 
       var firstDayDateOfCurrentWeek = new Date(
         currentDate.getFullYear(),
@@ -110,6 +109,10 @@ angular.module('lmisApp')
       return d.promise;
     };
 
+    this.stringComparator = function stringComparator(actual, expected) {
+      return (actual.toLowerCase().indexOf(expected.toLowerCase()) >= 0);
+    };
+
     this.objectComparator = function objectComparator(actual, expected) {
       var matches = true;
       Object.keys(expected).some(function(key) {
@@ -123,6 +126,15 @@ angular.module('lmisApp')
 
       return matches;
     };
+
+    this.comparator = function comparator(actual, expected) {
+      if (angular.isString(actual) && angular.isString(expected))
+        return this.stringComparator(actual, expected);
+      else if (angular.isObject(actual) && angular.isObject(expected))
+        return this.objectComparator(actual, expected);
+      else
+        return (actual == expected);
+    }.bind(this);
 
     this.placeDateFilter = function placeDateFilter(rows, placeType, placeSearch, dateFrom, dateTo) {
       placeSearch = placeSearch.toLowerCase();
@@ -143,4 +155,36 @@ angular.module('lmisApp')
         return include;
       });
     };
+
+    this.processRemoteErrors = function(form, err) {
+      if (err.status == 400) {
+        var errors = {};
+        for (var prop in err.data.errors) {
+          var formProp = prop.replace(/\./g, '_');
+          if (form[prop]) {
+            var msg = '';
+            switch (err.data.errors[prop]) {
+              case 'required':
+              case 'invalid':
+                msg = err.data.errors[prop];
+                break;
+              case 'unique':
+                msg = 'already used';
+                break;
+            }
+
+            if (msg) {
+              form[formProp].$setValidity('remote', false);
+              errors[formProp] = msg;
+            }
+          }
+        }
+
+        return errors;
+      }
+      else if (err.status == 0)
+        return {_: 'Failed to connect to server.'}
+      else
+        return {_: JSON.stringify(err)};
+    }
   });

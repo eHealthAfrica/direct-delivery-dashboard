@@ -93,6 +93,9 @@ function isAuthenticated() {
  * Generic function for filtering data based on access rights of current user.
  */
 function filterByAccess(req, level, rows, property) {
+  if (User.hasRole(req.user, 'admin'))
+    return rows;
+
   return rows.filter(function(row) {
     var value = _.deepGet(row, property);
 
@@ -151,12 +154,10 @@ function hasRole(roleRequired) {
   return compose()
     .use(isAuthenticated())
     .use(function meetsRequirements(req, res, next) {
-      if (config.userRoles.indexOf(req.user.role) >= config.userRoles.indexOf(roleRequired)) {
+      if (User.hasRole(req.user, roleRequired))
         next();
-      }
-      else {
+      else
         res.send(403);
-      }
     });
 }
 
@@ -172,7 +173,7 @@ function signToken(id) {
  */
 function setTokenCookie(req, res) {
   if (!req.user) return res.json(404, { message: 'Something went wrong, please try again.'});
-  var token = signToken(req.user._id, req.user.role);
+  var token = signToken(req.user._id);
   res.cookie('token', JSON.stringify(token));
   res.redirect('/');
 }

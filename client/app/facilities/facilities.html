@@ -1,18 +1,8 @@
 <div class="row">
   <div class="col-xs-12">
     <h2 class="page-header">Facilities</h2>
-    <div class="row" ng-if="facilitiesCtrl.loading || facilitiesCtrl.error">
-      <div class="col-xs-12">
-        <div class="alert alert-info" ng-show="facilitiesCtrl.loading">
-          Loading…
-        </div>
-        <div class="alert alert-danger" ng-show="facilitiesCtrl.error">
-          Error loading data.
-        </div>
-      </div>
-    </div>
-    <div class="row" ng-if="!facilitiesCtrl.loading && !facilitiesCtrl.error">
-      <div class="col-xs-7">
+    <div class="row">
+      <div class="col-xs-12 col-sm-7 col-md-8">
         <div>
           <h3 class="pull-left">Reporting</h3>
           <button
@@ -29,8 +19,9 @@
               <th ng-if="facilitiesCtrl.currentUser.showZones" style="width: 12%">Zone</th>
               <th ng-if="facilitiesCtrl.currentUser.showLgas" style="width: 12%">LGA</th>
               <th style="width: 15%">Facility</th>
-              <th style="width: 12%">Report Date</th>
-              <th style="width: 49%">Contact Info</th>
+              <th style="width: 12%">Last Report Date</th>
+              <th style="">Days Since Last Report</th>
+              <th style="width: 35%">Contact Info</th>
             </tr>
           </thead>
           <tbody>
@@ -67,7 +58,7 @@
                   ng-model="filter.lastCountDate"
                 >
               </td>
-              <td>
+              <td colspan="2">
                 <label for="status">Status</label>
                 <select
                   name="status"
@@ -76,7 +67,7 @@
                   ng-init="filter.isNonReporting = ''"
                 ></select>
                 <button
-                  class="btn btn-primary pull-right hidden-print"
+                  class="btn btn-primary hidden-print"
                   ng-click="filter = {isNonReporting: ''}"
                 >Clear Filter</button>
               </td>
@@ -100,6 +91,7 @@
                 </a>
               </td>
               <td ng-bind="summary.lastCountDate"></td>
+              <td ng-bind="summary.daysFromLastCountDate"></td>
               <td>
                 <ul class="list-unstyled">
                   <li>
@@ -112,7 +104,7 @@
                   </li>
                   <li>
                     <i class="glyphicon glyphicon-envelope small"></i>
-                    <span ng-bind="summary.contact.email"></span>
+                    <span style="word-break:break-all; word-wrap: break-word;"><span ng-bind="summary.contact.email"></span></span>
                   </li>
                 </ul>
               </td>
@@ -120,7 +112,7 @@
           </tbody>
         </table>
       </div>
-      <div class="col-xs-5">
+      <div class="col-xs-12 col-sm-5 col-md-4">
         <nvd3-pie-chart
           data="facilitiesCtrl.chart.data"
           id="reporting-facilities-chart"

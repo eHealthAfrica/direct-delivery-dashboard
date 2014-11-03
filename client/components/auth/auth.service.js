@@ -26,8 +26,10 @@ angular.module('lmisApp')
     }
 
     function setAccess() {
+      currentUser.isAdmin = currentUser.roles && currentUser.roles.indexOf('admin') >= 0;
+
       currentUser.access = currentUser.access || {};
-      currentUser.showStates = currentUser.access.level === Places.STATE;
+      currentUser.showStates = currentUser.isAdmin || currentUser.access.level === Places.STATE;
       currentUser.showZones = currentUser.showStates || currentUser.access.level === Places.ZONE;
       currentUser.showLgas = currentUser.showZones || currentUser.access.level === Places.LGA;
       currentUser.showWards = currentUser.showLgas || currentUser.access.level === Places.WARD;
@@ -119,7 +121,7 @@ angular.module('lmisApp')
        * @return {Boolean}
        */
       isAdmin: function() {
-        return currentUser.role === 'admin';
+        return currentUser.isAdmin;
       },
 
       /**

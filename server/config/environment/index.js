@@ -26,19 +26,18 @@ var all = {
     session: 'lmis-dashboard-secret'
   },
 
-  // List of user roles
-  userRoles: ['guest', 'user', 'admin'],
-
   // CouchDB connection options
   couch: {
     host: '',
     port: 5984,
-    auth: null
+    auth: null,
+    forceSave: false
   }
 };
 
 // Export the config object based on the NODE_ENV
 // ==============================================
+var configFile = process.env.NODE_CONFIG || process.env.NODE_ENV;
 module.exports = _.merge(
   all,
-  require('./' + process.env.NODE_ENV + '.js') || {});
+  require('./' + configFile + '.js') || {});

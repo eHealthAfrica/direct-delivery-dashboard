@@ -7,6 +7,13 @@ angular.module('lmisApp')
         templateUrl: 'app/facilities/facilities.html',
         controller: 'FacilitiesCtrl',
         controllerAs: 'facilitiesCtrl',
-        authenticate: true
+        authenticate: true,
+        resolve: {
+          summaries: [
+            'facilityReports', function(facilityReports) {
+              return facilityReports.load();
+            }
+          ]
+        }
       });
   });

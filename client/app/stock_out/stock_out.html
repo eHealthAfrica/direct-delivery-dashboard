@@ -1,19 +1,9 @@
 <div class="row">
   <div class="col-xs-12">
     <h2 class="page-header">Stock Out Alerts</h2>
-    <div class="row" ng-show="loading || error">
+    <div class="row">
       <div class="col-xs-12">
-        <div class="alert alert-info" ng-show="loading">
-          Loading ...
-        </div>
-        <div class="alert alert-danger" ng-show="error">
-          Error loading data.
-        </div>
-      </div>
-    </div>
-    <div class="row" ng-hide="loading || error">
-      <div class="col-xs-12">
-        <h3>Totals</h3>
+        <h3>Summary</h3>
         <div class="panel panel-default">
           <div class="panel-heading">
             <form class="form-inline">
@@ -97,8 +87,8 @@
               <th ng-if="currentUser.showLgas" style="width: 12%">LGA</th>
               <th ng-if="currentUser.showWards" style="width: 12%">Ward</th>
               <th style="width: 17%">Facility</th>
-              <th style="width: 13%">Date</th>
               <th style="width: 14%">Product Type</th>
+              <th style="width: 13%">Date</th>
               <th style="width: 8%">Stock Level</th>
             </tr>
             <tr class="active">
@@ -147,7 +137,12 @@
                     class="glyphicon glyphicon-refresh form-control-feedback"></span>
                 </div>
               </td>
-              <td colspan="3">
+              <td>
+                <div class="form-group">
+                  <input type="text" class="form-control filter" ng-model="search.productType">
+                </div>
+              </td>
+              <td colspan="2">
                 <button type="button" class="btn btn-primary" ng-click="search = {}">
                   Clear Filter
                 </button>
@@ -161,8 +156,8 @@
               <td ng-if="currentUser.showLgas">{{row.facility.lga}}</td>
               <td ng-if="currentUser.showWards">{{row.facility.ward}}</td>
               <td>{{row.facility.name}}</td>
-              <td>{{row.created | date:SETTINGS.dateTimeFormat}}</td>
               <td>{{row.productType}}</td>
+              <td>{{row.created | date:SETTINGS.dateTimeFormat}}</td>
               <td>{{row.stockLevel}}</td>
             </tr>
           </tbody>

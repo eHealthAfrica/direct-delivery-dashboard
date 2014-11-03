@@ -1,18 +1,19 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('InventoryCtrl', function($scope, $q, $filter, utility, Auth, Places, ProductType, ProductCategory, Facility, stockCount) {
-    var rows = [];
-    var latestRows = [];
+  .controller('InventoryCtrl', function($scope, $filter, utility, Auth, Places, productTypes, stockCounts) {
+    var rows = stockCounts.rows;
+    var latestRows = stockCounts.latestRows;
     var xTickValues = [];
 
     $scope.currentUser = Auth.getCurrentUser();
+    $scope.productTypes = productTypes;
+    $scope.totalsHeaders = [''].concat(productTypes.map(function(type) {
+      return type.code;
+    }));
+
     $scope.title = 'Inventory';
-    $scope.loading = true;
-    $scope.error = false;
     $scope.places = null;
-    $scope.productTypes = [];
-    $scope.totalsHeaders = [];
     $scope.totals = [];
     $scope.chartData = [];
 
@@ -52,10 +53,6 @@ angular.module('lmisApp')
       }
       else
         return [];
-    };
-
-    $scope.getStyle = function(name) {
-      return ProductCategory.getStyle(name);
     };
 
     $scope.placeTypeName = function(type) {
@@ -192,50 +189,5 @@ angular.module('lmisApp')
       });
     };
 
-    $q.all([ProductType.all(), ProductCategory.all(), stockCount.all()])
-      .then(function(res) {
-        var types = res[0];
-        var categories = res[1];
-
-        var productTypes = utility.values(types)
-          .map(function(p) {
-            var style = categories[p.category];
-            if (angular.isObject(style)) {
-              style = ProductCategory.getStyle(style.name);
-            }
-            else {
-              style = '';
-            }
-            return {
-              code: p.code,
-              style: style
-            };
-          });
-
-        $scope.productTypes = $filter('orderBy')(productTypes, ['style', 'code']);
-
-        // first item will be set based on current search filter
-        // MUST be run after the above $filter call
-        $scope.totalsHeaders = [''].concat($scope.productTypes.map(function(type) {
-          return type.code;
-        }));
-
-        stockCount.resolveUnopened(res[2])
-          .then(function(resolved) {
-            rows = resolved;
-            latestRows = stockCount.latest(resolved);
-
-            $scope.updateTotals();
-          })
-          .catch(function() {
-            $scope.error = true;
-          })
-          .finally(function() {
-            $scope.loading = false;
-          });
-      })
-      .catch(function(err) {
-        $scope.loading = false;
-        console.error(err);
-      });
+    $scope.updateTotals();
   });

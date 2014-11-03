@@ -267,10 +267,6 @@ module.exports = function(grunt) {
       css: ['<%= yeoman.dist %>/public/{,*/}*.css'],
       js: ['<%= yeoman.dist %>/public/{,*/}*.js'],
       options: {
-        assetsDirs: [
-          '<%= yeoman.dist %>/public',
-          '<%= yeoman.dist %>/public/assets/images'
-        ],
         // This is so we update image references in our ng-templates
         patterns: {
           js: [
@@ -343,7 +339,7 @@ module.exports = function(grunt) {
               '*.{ico,png,txt}',
               '.htaccess',
               'bower_components/**/*',
-              'assets/images/{,*/}*.{webp}',
+              'assets/images/**/*',
               'assets/fonts/**/*',
               'index.html'
             ]
@@ -450,6 +446,10 @@ module.exports = function(grunt) {
       },
       prod: {
         NODE_ENV: 'production'
+      },
+      dist: {
+        NODE_ENV: 'production',
+        NODE_CONFIG: 'development'
       },
       all: localConfig
     },
@@ -578,8 +578,12 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('serve', function(target) {
-    if (target === 'dist') {
+    if (target === 'prod') {
       return grunt.task.run(['build', 'env:all', 'env:prod', 'express:prod', 'wait', 'open', 'express-keepalive']);
+    }
+
+    if (target === 'dist') {
+      return grunt.task.run(['build', 'env:all', 'env:dist', 'express:prod', 'wait', 'open', 'express-keepalive']);
     }
 
     if (target === 'debug') {
