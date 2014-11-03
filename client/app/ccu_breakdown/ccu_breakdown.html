@@ -1,77 +1,6 @@
 <div class="row">
   <div class="col-md-12">
     <h2 class="page-header">CCE Breakdown</h2>
-    <div class="row" ng-show="loading || error">
-      <div class="col-xs-12">
-        <div class="alert alert-info" ng-show="loading">
-          Loading ...
-        </div>
-        <div class="alert alert-danger" ng-show="error">
-          Error loading data.
-        </div>
-      </div>
-    </div>
-    <div class="row" ng-hide="loading || error">
-      <div class="col-xs-12">
-        <h3>Detail</h3>
-
-        <div class="panel panel-default">
-
-          <table class="table table-condensed table-bordered table-striped table-condensed">
-            <thead>
-            <tr>
-              <th ng-if="currentUser.showStates">State</th>
-              <th ng-if="currentUser.showZones">Zone</th>
-              <th ng-if="currentUser.showLgas">LGA</th>
-              <th ng-if="currentUser.showWards">Ward</th>
-              <th>Facility</th>
-              <th>Date</th>
-              <th>CCE Unit</th>
-              <th>Last Fault</th>
-              <th>Status</th>
-              <th>Contact</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="row in filteredRows | orderBy:['-created', 'name']">
-              <td ng-if="currentUser.showStates">{{row.state}}</td>
-              <td ng-if="currentUser.showZones">{{row.zone}}</td>
-              <td ng-if="currentUser.showLgas">{{row.lga}}</td>
-              <td ng-if="currentUser.showWards">{{row.ward}}</td>
-              <td>{{row.facility}}</td>
-              <td>{{row.created | date:SETTINGS.dateTimeFormat}}</td>
-              <td>{{ row.manufacturer }} - {{row.name}}</td>
-              <td>{{row.lastFault}}</td>
-              <td>{{row.statusText}}</td>
-              <td>
-                <ul class="list-unstyled">
-                  <li>
-                    <i class="glyphicon glyphicon-user"></i>
-                    <span ng-bind="row.contact.name"></span>
-                  </li>
-                  <li>
-                    <i class="glyphicon glyphicon-phone"></i>
-                    <span ng-bind="row.contact.phone"></span>
-                  </li>
-                  <li>
-                    <i class="glyphicon glyphicon-envelope"></i>
-                    <span ng-bind="row.contact.email"></span>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</div>
-<!--
-<div class="row">
-  <div class="col-xs-12">
-    <h2 class="page-header">CCU Breakdown</h2>
     <div class="well hidden-print">
       <form class="form-inline">
         <div class="form-group">
@@ -91,7 +20,8 @@
                  ng-model="place.search" ng-disabled="!place.type.length"
                  typeahead="place for place in getPlaces($viewValue)"
                  typeahead-loading="places.loading">
-          <span ng-show="places.loading" class="glyphicon glyphicon-refresh form-control-feedback"></span>
+          <span ng-show="places.loading"
+                class="glyphicon glyphicon-refresh form-control-feedback"></span>
         </div>
         &nbsp;
         <div class="form-group">
@@ -127,66 +57,56 @@
     <div ng-show="filteredRows.length">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Summary</h3>
+          <h3 class="panel-title">Details</h3>
         </div>
         <div class="table-scroller">
           <table class="table table-condensed table-bordered table-striped table-condensed">
             <thead>
             <tr>
-              <th>{{place.columnTitle}}</th>
-              <th ng-repeat="unit in units">{{unit}}</th>
+              <th ng-if="currentUser.showStates">State</th>
+              <th ng-if="currentUser.showZones">Zone</th>
+              <th ng-if="currentUser.showLgas">LGA</th>
+              <th ng-if="currentUser.showWards">Ward</th>
+              <th>Facility</th>
+              <th>Date</th>
+              <th>CCE Unit</th>
+              <th>Last Fault</th>
+              <th>Status</th>
+              <th>Contact</th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="total in totals | orderBy:'place'">
-              <td>{{total.place}}</td>
-              <td ng-repeat="value in total.values track by $index">
-                {{value}}
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">Details</h3>
-        </div>
-        <div class="table-scroller">
-          <table class="table table-condensed table-bordered table-striped">
-            <thead>
-            <tr>
-              <th ng-if="currentUser.showStates" style="width: 14%">State</th>
-              <th ng-if="currentUser.showZones" style="width: 14%">Zone</th>
-              <th ng-if="currentUser.showLgas" style="width: 14%">LGA</th>
-              <th ng-if="currentUser.showWards" style="width: 14%">Ward</th>
-              <th style="width: 14%">Facility</th>
-              <th style="width: 15%">Date</th>
-              <th style="width: 15%">CCU Unit</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr
-              ng-repeat="row in filteredRows | orderBy:['-created', 'name'] | limitTo:pagination.limit | limitTo:-pagination.count">
+            <tr ng-repeat="row in filteredRows | orderBy:['-created', 'name']">
               <td ng-if="currentUser.showStates">{{row.facility.state}}</td>
               <td ng-if="currentUser.showZones">{{row.facility.zone}}</td>
               <td ng-if="currentUser.showLgas">{{row.facility.lga}}</td>
               <td ng-if="currentUser.showWards">{{row.facility.ward}}</td>
               <td>{{row.facility.name}}</td>
               <td>{{row.created | date:SETTINGS.dateTimeFormat}}</td>
-              <td>{{row.name}}</td>
+              <td>{{row.manufacturer}} - {{row.name}}</td>
+              <td>{{row.lastFault}}</td>
+              <td>{{row.statusText}}</td>
+              <td>
+                <ul class="list-unstyled">
+                  <li>
+                    <i class="glyphicon glyphicon-user"></i>
+                    <span ng-bind="row.contact.name"></span>
+                  </li>
+                  <li>
+                    <i class="glyphicon glyphicon-phone"></i>
+                    <span ng-bind="row.contact.phone"></span>
+                  </li>
+                  <li>
+                    <i class="glyphicon glyphicon-envelope"></i>
+                    <span ng-bind="row.contact.email"></span>
+                  </li>
+                </ul>
+              </td>
             </tr>
             </tbody>
           </table>
-        </div>
-        <div class="panel-footer text-center">
-          <pagination style="margin-top: 0" max-size="10" boundary-links="true" rotate="false"
-                      total-items="pagination.totalItems" items-per-page="pagination.itemsPerPage"
-                      ng-model="pagination.currentPage" ng-change="pagination.pageChanged()"></pagination>
         </div>
       </div>
     </div>
   </div>
 </div>
--->

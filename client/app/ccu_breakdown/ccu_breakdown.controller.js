@@ -1,14 +1,12 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('CCUBreakdownCtrl', function($scope, $filter, utility, Auth, Pagination, Places, cceis, ccuBreakdowns) {
+  .controller('CCUBreakdownCtrl', function($scope, $filter, utility, Auth, Pagination, Places, ccuBreakdowns) {
     var rows = ccuBreakdowns;
 
     $scope.currentUser = Auth.getCurrentUser();
     $scope.pagination = new Pagination();
-    $scope.units = cceis;
     $scope.filteredRows = [];
-    $scope.totals = [];
     $scope.places = null;
 
     $scope.place = {
@@ -46,35 +44,9 @@ angular.module('lmisApp')
     };
 
     $scope.update = function() {
-      var totals = {};
       var filterBy = Places.propertyName($scope.place.type);
-      var subType = $scope.place.type === Places.FACILITY ? Places.FACILITY : Places.subType($scope.place.type);
-      var groupBy = Places.propertyName(subType || $scope.currentUser.access.level);
-      var columnTitle = Places.typeName(subType || $scope.currentUser.access.level);
 
       $scope.filteredRows = utility.placeDateFilter(rows, filterBy, $scope.place.search, $scope.from.date, $scope.to.date);
-      $scope.filteredRows.forEach(function(row) {
-        var key = row.facility[groupBy];
-        totals[key] = totals[key] || {
-          place: key,
-          values: {}
-        };
-
-        var value = totals[key].values[row.name] || 0;
-        totals[key].values[row.name] = value + 1;
-      });
-
-      $scope.place.columnTitle = columnTitle;
-      $scope.totals = Object.keys(totals).map(function(key) {
-        var item = totals[key];
-        return {
-          place: item.place,
-          values: $scope.units.map(function(unit) {
-            return (item.values[unit] || 0);
-          })
-        };
-      });
-
       $scope.pagination.totalItemsChanged($scope.filteredRows.length);
     };
 
