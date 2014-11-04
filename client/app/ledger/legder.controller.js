@@ -9,7 +9,7 @@ angular.module('lmisApp')
     $scope.pagination = new Pagination();
     $scope.filteredRows = [];
     $scope.search = {};
-    $scope.ledger = {filterType: 'Incoming Bundle'};
+    $scope.ledger = {};
     $scope.totals = [];
 
     $scope.place = {
@@ -85,7 +85,6 @@ angular.module('lmisApp')
       var subType = $scope.place.type === Places.FACILITY ? Places.FACILITY : Places.subType($scope.place.type);
       var groupBy = Places.propertyName(subType || $scope.currentUser.access.level);
       var columnTitle = Places.typeName(subType || $scope.currentUser.access.level);
-      var filterType = angular.isUndefined($scope.ledger.filterType) ? 'Incoming Bundle' : $scope.ledger.filterType;
 
       var search = $scope.place.search.toLowerCase();
       $scope.filteredRows = rows.filter(function(row) {
@@ -93,12 +92,25 @@ angular.module('lmisApp')
         var include = true;
 
         if (include && search && filterBy) {
-          var placeName = filterType === 'Incoming Bundle' ? row.receivingFacilityObject[filterBy] : row.sendingFacilityObject[filterBy];
-          if (placeName === undefined)
+          var receivingPlaceName = row.receivingFacilityObject[filterBy] ;
+          var sendingPlaceName = row.sendingFacilityObject[filterBy] ;
+          var sendingInclude = true;
+          var receivingInclude = true;
+
+          if (sendingPlaceName === undefined && receivingPlaceName === undefined)
             return false;
 
-          include = include && placeName && (placeName.toLowerCase() === search);
+          if (sendingPlaceName)
+            sendingInclude = sendingInclude && (sendingPlaceName.toLowerCase() === search);
+
+          if (receivingPlaceName)
+            receivingInclude = receivingInclude && (receivingPlaceName.toLowerCase() === search);
+
+          include = receivingInclude || sendingInclude;
         }
+
+        if (include && $scope.ledger.filterType)
+          include = include && $scope.ledger.filterType.toLowerCase() === row.type.toLowerCase();
 
         if (include && $scope.from.date)
           include = include && (date.isSame($scope.from.date, 'day') || date.isAfter($scope.from.date));
@@ -110,7 +122,7 @@ angular.module('lmisApp')
       });
 
       $scope.filteredRows.forEach(function(row) {
-        var key = filterType === 'Incoming Bundle' ? row.receivingFacilityObject[groupBy] : row.sendingFacilityObject[groupBy];
+        var key = row.receivingFacilityObject[groupBy];
         totals[key] = totals[key] || {
           place: key,
           values: {}
