@@ -96,9 +96,11 @@ angular.module('lmisApp')
           var placeName = filterType === 'Incoming Bundle' ? row.receivingFacilityObject[filterBy] : row.sendingFacilityObject[filterBy];
           if (placeName === undefined)
             return false;
-
           include = include && placeName && (placeName.toLowerCase() === search);
         }
+
+        if (include && $scope.ledger.filterType)
+          include = include && $scope.ledger.filterType.toLowerCase() === row.type.toLowerCase();
 
         if (include && $scope.from.date)
           include = include && (date.isSame($scope.from.date, 'day') || date.isAfter($scope.from.date));
