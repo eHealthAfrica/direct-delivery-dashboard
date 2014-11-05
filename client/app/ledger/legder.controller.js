@@ -92,21 +92,11 @@ angular.module('lmisApp')
         var include = true;
 
         if (include && search && filterBy) {
-          var receivingPlaceName = row.receivingFacilityObject[filterBy] ;
-          var sendingPlaceName = row.sendingFacilityObject[filterBy] ;
-          var sendingInclude = true;
+          var receivingPlaceName = row.receivingFacilityObject[filterBy];
           var receivingInclude = true;
 
-          if (sendingPlaceName === undefined && receivingPlaceName === undefined)
-            return false;
-
-          if (sendingPlaceName)
-            sendingInclude = sendingInclude && (sendingPlaceName.toLowerCase() === search);
-
           if (receivingPlaceName)
-            receivingInclude = receivingInclude && (receivingPlaceName.toLowerCase() === search);
-
-          include = receivingInclude || sendingInclude;
+            include = receivingInclude && (receivingPlaceName.toLowerCase() === search);
         }
 
         if (include && $scope.ledger.filterType)
