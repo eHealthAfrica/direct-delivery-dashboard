@@ -9,7 +9,7 @@ angular.module('lmisApp')
     $scope.pagination = new Pagination();
     $scope.filteredRows = [];
     $scope.search = {};
-    $scope.ledger = {};
+    $scope.ledger = {filterType: 'Incoming Bundle'};
     $scope.totals = [];
 
     $scope.place = {
@@ -85,6 +85,7 @@ angular.module('lmisApp')
       var subType = $scope.place.type === Places.FACILITY ? Places.FACILITY : Places.subType($scope.place.type);
       var groupBy = Places.propertyName(subType || $scope.currentUser.access.level);
       var columnTitle = Places.typeName(subType || $scope.currentUser.access.level);
+      var filterType = angular.isUndefined($scope.ledger.filterType) ? 'Incoming Bundle' : $scope.ledger.filterType;
 
       var search = $scope.place.search.toLowerCase();
       $scope.filteredRows = rows.filter(function(row) {
@@ -92,11 +93,10 @@ angular.module('lmisApp')
         var include = true;
 
         if (include && search && filterBy) {
-          var receivingPlaceName = row.receivingFacilityObject[filterBy];
-          var receivingInclude = true;
-
-          if (receivingPlaceName)
-            include = receivingInclude && (receivingPlaceName.toLowerCase() === search);
+          var placeName = filterType === 'Incoming Bundle' ? row.receivingFacilityObject[filterBy] : row.sendingFacilityObject[filterBy];
+          if (placeName === undefined)
+            return false;
+          include = include && placeName && (placeName.toLowerCase() === search);
         }
 
         if (include && $scope.ledger.filterType)
@@ -112,7 +112,7 @@ angular.module('lmisApp')
       });
 
       $scope.filteredRows.forEach(function(row) {
-        var key = row.receivingFacilityObject[groupBy];
+        var key = filterType === 'Incoming Bundle' ? row.receivingFacilityObject[groupBy] : row.sendingFacilityObject[groupBy];
         totals[key] = totals[key] || {
           place: key,
           values: {}
