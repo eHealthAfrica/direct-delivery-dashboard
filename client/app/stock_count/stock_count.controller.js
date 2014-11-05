@@ -8,7 +8,6 @@ angular.module('lmisApp')
     $scope.productTypes = productTypes;
     $scope.pagination = new Pagination();
     $scope.filteredRows = [];
-    $scope.search = {};
     $scope.totals = [];
     $scope.places = null;
 
@@ -19,10 +18,9 @@ angular.module('lmisApp')
     };
 
     if ($routeParams.facility) {
-      $scope.search = {
-        facility: {
-          name: $routeParams.facility
-        }
+      $scope.place = {
+        type: Places.FACILITY,
+        search: $routeParams.facility
       };
     }
 
@@ -54,14 +52,15 @@ angular.module('lmisApp')
       return $scope.places.promise;
     };
 
-    $scope.updateTotals = function() {
+    $scope.update = function() {
       var totals = {};
       var filterBy = Places.propertyName($scope.place.type);
       var subType = $scope.place.type === Places.FACILITY ? Places.FACILITY : Places.subType($scope.place.type);
       var groupBy = Places.propertyName(subType || $scope.currentUser.access.level);
       var columnTitle = Places.typeName(subType || $scope.currentUser.access.level);
 
-      utility.placeDateFilter(rows, filterBy, $scope.place.search, $scope.from.date, $scope.to.date).forEach(function(row) {
+      $scope.filteredRows = utility.placeDateFilter(rows, filterBy, $scope.place.search, $scope.from.date, $scope.to.date);
+      $scope.filteredRows.forEach(function(row) {
         var key = row.facility[groupBy];
         totals[key] = totals[key] || {
           place: key,
@@ -84,17 +83,9 @@ angular.module('lmisApp')
           })
         };
       });
+
+      $scope.pagination.totalItemsChanged($scope.filteredRows.length);
     };
 
-    $scope.$watch('search', function() {
-      updateFilteredRows();
-    }, true);
-
-    function updateFilteredRows() {
-      $scope.filteredRows = $filter('filter')(rows, $scope.search, utility.objectComparator);
-      $scope.pagination.totalItemsChanged($scope.filteredRows.length);
-    }
-
-    $scope.updateTotals();
-    updateFilteredRows();
+    $scope.update();
   });

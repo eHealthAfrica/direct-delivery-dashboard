@@ -45,21 +45,9 @@ angular.module('lmisApp')
             }
           ],
           stockCounts: [
-            '$q', 'stockCount', function($q, stockCount) {
-              var d = $q.defer();
-
-              stockCount.all()
-                .then(stockCount.resolveUnopened)
-                .then(function(rows) {
-                  return {
-                    rows: rows,
-                    latestRows: stockCount.latest(rows)
-                  };
-                })
-                .then(d.resolve)
-                .catch(d.reject);
-
-              return d.promise;
+            'stockCount', function(stockCount) {
+              return stockCount.all()
+                .then(stockCount.resolveUnopened);
             }
           ]
         }

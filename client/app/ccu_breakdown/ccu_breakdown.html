@@ -1,163 +1,110 @@
 <div class="row">
-  <div class="col-xs-12">
-    <h2 class="page-header">CCU Breakdown</h2>
-    <div class="row">
-      <div class="col-xs-12">
-        <h3>Summary</h3>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <form class="form-inline">
-              <div class="form-group">
-                <label for="placeType">Place Type:</label>
-                <select id="placeType" class="form-control" ng-model="place.type" ng-change="place.search = ''">
-                  <option value=""></option>
-                  <option ng-if="currentUser.showStates" value="state">State</option>
-                  <option ng-if="currentUser.showZones" value="zone">Zone</option>
-                  <option ng-if="currentUser.showLgas" value="lga">LGA</option>
-                  <option ng-if="currentUser.showWards" value="ward">Ward</option>
-                  <option value="facility">Facility</option>
-                </select>
-              </div>
-              &nbsp;
-              <div class="form-group has-feedback">
-                <input type="text" class="form-control filter" placeholder="Place Name"
-                  ng-model="place.search" ng-disabled="!place.type.length"
-                  typeahead="place for place in getPlaces($viewValue)"
-                  typeahead-loading="places.loading">
-                      <span ng-show="places.loading"
-                        class="glyphicon glyphicon-refresh form-control-feedback"></span>
-              </div>
-              &nbsp;
-              <div class="form-group">
-                <div class="input-group">
-                  <input type="text" class="form-control" ng-model="from.date"
-                    datepicker-popup is-open="from.opened"/>
-                        <span class="input-group-btn">
-                          <button type="button" class="btn btn-default" ng-click="from.open($event)">
-                            <i class="glyphicon glyphicon-calendar"></i>
-                          </button>
-                        </span>
-                </div>
-              </div>
-              &nbsp;
-              <div class="form-group">
-                <div class="input-group">
-                  <input type="text" class="form-control" ng-model="to.date"
-                    datepicker-popup is-open="to.opened"/>
-                        <span class="input-group-btn">
-                          <button type="button" class="btn btn-default" ng-click="to.open($event)">
-                            <i class="glyphicon glyphicon-calendar"></i>
-                          </button>
-                        </span>
-                </div>
-              </div>
-              &nbsp;
-              <button type="button" class="btn btn-primary" ng-click="updateTotals()">
-                Apply
+  <div class="col-md-12">
+    <h2 class="page-header">CCE Breakdown</h2>
+    <div class="well hidden-print">
+      <form class="form-inline">
+        <div class="form-group">
+          <label for="placeType">Place Type:</label>
+          <select id="placeType" class="form-control" ng-model="place.type" ng-change="place.search = ''">
+            <option value=""></option>
+            <option ng-if="currentUser.showStates" value="state">State</option>
+            <option ng-if="currentUser.showZones" value="zone">Zone</option>
+            <option ng-if="currentUser.showLgas" value="lga">LGA</option>
+            <option ng-if="currentUser.showWards" value="ward">Ward</option>
+            <option value="facility">Facility</option>
+          </select>
+        </div>
+        &nbsp;
+        <div class="form-group has-feedback">
+          <input type="text" class="form-control filter" placeholder="Place Name"
+                 ng-model="place.search" ng-disabled="!place.type.length"
+                 typeahead="place for place in getPlaces($viewValue)"
+                 typeahead-loading="places.loading">
+          <span ng-show="places.loading"
+                class="glyphicon glyphicon-refresh form-control-feedback"></span>
+        </div>
+        &nbsp;
+        <div class="form-group">
+          <div class="input-group">
+            <input type="text" class="form-control" ng-model="from.date" datepicker-popup is-open="from.opened"/>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="from.open($event)">
+                <i class="glyphicon glyphicon-calendar"></i>
               </button>
-            </form>
-          </div>
-          <div class="table-scroller">
-            <table class="table table-condensed table-bordered table-striped table-condensed">
-              <thead>
-                <tr>
-                  <th>{{place.columnTitle}}</th>
-                  <th ng-repeat="unit in units">{{unit}}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="total in totals | orderBy:'place'">
-                  <td>{{total.place}}</td>
-                  <td ng-repeat="value in total.values track by $index">
-                    {{value}}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            </span>
           </div>
         </div>
+        &nbsp;
+        <div class="form-group">
+          <div class="input-group">
+            <input type="text" class="form-control" ng-model="to.date" datepicker-popup is-open="to.opened"/>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="to.open($event)">
+                <i class="glyphicon glyphicon-calendar"></i>
+              </button>
+            </span>
+          </div>
+        </div>
+        &nbsp;
+        <button type="button" class="btn btn-primary" ng-click="update()">
+          Apply
+        </button>
+      </form>
+    </div>
 
-        <h3>Details</h3>
-        <table class="table table-condensed table-bordered table-striped">
-          <thead>
+    <alert ng-hide="filteredRows.length" type="info">No data.</alert>
+
+    <div ng-show="filteredRows.length">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Details</h3>
+        </div>
+        <div class="table-scroller">
+          <table class="table table-condensed table-bordered table-striped table-condensed">
+            <thead>
             <tr>
-              <th ng-if="currentUser.showStates" style="width: 14%">State</th>
-              <th ng-if="currentUser.showZones" style="width: 14%">Zone</th>
-              <th ng-if="currentUser.showLgas" style="width: 14%">LGA</th>
-              <th ng-if="currentUser.showWards" style="width: 14%">Ward</th>
-              <th style="width: 14%">Facility</th>
-              <th style="width: 15%">Date</th>
-              <th style="width: 15%">CCU Unit</th>
+              <th ng-if="currentUser.showStates">State</th>
+              <th ng-if="currentUser.showZones">Zone</th>
+              <th ng-if="currentUser.showLgas">LGA</th>
+              <th ng-if="currentUser.showWards">Ward</th>
+              <th>Facility</th>
+              <th>Date</th>
+              <th>CCE Unit</th>
+              <th>Last Fault</th>
+              <th>Status</th>
+              <th>Contact</th>
             </tr>
-            <tr class="active">
-              <td ng-if="currentUser.showStates">
-                <div class="form-group has-feedback">
-                  <input type="text" class="form-control filter" ng-model="search.facility.state"
-                    typeahead="state for state in dataProvider.getStates($viewValue)"
-                    typeahead-loading="dataProvider.loadingStates">
-                  <span ng-show="dataProvider.loadingStates"
-                    class="glyphicon glyphicon-refresh form-control-feedback"></span>
-                </div>
-              </td>
-              <td ng-if="currentUser.showZones">
-                <div class="form-group has-feedback">
-                  <input type="text" class="form-control filter" ng-model="search.facility.zone"
-                    typeahead="zone for zone in dataProvider.getZones($viewValue)"
-                    typeahead-loading="dataProvider.loadingZones">
-                  <span ng-show="dataProvider.loadingZones"
-                    class="glyphicon glyphicon-refresh form-control-feedback"></span>
-                </div>
-              </td>
-              <td ng-if="currentUser.showLgas">
-                <div class="form-group has-feedback">
-                  <input type="text" class="form-control filter" ng-model="search.facility.lga"
-                    typeahead="lga for lga in dataProvider.getLgas($viewValue)"
-                    typeahead-loading="dataProvider.loadingLgas">
-                  <span ng-show="dataProvider.loadingLgas"
-                    class="glyphicon glyphicon-refresh form-control-feedback"></span>
-                </div>
-              </td>
-              <td ng-if="currentUser.showWards">
-                <div class="form-group has-feedback">
-                  <input type="text" class="form-control filter" ng-model="search.facility.ward"
-                    typeahead="ward for ward in dataProvider.getWards($viewValue)"
-                    typeahead-loading="dataProvider.loadingWards">
-                  <span ng-show="dataProvider.loadingWards"
-                    class="glyphicon glyphicon-refresh form-control-feedback"></span>
-                </div>
-              </td>
-              <td>
-                <div class="form-group has-feedback">
-                  <input type="text" class="form-control filter" ng-model="search.facility.name"
-                    typeahead="facility for facility in dataProvider.getFacilities($viewValue)"
-                    typeahead-loading="dataProvider.loadingFacilities">
-                  <span ng-show="dataProvider.loadingFacilities"
-                    class="glyphicon glyphicon-refresh form-control-feedback"></span>
-                </div>
-              </td>
-              <td colspan="2">
-                <button type="button" class="btn btn-primary" ng-click="search = {}">
-                  Clear Filter
-                </button>
-              </td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="row in filteredRows | orderBy:['-created', 'name'] | limitTo:pagination.limit | limitTo:-pagination.count">
+            </thead>
+            <tbody>
+            <tr ng-repeat="row in filteredRows | orderBy:['-created', 'name']">
               <td ng-if="currentUser.showStates">{{row.facility.state}}</td>
               <td ng-if="currentUser.showZones">{{row.facility.zone}}</td>
               <td ng-if="currentUser.showLgas">{{row.facility.lga}}</td>
               <td ng-if="currentUser.showWards">{{row.facility.ward}}</td>
               <td>{{row.facility.name}}</td>
               <td>{{row.created | date:SETTINGS.dateTimeFormat}}</td>
-              <td>{{row.name}}</td>
+              <td>{{row.manufacturer}} - {{row.name}}</td>
+              <td>{{row.lastFault}}</td>
+              <td>{{row.statusText}}</td>
+              <td>
+                <ul class="list-unstyled">
+                  <li>
+                    <i class="glyphicon glyphicon-user"></i>
+                    <span ng-bind="row.contact.name"></span>
+                  </li>
+                  <li>
+                    <i class="glyphicon glyphicon-phone"></i>
+                    <span ng-bind="row.contact.phone"></span>
+                  </li>
+                  <li>
+                    <i class="glyphicon glyphicon-envelope"></i>
+                    <span ng-bind="row.contact.email"></span>
+                  </li>
+                </ul>
+              </td>
             </tr>
-          </tbody>
-        </table>
-        <div class="text-center">
-          <pagination style="margin-top: 0" max-size="10" boundary-links="true" rotate="false"
-            total-items="pagination.totalItems" items-per-page="pagination.itemsPerPage"
-            ng-model="pagination.currentPage" ng-change="pagination.pageChanged()"></pagination>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

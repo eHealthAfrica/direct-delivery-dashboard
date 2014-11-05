@@ -3,8 +3,26 @@
 angular.module('lmisApp')
   .factory('ccuBreakdown', function($http, $q, utility, CCEI, Facility) {
     var URL = '/api/ccu_breakdown';
+    var URL2 = '/api/ccu_breakdown2';
+
+
+    function all(reload) {
+      var deferred = $q.defer();
+
+      $http.get(URL2)
+        .success(function (response) {
+          deferred.resolve(response);
+        })
+        .error(function (error) {
+          console.log(error);
+          deferred.reject(error);
+        });
+
+      return deferred.promise;
+    }
 
     return {
+      all: all,
       /**
        * Read data from db ordered by date and arrange it in an array. Every item has the following structure:
        *
