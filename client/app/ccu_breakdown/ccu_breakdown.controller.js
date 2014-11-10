@@ -88,6 +88,19 @@ angular.module('lmisApp')
 
       return $scope.places.promise;
     };
+    function setChartData(data){
+      data.forEach(function(d){
+        if(d.status === 0){
+          $scope.broken = $scope.broken + 1;
+        }else{
+          $scope.fixed = $scope.fixed + 1;
+        }
+      });
+      $scope.breakdownChartData = [
+        {'key': 'broken', y : $scope.broken},
+        {key: 'fixed', y: $scope.fixed}
+      ]
+    }
 
     $scope.update = function() {
       var filterBy = Places.propertyName($scope.place.type);
@@ -99,4 +112,15 @@ angular.module('lmisApp')
     };
 
     $scope.update();
+
+    $scope.xFunction = function() {
+      return function(d) {
+        return d.key;
+      };
+    }
+    $scope.yFunction = function() {
+      return function(d) {
+        return d.y;
+      };
+    }
   });
