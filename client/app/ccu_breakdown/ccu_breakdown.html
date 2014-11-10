@@ -52,6 +52,34 @@
       </form>
     </div>
 
+
+    <div class="panel panel-default" ng-show="filteredRows.length">
+      <div class="panel-heading">
+        <h3 class="panel-title">Summary</h3>
+      </div>
+
+      <div class="table-scroller">
+        <table class="table table-condensed table-bordered table-striped table-condensed">
+          <thead>
+          <tr>
+            <th>{{place.columnTitle}}</th>
+            <th ng-repeat="unit in units" ng-show="columnWithValues.headers.indexOf(unit) !== -1">{{unit}}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="total in totals | orderBy:'place'">
+            <td>{{total.place}}</td>
+            <td ng-repeat="value in total.values track by $index" ng-show="columnWithValues.columns.indexOf($index) === -1">
+              {{value}}
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+
     <alert ng-hide="filteredRows.length" type="info">No data.</alert>
 
     <div ng-show="filteredRows.length">

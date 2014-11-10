@@ -8,6 +8,11 @@ angular.module('lmisApp')
         controller: 'CCUBreakdownCtrl',
         authenticate: true,
         resolve: {
+          cceis: [
+            'CCEI', function(CCEI) {
+              return CCEI.names();
+            }
+          ],
           ccuBreakdowns: [
             '$q', 'ccuBreakdown', function($q, ccuBreakdown) {
               var cceStatus = ['Faulty', 'Fixed'];
