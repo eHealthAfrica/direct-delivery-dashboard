@@ -10,9 +10,8 @@ angular.module('lmisApp')
     $scope.filteredRows = [];
     $scope.totals = [];
     $scope.places = null;
-
+    $scope.getFilename = utility.getFileName;
     $scope.csvHeader = [
-      's/n',
       'State',
       'Zone',
       'LGA',
@@ -23,6 +22,7 @@ angular.module('lmisApp')
       'Reason',
       'Quantity'
     ];
+    var wasteCountExport = [];
 
     $scope.place = {
       type: '',
@@ -74,6 +74,17 @@ angular.module('lmisApp')
         };
 
         row.reasons.forEach(function(reason) {
+          wasteCountExport.push({
+            state: row.facility.state,
+            zone: row.facility.zone,
+            lga: row.facility.lga,
+            ward: row.facility.ward,
+            facility: row.facility.name,
+            created: row.created,
+            product: reason.productProfile,
+            reason: reason.reason,
+            count: reason.value
+          });
           var code = reason.productType;
           totals[key].values[code] = (totals[key].values[code] || 0) + reason.value;
         });
@@ -89,7 +100,7 @@ angular.module('lmisApp')
           })
         };
       });
-
+      $scope.export = wasteCountExport;
       $scope.pagination.totalItemsChanged($scope.filteredRows.length);
     };
 
