@@ -3,9 +3,10 @@
 var cradle = require('cradle');
 var utility = require('../../components/utility');
 
-var db = new (cradle.Connection)().database('ccu_breakdown2');
+var db = new (cradle.Connection)().database('ccu_breakdown');
 
 exports.byDate = byDate;
+exports.all = all;
 
 function byDate(options, cb) {
   var opts = {
@@ -21,5 +22,13 @@ function byDate(options, cb) {
     if (err) return cb(err);
 
     return cb(null, rows.toArray());
+  });
+}
+
+function all(cb) {
+  db.all({ include_docs: true }, function(err, rows) {
+    if (err) return cb(err);
+
+    return cb(null, utility.removeDesignDocs(rows.toArray()));
   });
 }

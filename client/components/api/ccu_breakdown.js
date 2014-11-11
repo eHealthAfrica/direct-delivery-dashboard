@@ -3,13 +3,11 @@
 angular.module('lmisApp')
   .factory('ccuBreakdown', function($http, $q, utility, CCEI, Facility) {
     var URL = '/api/ccu_breakdown';
-    var URL2 = '/api/ccu_breakdown2';
-
 
     function all(reload) {
       var deferred = $q.defer();
 
-      $http.get(URL2)
+      $http.get(URL+'/all')
         .success(function (response) {
           deferred.resolve(response);
         })
