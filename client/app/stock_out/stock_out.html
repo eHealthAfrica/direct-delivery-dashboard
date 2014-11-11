@@ -2,7 +2,7 @@
   <div class="col-xs-12">
     <h2 class="page-header">Stock Out Alerts</h2>
     <div class="well hidden-print">
-      <form class="form-inline">
+      <form class="form-inline pull-left">
         <div class="form-group">
           <label for="placeType">Place Type:</label>
           <select id="placeType" class="form-control" ng-model="place.type" ng-change="place.search = ''">
@@ -52,6 +52,13 @@
           Apply
         </button>
       </form>
+
+      <button ng-disabled="!export.length" class="btn btn-primary pull-right hidden-print" type="button"
+              ng-csv="export" csv-header="csvHeader"
+              filename="{{getFileName('stock-out-alerts')}}">
+        Export Filtered
+      </button>
+      <div class="clearfix"></div>
     </div>
 
     <alert ng-hide="filteredRows.length" type="info">No data.</alert>
