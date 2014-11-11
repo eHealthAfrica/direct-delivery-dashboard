@@ -20,6 +20,7 @@ angular.module('lmisApp')
       'Zone',
       'LGA',
       'Ward',
+      'Facility',
       'contact',
       'Phone',
       'Equipment',
