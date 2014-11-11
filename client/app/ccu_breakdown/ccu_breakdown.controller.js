@@ -15,6 +15,20 @@ angular.module('lmisApp')
       headers: [],
       columns: []
     };
+    $scope.csvHeader = [
+      'State',
+      'Zone',
+      'LGA',
+      'Ward',
+      'contact',
+      'Phone',
+      'Equipment',
+      'Manufacturer',
+      'Record Date',
+      'Latest Fault',
+      'status'
+    ];
+    var cceExport = [];
 
     $scope.place = {
       type: '',
@@ -53,6 +67,20 @@ angular.module('lmisApp')
       var groupBy = Places.propertyName(subType || $scope.currentUser.access.level);
       var columnTitle = Places.typeName(subType || $scope.currentUser.access.level);
       utility.placeDateFilter(rows, filterBy, $scope.place.search, $scope.from.date, $scope.to.date).forEach(function(row) {
+        cceExport.push({
+          state: row.facility.state,
+          zone: row.facility.zone,
+          lga: row.facility.lga,
+          ward: row.facility.ward,
+          facility: row.facility.name,
+          contactName: row.facility.contact.name,
+          contactPhone: row.facility.contact.oldphone,
+          equipment: row.name,
+          manufacturer: row.manufacturer,
+          created: row.created,
+          lastFault: row.lastFault,
+          cceStatus: row.statusText
+        });
         var key = row.facility[groupBy];
         totals[key] = totals[key] || {
           place: key,
@@ -63,6 +91,7 @@ angular.module('lmisApp')
         totals[key].values[code] = value + 1;
         columnTotals.push(code);
       });
+
       $scope.place.columnTitle = columnTitle;
 
       $scope.totals = Object.keys(totals).map(function(key) {
@@ -81,6 +110,7 @@ angular.module('lmisApp')
       });
       $scope.columnWithValues.columns = collapse;
       $scope.columnWithValues.headers = columnTotals;
+      $scope.export = cceExport;
     };
 
     $scope.getPlaces = function(filter) {
