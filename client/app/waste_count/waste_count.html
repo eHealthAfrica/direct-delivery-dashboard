@@ -53,7 +53,7 @@
         </button>
       </form>
 
-      <button class="btn btn-primary pull-right hidden-print" type="button"
+      <button ng-disabled="!export.length" class="btn btn-primary pull-right hidden-print" type="button"
               ng-csv="export" csv-header="csvHeader" filename="{{getFileName('waste-count')}}">
         Export Filtered
       </button>
