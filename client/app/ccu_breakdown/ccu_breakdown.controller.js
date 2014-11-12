@@ -89,6 +89,8 @@ angular.module('lmisApp')
       return $scope.places.promise;
     };
     function setChartData(data){
+      $scope.broken = 0;
+      $scope.fixed  = 0;
       data.forEach(function(d){
         if(d.status === 0){
           $scope.broken = $scope.broken + 1;
