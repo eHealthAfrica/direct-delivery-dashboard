@@ -56,6 +56,13 @@
           Apply
         </button>
       </form>
+
+      <button ng-disabled="!export.length" class="btn btn-primary pull-right hidden-print" type="button"
+              ng-csv="export" csv-header="csvHeader"
+              filename="{{getFileName(exportTitle)}}">
+        Export Filtered
+      </button>
+      <div class="clearfix"></div>
     </div>
 
     <alert ng-hide="filteredRows.length" type="info">No data.</alert>
@@ -107,8 +114,8 @@
             <tr
               ng-repeat="row in filteredRows | orderBy:['-created'] | limitTo:pagination.limit | limitTo:-pagination.count">
               <td>{{$index + 1 + ((pagination.currentPage-1) * pagination.itemsPerPage)}}</td>
-              <td>{{row.receivingFacility}}</td>
               <td>{{row.sendingFacility}}</td>
+              <td>{{row.receivingFacility}}</td>
               <td>{{row.receivedOn | date:SETTINGS.dateFormat}}</td>
               <td>{{row.created | date:SETTINGS.dateTimeFormat}}</td>
               <td>{{row.expiryDate | date:SETTINGS.dateFormat}}</td>
