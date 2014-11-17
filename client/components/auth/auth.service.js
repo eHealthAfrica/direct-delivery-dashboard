@@ -8,6 +8,8 @@ angular.module('lmisApp')
       set(User.get());
     }
 
+    $rootScope.$on('unauthorized', logout);
+
     function set(user) {
       if (user != currentUser) {
         currentUser = user;
@@ -33,6 +35,11 @@ angular.module('lmisApp')
       currentUser.showZones = currentUser.showStates || currentUser.access.level === Places.ZONE;
       currentUser.showLgas = currentUser.showZones || currentUser.access.level === Places.LGA;
       currentUser.showWards = currentUser.showLgas || currentUser.access.level === Places.WARD;
+    }
+
+    function logout() {
+      $cookieStore.remove('token');
+      set({});
     }
 
     return {
@@ -73,10 +80,7 @@ angular.module('lmisApp')
        *
        * @param  {Function}
        */
-      logout: function() {
-        $cookieStore.remove('token');
-        set({});
-      },
+      logout: logout,
 
       /**
        * Gets all available info on authenticated user
