@@ -56,20 +56,18 @@
           Apply
         </button>
       </form>
-
-      <button ng-disabled="!export.length" class="btn btn-primary pull-right hidden-print" type="button"
-              ng-csv="export" csv-header="csvHeader"
-              filename="{{getFileName(exportTitle)}}">
-        Export Filtered
-      </button>
-      <div class="clearfix"></div>
     </div>
 
     <alert ng-hide="filteredRows.length" type="info">No data.</alert>
 
     <div ng-show="filteredRows.length">
       <div class="panel panel-default">
-        <div class="panel-heading">
+        <div class="panel-heading clearfix">
+          <button ng-disabled="!export.length" class="btn btn-primary btn-xs pull-right hidden-print" type="button"
+                  ng-csv="export" csv-header="csvHeader"
+                  filename="{{getFileName(exportTitle)}}">
+            Export
+          </button>
           <h3 class="panel-title">Summary</h3>
         </div>
         <div class="table-scroller">
