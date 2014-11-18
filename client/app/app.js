@@ -12,7 +12,8 @@ angular.module('lmisApp', [
     'ui.select',
     'pwCheck',
     'remoteError',
-    'alerts'
+    'alerts',
+    'pagination'
   ])
   .config(function($routeProvider, $locationProvider, $httpProvider, uiSelectConfig) {
     $routeProvider

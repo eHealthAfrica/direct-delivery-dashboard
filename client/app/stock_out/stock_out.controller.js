@@ -102,7 +102,7 @@ angular.module('lmisApp')
         };
       });
 
-      $scope.pagination.totalItemsChanged($scope.filteredRows.length);
+      $scope.pagination.totalItems = $scope.filteredRows.length;
       $scope.export = stockOutExport;
     };
 

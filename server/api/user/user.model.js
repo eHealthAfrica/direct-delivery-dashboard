@@ -1,7 +1,8 @@
 'use strict';
 
-var logger = require('winston');
 var q = require('q');
+var lodash = require('lodash');
+var logger = require('winston');
 var cradle = require('cradle');
 var crypto = require('crypto');
 var utility = require('../../components/utility');
@@ -170,10 +171,5 @@ function hasRole(user, role) {
 }
 
 function clean(user) {
-  delete user.password_scheme;
-  delete user.salt;
-  delete user.iterations;
-  delete user.derived_key;
-
-  return user;
+  return lodash.pick(user, ['_id', '_rev', 'name', 'roles', 'access']);
 }
