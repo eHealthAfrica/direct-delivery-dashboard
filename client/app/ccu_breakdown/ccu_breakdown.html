@@ -2,7 +2,7 @@
   <div class="col-md-12">
     <h2 class="page-header">CCE Breakdown</h2>
     <div class="well hidden-print">
-      <form class="form-inline pull-left">
+      <form class="form-inline">
         <div class="form-group">
           <label for="placeType">Place Type:</label>
           <select id="placeType" class="form-control" ng-model="place.type" ng-change="place.search = ''">
@@ -50,12 +50,6 @@
           Apply
         </button>
       </form>
-
-      <button ng-disabled="!export.length" class="btn btn-primary pull-right hidden-print" type="button" ng-csv="export" csv-header="csvHeader"
-              filename="{{getFileName('cce-breakdown')}}">
-        Export Filtered
-      </button>
-      <div class="clearfix"></div>
     </div>
 
 
@@ -90,7 +84,13 @@
 
     <div ng-show="filteredRows.length">
       <div class="panel panel-default">
-        <div class="panel-heading">
+        <div class="panel-heading clearfix">
+          <button ng-disabled="!export.length" class="btn btn-primary btn-xs pull-right hidden-print" type="button"
+                  ng-csv="export"
+                  csv-header="csvHeader"
+                  filename="{{getFileName('cce-breakdown')}}">
+            Export
+          </button>
           <h3 class="panel-title">Details</h3>
         </div>
         <div class="table-scroller">
