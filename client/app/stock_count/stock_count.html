@@ -91,6 +91,7 @@
           <table class="table table-condensed table-bordered table-striped">
             <thead>
             <tr>
+              <th>#</th>
               <th ng-if="currentUser.showStates" style="width: 10%">State</th>
               <th ng-if="currentUser.showZones" style="width: 10%">Zone</th>
               <th ng-if="currentUser.showLgas" style="width: 10%">LGA</th>
@@ -103,8 +104,12 @@
             </tr>
             </thead>
             <tbody
-              ng-repeat="row in filteredRows | orderBy:['-created', 'productType.code'] | limitTo:pagination.limit | limitTo:-pagination.count">
+              ng-repeat="row in filteredRows | orderBy:['-created', 'productType.code'] | limitTo:pagination.limit | limitTo:-pagination.count"
+              ng-init="rowIndex = $index">
             <tr ng-repeat="item in row.unopened | orderBy:['productCategory.name', 'productType.code']">
+              <td ng-if="$index == 0" rowspan="{{row.unopened.length}}">
+                {{rowIndex + 1 + ((pagination.currentPage-1) * pagination.itemsPerPage)}}
+              </td>
               <td ng-if="$index == 0 && currentUser.showStates" rowspan="{{row.unopened.length}}">
                 {{row.facility.state}}
               </td>
@@ -135,7 +140,7 @@
         <div class="panel-footer text-center">
           <pagination style="margin-top: 0" max-size="10" boundary-links="true" rotate="false"
                       total-items="pagination.totalItems" items-per-page="pagination.itemsPerPage"
-                      ng-model="pagination.currentPage" ng-change="pagination.pageChanged()"></pagination>
+                      ng-model="pagination.currentPage"></pagination>
         </div>
       </div>
     </div>

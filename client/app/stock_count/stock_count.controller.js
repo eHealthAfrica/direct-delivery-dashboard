@@ -112,8 +112,9 @@ angular.module('lmisApp')
           })
         };
       });
+
+      $scope.pagination.totalItems = $scope.filteredRows.length;
       $scope.export = unopenedExport;
-      $scope.pagination.totalItemsChanged($scope.filteredRows.length);
     };
 
     $scope.update();

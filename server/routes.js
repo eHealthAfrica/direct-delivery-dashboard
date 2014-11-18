@@ -24,7 +24,6 @@ module.exports = function(app) {
   app.use('/api/product_profiles', require('./api/product_profile'));
   app.use('/api/product_types', require('./api/product_type'));
   app.use('/api/ccu_breakdown', require('./api/ccu_breakdown'));
-  app.use('/api/ccu_breakdown2', require('./api/ccu_breakdown2'));
   app.use('/api/waste_count', require('./api/waste_count'));
   app.use('/api/waste_count', require('./api/waste_count'));
   app.use('/api/stock_count', require('./api/stock_count'));

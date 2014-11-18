@@ -93,7 +93,7 @@ angular.module('lmisApp')
       var filterBy = Places.propertyName($scope.place.type);
 
       $scope.filteredRows = utility.placeDateFilter(rows, filterBy, $scope.place.search, $scope.from.date, $scope.to.date);
-      $scope.pagination.totalItemsChanged($scope.filteredRows.length);
+      $scope.pagination.totalItems = $scope.filteredRows.length;
       $scope.updateTotals();
     };
 
