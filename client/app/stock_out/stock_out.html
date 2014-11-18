@@ -88,6 +88,7 @@
           <table class="table table-condensed table-bordered table-striped">
             <thead>
             <tr>
+              <th>#</th>
               <th ng-if="currentUser.showStates" style="width: 12%">State</th>
               <th ng-if="currentUser.showZones" style="width: 12%">Zone</th>
               <th ng-if="currentUser.showLgas" style="width: 12%">LGA</th>
@@ -101,6 +102,7 @@
             <tbody>
             <tr
               ng-repeat="row in filteredRows | orderBy:['-created', 'productType'] | limitTo:pagination.limit | limitTo:-pagination.count">
+              <td>{{$index + 1 + ((pagination.currentPage-1) * pagination.itemsPerPage)}}</td>
               <td ng-if="currentUser.showStates">{{row.facility.state}}</td>
               <td ng-if="currentUser.showZones">{{row.facility.zone}}</td>
               <td ng-if="currentUser.showLgas">{{row.facility.lga}}</td>
@@ -116,7 +118,7 @@
         <div class="panel-footer text-center">
           <pagination style="margin-top: 0" max-size="10" boundary-links="true" rotate="false"
                       total-items="pagination.totalItems" items-per-page="pagination.itemsPerPage"
-                      ng-model="pagination.currentPage" ng-change="pagination.pageChanged()"></pagination>
+                      ng-model="pagination.currentPage"></pagination>
         </div>
       </div>
     </div>

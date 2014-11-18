@@ -100,8 +100,9 @@ angular.module('lmisApp')
           })
         };
       });
+
+      $scope.pagination.totalItems = $scope.filteredRows.length;
       $scope.export = wasteCountExport;
-      $scope.pagination.totalItemsChanged($scope.filteredRows.length);
     };
 
     $scope.update();
