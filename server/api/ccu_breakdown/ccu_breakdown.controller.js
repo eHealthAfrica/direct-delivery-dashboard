@@ -19,3 +19,11 @@ exports.byDate = function(req, res, next) {
     res.json(breakdowns);
   });
 };
+
+exports.all = function(req, res, next) {
+  CCUBreakdown.all(function(err, ccu_breakdown) {
+    if (err) return next(err);
+
+    res.json(auth.filterByFacilities(req, ccu_breakdown, 'facility._id'));
+  });
+};
