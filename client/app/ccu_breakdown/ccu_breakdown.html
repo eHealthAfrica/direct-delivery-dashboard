@@ -52,7 +52,6 @@
       </form>
     </div>
 
-
     <div class="panel panel-default" ng-show="filteredRows.length">
       <div class="panel-heading">
         <h3 class="panel-title">Summary</h3>
@@ -69,7 +68,8 @@
           <tbody>
           <tr ng-repeat="total in totals | orderBy:'place'">
             <td>{{total.place}}</td>
-            <td ng-repeat="value in total.values track by $index" ng-show="columnWithValues.columns.indexOf($index) === -1">
+            <td ng-repeat="value in total.values track by $index"
+                ng-show="columnWithValues.columns.indexOf($index) === -1">
               {{value}}
             </td>
           </tr>
@@ -78,22 +78,20 @@
       </div>
     </div>
 
-
-
     <alert ng-hide="filteredRows.length" type="info">No data.</alert>
 
     <div ng-show="filteredRows.length">
-       <div class="row">
+      <div class="row">
         <div class="col-sm-8">
           <div class="panel panel-default">
             <div class="panel-heading">
               <h3 class="panel-title">Details</h3>
             </div>
-
             <div class="table-scroller">
               <table class="table table-condensed table-bordered table-striped table-condensed">
                 <thead>
                 <tr>
+                  <th>#</th>
                   <th ng-if="currentUser.showStates">State</th>
                   <th ng-if="currentUser.showZones">Zone</th>
                   <th ng-if="currentUser.showLgas">LGA</th>
@@ -107,7 +105,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="row in filteredRows | orderBy:['-created', 'name']">
+                <tr
+                  ng-repeat="row in filteredRows | orderBy:['-created', 'name'] | limitTo:pagination.limit | limitTo:-pagination.count">
+                  <td>{{$index + 1 + ((pagination.currentPage-1) * pagination.itemsPerPage)}}</td>
                   <td ng-if="currentUser.showStates">{{row.facility.state}}</td>
                   <td ng-if="currentUser.showZones">{{row.facility.zone}}</td>
                   <td ng-if="currentUser.showLgas">{{row.facility.lga}}</td>
@@ -137,24 +137,30 @@
                 </tbody>
               </table>
             </div>
+            <div class="panel-footer text-center">
+              <pagination style="margin-top: 0" max-size="10" boundary-links="true" rotate="false"
+                          total-items="pagination.totalItems" items-per-page="pagination.itemsPerPage"
+                          ng-model="pagination.currentPage"></pagination>
+            </div>
+          </div>
         </div>
-       </div>
-       <div class="col-sm-4">
-        <nvd3-pie-chart data="breakdownChartData"
-        id="breakdownPie"
-        width="550"
-        height="550"
-        tooltips="true"
-        interactive="true"
-        x="xFunction()"
-        y="yFunction()"
-        showLabels="true"
-        showValues="true"
-        labelType="percent"
-        showLegend="false">
-            <svg ></svg>
-         </nvd3-pie-chart>
-       </div>
+        <div class="col-sm-4">
+          <nvd3-pie-chart
+            data="breakdownChartData"
+            id="breakdownPie"
+            width="550"
+            height="550"
+            tooltips="true"
+            interactive="true"
+            x="xFunction()"
+            y="yFunction()"
+            showLabels="true"
+            showValues="true"
+            labelType="percent"
+            showLegend="false">
+            <svg></svg>
+          </nvd3-pie-chart>
+        </div>
       </div>
     </div>
   </div>

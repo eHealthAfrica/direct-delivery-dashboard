@@ -3,15 +3,17 @@
 angular.module('lmisApp')
   .controller('CCUBreakdownCtrl', function($scope, $filter, utility, Auth, Pagination, Places, cceis, ccuBreakdowns) {
     var rows = ccuBreakdowns;
+
     $scope.currentUser = Auth.getCurrentUser();
     $scope.pagination = new Pagination();
     $scope.filteredRows = [];
     $scope.places = null;
     $scope.broken = 0;
-    $scope.fixed  = 0;
+    $scope.fixed = 0;
     $scope.units = cceis;
     $scope.search = {};
     $scope.totals = [];
+
     $scope.columnWithValues = {
       headers: [],
       columns: []
@@ -52,6 +54,7 @@ angular.module('lmisApp')
       var subType = $scope.place.type === Places.FACILITY ? Places.FACILITY : Places.subType($scope.place.type);
       var groupBy = Places.propertyName(subType || $scope.currentUser.access.level);
       var columnTitle = Places.typeName(subType || $scope.currentUser.access.level);
+
       utility.placeDateFilter(rows, filterBy, $scope.place.search, $scope.from.date, $scope.to.date).forEach(function(row) {
         var key = row.facility[groupBy];
         totals[key] = totals[key] || {
@@ -63,6 +66,7 @@ angular.module('lmisApp')
         totals[key].values[code] = value + 1;
         columnTotals.push(code);
       });
+
       $scope.place.columnTitle = columnTitle;
 
       $scope.totals = Object.keys(totals).map(function(key) {
@@ -79,6 +83,7 @@ angular.module('lmisApp')
           })
         };
       });
+
       $scope.columnWithValues.columns = collapse;
       $scope.columnWithValues.headers = columnTotals;
     };
@@ -88,20 +93,23 @@ angular.module('lmisApp')
 
       return $scope.places.promise;
     };
-    function setChartData(data){
+
+    function setChartData(data) {
       $scope.broken = 0;
-      $scope.fixed  = 0;
-      data.forEach(function(d){
-        if(d.status === 0){
+      $scope.fixed = 0;
+      data.forEach(function(d) {
+        if (d.status === 0) {
           $scope.broken = $scope.broken + 1;
-        }else{
+        }
+        else {
           $scope.fixed = $scope.fixed + 1;
         }
       });
+
       $scope.breakdownChartData = [
-        {'key': 'broken', y : $scope.broken},
+        {key: 'broken', y: $scope.broken},
         {key: 'fixed', y: $scope.fixed}
-      ]
+      ];
     }
 
     $scope.update = function() {
@@ -113,16 +121,17 @@ angular.module('lmisApp')
       setChartData($scope.filteredRows);
     };
 
-    $scope.update();
-
     $scope.xFunction = function() {
       return function(d) {
         return d.key;
       };
-    }
+    };
+
     $scope.yFunction = function() {
       return function(d) {
         return d.y;
       };
-    }
+    };
+
+    $scope.update();
   });
