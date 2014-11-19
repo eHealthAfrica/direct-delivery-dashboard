@@ -82,7 +82,11 @@
       </div>
 
       <div class="panel panel-default">
-        <div class="panel-heading">
+        <div class="panel-heading clearfix">
+          <button ng-disabled="!export.length" class="btn btn-primary btn-xs pull-right hidden-print" type="button"
+                  ng-csv="export" csv-header="csvHeader" filename="{{getFileName('waste-count')}}">
+            Export
+          </button>
           <h3 class="panel-title">Details</h3>
         </div>
         <div class="table-scroller">

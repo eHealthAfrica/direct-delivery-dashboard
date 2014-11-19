@@ -10,6 +10,22 @@ angular.module('lmisApp')
     $scope.filteredRows = [];
     $scope.totals = [];
     $scope.places = null;
+    $scope.getFilename = utility.getFileName;
+    $scope.csvHeader = [
+      'State',
+      'Zone',
+      'LGA',
+      'Ward',
+      'Facility',
+      'Contact Name',
+      'Contact Phone',
+      'Product',
+      'Count',
+      'Due Date',
+      'Record Date',
+      'Modified Date'
+    ];
+    var unopenedExport = [];
 
     $scope.place = {
       type: '',
@@ -66,8 +82,21 @@ angular.module('lmisApp')
           place: key,
           values: {}
         };
-
         row.unopened.forEach(function(unopened) {
+          unopenedExport.push({
+            state: row.facility.state,
+            zone: row.facility.zone,
+            lga: row.facility.lga,
+            ward: row.facility.ward,
+            facility: row.facility.name,
+            contactName: row.facility.contact.name,
+            contactPhone: row.facility.phone,
+            product: unopened.productType.code,
+            count: unopened.count,
+            countDate: row.countDate,
+            created: row.created,
+            modified: row.modified
+          });
           var code = unopened.productType.code;
           totals[key].values[code] = (totals[key].values[code] || 0) + unopened.count;
         });
@@ -85,6 +114,7 @@ angular.module('lmisApp')
       });
 
       $scope.pagination.totalItems = $scope.filteredRows.length;
+      $scope.export = unopenedExport;
     };
 
     $scope.update();
