@@ -3,11 +3,12 @@
 angular.module('lmisApp')
   .controller('CCUBreakdownCtrl', function($scope, $filter, utility, Auth, Pagination, Places, cceis, ccuBreakdowns) {
     var rows = ccuBreakdowns;
-
     $scope.currentUser = Auth.getCurrentUser();
     $scope.pagination = new Pagination();
     $scope.filteredRows = [];
     $scope.places = null;
+    $scope.broken = 0;
+    $scope.fixed  = 0;
     $scope.units = cceis;
     $scope.search = {};
     $scope.totals = [];
@@ -39,7 +40,6 @@ angular.module('lmisApp')
       open: function($event) {
         $event.preventDefault();
         $event.stopPropagation();
-
         this.opened = true;
       }
     };
@@ -88,6 +88,21 @@ angular.module('lmisApp')
 
       return $scope.places.promise;
     };
+    function setChartData(data){
+      $scope.broken = 0;
+      $scope.fixed  = 0;
+      data.forEach(function(d){
+        if(d.status === 0){
+          $scope.broken = $scope.broken + 1;
+        }else{
+          $scope.fixed = $scope.fixed + 1;
+        }
+      });
+      $scope.breakdownChartData = [
+        {'key': 'broken', y : $scope.broken},
+        {key: 'fixed', y: $scope.fixed}
+      ]
+    }
 
     $scope.update = function() {
       var filterBy = Places.propertyName($scope.place.type);
@@ -95,8 +110,19 @@ angular.module('lmisApp')
       $scope.filteredRows = utility.placeDateFilter(rows, filterBy, $scope.place.search, $scope.from.date, $scope.to.date);
       $scope.pagination.totalItems = $scope.filteredRows.length;
       $scope.updateTotals();
+      setChartData($scope.filteredRows);
     };
 
     $scope.update();
 
+    $scope.xFunction = function() {
+      return function(d) {
+        return d.key;
+      };
+    }
+    $scope.yFunction = function() {
+      return function(d) {
+        return d.y;
+      };
+    }
   });
