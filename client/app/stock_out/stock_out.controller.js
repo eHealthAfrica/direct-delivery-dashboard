@@ -10,6 +10,21 @@ angular.module('lmisApp')
     $scope.filteredRows = [];
     $scope.totals = [];
     $scope.places = null;
+    $scope.getFileName = utility.getFileName;
+    $scope.csvHeader = [
+      'State',
+      'Zone',
+      'LGA',
+      'Ward',
+      'Facility',
+      'Contact',
+      'Phone',
+      'Record Date',
+      'Product',
+      'Stock Level'
+    ];
+
+    var stockOutExport = [];
 
     $scope.place = {
       type: '',
@@ -54,6 +69,18 @@ angular.module('lmisApp')
 
       $scope.filteredRows = utility.placeDateFilter(rows, filterBy, $scope.place.search, $scope.from.date, $scope.to.date);
       $scope.filteredRows.forEach(function(row) {
+        stockOutExport.push({
+          state: row.facility.state,
+          zone: row.facility.zone,
+          lga: row.facility.lga,
+          ward: row.facility.ward,
+          facility: row.facility.name,
+          contactName: row.facility.contact.name,
+          contactPhone: row.facility.contact.oldphone,
+          created: row.created,
+          product: row.productType,
+          stockLevel: row.stockLevel
+        });
         var key = row.facility[groupBy];
         totals[key] = totals[key] || {
           place: key,
@@ -76,6 +103,7 @@ angular.module('lmisApp')
       });
 
       $scope.pagination.totalItems = $scope.filteredRows.length;
+      $scope.export = stockOutExport;
     };
 
     $scope.update();

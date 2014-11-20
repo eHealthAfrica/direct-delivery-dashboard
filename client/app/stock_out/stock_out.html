@@ -59,6 +59,12 @@
     <div ng-show="filteredRows.length">
       <div class="panel panel-default">
         <div class="panel-heading">
+          <button ng-disabled="!export.length" class="btn btn-primary btn-xs pull-right hidden-print" type="button"
+                  ng-csv="export" csv-header="csvHeader"
+                  filename="{{getFileName('stock-out-alerts')}}">
+            Export
+          </button>
+
           <h3 class="panel-title">Summary</h3>
         </div>
         <div class="table-scroller">
