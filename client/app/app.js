@@ -26,7 +26,7 @@ angular.module('lmisApp', [
     uiSelectConfig.theme = 'bootstrap';
   })
 
-  .factory('authInterceptor', function($rootScope, $q, $cookieStore, $location, SETTINGS) {
+  .factory('authInterceptor', function($rootScope, $q, $cookieStore, $location) {
     return {
       // Add authorization token to headers
       request: function(config) {
@@ -40,6 +40,7 @@ angular.module('lmisApp', [
       // Intercept 401s and redirect you to login
       responseError: function(response) {
         if (response.status === 401) {
+          $rootScope.$emit('unauthorized');
           $location.path('/login');
           // remove any stale tokens
           $cookieStore.remove('token');
