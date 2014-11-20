@@ -3,7 +3,6 @@
 angular.module('lmisApp')
   .controller('LedgerCtrl', function($scope, Auth, Pagination, $filter, Places, bundleLines, productTypes, utility) {
     var rows = bundleLines;
-    var ledgerExport = [];
 
     $scope.currentUser = Auth.getCurrentUser();
     $scope.productTypes = productTypes;
@@ -30,6 +29,7 @@ angular.module('lmisApp')
       'Product',
       'Quantity'
     ];
+
     $scope.place = {
       type: '',
       columnTitle: '',
@@ -98,6 +98,7 @@ angular.module('lmisApp')
     };
 
     $scope.update = function() {
+      var ledgerExport = [];
       var totals = {};
       var filterBy = Places.propertyName($scope.place.type);
       var subType = $scope.place.type === Places.FACILITY ? Places.FACILITY : Places.subType($scope.place.type);
@@ -117,6 +118,7 @@ angular.module('lmisApp')
           var placeName = filterType === 'Incoming Bundle' ? row.receivingFacilityObject[filterBy] : row.sendingFacilityObject[filterBy];
           if (placeName === undefined)
             return false;
+
           include = include && placeName && (placeName.toLowerCase() === search);
         }
 
@@ -146,6 +148,7 @@ angular.module('lmisApp')
           product: row.productProfile,
           quantity: row.quantity
         });
+
         var key = filterType === 'Incoming Bundle' ? row.receivingFacilityObject[groupBy] : row.sendingFacilityObject[groupBy];
         totals[key] = totals[key] || {
           place: key,
@@ -155,6 +158,8 @@ angular.module('lmisApp')
         var code = row.productCode;
         totals[key].values[code] = (totals[key].values[code] || 0) + row.quantity;
       });
+
+      ledgerExport = $filter('orderBy')(ledgerExport, ['-created']);
 
       $scope.place.columnTitle = columnTitle;
       $scope.totals = Object.keys(totals).map(function(key) {

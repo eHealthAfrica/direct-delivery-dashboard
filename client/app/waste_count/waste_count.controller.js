@@ -22,7 +22,6 @@ angular.module('lmisApp')
       'Reason',
       'Quantity'
     ];
-    var wasteCountExport = [];
 
     $scope.place = {
       type: '',
@@ -59,6 +58,7 @@ angular.module('lmisApp')
     };
 
     $scope.update = function() {
+      var wasteCountExport = [];
       var totals = {};
       var filterBy = Places.propertyName($scope.place.type);
       var subType = $scope.place.type === Places.FACILITY ? Places.FACILITY : Places.subType($scope.place.type);
@@ -85,10 +85,13 @@ angular.module('lmisApp')
             reason: reason.reason,
             count: reason.value
           });
+
           var code = reason.productType;
           totals[key].values[code] = (totals[key].values[code] || 0) + reason.value;
         });
       });
+
+      wasteCountExport = $filter('orderBy')(wasteCountExport, ['-created']);
 
       $scope.place.columnTitle = columnTitle;
       $scope.totals = Object.keys(totals).map(function(key) {

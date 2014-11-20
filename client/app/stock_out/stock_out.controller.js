@@ -24,8 +24,6 @@ angular.module('lmisApp')
       'Stock Level'
     ];
 
-    var stockOutExport = [];
-
     $scope.place = {
       type: '',
       columnTitle: '',
@@ -61,6 +59,7 @@ angular.module('lmisApp')
     };
 
     $scope.update = function() {
+      var stockOutExport = [];
       var totals = {};
       var filterBy = Places.propertyName($scope.place.type);
       var subType = $scope.place.type === Places.FACILITY ? Places.FACILITY : Places.subType($scope.place.type);
@@ -81,6 +80,7 @@ angular.module('lmisApp')
           product: row.productType,
           stockLevel: row.stockLevel
         });
+
         var key = row.facility[groupBy];
         totals[key] = totals[key] || {
           place: key,
@@ -90,6 +90,8 @@ angular.module('lmisApp')
         var value = totals[key].values[row.productType] || 0;
         totals[key].values[row.productType] = value + 1;
       });
+
+      stockOutExport = $filter('orderBy')(stockOutExport, ['-created', 'product']);
 
       $scope.place.columnTitle = columnTitle;
       $scope.totals = Object.keys(totals).map(function(key) {
