@@ -84,7 +84,12 @@
       </div>
 
       <div class="panel panel-default">
-        <div class="panel-heading">
+        <div class="panel-heading clearfix">
+          <button ng-disabled="!export.length" class="btn btn-primary btn-xs pull-right hidden-print" type="button"
+                  ng-csv="export" csv-header="csvHeader"
+                  filename="{{getFileName(exportTitle)}}">
+            Export
+          </button>
           <h3 class="panel-title">Details</h3>
         </div>
         <div class="table-scroller">
@@ -107,8 +112,8 @@
             <tr
               ng-repeat="row in filteredRows | orderBy:['-created'] | limitTo:pagination.limit | limitTo:-pagination.count">
               <td>{{$index + 1 + ((pagination.currentPage-1) * pagination.itemsPerPage)}}</td>
-              <td>{{row.receivingFacility}}</td>
               <td>{{row.sendingFacility}}</td>
+              <td>{{row.receivingFacility}}</td>
               <td>{{row.receivedOn | date:SETTINGS.dateFormat}}</td>
               <td>{{row.created | date:SETTINGS.dateTimeFormat}}</td>
               <td>{{row.expiryDate | date:SETTINGS.dateFormat}}</td>

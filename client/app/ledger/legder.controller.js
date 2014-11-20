@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('LedgerCtrl', function($scope, Auth, Pagination, $filter, Places, bundleLines, productTypes) {
+  .controller('LedgerCtrl', function($scope, Auth, Pagination, $filter, Places, bundleLines, productTypes, utility) {
     var rows = bundleLines;
+    var ledgerExport = [];
 
     $scope.currentUser = Auth.getCurrentUser();
     $scope.productTypes = productTypes;
@@ -11,7 +12,24 @@ angular.module('lmisApp')
     $scope.search = {};
     $scope.ledger = {filterType: 'Incoming Bundle'};
     $scope.totals = [];
-
+    $scope.getFileName = utility.getFileName;
+    $scope.csvHeader = [
+      'State',
+      'Sent From Zone',
+      'Sent From LGA',
+      'Sent From Ward',
+      'Sent From',
+      'Receiving Zone',
+      'Receiving LGA',
+      'Receiving Ward',
+      'Receiving Facility',
+      'Transaction Date',
+      'Date Recorded',
+      'Product Expiry Date',
+      'Batch Number',
+      'Product',
+      'Quantity'
+    ];
     $scope.place = {
       type: '',
       columnTitle: '',
@@ -92,15 +110,15 @@ angular.module('lmisApp')
         var date = moment(row.created);
         var include = true;
 
+        if (include && $scope.ledger.filterType)
+          include = include && $scope.ledger.filterType.toLowerCase() === row.type.toLowerCase();
+
         if (include && search && filterBy) {
           var placeName = filterType === 'Incoming Bundle' ? row.receivingFacilityObject[filterBy] : row.sendingFacilityObject[filterBy];
           if (placeName === undefined)
             return false;
           include = include && placeName && (placeName.toLowerCase() === search);
         }
-
-        if (include && $scope.ledger.filterType)
-          include = include && $scope.ledger.filterType.toLowerCase() === row.type.toLowerCase();
 
         if (include && $scope.from.date)
           include = include && (date.isSame($scope.from.date, 'day') || date.isAfter($scope.from.date));
@@ -112,6 +130,22 @@ angular.module('lmisApp')
       });
 
       $scope.filteredRows.forEach(function(row) {
+        ledgerExport.push({
+          state: row.receivingFacilityObject.state,
+          sendingZone: row.sendingFacilityObject.zone,
+          sendingLGA: row.sendingFacilityObject.lga,
+          sendingWard: row.sendingFacilityObject.ward,
+          sendingFacility: row.sendingFacilityObject.name,
+          receivingZone: row.receivingFacilityObject.zone,
+          receivingLGA: row.receivingFacilityObject.lga,
+          receivingWard: row.receivingFacilityObject.ward,
+          receivingFacility: row.receivingFacilityObject.name,
+          transactionDate: row.receivedOn,
+          created: row.created,
+          expiry: row.expiryDate,
+          product: row.productProfile,
+          quantity: row.quantity
+        });
         var key = filterType === 'Incoming Bundle' ? row.receivingFacilityObject[groupBy] : row.sendingFacilityObject[groupBy];
         totals[key] = totals[key] || {
           place: key,
@@ -134,6 +168,8 @@ angular.module('lmisApp')
       });
 
       $scope.pagination.totalItems = $scope.filteredRows.length;
+      $scope.export = ledgerExport;
+      $scope.exportTitle = 'ledger-'+filterType.toLowerCase().replace(/\s/, '-');
     };
 
     $scope.update();
