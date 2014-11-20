@@ -103,7 +103,7 @@
             </tr>
             </thead>
             <tbody
-              ng-repeat="row in filteredRows | orderBy:['-created', 'productType.code'] | limitTo:pagination.limit | limitTo:-pagination.count"
+              ng-repeat="row in filteredRows | orderBy:'-created' | limitTo:pagination.limit | limitTo:-pagination.count"
               ng-init="rowIndex = $index">
             <tr ng-repeat="item in row.unopened | orderBy:['productCategory.name', 'productType.code']">
               <td ng-if="$index == 0" rowspan="{{row.unopened.length}}">

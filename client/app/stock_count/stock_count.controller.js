@@ -25,7 +25,6 @@ angular.module('lmisApp')
       'Record Date',
       'Modified Date'
     ];
-    var unopenedExport = [];
 
     $scope.place = {
       type: '',
@@ -69,6 +68,7 @@ angular.module('lmisApp')
     };
 
     $scope.update = function() {
+      var unopenedExport = [];
       var totals = {};
       var filterBy = Places.propertyName($scope.place.type);
       var subType = $scope.place.type === Places.FACILITY ? Places.FACILITY : Places.subType($scope.place.type);
@@ -82,6 +82,7 @@ angular.module('lmisApp')
           place: key,
           values: {}
         };
+
         row.unopened.forEach(function(unopened) {
           unopenedExport.push({
             state: row.facility.state,
@@ -97,10 +98,13 @@ angular.module('lmisApp')
             created: row.created,
             modified: row.modified
           });
+
           var code = unopened.productType.code;
           totals[key].values[code] = (totals[key].values[code] || 0) + unopened.count;
         });
       });
+
+      unopenedExport = $filter('orderBy')(unopenedExport, ['-created', 'product']);
 
       $scope.place.columnTitle = columnTitle;
       $scope.totals = Object.keys(totals).map(function(key) {
