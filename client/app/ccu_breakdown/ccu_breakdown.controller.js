@@ -24,15 +24,14 @@ angular.module('lmisApp')
       'LGA',
       'Ward',
       'Facility',
-      'contact',
+      'Contact',
       'Phone',
       'Equipment',
       'Manufacturer',
       'Record Date',
       'Latest Fault',
-      'status'
+      'Status'
     ];
-    var cceExport = [];
 
     $scope.place = {
       type: '',
@@ -62,6 +61,7 @@ angular.module('lmisApp')
     };
 
     $scope.updateTotals = function() {
+      var cceExport = [];
       var columnTotals = [];
       var collapse = [];
       var totals = {};
@@ -85,16 +85,20 @@ angular.module('lmisApp')
           lastFault: row.lastFault,
           cceStatus: row.statusText
         });
+
         var key = row.facility[groupBy];
         totals[key] = totals[key] || {
           place: key,
           values: {}
         };
+
         var code = row.manufacturer + ' - ' + row.name;
         var value = totals[key].values[code] || 0;
         totals[key].values[code] = value + 1;
         columnTotals.push(code);
       });
+
+      cceExport = $filter('orderBy')(cceExport, ['-created', 'equipment']);
 
       $scope.place.columnTitle = columnTitle;
 
