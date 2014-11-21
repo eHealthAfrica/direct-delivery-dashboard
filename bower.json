@@ -25,7 +25,9 @@
     "angularjs-nvd3-directives": "~0.0.7",
     "moment": "~2.8.3",
     "ng-csv": "~0.2.4",
-    "angular-ui-select": "~0.8.3"
+    "angular-ui-select": "~0.8.3",
+    "angular-leaflet-directive": "~0.7.9",
+    "Leaflet.MakiMarkers": "~1.0.1"
   },
   "devDependencies": {
     "angular-mocks": "1.2.x",
@@ -37,6 +39,7 @@
     "ehealth"
   ],
   "resolutions": {
-    "d3": "~3.4.1"
+    "d3": "~3.4.1",
+    "angular": "1.2.x"
   }
 }

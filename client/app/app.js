@@ -13,7 +13,8 @@ angular.module('lmisApp', [
     'pwCheck',
     'remoteError',
     'alerts',
-    'pagination'
+    'pagination',
+    'leaflet-directive'
   ])
   .config(function($routeProvider, $locationProvider, $httpProvider, uiSelectConfig) {
     $routeProvider

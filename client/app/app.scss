@@ -23,6 +23,7 @@ td .form-group {
   margin: 0;
 }
 
+.inline-feedback .form-control-feedback,
 td .form-group .form-control-feedback {
   top: 0;
 }
@@ -118,6 +119,12 @@ tr.grey-bg{
 .preloader {
   width: 80px;
   margin: 20px auto;
+}
+
+// reset nvd3 css that makes leaflet svg invisible
+.leaflet-container svg {
+  width: auto;
+  height: auto;
 }
 
 // Component styles are injected through grunt

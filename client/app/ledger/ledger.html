@@ -1,61 +1,77 @@
 <div class="row">
   <div class="col-xs-12">
     <h2 class="page-header">Ledger</h2>
-    <div class="well hidden-print">
-      <form class="form-inline">
-        <div class="form-group">
-          <label for="placeType">Place Type:</label>
-          <select id="placeType" class="form-control" ng-model="place.type" ng-change="place.search = ''">
-            <option value=""></option>
-            <option ng-if="currentUser.showStates" value="state">State</option>
-            <option ng-if="currentUser.showZones" value="zone">Zone</option>
-            <option ng-if="currentUser.showLgas" value="lga">LGA</option>
-            <option ng-if="currentUser.showWards" value="ward">Ward</option>
-            <option value="facility">Facility</option>
-          </select>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="well hidden-print">
+          <form>
+            <div class="form-group">
+              <label for="placeType">Place</label>
+              <div class="row">
+                <div class="col-xs-6">
+                  <select id="placeType" class="form-control" ng-model="place.type" ng-change="place.search = ''">
+                    <option value=""></option>
+                    <option ng-if="currentUser.showStates" value="state">State</option>
+                    <option ng-if="currentUser.showZones" value="zone">Zone</option>
+                    <option ng-if="currentUser.showLgas" value="lga">LGA</option>
+                    <option ng-if="currentUser.showWards" value="ward">Ward</option>
+                    <option value="facility">Facility</option>
+                  </select>
+                </div>
+                <div class="col-xs-6">
+                  <div class="has-feedback inline-feedback">
+                    <input type="text" class="form-control filter" placeholder="Place Name"
+                           ng-model="place.search" ng-disabled="!place.type.length"
+                           typeahead="place for place in getPlaces($viewValue)"
+                           typeahead-loading="places.loading">
+                    <span ng-show="places.loading" class="glyphicon glyphicon-refresh form-control-feedback"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="fromDate">Period</label>
+              <div class="row">
+                <div class="col-xs-6">
+                  <div class="input-group">
+                    <input id="fromDate" type="text" class="form-control" ng-model="from.date" datepicker-popup
+                           is-open="from.opened"/>
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-default" ng-click="from.open($event)">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-xs-6">
+                  <div class="input-group">
+                    <input type="text" class="form-control" ng-model="to.date" datepicker-popup is-open="to.opened"/>
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-default" ng-click="to.open($event)">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="filterType">Type</label>
+              <select id="filterType" class="form-control filter" ng-model="ledger.filterType">
+                <option value="Incoming Bundle">Incoming Bundle</option>
+                <option value="Outgoing Bundle">Outgoing Bundle</option>
+              </select>
+            </div>
+            <button type="button" class="btn btn-primary" ng-click="update()">Apply</button>
+          </form>
         </div>
-        &nbsp;
-        <div class="form-group has-feedback">
-          <input type="text" class="form-control filter" placeholder="Place Name"
-                 ng-model="place.search" ng-disabled="!place.type.length"
-                 typeahead="place for place in getPlaces($viewValue)"
-                 typeahead-loading="places.loading">
-          <span ng-show="places.loading" class="glyphicon glyphicon-refresh form-control-feedback"></span>
+      </div>
+      <div class="col-sm-6">
+        <div ng-show="filteredRows.length" class="panel panel-default">
+          <leaflet height="480px" defaults="map.defaults" center="map.center" bounds="map.bounds"
+                   markers="map.markers" paths="map.paths"></leaflet>
         </div>
-        &nbsp;
-        <div class="form-group">
-          <div class="input-group">
-            <input type="text" class="form-control" ng-model="from.date" datepicker-popup is-open="from.opened"/>
-            <span class="input-group-btn">
-              <button type="button" class="btn btn-default" ng-click="from.open($event)">
-                <i class="glyphicon glyphicon-calendar"></i>
-              </button>
-            </span>
-          </div>
-        </div>
-        &nbsp;
-        <div class="form-group">
-          <div class="input-group">
-            <input type="text" class="form-control" ng-model="to.date" datepicker-popup is-open="to.opened"/>
-            <span class="input-group-btn">
-              <button type="button" class="btn btn-default" ng-click="to.open($event)">
-                <i class="glyphicon glyphicon-calendar"></i>
-              </button>
-            </span>
-          </div>
-        </div>
-        &nbsp;
-        <div class="form-group">
-          <select class="form-control filter" ng-model="ledger.filterType">
-            <option value="Incoming Bundle">Incoming Bundle</option>
-            <option value="Outgoing Bundle">Outgoing Bundle</option>
-          </select>
-        </div>
-        &nbsp;
-        <button type="button" class="btn btn-primary" ng-click="update()">
-          Apply
-        </button>
-      </form>
+      </div>
     </div>
 
     <alert ng-hide="filteredRows.length" type="info">No data.</alert>
