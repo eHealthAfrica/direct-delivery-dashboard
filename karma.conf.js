@@ -24,6 +24,7 @@ module.exports = function(config) {
       'client/bower_components/lodash/dist/lodash.compat.js',
       'client/bower_components/ng-csv/build/ng-csv.min.js',
       'client/bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js',
+      'client/_bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js',
       'client/app/app.js',
       'client/app/config.js',
       'client/app/**/*.js',
