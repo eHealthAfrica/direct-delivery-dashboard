@@ -3,6 +3,11 @@
 angular.module('lmisApp')
   .controller('LedgerCtrl', function($scope, leafletBoundsHelpers, Auth, Pagination, $filter, Places, bundleLines, productTypes, utility) {
     var rows = bundleLines;
+    var arrowPattern = {
+      offset: '50%',
+      repeat: 0,
+      symbol: L.Symbol.arrowHead({pixelSize: 10, polygon: false, pathOptions: {stroke: true, weight: 2}})
+    };
 
     $scope.currentUser = Auth.getCurrentUser();
     $scope.productTypes = productTypes;
@@ -44,7 +49,8 @@ angular.module('lmisApp')
           type: 'multiPolyline',
           latlngs: []
         }
-      }
+      },
+      decorations: {}
     };
 
     $scope.place = {
@@ -151,6 +157,7 @@ angular.module('lmisApp')
       var bounds = null;
       var lines = {};
       var markers = {};
+      var decorations = {};
       $scope.filteredRows.forEach(function(row) {
         ledgerExport.push({
           state: row.receivingFacilityObject.state,
@@ -179,7 +186,7 @@ angular.module('lmisApp')
         totals[key].values[code] = (totals[key].values[code] || 0) + row.quantity;
 
         var line = [];
-        [row.receivingFacilityObject, row.sendingFacilityObject].forEach(function(facility) {
+        [row.sendingFacilityObject, row.receivingFacilityObject].forEach(function(facility) {
           var lat = facility.lat ? parseFloat(facility.lat) : NaN;
           var long = facility.long ? parseFloat(facility.long) : NaN;
 
@@ -199,16 +206,22 @@ angular.module('lmisApp')
           }
         });
 
-        var lineKey = row.receivingFacilityObject._id + '-' + row.sendingFacilityObject._id;
-        if (line.length == 2)
+        var lineKey = row.sendingFacilityObject._id + '-' + row.receivingFacilityObject._id;
+        if (line.length == 2) {
           lines[lineKey] = line;
+          decorations[lineKey] = {
+            coordinates: [[line[0].lat, line[0].lng], [line[1].lat, line[1].lng]],
+            patterns: [arrowPattern]
+          }
+        }
       });
 
       ledgerExport = $filter('orderBy')(ledgerExport, ['-created']);
 
+      $scope.map.bounds = bounds ? leafletBoundsHelpers.createBoundsFromArray(bounds) : {};
       $scope.map.markers = markers;
       $scope.map.paths.lines.latlngs = _.values(lines);
-      $scope.map.bounds = bounds ? leafletBoundsHelpers.createBoundsFromArray(bounds) : {};
+      $scope.map.decorations = decorations;
 
       $scope.place.columnTitle = columnTitle;
       $scope.totals = Object.keys(totals).map(function(key) {
