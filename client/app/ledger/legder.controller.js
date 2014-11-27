@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisApp')
-  .controller('LedgerCtrl', function($scope, leafletBoundsHelpers, Auth, Pagination, $filter, Places, bundleLines, productTypes, utility) {
+  .controller('LedgerCtrl', function($scope, $timeout, leafletData, Auth, Pagination, $filter, Places, bundleLines, productTypes, utility) {
     var rows = bundleLines;
     var arrowPattern = {
       offset: '50%',
@@ -191,14 +191,11 @@ angular.module('lmisApp')
           var long = facility.long ? parseFloat(facility.long) : NaN;
 
           if (!isNaN(lat) && !isNaN(long)) {
+            var latlng = L.latLng(lat, long);
             if (!bounds)
-              bounds = [[lat, long], [lat, long]];
-            else {
-              bounds[0][0] = Math.min(bounds[0][0], lat);
-              bounds[0][1] = Math.min(bounds[0][1], long);
-              bounds[1][0] = Math.max(bounds[1][0], lat);
-              bounds[1][1] = Math.max(bounds[1][1], long);
-            }
+              bounds = L.latLngBounds(latlng, latlng);
+            else
+              bounds.extend(latlng);
 
             var point = {lat: lat, lng: long, message: facility.name, icon: {type: 'makiMarker', size: 's'}};
             markers[facility._id] = point;
@@ -218,10 +215,14 @@ angular.module('lmisApp')
 
       ledgerExport = $filter('orderBy')(ledgerExport, ['-created']);
 
-      $scope.map.bounds = bounds ? leafletBoundsHelpers.createBoundsFromArray(bounds) : {};
+      bounds = bounds.pad(.01);
+      $scope.map.bounds = {northEast: bounds.getNorthEast(), southWest: bounds.getSouthWest()};
       $scope.map.markers = markers;
       $scope.map.paths.lines.latlngs = _.values(lines);
-      $scope.map.decorations = decorations;
+      $scope.map.decorations = {};
+      $timeout(function() {
+        $scope.map.decorations = decorations;
+      }, 1000);
 
       $scope.place.columnTitle = columnTitle;
       $scope.totals = Object.keys(totals).map(function(key) {
