@@ -215,8 +215,11 @@ angular.module('lmisApp')
 
       ledgerExport = $filter('orderBy')(ledgerExport, ['-created']);
 
-      bounds = bounds.pad(.01);
-      $scope.map.bounds = {northEast: bounds.getNorthEast(), southWest: bounds.getSouthWest()};
+      if (bounds) {
+        bounds = bounds.pad(.01);
+        $scope.map.bounds = {northEast: bounds.getNorthEast(), southWest: bounds.getSouthWest()};
+      }
+
       $scope.map.markers = markers;
       $scope.map.paths.lines.latlngs = _.values(lines);
       $scope.map.decorations = {};
