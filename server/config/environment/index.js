@@ -30,13 +30,17 @@ var all = {
   couch: {
     host: '',
     port: 5984,
-    auth: {
-      username: process.env.COUCH_USER,
-      password: process.env.COUCH_PASS
-    },
+    auth: null,
     forceSave: false
   }
 };
+
+if (process.env.COUCH_USER && process.env.COUCH_PASS) {
+  all.couch.auth = {
+    username: process.env.COUCH_USER,
+    password: process.env.COUCH_PASS
+  };
+}
 
 // Export the config object based on the NODE_ENV
 // ==============================================
