@@ -6,9 +6,6 @@
 // You will need to set these on the server you deploy to.
 
 module.exports = {
-  DOMAIN:           'http://localhost:9000',
-  SESSION_SECRET:   'lmisdashboard-secret',
-
-  // Control debug level for modules using visionmedia/debug
-  DEBUG: ''
+  COUCH_USER: '',
+  COUCH_PASS: ''
 };

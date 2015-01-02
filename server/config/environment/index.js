@@ -35,6 +35,13 @@ var all = {
   }
 };
 
+if (process.env.COUCH_USER && process.env.COUCH_PASS) {
+  all.couch.auth = {
+    username: process.env.COUCH_USER,
+    password: process.env.COUCH_PASS
+  };
+}
+
 // Export the config object based on the NODE_ENV
 // ==============================================
 var configFile = process.env.NODE_CONFIG || process.env.NODE_ENV;
