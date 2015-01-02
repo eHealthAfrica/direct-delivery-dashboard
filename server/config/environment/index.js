@@ -30,7 +30,10 @@ var all = {
   couch: {
     host: '',
     port: 5984,
-    auth: null,
+    auth: {
+      username: process.env.COUCH_USER,
+      password: process.env.COUCH_PASS
+    },
     forceSave: false
   }
 };
