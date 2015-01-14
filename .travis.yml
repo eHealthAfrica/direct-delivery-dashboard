@@ -1,0 +1,15 @@
+sudo: false
+language: node_js
+node_js:
+  - '0.10'
+cache:
+  directories:
+    - node_modules
+    - bower_components
+before_install:
+  - ./travis/before-install.sh
+after_script:
+  - npm run coveralls
+notifications:
+  flowdock:
+    secure: rVJ5bSorZpx6hz446jMJfu3WnsIZvSTHic1y86EZpI7ORfHtXZLdinI6g7sRIJQC1guvTbWybbVEdHCHQ1wo2AjnbCokfO0PXpOZssuwgyc5ENuO3OWBX5ofse00Ay+RVqyNQCwArUqmz3jPZXGnjTpf6k3jNHq+C2JH7dWbrzM=

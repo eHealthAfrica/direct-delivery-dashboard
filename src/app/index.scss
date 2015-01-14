@@ -1,0 +1,11 @@
+.content {
+  margin-bottom: 20px;
+}
+
+// use pointer for all nav links, even those without a href (they generally use ng-click)
+.nav > li > a:hover,
+.nav > li > a:focus {
+  cursor: pointer;
+}
+// injector
+// endinjector
