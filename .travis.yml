@@ -3,6 +3,8 @@ node_js:
   - '0.10'
 services:
   - couchdb
+env:
+  - SESSION_SECRET=test-session-secret
 before_script:
   - gem update --system
   - gem install sass --version '=3.3.7'
