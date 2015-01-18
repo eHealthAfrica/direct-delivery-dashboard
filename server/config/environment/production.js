@@ -3,19 +3,8 @@
 // Production specific configuration
 // =================================
 module.exports = {
-  // Server IP
-  ip:       process.env.OPENSHIFT_NODEJS_IP ||
-            process.env.IP ||
-            undefined,
-
-  // Server port
-  port:     process.env.OPENSHIFT_NODEJS_PORT ||
-            process.env.PORT ||
-            8080,
-
-  // CouchDB connection options
+  port: 8080,
   couch: {
-    host:   process.env.COUCH_HOST ||
-            'http://lomis.ehealth.org.ng'
+    host: 'http://lomis.ehealth.org.ng'
   }
 };
