@@ -2,13 +2,13 @@
 
 Lightweight dashboard for LoMIS database views
 
-# Server Configuration
+## Server Configuration
 
 There are 2 types of configuration options: secret and public options. Secret options can only be defined as environment
 variables, while the public ones can either be configured through environment variables, in configuration files or
 left off to use default values.
 
-## Secret Options
+### Secret Options
 
 For development, copy the file `config/local.env.sample.js` to `config/local.env.js` and set the values of the variables.
 These variables will be exported to the environment when running `grunt serve` or `grunt test`.
@@ -21,7 +21,7 @@ In production, the required variables have to be set in the environment of the n
 | `COUCH_USER`|CouchDB user name for authenticated access|No|
 |`COUCH_PASS`|CouchDB password for authenticated access|No|
 
-## Public Options
+### Public Options
 
 Public options are all optional and are defined in the following way:
 
@@ -44,7 +44,7 @@ The name of the configuration file to load is defined in the following way:
 
 The file is then loaded from `config/environment/<file name>.js`.
 
-# Users
+## Users
 
 The application loads the users from the '_users' db on the configured CouchDB server. To create a new user, add a new
 document to the '_users' db with the following structure:
