@@ -6,10 +6,22 @@ cache:
   directories:
     - node_modules
     - bower_components
-before_install:
-  - ./travis/before-install.sh
 after_script:
   - npm run coveralls
 notifications:
   flowdock:
-    secure: rVJ5bSorZpx6hz446jMJfu3WnsIZvSTHic1y86EZpI7ORfHtXZLdinI6g7sRIJQC1guvTbWybbVEdHCHQ1wo2AjnbCokfO0PXpOZssuwgyc5ENuO3OWBX5ofse00Ay+RVqyNQCwArUqmz3jPZXGnjTpf6k3jNHq+C2JH7dWbrzM=
+    secure: k4IsldQFwgTCdDwU/JGWNsK+ngMVFz7tvxX5SPLT5TqhZY6QWWkRkv/BL+0xka3mylOh0O+6xDydWb2qKEaT466STEx+OC2sCoEzl+fF5JJyWm+nKrW9u9y/AGkjJCBylYnjDPmyE5+5DEImYVfDuWtGVgGdSj4y+/P8ZX4Z5gk=
+before_deploy:
+  - npm run build
+deploy:
+  provider: s3
+  access_key_id: AKIAJHBUIN7T5C5BML2Q
+  secret_access_key:
+    secure: VMiWVya4zfyabg9dCr6eYwKx1RDKBdE0KN9CJnYJtLO0k8elM+yWwu7Nq1TyrXtJz/oFVcIMCqkw/+cRr38HYrVLsYUOYDYhJM9FsJQi4vITR/pBWfgL21cK6rTQU7LXF6XmhokazT9xp22Sb1q6SSWtfR1PyNlsjDg918ePNTE=
+  bucket: dev-dd-ehealth-org-ng
+  region: eu-west-1
+  local-dir: dist
+  skip_cleanup: true
+  on:
+    repo: eHealthAfrica/direct-delivery-dashboard
+    branch: develop
