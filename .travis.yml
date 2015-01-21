@@ -12,7 +12,7 @@ notifications:
   flowdock:
     secure: k4IsldQFwgTCdDwU/JGWNsK+ngMVFz7tvxX5SPLT5TqhZY6QWWkRkv/BL+0xka3mylOh0O+6xDydWb2qKEaT466STEx+OC2sCoEzl+fF5JJyWm+nKrW9u9y/AGkjJCBylYnjDPmyE5+5DEImYVfDuWtGVgGdSj4y+/P8ZX4Z5gk=
 before_deploy:
-  - npm run build
+  - ./travis/build.sh
 deploy:
   provider: s3
   access_key_id: AKIAJHBUIN7T5C5BML2Q
