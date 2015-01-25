@@ -1,0 +1,30 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Delivery Rounds</h3>
+  </div>
+  <div ng-hide="reportsCtrl.deliveryRounds.length" class="panel-body">
+    No delivery rounds found.
+  </div>
+  <table ng-show="reportsCtrl.deliveryRounds.length" class="table table-condensed table-striped">
+    <thead>
+      <tr>
+        <th>State</th>
+        <th>Code</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="round in reportsCtrl.deliveryRounds">
+        <td ng-bind="::round.state"></td>
+        <td ng-bind="::round.roundCode"></td>
+        <td ng-bind="::round.startDate | date:'d-MMM-yyyy'"></td>
+        <td ng-bind="::round.endDate | date:'d-MMM-yyyy'"></td>
+        <td>
+          <a class="btn btn-primary btn-xs" ui-sref="reports.round({id: round._id})">View</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

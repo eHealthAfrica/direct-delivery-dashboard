@@ -7,7 +7,8 @@ angular.module('directDeliveryDashboard', [
     'home',
     'auth',
     'log',
-    'login'
+    'login',
+    'reports'
   ])
   .run(function($rootScope, $state, log, AuthService) {
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams) {
