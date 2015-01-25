@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('reports')
-  .service('reportsService', function(pouchDB, config) {
+  .service('reportsService', function(pouchDB, config, TIME_SLOTS) {
     var db = pouchDB(config.db);
 
     this.getDeliveryRounds = function() {
@@ -16,6 +16,34 @@ angular.module('reports')
               roundCode: row.value.roundCode
             };
           });
+        });
+    };
+
+    this.getDailyDeliveries = function(roundId) {
+      return db
+        .query('reports/daily-deliveries', {
+          startkey: [roundId],
+          endkey: [roundId, {}, {}]
+        })
+        .then(function(response) {
+          var rows = [];
+          var byDate = {};
+
+          response.rows.forEach(function(row) {
+            var date = row.key[1];
+            if (byDate[date] === undefined) {
+              byDate[date] = {date: date, rows: []};
+              rows.push(byDate[date]);
+            }
+
+            byDate[date].rows.push({
+              timeSlot: TIME_SLOTS[parseInt(row.key[2])],
+              driverID: row.value.driverID,
+              facility: row.value.facility
+            });
+          });
+
+          return rows;
         });
     };
   });

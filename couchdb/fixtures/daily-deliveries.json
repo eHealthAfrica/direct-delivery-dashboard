@@ -1,0 +1,134 @@
+{
+  "docs": [
+    {
+      "_id": "551aa16d21f310ec783185499d000388",
+      "doc_type": "dailyDelivery",
+      "version": "1.0.0",
+      "deliveryRoundID": "d8006b0524473a0a4a60b7749766a11e",
+      "driverID": "abdullahi.ahmed@example.com",
+      "date": "2015-01-23",
+      "facilityRounds": [
+        {
+          "drop": 1,
+          "facility": {
+            "id": "00adca90da3e44c4fff1166a2b146662",
+            "name": "Galadimawa Health Post",
+            "lga": "Galadimawa Health Post",
+            "zone": "Nassarawa",
+            "ward": "Nassarawa",
+            "contact": "Anantu Bayati",
+            "phoneNo": "08035272613"
+          },
+          "status": "pending",
+          "window": "",
+          "cancelReport": {},
+          "arrivedAt": "09:10",
+          "departedAt": "09:43",
+          "packedProduct": [
+            {
+              "productID": "BCG",
+              "expectedQty": 70,
+              "storageID": "product-storage/frozen"
+            },
+            {
+              "productID": "Men-A",
+              "expectedQty": 150,
+              "storageID": "product-storage/dry"
+            },
+            {
+              "productID": "OPV",
+              "expectedQty": 34,
+              "storageID": "product-storage/frozen"
+            }
+          ],
+          "survey": []
+        },
+        {
+          "drop": 2,
+          "facility": {
+            "id": "59feeb58df154a5f9d4641e46d8d0b71",
+            "name": "Danja",
+            "zone": "Nassarawa",
+            "ward": "Ketawa",
+            "lga": "Gezawa",
+            "contact": "Tijjani Rabiu",
+            "phoneNo": "08052808146"
+          },
+          "status": "pending",
+          "cancelReport": {},
+          "arrivedAt": "11:34",
+          "departedAt": "12:32",
+          "packedProduct": [
+            {
+              "productID": "BCG",
+              "expectedQty": 70,
+              "storageID": "product-storage/frozen"
+            },
+            {
+              "productID": "Men-A",
+              "expectedQty": 150,
+              "storageID": "product-storage/dry"
+            },
+            {
+              "productID": "OPV",
+              "expectedQty": 34,
+              "storageID": "product-storage/frozen"
+            }
+          ],
+          "survey": []
+        },
+        {
+          "drop": 3,
+          "facility": {
+            "id": "120bb6044ac34de9d950dcee9f571ea9",
+            "name": "Gwammaja MCH",
+            "lga": "Dala",
+            "zone": "Nassarawa",
+            "contact": "Rabi Dahiru",
+            "phoneNo": "07035243034",
+            "ward": "Gwammaja"
+          },
+          "status": "pending",
+          "cancelReport": {},
+          "arrivedAt": "13:03",
+          "departedAt": "13:32",
+          "packedProduct": [
+            {
+              "productID": "BCG",
+              "expectedQty": 70,
+              "storageID": "product-storage/frozen"
+            },
+            {
+              "productID": "Men-A",
+              "expectedQty": 150,
+              "storageID": "product-storage/dry"
+            },
+            {
+              "productID": "OPV",
+              "expectedQty": 34,
+              "storageID": "product-storage/frozen"
+            }
+          ],
+          "survey": []
+        }
+      ],
+      "packingList": [
+        {
+          "productID": "BCG",
+          "expectedQty": 210,
+          "storageID": "product-storage/frozen"
+        },
+        {
+          "productID": "Men-A",
+          "expectedQty": 450,
+          "storageID": "product-storage/dry"
+        },
+        {
+          "productID": "OPV",
+          "expectedQty": 102,
+          "storageID": "product-storage/frozen"
+        }
+      ]
+    }
+  ]
+}

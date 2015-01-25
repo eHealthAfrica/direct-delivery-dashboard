@@ -1,0 +1,23 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Delivery Round: {{reportsRoundCtrl.deliveryRound.roundCode}}</h3>
+  </div>
+  <div ng-hide="reportsRoundCtrl.dailyDeliveries.length" class="panel-body">
+    No daily deliveries found.
+  </div>
+  <table ng-show="reportsRoundCtrl.dailyDeliveries.length" class="table table-condensed table-bordered">
+    <tbody ng-repeat="delivery in reportsRoundCtrl.dailyDeliveries">
+      <tr ng-repeat="row in delivery.rows">
+        <td ng-if="$index === 0" rowspan="{{delivery.rows.length}}" ng-bind="::delivery.date | date:'d-MMM-yyyy'"></td>
+        <td ng-bind="$index + 1"></td>
+        <td ng-bind="::row.timeSlot"></td>
+        <td ng-bind="::row.facility.zone"></td>
+        <td ng-bind="::row.facility.lga"></td>
+        <td ng-bind="::row.facility.ward"></td>
+        <td ng-bind="::row.facility.name"></td>
+        <td ng-bind="::row.facility.contact"></td>
+        <td ng-bind="::row.facility.phoneNo"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
