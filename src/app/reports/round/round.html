@@ -6,18 +6,38 @@
     No daily deliveries found.
   </div>
   <table ng-show="reportsRoundCtrl.dailyDeliveries.length" class="table table-condensed table-bordered">
-    <tr ng-repeat="delivery in reportsRoundCtrl.dailyDeliveries"
-      ng-init="keys = reportsRoundCtrl.keyStates(delivery, $index); driver = reportsRoundCtrl.drivers[delivery.driverID]">
-      <td ng-if="keys.driverID.changed" rowspan="{{keys.driverID.rows}}"><span ng-bind="::driver.forename"></span> <span ng-bind="::driver.surname"></span></td>
-      <td ng-if="keys.date.changed" rowspan="{{keys.date.rows}}" ng-bind="::delivery.date | date:'d-MMM-yyyy'"></td>
-      <td ng-bind="::delivery.drop"></td>
-      <td ng-bind="::delivery.timeSlot"></td>
-      <td ng-bind="::delivery.facility.zone"></td>
-      <td ng-bind="::delivery.facility.lga"></td>
-      <td ng-bind="::delivery.facility.ward"></td>
-      <td ng-bind="::delivery.facility.name"></td>
-      <td ng-bind="::delivery.facility.contact"></td>
-      <td ng-bind="::delivery.facility.phoneNo"></td>
-    </tr>
+    <thead>
+      <tr>
+        <th>Driver</th>
+        <th>Date</th>
+        <th>Drop</th>
+        <th>Time Frame</th>
+        <th>Zone</th>
+        <th>LGA</th>
+        <th>Ward</th>
+        <th>Facility</th>
+        <th>Worker</th>
+        <th>Phone</th>
+        <th>Signature</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="delivery in reportsRoundCtrl.dailyDeliveries"
+        ng-init="keys = reportsRoundCtrl.keyStates(delivery, $index); driver = reportsRoundCtrl.drivers[delivery.driverID]">
+        <td ng-if="keys.driverID.changed" rowspan="{{keys.driverID.rows}}">
+          <span ng-bind="::driver.forename"></span> <span ng-bind="::driver.surname"></span>
+        </td>
+        <td ng-if="keys.date.changed" rowspan="{{keys.date.rows}}" ng-bind="::delivery.date | date:'d-MMM-yyyy'" style="white-space: nowrap;"></td>
+        <td ng-bind="::delivery.drop"></td>
+        <td ng-bind="::delivery.timeSlot" style="white-space: nowrap;"></td>
+        <td ng-bind="::delivery.facility.zone"></td>
+        <td ng-bind="::delivery.facility.lga"></td>
+        <td ng-bind="::delivery.facility.ward"></td>
+        <td ng-bind="::delivery.facility.name"></td>
+        <td ng-bind="::delivery.facility.contact"></td>
+        <td ng-bind="::delivery.facility.phoneNo"></td>
+        <td>TBD</td>
+      </tr>
+    </tbody>
   </table>
 </div>
