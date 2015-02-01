@@ -23,27 +23,18 @@ angular.module('reports')
       return db
         .query('reports/daily-deliveries', {
           startkey: [roundId],
-          endkey: [roundId, {}, {}]
+          endkey: [roundId, {}, {}, {}]
         })
         .then(function(response) {
-          var rows = [];
-          var byDate = {};
-
-          response.rows.forEach(function(row) {
-            var date = row.key[1];
-            if (byDate[date] === undefined) {
-              byDate[date] = {date: date, rows: []};
-              rows.push(byDate[date]);
-            }
-
-            byDate[date].rows.push({
-              timeSlot: TIME_SLOTS[parseInt(row.key[2])],
-              driverID: row.value.driverID,
+          return response.rows.map(function(row) {
+            return {
+              driverID: row.key[1],
+              date: row.key[2],
+              drop: row.key[3],
+              timeSlot: TIME_SLOTS[parseInt(row.value.arrivedAt)],
               facility: row.value.facility
-            });
+            };
           });
-
-          return rows;
         });
     };
   });

@@ -6,18 +6,17 @@
     No daily deliveries found.
   </div>
   <table ng-show="reportsRoundCtrl.dailyDeliveries.length" class="table table-condensed table-bordered">
-    <tbody ng-repeat="delivery in reportsRoundCtrl.dailyDeliveries">
-      <tr ng-repeat="row in delivery.rows">
-        <td ng-if="$index === 0" rowspan="{{delivery.rows.length}}" ng-bind="::delivery.date | date:'d-MMM-yyyy'"></td>
-        <td ng-bind="$index + 1"></td>
-        <td ng-bind="::row.timeSlot"></td>
-        <td ng-bind="::row.facility.zone"></td>
-        <td ng-bind="::row.facility.lga"></td>
-        <td ng-bind="::row.facility.ward"></td>
-        <td ng-bind="::row.facility.name"></td>
-        <td ng-bind="::row.facility.contact"></td>
-        <td ng-bind="::row.facility.phoneNo"></td>
-      </tr>
-    </tbody>
+    <tr ng-repeat="delivery in reportsRoundCtrl.dailyDeliveries" ng-init="keys = reportsRoundCtrl.keyStates(delivery, $index)">
+      <td ng-if="keys.driverID.changed" rowspan="{{keys.driverID.rows}}" ng-bind="::delivery.driverID"></td>
+      <td ng-if="keys.date.changed" rowspan="{{keys.date.rows}}" ng-bind="::delivery.date | date:'d-MMM-yyyy'"></td>
+      <td ng-bind="::delivery.drop"></td>
+      <td ng-bind="::delivery.timeSlot"></td>
+      <td ng-bind="::delivery.facility.zone"></td>
+      <td ng-bind="::delivery.facility.lga"></td>
+      <td ng-bind="::delivery.facility.ward"></td>
+      <td ng-bind="::delivery.facility.name"></td>
+      <td ng-bind="::delivery.facility.contact"></td>
+      <td ng-bind="::delivery.facility.phoneNo"></td>
+    </tr>
   </table>
 </div>

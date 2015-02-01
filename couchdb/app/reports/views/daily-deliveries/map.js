@@ -4,8 +4,8 @@ function(doc) {
       var round = doc.facilityRounds[i];
 
       if (round.arrivedAt) {
-        emit([doc.deliveryRoundID, doc.date, round.arrivedAt], {
-          driverID: doc.driverID,
+        emit([doc.deliveryRoundID, doc.driverID, doc.date, round.drop], {
+          arrivedAt: round.arrivedAt,
           facility: round.facility
         });
       }

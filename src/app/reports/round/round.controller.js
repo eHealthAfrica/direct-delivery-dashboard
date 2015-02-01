@@ -2,10 +2,46 @@
 
 angular.module('reports')
   .controller('ReportsRoundCtrl', function($stateParams, deliveryRounds, dailyDeliveries) {
+    var keys = ['driverID', 'date'];
+    var keyRows = {};
+    var lastKeyValues = [];
+
     this.dailyDeliveries = dailyDeliveries;
 
+    this.keyStates = function(delivery, index) {
+      var states = {};
+      var value = '';
+      angular.forEach(keys, function(key) {
+        value += delivery[key];
+
+        states[key] = {
+          rows: keyRows[value],
+          changed: !lastKeyValues[index - 1] || value != lastKeyValues[index - 1][key]
+        };
+
+        if (!lastKeyValues[index])
+          lastKeyValues[index] = {};
+
+        lastKeyValues[index][key] = value;
+      });
+
+      return states;
+    };
+
+    angular.forEach(dailyDeliveries, function(delivery) {
+      var value = '';
+      angular.forEach(keys, function(key) {
+        value += delivery[key];
+
+        if (keyRows[value])
+          keyRows[value]++;
+        else
+          keyRows[value] = 1;
+      });
+    });
+
     if ($stateParams.id) {
-      for (var i=0; i < deliveryRounds.length; i++) {
+      for (var i = 0; i < deliveryRounds.length; i++) {
         var round = deliveryRounds[i];
         if (round._id == $stateParams.id) {
           this.deliveryRound = round;
