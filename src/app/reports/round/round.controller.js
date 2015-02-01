@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('reports')
-  .controller('ReportsRoundCtrl', function($stateParams, deliveryRounds, dailyDeliveries) {
+  .controller('ReportsRoundCtrl', function($stateParams, deliveryRounds, dailyDeliveries, drivers) {
     var keys = ['driverID', 'date'];
     var keyRows = {};
     var lastKeyValues = [];
 
     this.dailyDeliveries = dailyDeliveries;
+    this.drivers = drivers;
 
     this.keyStates = function(delivery, index) {
       var states = {};

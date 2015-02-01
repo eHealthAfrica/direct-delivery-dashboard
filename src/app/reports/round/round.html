@@ -6,8 +6,9 @@
     No daily deliveries found.
   </div>
   <table ng-show="reportsRoundCtrl.dailyDeliveries.length" class="table table-condensed table-bordered">
-    <tr ng-repeat="delivery in reportsRoundCtrl.dailyDeliveries" ng-init="keys = reportsRoundCtrl.keyStates(delivery, $index)">
-      <td ng-if="keys.driverID.changed" rowspan="{{keys.driverID.rows}}" ng-bind="::delivery.driverID"></td>
+    <tr ng-repeat="delivery in reportsRoundCtrl.dailyDeliveries"
+      ng-init="keys = reportsRoundCtrl.keyStates(delivery, $index); driver = reportsRoundCtrl.drivers[delivery.driverID]">
+      <td ng-if="keys.driverID.changed" rowspan="{{keys.driverID.rows}}"><span ng-bind="::driver.forename"></span> <span ng-bind="::driver.surname"></span></td>
       <td ng-if="keys.date.changed" rowspan="{{keys.date.rows}}" ng-bind="::delivery.date | date:'d-MMM-yyyy'"></td>
       <td ng-bind="::delivery.drop"></td>
       <td ng-bind="::delivery.timeSlot"></td>

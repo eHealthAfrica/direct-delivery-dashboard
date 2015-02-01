@@ -3,5 +3,6 @@
 angular.module('reports', [
   'core',
   'pouchdb',
-  'config'
+  'config',
+  'drivers'
 ]);

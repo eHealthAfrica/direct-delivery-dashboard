@@ -10,6 +10,9 @@ angular.module('reports')
       resolve: {
         dailyDeliveries: function($stateParams, reportsService) {
           return reportsService.getDailyDeliveries($stateParams.id);
+        },
+        drivers: function(driversService) {
+          return driversService.all();
         }
       }
     });
