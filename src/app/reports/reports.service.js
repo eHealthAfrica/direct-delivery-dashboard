@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('reports')
-  .service('reportsService', function(pouchDB, config, TIME_SLOTS) {
+  .service('reportsService', function(pouchDB, config) {
     var db = pouchDB(config.db);
 
     this.getDeliveryRounds = function() {
@@ -27,14 +27,12 @@ angular.module('reports')
         })
         .then(function(response) {
           return response.rows.map(function(row) {
-            var signedAt = new Date(row.value.signature.signedAt);
-
             return {
               driverID: row.key[1],
               date: row.key[2],
               drop: row.key[3],
-              timeSlot: TIME_SLOTS[signedAt.getHours()],
-              signature: row.value.signature.dataUrl,
+              window: row.value.window,
+              signature: row.value.signature,
               facility: row.value.facility
             };
           });

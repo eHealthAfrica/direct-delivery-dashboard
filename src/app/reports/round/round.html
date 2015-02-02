@@ -14,7 +14,7 @@
         <th>Driver</th>
         <th>Date</th>
         <th>Drop</th>
-        <th>Time Frame</th>
+        <th>Window</th>
         <th>Zone</th>
         <th>LGA</th>
         <th>Ward</th>
@@ -32,14 +32,14 @@
         </td>
         <td ng-if="keys.date.changed" rowspan="{{keys.date.rows}}" ng-bind="::delivery.date | date:'d-MMM-yyyy'" style="white-space: nowrap;"></td>
         <td ng-bind="::delivery.drop"></td>
-        <td ng-bind="::delivery.timeSlot" style="white-space: nowrap;"></td>
+        <td ng-bind="::delivery.window" style="white-space: nowrap;"></td>
         <td ng-bind="::delivery.facility.zone"></td>
         <td ng-bind="::delivery.facility.lga"></td>
         <td ng-bind="::delivery.facility.ward"></td>
         <td ng-bind="::delivery.facility.name"></td>
         <td ng-bind="::delivery.facility.contact"></td>
         <td ng-bind="::delivery.facility.phoneNo"></td>
-        <td><img ng-src="{{::delivery.signature}}" class="signature"></td>
+        <td><img ng-src="{{::delivery.signature.dataUrl}}" class="signature"></td>
       </tr>
     </tbody>
   </table>

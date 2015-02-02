@@ -3,12 +3,11 @@ function(doc) {
     for (var i = 0; i < doc.facilityRounds.length; i++) {
       var round = doc.facilityRounds[i];
 
-      if (round.status === 'completed' && round.signature  && round.signature.signedAt) {
-        emit([doc.deliveryRoundID, doc.driverID, doc.date, round.drop], {
-          signature: round.signature,
-          facility: round.facility
-        });
-      }
+      emit([doc.deliveryRoundID, doc.driverID, doc.date, round.drop], {
+        window: round.window,
+        signature: round.signature,
+        facility: round.facility
+      });
     }
   }
 }
