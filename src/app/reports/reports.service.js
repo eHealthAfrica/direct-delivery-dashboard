@@ -27,11 +27,14 @@ angular.module('reports')
         })
         .then(function(response) {
           return response.rows.map(function(row) {
+            var signedAt = new Date(row.value.signature.signedAt);
+
             return {
               driverID: row.key[1],
               date: row.key[2],
               drop: row.key[3],
-              timeSlot: TIME_SLOTS[parseInt(row.value.arrivedAt)],
+              timeSlot: TIME_SLOTS[signedAt.getHours()],
+              signature: row.value.signature.dataUrl,
               facility: row.value.facility
             };
           });
