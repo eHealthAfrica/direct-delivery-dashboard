@@ -1,13 +1,14 @@
 'use strict';
 
 angular.module('reports')
-  .controller('ReportsRoundCtrl', function($stateParams, deliveryRounds, dailyDeliveries, drivers) {
+  .controller('ReportsRoundCtrl', function($stateParams, deliveryRounds, dailyDeliveries, drivers, ZONE_CLASS) {
     var keys = ['driverID', 'date'];
     var keyRows = {};
     var lastKeyValues = [];
 
     this.dailyDeliveries = dailyDeliveries;
     this.drivers = drivers;
+    this.zoneClass = {};
 
     this.keyStates = function(delivery, index) {
       var states = {};
@@ -50,6 +51,7 @@ angular.module('reports')
         var round = deliveryRounds[i];
         if (round._id == $stateParams.id) {
           this.deliveryRound = round;
+          this.zoneClass = ZONE_CLASS[round.state];
           break;
         }
       }

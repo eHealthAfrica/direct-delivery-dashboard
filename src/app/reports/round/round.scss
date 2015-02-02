@@ -1,3 +1,21 @@
-table#report img.signature {
-  max-width: 100px;
+table#report {
+  img.signature {
+    max-width: 100px;
+  }
+
+  .zone1 {
+    background: #d9ead3 !important;
+  }
+
+  .zone2 {
+    background: #c9daf8 !important;
+  }
+
+  .zone3 {
+    background: #fce5cd !important;
+  }
+
+  .zone4 {
+    background: #f4cccc !important;
+  }
 }

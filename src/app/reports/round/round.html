@@ -33,7 +33,7 @@
         <td ng-if="keys.date.changed" rowspan="{{keys.date.rows}}" ng-bind="::delivery.date | date:'d-MMM-yyyy'" style="white-space: nowrap;"></td>
         <td ng-bind="::delivery.drop"></td>
         <td ng-bind="::delivery.window" style="white-space: nowrap;"></td>
-        <td ng-bind="::delivery.facility.zone"></td>
+        <td ng-bind="::delivery.facility.zone" ng-class="reportsRoundCtrl.zoneClass[delivery.facility.zone]"></td>
         <td ng-bind="::delivery.facility.lga"></td>
         <td ng-bind="::delivery.facility.ward"></td>
         <td ng-bind="::delivery.facility.name"></td>
