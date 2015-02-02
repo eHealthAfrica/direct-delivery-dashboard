@@ -29,6 +29,10 @@ angular.module('reports')
       return states;
     };
 
+    this.print = function() {
+      $("#report").print();
+    };
+
     angular.forEach(dailyDeliveries, function(delivery) {
       var value = '';
       angular.forEach(keys, function(key) {

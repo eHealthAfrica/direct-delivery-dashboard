@@ -1,11 +1,14 @@
 <div class="panel panel-default">
   <div class="panel-heading">
+    <button ng-show="reportsRoundCtrl.dailyDeliveries.length" ng-click="reportsRoundCtrl.print()"
+      type="button" class="btn btn-primary btn-xs pull-right">Print</button>
     <h3 class="panel-title">Delivery Round: {{reportsRoundCtrl.deliveryRound.roundCode}}</h3>
   </div>
   <div ng-hide="reportsRoundCtrl.dailyDeliveries.length" class="panel-body">
     No daily deliveries found.
   </div>
-  <table ng-show="reportsRoundCtrl.dailyDeliveries.length" class="table table-condensed table-bordered">
+  <table ng-show="reportsRoundCtrl.dailyDeliveries.length"
+    id="report" class="table table-condensed table-bordered">
     <thead>
       <tr>
         <th>Driver</th>
