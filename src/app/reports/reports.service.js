@@ -29,7 +29,7 @@ angular.module('reports')
           return response.rows.map(function(row) {
             return {
               driverID: row.key[1],
-              date: row.key[2],
+              date: new Date(row.key[2]),
               drop: row.key[3],
               window: row.value.window,
               signature: row.value.signature,
