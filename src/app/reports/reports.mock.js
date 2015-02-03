@@ -53,8 +53,8 @@
   ];
 
   angular.module('reportsMock', [])
-    .constant('deliveryRoundsMock', deliveryRounds)
-    .constant('dailyDeliveriesMock', dailyDeliveries)
+    .constant('deliveryRounds', deliveryRounds)
+    .constant('dailyDeliveries', dailyDeliveries)
     .factory('pouchDB', function($q) {
       return function pouchDB() {
         return {

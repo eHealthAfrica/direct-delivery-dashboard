@@ -5,26 +5,26 @@
 describe('reportsService', function() {
   var rootScope;
   var reportsService;
-  var deliveryRoundsMock;
-  var dailyDeliveriesMock;
+  var deliveryRounds;
+  var dailyDeliveries;
 
   beforeEach(module('reports', 'reportsMock'));
 
-  beforeEach(inject(function(_$rootScope_, _reportsService_, _deliveryRoundsMock_, _dailyDeliveriesMock_) {
+  beforeEach(inject(function(_$rootScope_, _reportsService_, _deliveryRounds_, _dailyDeliveries_) {
     rootScope = _$rootScope_;
     reportsService = _reportsService_;
-    deliveryRoundsMock = _deliveryRoundsMock_;
-    dailyDeliveriesMock = _dailyDeliveriesMock_;
+    deliveryRounds = _deliveryRounds_;
+    dailyDeliveries = _dailyDeliveries_;
   }));
 
   it('should return delivery rounds correctly structured', function(done) {
     reportsService.getDeliveryRounds()
       .then(function(rounds) {
-        expect(rounds.length).toEqual(deliveryRoundsMock.length);
+        expect(rounds.length).toEqual(deliveryRounds.length);
 
         for (var i = 0; i < rounds.length; i++) {
           var round = rounds[i];
-          var mock = deliveryRoundsMock[i];
+          var mock = deliveryRounds[i];
 
           expect(round._id).toEqual(mock.id);
           expect(round.state).toEqual(mock.key[0]);
@@ -42,11 +42,11 @@ describe('reportsService', function() {
   it('should return daily deliveries correctly structured', function(done) {
     reportsService.getDailyDeliveries()
       .then(function(deliveries) {
-        expect(deliveries.length).toEqual(dailyDeliveriesMock.length);
+        expect(deliveries.length).toEqual(dailyDeliveries.length);
 
         for (var i = 0; i < deliveries.length; i++) {
           var delivery = deliveries[i];
-          var mock = dailyDeliveriesMock[i];
+          var mock = dailyDeliveries[i];
 
           expect(delivery.driverID).toEqual(mock.key[1]);
           expect(delivery.date).toEqual(new Date(mock.key[2]));
