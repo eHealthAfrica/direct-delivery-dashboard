@@ -26,7 +26,7 @@ describe('reportsService', function() {
           var round = rounds[i];
           var mock = deliveryRounds[i];
 
-          expect(round._id).toEqual(mock.id);
+          expect(round.id).toEqual(mock.id);
           expect(round.state).toEqual(mock.key[0]);
           expect(round.startDate).toEqual(new Date(mock.key[1]));
           expect(round.endDate).toEqual(new Date(mock.value.endDate));

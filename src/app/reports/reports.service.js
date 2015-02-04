@@ -9,7 +9,7 @@ angular.module('reports')
         .then(function(response) {
           return response.rows.map(function(row) {
             return {
-              _id: row.id,
+              id: row.id,
               state: row.key[0],
               startDate: new Date(row.key[1]),
               endDate: new Date(row.value.endDate),
