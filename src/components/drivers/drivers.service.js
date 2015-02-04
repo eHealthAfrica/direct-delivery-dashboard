@@ -7,7 +7,9 @@ angular.module('drivers')
     this.all = function() {
       return db
         .query('drivers/drivers', {
+          /*eslint-disable camelcase*/
           include_docs: true
+          /*eslint-enable camelcase*/
         })
         .then(function(response) {
           var drivers = {};

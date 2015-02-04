@@ -39,6 +39,9 @@ angular.module('delivery')
               }
             }
             break;
+
+          default:
+            break;
         }
       }
 

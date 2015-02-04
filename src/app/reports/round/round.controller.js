@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('reports')
-  .controller('ReportsRoundCtrl', function($stateParams, deliveryRounds, dailyDeliveries, drivers, ZONE_CLASS) {
+  .controller('ReportsRoundCtrl', function($stateParams, $window, deliveryRounds, dailyDeliveries, drivers, ZONE_CLASS) {
     var keys = ['driverID', 'date'];
     var keyRows = {};
     var lastKeyValues = [];
@@ -18,11 +18,12 @@ angular.module('reports')
 
         states[key] = {
           rows: keyRows[value],
-          changed: !lastKeyValues[index - 1] || value != lastKeyValues[index - 1][key]
+          changed: !lastKeyValues[index - 1] || value !== lastKeyValues[index - 1][key]
         };
 
-        if (!lastKeyValues[index])
+        if (!lastKeyValues[index]) {
           lastKeyValues[index] = {};
+        }
 
         lastKeyValues[index][key] = value;
       });
@@ -31,7 +32,7 @@ angular.module('reports')
     };
 
     this.print = function() {
-      $("#report").print();
+      $window.jQuery('#report').print();
     };
 
     angular.forEach(dailyDeliveries, function(delivery) {
@@ -39,17 +40,18 @@ angular.module('reports')
       angular.forEach(keys, function(key) {
         value += delivery[key];
 
-        if (keyRows[value])
+        if (keyRows[value]) {
           keyRows[value]++;
-        else
+        } else {
           keyRows[value] = 1;
+        }
       });
     });
 
     if ($stateParams.id) {
       for (var i = 0; i < deliveryRounds.length; i++) {
         var round = deliveryRounds[i];
-        if (round.id == $stateParams.id) {
+        if (round.id === $stateParams.id) {
           this.deliveryRound = round;
           this.zoneClass = ZONE_CLASS[round.state];
           break;
