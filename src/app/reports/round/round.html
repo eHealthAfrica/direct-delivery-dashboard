@@ -21,6 +21,7 @@
         <th>Facility</th>
         <th>Worker</th>
         <th>Phone</th>
+        <th>Status</th>
         <th>Signature</th>
       </tr>
     </thead>
@@ -39,6 +40,7 @@
         <td ng-bind="::delivery.facility.name"></td>
         <td ng-bind="::delivery.facility.contact"></td>
         <td ng-bind="::delivery.facility.phoneNo"></td>
+        <td ng-bind="::delivery | deliveryStatus" ng-class="::delivery | deliveryStatus:true"></td>
         <td><img ng-src="{{::delivery.signature.dataUrl}}" class="signature"></td>
       </tr>
     </tbody>

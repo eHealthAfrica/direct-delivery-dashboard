@@ -48,10 +48,13 @@ describe('reportsService', function() {
           var delivery = deliveries[i];
           var mock = dailyDeliveries[i];
 
+          expect(delivery.id).toEqual(mock.id);
           expect(delivery.driverID).toEqual(mock.key[1]);
           expect(delivery.date).toEqual(new Date(mock.key[2]));
           expect(delivery.drop).toEqual(mock.key[3]);
+          expect(delivery.status).toEqual(mock.value.status);
           expect(delivery.window).toEqual(mock.value.window);
+          expect(delivery.cancelReport).toEqual(mock.value.cancelReport);
           expect(delivery.signature).toEqual(mock.value.signature);
           expect(delivery.facility).toEqual(mock.value.facility);
         }

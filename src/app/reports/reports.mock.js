@@ -14,6 +14,7 @@
       id: "delivery1",
       key: ["round1", "driver1@example.com", "2015-01-01", 1],
       value: {
+        status: "completed",
         window: "9AM-11AM",
         signature: {
           dataUrl: "signature1",
@@ -34,10 +35,10 @@
       id: "delivery2",
       key: ["round1", "driver1@example.com", "2015-01-01", 2],
       value: {
+        status: "cancelled",
         window: "11AM-1PM",
-        signature: {
-          dataUrl: "signature2",
-          signedAt: "2015-01-01T10:42:38.708Z"
+        cancelReport: {
+          hfNotAvailable: true
         },
         facility: {
           id: "facility2",

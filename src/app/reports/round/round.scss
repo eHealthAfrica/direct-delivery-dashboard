@@ -1,6 +1,24 @@
+@import '../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/variables';
+
 table#report {
   img.signature {
     max-width: 100px;
+  }
+
+  .success {
+    background: $state-success-bg !important;
+  }
+
+  .info {
+    background: $state-info-bg !important;
+  }
+
+  .warning {
+    background: $state-warning-bg !important;
+  }
+
+  .danger {
+    background: $state-danger-bg !important;
   }
 
   .zone1 {
