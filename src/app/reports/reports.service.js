@@ -34,7 +34,6 @@ angular.module('reports')
               drop: row.key[3],
               status: row.value.status,
               window: row.value.window,
-              cancelReport: row.value.cancelReport,
               signature: row.value.signature,
               facility: row.value.facility
             };

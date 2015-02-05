@@ -14,7 +14,7 @@
       id: 'delivery1',
       key: ['round1', 'driver1@example.com', '2015-01-01', 1],
       value: {
-        status: 'completed',
+        status: 'Success: 1st Attempt',
         window: '9AM-11AM',
         signature: {
           dataUrl: 'signature1',
@@ -35,11 +35,8 @@
       id: 'delivery2',
       key: ['round1', 'driver1@example.com', '2015-01-01', 2],
       value: {
-        status: 'cancelled',
+        status: 'Failed: Staff availability',
         window: '11AM-1PM',
-        cancelReport: {
-          hfNotAvailable: true
-        },
         facility: {
           id: 'facility2',
           name: 'Facility 2',

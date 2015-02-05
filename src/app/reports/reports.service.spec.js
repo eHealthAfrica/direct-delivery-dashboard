@@ -54,7 +54,6 @@ describe('reportsService', function() {
           expect(delivery.drop).toEqual(mock.key[3]);
           expect(delivery.status).toEqual(mock.value.status);
           expect(delivery.window).toEqual(mock.value.window);
-          expect(delivery.cancelReport).toEqual(mock.value.cancelReport);
           expect(delivery.signature).toEqual(mock.value.signature);
           expect(delivery.facility).toEqual(mock.value.facility);
         }
