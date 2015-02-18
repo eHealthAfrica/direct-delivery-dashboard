@@ -1,6 +1,21 @@
 @import '../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/variables';
 
-#report table {
+#report {
+  & > .report-title {
+    margin-bottom: 20px;
+
+    img {
+      float: left;
+      max-height: 40px;
+      margin: 0 20px 10px 0;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-top: 0;
+    }
+  }
+
   img.signature {
     max-width: 100px;
   }
