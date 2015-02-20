@@ -1,0 +1,57 @@
+<div id="report">
+  <div class="report-title clearfix visible-print-block">
+    <img src="/assets/images/ehealth-africa-logo.png">
+    <h1>eHealth Africa delivery report: round {{reportsRoundCtrl.deliveryRound.roundCode}}</h1>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading hidden-print">
+      <button ng-show="reportsRoundCtrl.dailyDeliveries.length" ng-click="reportsRoundCtrl.print()"
+        type="button" class="btn btn-primary btn-xs pull-right">
+        Print
+      </button>
+      <h3 class="panel-title">
+        eHealth Africa delivery report: round {{reportsRoundCtrl.deliveryRound.roundCode}}
+      </h3>
+    </div>
+    <div ng-if="!reportsRoundCtrl.dailyDeliveries.length" class="panel-body">
+      No daily deliveries found.
+    </div>
+    <table ng-if="reportsRoundCtrl.dailyDeliveries.length" class="table table-condensed table-bordered">
+      <thead>
+        <tr>
+          <th>Driver</th>
+          <th>Date</th>
+          <th>Drop</th>
+          <th>Window</th>
+          <th>Zone</th>
+          <th>LGA</th>
+          <th>Ward</th>
+          <th>Facility</th>
+          <th>Worker</th>
+          <th>Phone</th>
+          <th>Status</th>
+          <th>Signature</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="delivery in reportsRoundCtrl.dailyDeliveries"
+          ng-init="keys = reportsRoundCtrl.keyStates(delivery, $index); driver = reportsRoundCtrl.drivers[delivery.driverID]">
+          <td ng-if="keys.driverID.changed" rowspan="{{keys.driverID.rows}}">
+            <span ng-bind="::driver.forename"></span> <span ng-bind="::driver.surname"></span>
+          </td>
+          <td ng-if="keys.date.changed" rowspan="{{keys.date.rows}}" ng-bind="::delivery.date | date:'d-MMM-yyyy'" style="white-space: nowrap;"></td>
+          <td ng-bind="::delivery.drop"></td>
+          <td ng-bind="::delivery.window" style="white-space: nowrap;"></td>
+          <td ng-bind="::delivery.facility.zone" ng-class="reportsRoundCtrl.zoneClass[delivery.facility.zone]"></td>
+          <td ng-bind="::delivery.facility.lga"></td>
+          <td ng-bind="::delivery.facility.ward"></td>
+          <td ng-bind="::delivery.facility.name"></td>
+          <td ng-bind="::delivery.facility.contact"></td>
+          <td ng-bind="::delivery.facility.phoneNo"></td>
+          <td ng-bind="::delivery | deliveryStatus" ng-class="::delivery | deliveryStatus:true"></td>
+          <td><img ng-src="{{::delivery.signature.dataUrl}}" class="signature"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
