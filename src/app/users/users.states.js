@@ -11,7 +11,16 @@ angular.module('users')
       controllerAs: 'usersCtrl',
       resolve: {
         users: function(usersService) {
-          return usersService.all();
+          return usersService.all()
+            .then(function(usersObj) {
+              var users = [];
+
+              angular.forEach(usersObj, function(user) {
+                users.push(user);
+              });
+
+              return users;
+            });
         }
       }
     });

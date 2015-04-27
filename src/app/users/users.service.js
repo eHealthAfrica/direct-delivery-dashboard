@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('users')
-  .service('usersService', function(pouchDB, config, driversService) {
+  .service('usersService', function($q, pouchDB, config, driversService) {
     var service = this;
     var db = pouchDB(config.db);
     var userDB = pouchDB(config.baseUrl + '/_users');
@@ -10,8 +10,14 @@ angular.module('users')
     this.all = function() {
       return driversService.all()
         .then(function(drivers) {
+          var users = {};
           var keys = [];
           angular.forEach(drivers, function(driver, key) {
+            users[key] = {
+              profile: driver, // deliveries user
+              account: null // system user
+            };
+
             keys.push('org.couchdb.user:' + key);
           });
 
@@ -19,16 +25,67 @@ angular.module('users')
             .then(function(response) {
               angular.forEach(response.rows, function(row) {
                 if (row.doc) {
-                  var driver = drivers[row.doc.name];
-                  if (driver)
-                    driver._user = service.clean(row.doc);
+                  var user = users[row.doc.name];
+                  if (user)
+                    user.account = service.clean(row.doc);
                 }
               });
 
-              console.log(drivers);
-              return drivers;
+              return users;
             });
         });
+    };
+
+    this.save = function(user) {
+      return service.saveAccount(user.account)
+        .then(function() {
+          return service.saveProfile(user.profile);
+        })
+        .then(function() {
+          return user;
+        });
+    };
+
+    this.saveProfile = function(profile) {
+      var deferred = $q.defer();
+
+      if (profile) {
+        var promise = profile._id ? db.put(profile) : db.post(profile);
+        promise
+          .then(responseProcessor(profile))
+          .then(function() {
+            deferred.resolve(profile);
+          })
+          .catch(function(err) {
+            deferred.reject(err);
+          });
+      }
+      else
+        deferred.resolve(profile);
+
+      return deferred.promise;
+    };
+
+    this.saveAccount = function(account) {
+      var deferred = $q.defer();
+
+      if (account) {
+        account.type = 'user';
+
+        var promise = account._id ? userDB.put(account) : userDB.post(account);
+        promise
+          .then(responseProcessor(account))
+          .then(function() {
+            deferred.resolve(account);
+          })
+          .catch(function(err) {
+            deferred.reject(err);
+          });
+      }
+      else
+        deferred.resolve(account);
+
+      return deferred.promise;
     };
 
     this.clean = function(user) {
@@ -41,5 +98,17 @@ angular.module('users')
       }
 
       return user;
+    };
+
+    function responseProcessor(obj) {
+      return function(response) {
+        if (response.id)
+          obj._id = response.id;
+
+        if (response.rev)
+          obj._rev = response.rev;
+
+        return response;
+      }
     }
   });

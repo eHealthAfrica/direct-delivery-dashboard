@@ -5,5 +5,13 @@ angular.module('log')
     authSuccess: {
       title: 'Authentication',
       message: 'Login success'
+    },
+    userCreated: {
+      title: 'Users',
+      message: 'User created'
+    },
+    userUpdated: {
+      title: 'Users',
+      message: 'User updated'
     }
   });

@@ -2,7 +2,9 @@
 
 angular.module('users', [
   'core',
+  'log',
   'pouchdb',
   'config',
-  'drivers'
+  'drivers',
+  'ngMessages'
 ]);

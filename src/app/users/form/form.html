@@ -1,0 +1,48 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title" ng-bind="::usersFormCtrl.title"></h3>
+  </div>
+  <div class="panel-body">
+    <form name="userForm" ng-submit="usersFormCtrl.save(userForm)" novalidate>
+      <div class="form-group" ng-class="{'has-error': userForm.email.$invalid && usersFormCtrl.submitted}">
+        <label for="email">Email *</label>
+        <input id="email" name="email" type="email" class="form-control" ng-model="usersFormCtrl.user.profile.email" required>
+        <div ng-if="usersFormCtrl.submitted" ng-messages="userForm.email.$error">
+          <div class="help-block" ng-message="required">Required</div>
+          <div class="help-block" ng-message="email">Invalid email</div>
+        </div>
+      </div>
+      <div class="form-group" ng-class="{'has-error': userForm.forename.$invalid && usersFormCtrl.submitted}">
+        <label for="forename">Forename *</label>
+        <input id="forename" name="forename" type="text" class="form-control" ng-model="usersFormCtrl.user.profile.forename" required>
+        <div ng-if="usersFormCtrl.submitted" ng-messages="userForm.forename.$error">
+          <div class="help-block" ng-message="required">Required</div>
+        </div>
+      </div>
+      <div class="form-group" ng-class="{'has-error': userForm.surname.$invalid && usersFormCtrl.submitted}">
+        <label for="surname">Surname *</label>
+        <input id="surname" name="surname" type="text" class="form-control" ng-model="usersFormCtrl.user.profile.surname" required>
+        <div ng-if="usersFormCtrl.submitted" ng-messages="userForm.surname.$error">
+          <div class="help-block" ng-message="required">Required</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone</label>
+        <input id="phone" name="phone" type="text" class="form-control" ng-model="usersFormCtrl.user.profile.phone">
+      </div>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" ng-model="usersFormCtrl.user.enabled"> Enabled
+        </label>
+      </div>
+      <div ng-if="usersFormCtrl.user.enabled" class="form-group" ng-class="{'has-error': userForm.password.$invalid && usersFormCtrl.submitted}">
+        <label for="password">Password *</label>
+        <input id="password" name="password" type="password" class="form-control" ng-model="usersFormCtrl.user.account.password" required>
+        <div ng-if="usersFormCtrl.submitted" ng-messages="userForm.password.$error">
+          <div class="help-block" ng-message="required">Required</div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary" ng-bind="::usersFormCtrl.submitLabel"></button>
+    </form>
+  </div>
+</div>

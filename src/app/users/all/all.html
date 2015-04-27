@@ -1,5 +1,6 @@
 <div class="panel panel-default">
   <div class="panel-heading clearfix">
+    <a class="btn btn-primary btn-xs pull-right" ui-sref="users.create">Create</a>
     <h3 class="panel-title">Users</h3>
   </div>
   <div ng-hide="usersCtrl.users.length" class="panel-body">
@@ -15,11 +16,11 @@
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="user in usersCtrl.users">
-        <td ng-bind="::user.forename"></td>
-        <td ng-bind="::user.surname"></td>
-        <td ng-bind="::user.email"></td>
-        <td ng-bind="::user.phone"></td>
+      <tr ng-repeat="user in usersCtrl.users | orderBy:['profile.forename', 'profile.surname', 'profile.email']">
+        <td ng-bind="::user.profile.forename"></td>
+        <td ng-bind="::user.profile.surname"></td>
+        <td ng-bind="::user.profile.email"></td>
+        <td ng-bind="::user.profile.phone"></td>
       </tr>
     </tbody>
   </table>
