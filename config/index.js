@@ -18,4 +18,6 @@ var config = {
   config: require('./' + env + '.json')
 };
 
+config.config.baseUrl = config.config.db.replace(/\/[^\/]+\/?$/, '');
+
 module.exports = extend(true, {}, defaults, config);

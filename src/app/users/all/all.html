@@ -1,0 +1,26 @@
+<div class="panel panel-default">
+  <div class="panel-heading clearfix">
+    <h3 class="panel-title">Users</h3>
+  </div>
+  <div ng-hide="usersCtrl.users.length" class="panel-body">
+    No users found.
+  </div>
+  <table ng-show="usersCtrl.users.length" class="table table-condensed table-striped">
+    <thead>
+      <tr>
+        <th>Forename</th>
+        <th>Surname</th>
+        <th>Email</th>
+        <th>Phone</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="user in usersCtrl.users">
+        <td ng-bind="::user.forename"></td>
+        <td ng-bind="::user.surname"></td>
+        <td ng-bind="::user.email"></td>
+        <td ng-bind="::user.phone"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
