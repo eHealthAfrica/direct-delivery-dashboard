@@ -13,6 +13,7 @@
         <th>Surname</th>
         <th>Email</th>
         <th>Phone</th>
+        <th>&nbsp;</th>
       </tr>
     </thead>
     <tbody>
@@ -21,6 +22,9 @@
         <td ng-bind="::user.profile.surname"></td>
         <td ng-bind="::user.profile.email"></td>
         <td ng-bind="::user.profile.phone"></td>
+        <td>
+          <a class="btn btn-xs btn-primary" ui-sref="users.update({id: user.profile._id})"><span class="glyphicon glyphicon-edit"></span></a>
+        </td>
       </tr>
     </tbody>
   </table>

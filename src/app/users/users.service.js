@@ -92,6 +92,10 @@ angular.module('users')
       return deferred.promise;
     };
 
+    this.removeAccount = function(account) {
+      return userDB.remove(account);
+    };
+
     this.clean = function(user) {
       if (user) {
         delete user.type;

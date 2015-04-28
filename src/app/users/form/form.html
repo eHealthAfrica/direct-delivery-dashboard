@@ -7,7 +7,7 @@
       <div class="form-group" ng-class="{'has-error': userForm.email.$invalid && usersFormCtrl.submitted}">
         <label for="email">Email *</label>
         <input id="email" name="email" type="email" class="form-control" ng-model="usersFormCtrl.user.profile.email"
-          ng-model-options="{debounce: 500}" user-email="usersFormCtrl.type == 'create'" required>
+          ng-model-options="{debounce: 500}" ng-disabled="usersFormCtrl.type == 'update'" user-email="usersFormCtrl.type == 'create'" required>
         <div ng-if="usersFormCtrl.submitted" ng-messages="userForm.email.$error">
           <div class="help-block" ng-message="required">Required</div>
           <div class="help-block" ng-message="email">Invalid email</div>
@@ -39,7 +39,9 @@
       </div>
       <div ng-if="usersFormCtrl.user.enabled" class="form-group" ng-class="{'has-error': userForm.password.$invalid && usersFormCtrl.submitted}">
         <label for="password">Password *</label>
-        <input id="password" name="password" type="password" class="form-control" ng-model="usersFormCtrl.user.account.password" required>
+        <input id="password" name="password" type="password" class="form-control" ng-model="usersFormCtrl.user.account.password"
+          ng-required="!usersFormCtrl.user.account._rev">
+        <div ng-if="usersFormCtrl.user.account._rev" class="help-block">Leave blank to preserve current password.</div>
         <div ng-if="usersFormCtrl.submitted" ng-messages="userForm.password.$error">
           <div class="help-block" ng-message="required">Required</div>
         </div>

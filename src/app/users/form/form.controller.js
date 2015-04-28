@@ -18,21 +18,34 @@ angular.module('users')
         vm.user.profile.doc_type = 'driver';
         vm.user.profile.version = '1.0.0';
 
-        if (vm.user.enabled) {
-          vm.user.account._id = 'org.couchdb.user:' + vm.user.profile._id;
-          vm.user.account.name = vm.user.profile._id;
-          vm.user.account.roles = [];
-        }
-        else
-          vm.user.account = null;
+        usersService.saveProfile(vm.user.profile)
+          .then(function(profile) {
+            model.profile = angular.copy(profile);
+          })
+          .then(function() {
+            if (vm.user.enabled) {
+              if (!vm.user.account.password)
+                return;
 
-        usersService.save(vm.user)
-          .then(function(user) {
-            if (user.account && user.account.password)
-              delete user.account.password;
+              vm.user.account._id = 'org.couchdb.user:' + vm.user.profile._id;
+              vm.user.account.name = vm.user.profile._id;
+              vm.user.account.roles = [];
 
-            angular.copy(user, model);
-
+              return usersService.saveAccount(vm.user.account)
+                .then(function(account) {
+                  delete account.password;
+                  model.account = angular.copy(account);
+                });
+            }
+            else if (vm.user.account && vm.user.account._id) {
+              return usersService.removeAccount(vm.user.account)
+                .then(function() {
+                  vm.user.account = null;
+                  model.account = null;
+                });
+            }
+          })
+          .then(function() {
             if (type === 'update') {
               log.success('userUpdated');
               $state.go('users.all');
