@@ -7,6 +7,12 @@
 .nav > li > a:focus {
   cursor: pointer;
 }
+
+td.actions {
+  width: 1px;
+  white-space: nowrap;
+}
+
 // injector
 @import 'reports/round/round.scss';
 // endinjector

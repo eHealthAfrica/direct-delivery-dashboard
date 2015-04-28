@@ -92,8 +92,48 @@ angular.module('users')
       return deferred.promise;
     };
 
+    this.remove = function(user) {
+      return service.removeProfile(user.profile)
+        .then(function() {
+          return service.removeAccount(user.account);
+        })
+        .then(function() {
+          return user;
+        });
+    };
+
+    this.removeProfile = function(profile) {
+      var deferred = $q.defer();
+
+      if (profile) {
+        db.remove(profile)
+          .then(function() {
+            deferred.resolve(profile);
+          })
+          .catch(function(err) {
+            deferred.reject(err);
+          });
+      } else
+        deferred.resolve(profile);
+
+      return deferred.promise;
+    };
+
     this.removeAccount = function(account) {
-      return userDB.remove(account);
+      var deferred = $q.defer();
+
+      if (account) {
+        userDB.remove(account)
+          .then(function() {
+            deferred.resolve(account);
+          })
+          .catch(function(err) {
+            deferred.reject(err);
+          });
+      } else
+        deferred.resolve(account);
+
+      return deferred.promise;
     };
 
     this.clean = function(user) {

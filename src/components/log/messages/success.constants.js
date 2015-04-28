@@ -13,5 +13,9 @@ angular.module('log')
     userUpdated: {
       title: 'Users',
       message: 'User updated'
+    },
+    userRemoved: {
+      title: 'Users',
+      message: 'User deleted'
     }
   });

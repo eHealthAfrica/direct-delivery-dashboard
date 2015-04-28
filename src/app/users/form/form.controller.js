@@ -48,13 +48,13 @@ angular.module('users')
           .then(function() {
             if (type === 'update') {
               log.success('userUpdated');
-              $state.go('users.all');
             }
             else {
               users.push(model);
               log.success('userCreated');
-              $state.go('users.all');
             }
+
+            $state.go('users.all');
           })
           .catch(function(err) {
             if (err.name === 'conflict')

@@ -22,8 +22,9 @@
         <td ng-bind="::user.profile.surname"></td>
         <td ng-bind="::user.profile.email"></td>
         <td ng-bind="::user.profile.phone"></td>
-        <td>
+        <td class="actions">
           <a class="btn btn-xs btn-primary" ui-sref="users.update({id: user.profile._id})"><span class="glyphicon glyphicon-edit"></span></a>
+          <button class="btn btn-xs btn-danger" ng-click="usersAllCtrl.remove(user)"><span class="glyphicon glyphicon-trash"></span></button>
         </td>
       </tr>
     </tbody>
