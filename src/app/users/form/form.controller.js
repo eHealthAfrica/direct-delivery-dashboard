@@ -3,6 +3,7 @@
 angular.module('users')
   .controller('UsersFormCtrl', function($scope, $state, log, usersService, users, type, model) {
     var vm = this;
+    vm.type = type;
     vm.title = type == 'update' ? 'Update User' : 'Create User';
     vm.submitLabel = type == 'update' ? 'Save' : 'Create';
     vm.submitted = false;
@@ -43,7 +44,10 @@ angular.module('users')
             }
           })
           .catch(function(err) {
-            console.log(err);
+            if (err.name === 'conflict')
+              log.error('userExists');
+            else
+              log.error('unknownError', err);
           });
       }
     }

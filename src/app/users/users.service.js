@@ -6,6 +6,10 @@ angular.module('users')
     var db = pouchDB(config.db);
     var userDB = pouchDB(config.baseUrl + '/_users');
 
+    this.get = function(id) {
+      return db.get(id);
+    };
+
     // currently only drivers ar supported
     this.all = function() {
       return driversService.all()
@@ -37,9 +41,9 @@ angular.module('users')
     };
 
     this.save = function(user) {
-      return service.saveAccount(user.account)
+      return service.saveProfile(user.profile)
         .then(function() {
-          return service.saveProfile(user.profile);
+          return service.saveAccount(user.account);
         })
         .then(function() {
           return user;

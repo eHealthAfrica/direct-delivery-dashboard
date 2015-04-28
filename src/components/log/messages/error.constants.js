@@ -16,5 +16,15 @@ angular.module('log')
       title: 'Network',
       message: 'Network error',
       remedy: 'Please check your internet connection and try again'
+    },
+    userExists: {
+      title: 'Users',
+      message: 'A user with the specified email exists',
+      remedy: 'Please use another email address'
+    },
+    unknownError: {
+      title: 'Error',
+      message: 'An error has occurred',
+      remedy: 'Please try again'
     }
   });
