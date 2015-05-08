@@ -3,15 +3,16 @@
 angular.module('users')
   .service('usersService', function($q, pouchDB, config, driversService) {
     var service = this;
-    var db = pouchDB(config.db);
-    var userDB = pouchDB(config.baseUrl + '/_users');
 
-    this.get = function(id) {
-      return db.get(id);
+    service.db = pouchDB(config.db);
+    service.userDB = pouchDB(config.baseUrl + '/_users');
+
+    service.get = function(id) {
+      return service.db.get(id);
     };
 
     // currently only drivers ar supported
-    this.all = function() {
+    service.all = function() {
       return driversService.all()
         .then(function(drivers) {
           var users = {};
@@ -25,7 +26,7 @@ angular.module('users')
             keys.push('org.couchdb.user:' + key);
           });
 
-          return userDB.allDocs({keys: keys, include_docs: true})
+          return service.userDB.allDocs({keys: keys, include_docs: true})
             .then(function(response) {
               angular.forEach(response.rows, function(row) {
                 if (row.doc) {
@@ -40,7 +41,7 @@ angular.module('users')
         });
     };
 
-    this.save = function(user) {
+    service.save = function(user) {
       return service.saveProfile(user.profile)
         .then(function() {
           return service.saveAccount(user.account);
@@ -50,11 +51,11 @@ angular.module('users')
         });
     };
 
-    this.saveProfile = function(profile) {
+    service.saveProfile = function(profile) {
       var deferred = $q.defer();
 
       if (profile) {
-        var promise = profile._id ? db.put(profile) : db.post(profile);
+        var promise = profile._id ? service.db.put(profile) : service.db.post(profile);
         promise
           .then(responseProcessor(profile))
           .then(function() {
@@ -70,13 +71,13 @@ angular.module('users')
       return deferred.promise;
     };
 
-    this.saveAccount = function(account) {
+    service.saveAccount = function(account) {
       var deferred = $q.defer();
 
       if (account) {
         account.type = 'user';
 
-        var promise = account._id ? userDB.put(account) : userDB.post(account);
+        var promise = account._id ? service.userDB.put(account) : service.userDB.post(account);
         promise
           .then(responseProcessor(account))
           .then(function() {
@@ -92,7 +93,7 @@ angular.module('users')
       return deferred.promise;
     };
 
-    this.remove = function(user) {
+    service.remove = function(user) {
       return service.removeProfile(user.profile)
         .then(function() {
           return service.removeAccount(user.account);
@@ -102,11 +103,11 @@ angular.module('users')
         });
     };
 
-    this.removeProfile = function(profile) {
+    service.removeProfile = function(profile) {
       var deferred = $q.defer();
 
       if (profile) {
-        db.remove(profile)
+        service.db.remove(profile)
           .then(function() {
             deferred.resolve(profile);
           })
@@ -119,11 +120,11 @@ angular.module('users')
       return deferred.promise;
     };
 
-    this.removeAccount = function(account) {
+    service.removeAccount = function(account) {
       var deferred = $q.defer();
 
       if (account) {
-        userDB.remove(account)
+        service.userDB.remove(account)
           .then(function() {
             deferred.resolve(account);
           })
@@ -136,7 +137,7 @@ angular.module('users')
       return deferred.promise;
     };
 
-    this.clean = function(user) {
+    service.clean = function(user) {
       if (user) {
         delete user.type;
         delete user.password_scheme;
