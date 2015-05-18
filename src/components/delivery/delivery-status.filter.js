@@ -2,13 +2,11 @@
 
 angular.module('delivery')
   .filter('deliveryStatus', function(DELIVERY_STATUS) {
-    return function(value, getClass) {
-      var status = (value && value.status) || 'Unknown';
-      var cssClass = '';
+    var CLASS = {};
 
-      if (!getClass) {
-        return status;
-      }
+    angular.forEach(DELIVERY_STATUS, function(status) {
+      var cssKey = status.trim().toLowerCase();
+      var cssClass = '';
 
       switch (status) {
         case DELIVERY_STATUS.SUCCESS_FIRST:
@@ -27,11 +25,14 @@ angular.module('delivery')
         case DELIVERY_STATUS.FAILED_OTHER:
           cssClass = 'danger';
           break;
-
-        default:
-          break;
       }
 
-      return cssClass;
+      CLASS[cssKey] = cssClass;
+    });
+
+    return function(value, getClass) {
+      var status = (value && value.status) || 'Unknown';
+
+      return getClass ? (CLASS[status.trim().toLowerCase()] || '') : status;
     };
   });

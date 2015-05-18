@@ -1,0 +1,32 @@
+<div class="panel panel-default">
+  <div class="panel-heading clearfix">
+    <a class="btn btn-primary btn-xs pull-right" ui-sref="users.create">Create</a>
+    <h3 class="panel-title">Users</h3>
+  </div>
+  <div ng-hide="usersCtrl.users.length" class="panel-body">
+    No users found.
+  </div>
+  <table ng-show="usersCtrl.users.length" class="table table-condensed table-striped">
+    <thead>
+      <tr>
+        <th>Forename</th>
+        <th>Surname</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="user in usersCtrl.users | orderBy:['profile.forename', 'profile.surname', 'profile.email']">
+        <td ng-bind="::user.profile.forename"></td>
+        <td ng-bind="::user.profile.surname"></td>
+        <td ng-bind="::user.profile.email"></td>
+        <td ng-bind="::user.profile.phone"></td>
+        <td class="actions">
+          <a class="btn btn-xs btn-primary" ui-sref="users.update({id: user.profile._id})"><span class="glyphicon glyphicon-edit"></span></a>
+          <button class="btn btn-xs btn-danger" ng-click="usersAllCtrl.remove(user)"><span class="glyphicon glyphicon-trash"></span></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
