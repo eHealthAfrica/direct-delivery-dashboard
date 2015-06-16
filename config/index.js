@@ -10,7 +10,8 @@ var defaults = {
   config: {
     name: pkg.name,
     version: pkg.version,
-    author: pkg.author
+    author: pkg.author,
+    dateFormat: 'yyyy-MM-dd'
   }
 };
 
