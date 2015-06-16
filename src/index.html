@@ -39,11 +39,14 @@
     <script src="../bower_components/angular-pouchdb/dist/angular-pouchdb.js"></script>
     <script src="../bower_components/jQuery.print/jQuery.print.js"></script>
     <script src="../bower_components/angular-messages/angular-messages.js"></script>
+    <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
     <!-- build:js({.tmp,src}) scripts/app.js -->
     <!-- inject:js -->
+    <script src="app/planning/planning.module.js"></script>
+    <script src="app/planning/delivery-round/dialog/round-dialog.controller.js"></script>
     <script src="components/log/log.module.js"></script>
     <script src="components/log/messages/warning.constants.js"></script>
     <script src="components/log/messages/success.constants.js"></script>
@@ -61,6 +64,10 @@
     <script src="app/reports/round/round.constants.js"></script>
     <script src="app/reports/all/all.states.js"></script>
     <script src="app/reports/all/all.controller.js"></script>
+    <script src="app/planning/delivery-round/delivery-round.states.js"></script>
+    <script src="app/planning/delivery-round/delivery-round.controller.js"></script>
+    <script src="components/utility/utility.module.js"></script>
+    <script src="components/utility/utility.service.js"></script>
     <script src="components/navbar/navbar.module.js"></script>
     <script src="components/navbar/navbar.service.js"></script>
     <script src="components/navbar/navbar.controller.js"></script>
@@ -72,6 +79,9 @@
     <script src="components/delivery/delivery.module.js"></script>
     <script src="components/delivery/delivery.constant.js"></script>
     <script src="components/delivery/delivery-status.filter.js"></script>
+    <script src="components/db/db.module.js"></script>
+    <script src="components/db/pouchdb-util.service.js"></script>
+    <script src="components/db/db.service.js"></script>
     <script src="components/core/core.module.js"></script>
     <script src="components/auth/auth.module.js"></script>
     <script src="components/auth/auth.service.js"></script>
@@ -83,6 +93,8 @@
     <script src="app/reports/reports.states.js"></script>
     <script src="app/reports/reports.service.js"></script>
     <script src="app/reports/reports.controller.js"></script>
+    <script src="app/planning/planning.states.js"></script>
+    <script src="app/planning/planning.service.js"></script>
     <script src="app/login/login.module.js"></script>
     <script src="app/login/login.states.js"></script>
     <script src="app/login/login.controller.js"></script>
