@@ -1,0 +1,45 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <button class="btn btn-success" ng-click="crCtrl.open()">
+      <i class="fa fa-plus"></i>
+      <span>Add Delivery Round</span>
+    </button>
+  </div>
+  <div class="panel-body">
+    <div class="panel-body alert alert-info" ng-show="crCtrl.deliveryRounds.length === 0">
+      <i class="fa fa-lg fa-info-circle"></i><span> No delivery rounds found.</span>
+    </div>
+
+    <table ng-show="crCtrl.deliveryRounds.length > 0" class="table table-condensed table-striped">
+      <thead>
+      <tr>
+        <th>State</th>
+        <th>Code</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="round in crCtrl.deliveryRounds">
+        <td ng-bind="::round.state"></td>
+        <td ng-bind="::round.roundCode"></td>
+        <td ng-bind="::round.startDate | date:'d-MMM-yyyy'"></td>
+        <td ng-bind="::round.endDate | date:'d-MMM-yyyy'"></td>
+        <td>
+          <a class="btn btn-primary">
+            <i class="fa fa-pencil-square-o"></i>
+            <span>Edit</span>
+          </a>
+
+          <a class="btn btn-success">
+            <i class="fa fa-th-list"></i>
+            <span>Schedule</span>
+          </a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
