@@ -7,6 +7,7 @@ angular.module('reports')
     this.getDeliveryRounds = function() {
       return db.query('reports/delivery-rounds')
         .then(function(response) {
+            //TODO: move this to CouchDB view
           return response.rows.map(function(row) {
             return {
               id: row.id,
@@ -26,6 +27,7 @@ angular.module('reports')
           endkey: [roundId, {}, {}, {}]
         })
         .then(function(response) {
+            //TODO: move this to CouchDB view
           return response.rows.map(function(row) {
             return {
               id: row.id,
