@@ -1,0 +1,60 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+
+      <div class="col-sm-6 pull-left">
+        <h4>Delivery Round: {{ srCtrl.deliveryRound._id }}</h4>
+      </div>
+
+      <div class="col-sm-6 pull-right">
+        <button class="btn btn-primary">
+          <i class="fa fa-exchange"></i>
+          <span>Import Facilities</span>
+        </button>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="panel-body">
+    <div class="panel-body alert alert-info" ng-show="srCtrl.dailyDeliveries.length === 0">
+      <i class="fa fa-lg fa-info-circle"></i>
+      <span> No daily deliveries found, please import facilities to create new delivery schedules.</span>
+    </div>
+
+    <table ng-show="srCtrl.dailyDeliveries.length > 0" class="table table-condensed table-striped">
+      <thead>
+      <tr>
+        <th>Delivery Date</th>
+        <th>Driver</th>
+        <th>Drop</th>
+        <th>Window</th>
+        <th>Facility</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="round in srCtrl.dailyDeliveries.facilityRounds">
+        <td ng-bind="::round.date"></td>
+        <td ng-bind="::round.driverID"></td>
+        <td ng-bind="::round.drop"></td>
+        <td ng-bind="::round.window"></td>
+        <td ng-bind="::round.status"></td>
+        <td>
+          <button class="btn btn-primary">
+            <i class="fa fa-pencil-square-o"></i>
+            <span>Edit</span>
+          </button>
+
+          <a class="btn btn-success" ui-sref="planning.schedule({ roundId: round._id})">
+            <i class="fa fa-calendar"></i>
+            <span>Schedule</span>
+          </a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
