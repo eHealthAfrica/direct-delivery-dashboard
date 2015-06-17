@@ -6,15 +6,12 @@
   <div class="col-sm-15">
     <form ng-submit="nrdCtrl.continue()">
       <div class="form-group">
-        <label>Round Code</label>
-        <input type="number" class="form-control" ng-disabled="true" placeholder="KN-23-2015">
-      </div>
-
-      <div class="form-group">
         <label>State</label>
         <select class="form-control" ng-model="nrdCtrl.deliveryRound.state">
           <option value="">select state</option>
-          <option ng-repeat="state in nrdCtrl.states" ng-value="state.code">
+          <option ng-repeat="state in nrdCtrl.states"
+                  ng-value="state.name"
+                  ng-selected="state.name === nrdCtrl.deliveryRound.state">
             {{ state.name }}
           </option>
         </select>
@@ -22,7 +19,7 @@
 
       <div class="form-group">
         <label>Round Number</label>
-        <input type="number" class="form-control" ng-model="nrdCtrl.deliveryRound.roundNo" placeholder="23">
+        <input type="text" class="form-control" ng-model="nrdCtrl.deliveryRound.roundNo" placeholder="23">
       </div>
 
       <div class="row">
@@ -59,21 +56,18 @@
           </div>
         </div>
       </div>
-
-      {{ nrdCtrl.deliveryRound | json }}
-
     </form>
   </div>
 </div>
 <!-- modal footer section-->
 <div class="modal-footer">
 
-  <button type="submit" class="btn btn-success">
+  <button type="submit" class="btn btn-success" ng-click="nrdCtrl.continue()">
     <span>Continue</span>
     <i class="fa fa-chevron-circle-right"></i>
   </button>
 
-  <button type="button" class="btn btn-primary">
+  <button class="btn btn-primary" ng-click="nrdCtrl.saveAndExit()">
     <i class="fa fa-floppy-o"></i>
     <span>Save and Exit</span>
   </button>
