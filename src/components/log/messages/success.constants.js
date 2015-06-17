@@ -17,5 +17,9 @@ angular.module('log')
     userRemoved: {
       title: 'Users',
       message: 'User deleted'
+    },
+    savedDeliveryRound: {
+      title: 'Saved delivery round',
+      message: 'Delivery round was saved successfully!'
     }
   });
