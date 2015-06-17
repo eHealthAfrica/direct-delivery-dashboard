@@ -1,12 +1,12 @@
 angular.module('planning')
-		.controller('DeliveryRoundCtrl', function ($modal, deliveryRounds) {
+		.controller('DeliveryRoundCtrl', function ($modal, deliveryRounds, planningService, log) {
 
       var vm = this;
 			vm.deliveryRounds = deliveryRounds;
 
 
-			vm.open = function () {
-				var modalInstance = $modal.open({
+			vm.open = function(deliveryRoundId) {
+				$modal.open({
 					animation: true,
 					templateUrl: 'app/planning/delivery-round/dialog/round.html',
 					controller: 'RoundDialogCtrl',
@@ -15,17 +15,18 @@ angular.module('planning')
 					keyboard: false,
 					backdrop: 'static',
 					resolve: {
-						//TODO: load delivery round here and pass to dialog for edit of existing DR.
+						deliveryRound: function(){
+							if(!angular.isString(deliveryRoundId)){
+								return;
+							}
+							function handleError(err){
+								log.error('deliveryRoundNotFound', err);
+							}
+							return planningService.getByRoundId(deliveryRoundId)
+									.catch(handleError);
+						}
 					}
 				});
-
-				modalInstance.result
-						.then(function(res) {
-							console.log(res);
-						})
-						.catch(function(err) {
-							console.log(err);
-						});
 			};
 
 		});

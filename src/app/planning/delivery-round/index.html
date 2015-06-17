@@ -17,6 +17,7 @@
         <th>Code</th>
         <th>Start</th>
         <th>End</th>
+        <th>Created</th>
         <th>Action</th>
       </tr>
       </thead>
@@ -26,14 +27,15 @@
         <td ng-bind="::round.roundCode"></td>
         <td ng-bind="::round.startDate | date:'d-MMM-yyyy'"></td>
         <td ng-bind="::round.endDate | date:'d-MMM-yyyy'"></td>
+        <td ng-bind="::round.createdOn | date: 'yyyy-MM-dd HH:mm:ss'"></td>
         <td>
-          <a class="btn btn-primary">
+          <button class="btn btn-primary" ng-click="crCtrl.open(round._id)">
             <i class="fa fa-pencil-square-o"></i>
             <span>Edit</span>
-          </a>
+          </button>
 
-          <a class="btn btn-success">
-            <i class="fa fa-th-list"></i>
+          <a class="btn btn-success" ui-sref="planning.schedule({ roundId: round._id})">
+            <i class="fa fa-calendar"></i>
             <span>Schedule</span>
           </a>
         </td>
