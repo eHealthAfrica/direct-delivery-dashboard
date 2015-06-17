@@ -74,6 +74,11 @@ angular.module('db')
         });
     };
 
+    _this.insertWithId = function(doc, id){
+      doc = _this.addTimeInfo(doc);
+      return remoteDB.put(doc, id);
+    };
+
     /**
      * Updates document only if it exists.
      *
