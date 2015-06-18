@@ -1,21 +1,20 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="row">
-
       <div class="col-sm-6 pull-left">
         <h4>Delivery Round: {{ srCtrl.deliveryRound._id }}</h4>
       </div>
 
-      <div class="col-sm-6 pull-right">
-        <button class="btn btn-primary">
+      <div class="col-sm-6">
+        <a class="btn btn-primary pull-right"
+           ui-sref="planning.manageFacilities({ roundId: srCtrl.deliveryRound._id })">
           <i class="fa fa-exchange"></i>
           <span>Import Facilities</span>
-        </button>
+        </a>
       </div>
     </div>
-
-
   </div>
+
   <div class="panel-body">
     <div class="panel-body alert alert-info" ng-show="srCtrl.dailyDeliveries.length === 0">
       <i class="fa fa-lg fa-info-circle"></i>
@@ -25,17 +24,21 @@
     <table ng-show="srCtrl.dailyDeliveries.length > 0" class="table table-condensed table-striped">
       <thead>
       <tr>
+        <th>Select</th>
+        <th>Facility</th>
         <th>Delivery Date</th>
         <th>Driver</th>
         <th>Drop</th>
         <th>Window</th>
-        <th>Facility</th>
         <th>Status</th>
         <th>Action</th>
       </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="round in srCtrl.dailyDeliveries.facilityRounds">
+      <tr>
+        <td>
+          <input type="checkbox">
+        </td>
         <td ng-bind="::round.date"></td>
         <td ng-bind="::round.driverID"></td>
         <td ng-bind="::round.drop"></td>
@@ -47,7 +50,7 @@
             <span>Edit</span>
           </button>
 
-          <a class="btn btn-success" ui-sref="planning.schedule({ roundId: round._id})">
+          <a class="btn btn-success" ui-sref="planning.schedule({ roundId: round._id })">
             <i class="fa fa-calendar"></i>
             <span>Schedule</span>
           </a>
