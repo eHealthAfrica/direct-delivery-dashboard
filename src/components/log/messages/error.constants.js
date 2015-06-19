@@ -51,5 +51,10 @@ angular.module('log')
       title: 'Delivery round does not exist',
       message: 'Sorry, could not find delivery round, maybe it has been deleted',
       remedy: 'Please, create a new delivery round or contact support'
+    },
+    deliveryRoundDoesNotHaveDailySchedule: {
+      title: 'Daily schedules not available',
+      message: 'Delivery round does not have daily schedules',
+      remedy: 'Select another round or use other scheduling options'
     }
   });
