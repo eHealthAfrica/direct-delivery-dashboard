@@ -7,55 +7,41 @@
 
       <div class="col-sm-6">
         <div class="btn-group pull-right">
-          <button type="button" class="btn btn-primary">Import</button>
-          <button type="button" class="btn btn-danger">Remove</button>
-          <button type="button" class="btn btn-default">Clear</button>
+          <button class="btn btn-primary" ng-click="mfCtrl.copyFromRoundDialog()">
+            Copy Round Template
+          </button>
+          <button class="btn btn-success">Add Facility</button>
         </div>
       </div>
     </div>
   </div>
 
   <div class="panel-body">
-    <div class="btn-group">
-      <button class="btn btn-primary">Import CSV</button>
-      <button class="btn btn-primary" ng-click="mfCtrl.copyFromRoundDialog()">Copy Round Template</button>
-      <button class="btn btn-primary">Add Facility</button>
-    </div>
 
     <table ng-show="mfCtrl.facilityList.length > 0"
-           class="table table-condensed table-striped">
+           class="table table-condensed table-striped table-bordered">
       <thead>
       <tr>
-        <th>Select</th>
-        <th>Code</th>
-        <th>Facility</th>
-        <th>Ward</th>
-        <th>Zone</th>
-        <th>State</th>
-        <th>Action</th>
+        <th class="col-sm-1">#</th>
+        <th class="col-sm-1">Select</th>
+        <th class="col-sm-2">Code</th>
+        <th class="col-sm-2">Facility</th>
+        <th class="col-sm-2">Ward</th>
+        <th class="col-sm-2">Zone</th>
       </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="facility in mfCtrl.facilityList">
+      <tr ng-repeat="facility in mfCtrl.facilityList track by $index">
+        <td ng-bind="($index + 1)"></td>
         <td>
-          <input type="checkbox">
+          <input type="checkbox"
+                 ng-model="mfCtrl.selectedList[facility.id]"
+                 ng-checked="mfCtrl.isSelected(facility.id)">
         </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>
-          <button class="btn btn-primary">
-            <i class="fa fa-pencil-square-o"></i>
-            <span>Edit</span>
-          </button>
-
-          <a class="btn btn-success" ui-sref="planning.schedule({ roundId: round._id })">
-            <i class="fa fa-calendar"></i>
-            <span>Schedule</span>
-          </a>
-        </td>
+        <td ng-bind="facility.id"></td>
+        <td ng-bind="facility.name"></td>
+        <td ng-bind="facility.ward"></td>
+        <td ng-bind="facility.zone"></td>
       </tr>
       </tbody>
     </table>
