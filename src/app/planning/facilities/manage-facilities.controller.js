@@ -6,9 +6,25 @@ angular.module('planning')
 
 			vm.deliveryRound = deliveryRound;
 			vm.facilityList = [];
+			vm.selectedList = [];
+
+			vm.isSelected = function(facilityId){
+				var NOT_FOUND = -1;
+				return vm.selectedList.indexOf(facilityId) !== NOT_FOUND;
+			};
+
+			vm.onSelection = function(roundTemplate){
+				vm.facilityList = [];
+				roundTemplate.forEach(function(dailySchedule){
+					dailySchedule.facilityRounds.forEach(function(facilityRound){
+						vm.facilityList.push(facilityRound.facility);
+						vm.selectedList.push(facilityRound.facility.id);
+					});
+				});
+			};
 
 			vm.copyFromRoundDialog = function() {
-				$modal.open({
+				var modalInstance = $modal.open({
 					animation: true,
 					templateUrl: 'app/planning/facilities/dialogs/copy-round/copy-round.html',
 					controller: 'CopyRoundTemplateDialogCtrl',
@@ -22,9 +38,15 @@ angular.module('planning')
 									.catch(function(){
 										return [];
 									});
+						},
+						deliveryRound: function(){
+							return vm.deliveryRound;
 						}
 					}
 				});
+
+				modalInstance.result
+						.then(vm.onSelection);
 			};
 
 		});
