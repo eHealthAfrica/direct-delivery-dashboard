@@ -7,7 +7,7 @@
     <form>
       <div class="form-group">
         <label>Template Round</label>
-        <select class="form-control" ng-model="nrdCtrl.selectedRoundId">
+        <select class="form-control" ng-model="crtdCtrl.selectedRoundId">
           <option value="">select delivery round</option>
           <option ng-repeat="round in crtdCtrl.deliveryRounds"
                   ng-value="round._id">
@@ -20,12 +20,21 @@
 </div>
 <!-- modal footer section-->
 <div class="modal-footer">
-  <button type="submit" class="btn btn-success" ng-click="crtdCtrl.copy()">
-    <span>Continue</span>
-    <i class="fa fa-chevron-circle-right"></i>
+  <button type="submit" class="btn btn-success"
+          ng-disabled="crtdCtrl.selectedRoundId === ''"
+          ng-click="crtdCtrl.copy()">
+    <span ng-show="!crtdCtrl.isLoading">Copy Template</span>
+    <span ng-show="crtdCtrl.isLoading">Copying</span>
+    <i class="fa"
+        ng-class="{
+          'fa-spinner fa-spin': crtdCtrl.isLoading,
+          'fa-chevron-circle-right': !crtdCtrl.isLoading
+        }"></i>
   </button>
 
-  <button class="btn btn-default" ng-click="crtdCtrl.cancel()">
+  <button class="btn btn-default"
+          ng-disabled="crtdCtrl.isLoading === true"
+          ng-click="crtdCtrl.cancel()">
     <i class="fa fa-times"></i>
     <span>Close</span>
   </button>
