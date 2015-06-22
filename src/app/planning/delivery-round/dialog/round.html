@@ -7,7 +7,8 @@
     <form>
       <div class="form-group">
         <label>State</label>
-        <select class="form-control" ng-model="nrdCtrl.deliveryRound.state">
+        <select class="form-control" ng-model="nrdCtrl.deliveryRound.state"
+                ng-disabled="nrdCtrl.edit">
           <option value="">select state</option>
           <option ng-repeat="state in nrdCtrl.states"
                   ng-value="state.name"
@@ -19,7 +20,9 @@
 
       <div class="form-group">
         <label>Round Number</label>
-        <input type="text" class="form-control" ng-model="nrdCtrl.deliveryRound.roundNo" placeholder="23">
+        <input type="text" class="form-control"
+               ng-disabled="nrdCtrl.edit"
+               ng-model="nrdCtrl.deliveryRound.roundNo" placeholder="23">
       </div>
 
       <div class="row">
