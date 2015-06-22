@@ -56,8 +56,9 @@ angular.module('planning')
 
 			function onSuccessContinue(res){
 				log.success('savedDeliveryRound');
-				return $modalInstance.close(res);
-				//TODO: $state.go('schedulePage');
+				$modalInstance.close(res);
+				var params = { roundId: res._id };
+				$state.go('planning.schedule', params);
 			}
 
 			function onSuccessExit(res){
