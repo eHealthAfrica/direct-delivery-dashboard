@@ -56,5 +56,10 @@ angular.module('log')
       title: 'Daily schedules not available',
       message: 'Delivery round does not have daily schedules',
       remedy: 'Select another round or use other scheduling options'
+    },
+    saveBatchScheduleFailed: {
+      title: 'Batch schedules save failed',
+      message: 'An error occurred while saving schedules',
+      remedy: 'Please, try again if this persists, contact support.'
     }
   });

@@ -21,5 +21,9 @@ angular.module('log')
     savedDeliveryRound: {
       title: 'Saved delivery round',
       message: 'Delivery round was saved successfully!'
+    },
+    schedulesSaved: {
+      title: 'Schedules saved successfully',
+      message: 'Schedules saved successfully!'
     }
   });
