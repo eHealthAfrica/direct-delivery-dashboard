@@ -11,20 +11,27 @@ angular.module('lmisApp')
         nonReporting: {
           key: 'Non reporting',
           count: 0
+        },
+        delayedReport: {
+          key: 'Delayed Report',
+          count: 0
         }
       };
 
       summaries.forEach(function(summary) {
-        if (summary.isNonReporting) {
+        if (summary.reportingStatus === -1) {
           tally.nonReporting.count++;
-        } else {
+        } else if (summary.reportingStatus === 1) {
           tally.reporting.count++;
+        } else {
+          tally.delayedReport.count ++;
         }
       });
 
       return [
         tally.reporting,
-        tally.nonReporting
+        tally.nonReporting,
+        tally.delayedReport
       ];
     }
 
