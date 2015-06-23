@@ -22,6 +22,12 @@ angular.module('planning')
 						}
 						return deliveryService.getByRoundId($stateParams.roundId)
 								.catch(handleError);
+					},
+					drivers: function(userService, deliveryRound){
+						return userService.getDriversBy(deliveryRound.state)
+								.catch(function(){
+									return [];
+								});
 					}
 				}
 			});
