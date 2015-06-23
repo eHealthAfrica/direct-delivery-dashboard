@@ -2,15 +2,27 @@
   <div class="panel-heading">
     <div class="row">
       <div class="col-sm-6 pull-left">
-        <h4>Delivery Round: {{ srCtrl.deliveryRound._id }}</h4>
+        <h4>Schedules for Delivery Round: {{ srCtrl.deliveryRound._id }}</h4>
       </div>
 
       <div class="col-sm-6">
-        <a class="btn btn-primary pull-right"
-           ui-sref="planning.manageFacilities({ roundId: srCtrl.deliveryRound._id })">
-          <i class="fa fa-exchange"></i>
-          <span>Import Facilities</span>
-        </a>
+        <div class="btn-group pull-right">
+          <button class="btn btn-success">
+            <i class="fa fa-floppy-o"></i>
+            <span>Save All</span>
+          </button>
+
+          <button class="btn btn-primary">
+            <i class="icon-cloud-upload"></i>
+            <span>Upload Schedule CSV</span>
+          </button>
+
+          <a class="btn btn-default"
+             ui-sref="planning.manageFacilities({ roundId: srCtrl.deliveryRound._id })">
+            <i class="fa fa-exchange"></i>
+            <span>Import Facilities</span>
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -21,43 +33,37 @@
       <span> No daily deliveries found, please import facilities to create new delivery schedules.</span>
     </div>
 
-    <table ng-show="srCtrl.dailyDeliveries.length > 0" class="table table-condensed table-striped">
+    <table ng-show="srCtrl.dailyDeliveries.length > 0"
+           class="table table-condensed table-striped table-bordered">
       <thead>
       <tr>
-        <th>Select</th>
-        <th>Facility</th>
-        <th>Delivery Date</th>
-        <th>Driver</th>
-        <th>Drop</th>
-        <th>Window</th>
-        <th>Status</th>
-        <th>Action</th>
+        <th>#</th>
+        <th class="col-sm-2">Facility</th>
+        <th class="col-sm-2">Code</th>
+        <th class="col-sm-1">Delivery Date</th>
+        <th class="col-sm-2">Driver</th>
+        <th class="col-sm-1">Drop</th>
+        <th class="col-sm-1">Window</th>
+        <th class="col-sm-2">Status</th>
+        <th class="col-sm-1">Action</th>
       </tr>
       </thead>
       <tbody>
-      <tr>
+      <tr ng-repeat="facRnd in srCtrl.dailyDeliveries">
+        <td ng-bind="($index + 1)"></td>
+        <td ng-bind="::facRnd.facility.name"></td>
+        <td ng-bind="::facRnd.facility.id"></td>
+        <td ng-bind="facRnd.date"></td>
+        <td ng-bind="facRnd.driverID"></td>
+        <td ng-bind="facRnd.drop"></td>
+        <td ng-bind="facRnd.window"></td>
+        <td ng-bind="facRnd.status"></td>
         <td>
-          <input type="checkbox">
-        </td>
-        <td ng-bind="::round.date"></td>
-        <td ng-bind="::round.driverID"></td>
-        <td ng-bind="::round.drop"></td>
-        <td ng-bind="::round.window"></td>
-        <td ng-bind="::round.status"></td>
-        <td>
-          <button class="btn btn-primary">
-            <i class="fa fa-pencil-square-o"></i>
-            <span>Edit</span>
-          </button>
-
-          <a class="btn btn-success" ui-sref="planning.schedule({ roundId: round._id })">
-            <i class="fa fa-calendar"></i>
-            <span>Schedule</span>
-          </a>
+          <button class="btn btn-primary">Save</button>
         </td>
       </tr>
       </tbody>
     </table>
-
+   {{ srCtrl.dailyDeliveries[0][0] }}
   </div>
 </div>
