@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('planning')
-		.controller('ScheduleRoundCtrl', function (deliveryRound, dailyDeliveries) {
+		.controller('ScheduleRoundCtrl', function (deliveryRound, drivers, dailyDeliveries, scheduleService) {
 
 			var vm = this;
 			vm.deliveryRound = deliveryRound;
-			vm.dailyDeliveries = dailyDeliveries;
+			vm.dailyDeliveries = scheduleService.flatten(dailyDeliveries);
+      vm.drivers = drivers;
+
 
 		});
