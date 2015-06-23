@@ -8,6 +8,22 @@ angular.module('lmisApp')
       return lastReport > threshold;
     }
 
+    function reportingStatus(lastReport) {
+      var state = '';
+      if (lastReport <= 7) {
+        state = 1;
+      }
+
+      if (lastReport > 7 && lastReport <= 14) {
+        state = 0;
+      }
+
+      if (lastReport > 14) {
+        state = -1;
+      }
+      return state;
+    }
+
     function formatDate(date, dateTimeString) {
       dateTimeString = dateTimeString || 'DD MMM YYYY';
       return $window.moment(date).format(dateTimeString);
@@ -24,8 +40,13 @@ angular.module('lmisApp')
           lga: facilityDetail.lga,
           facility: summary.facility,
           isNonReporting: isNonReporting(summary.daysFromLastCountDate),
+          reportingStatus: reportingStatus(summary.daysFromLastCountDate),
           daysFromLastCountDate: summary.daysFromLastCountDate,
           lastCountDate: formatDate(summary.mostRecentCountDate),
+          nextCountDate: formatDate(summary.nextCountDate),
+          reminderDay: summary.reminderDay,
+          currentDueDate: formatDate(summary.currentDueDate),
+          createdDate: summary.createdDate,
           contact: {
             name: facilityDetail.contact.name,
             phone: facilityDetail.phone,
