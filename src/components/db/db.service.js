@@ -103,4 +103,12 @@ angular.module('db')
       return remoteDB.query(view, options);
     };
 
+    _this.saveDocs = function(docs, options){
+      var opt = { all_or_nothing: true };
+      if(options){
+        opt = options;
+      }
+      return remoteDB.bulkDocs(docs, opt);
+    };
+
   });
