@@ -1,6 +1,8 @@
 angular.module('planning')
 		.service('copyRoundService', function () {
 
+			var _this = this;
+
 			var newStatus = 'Upcoming: 1st attempt';
 			//TODO: move this to a constant of delivery statuses
 
@@ -31,8 +33,9 @@ angular.module('planning')
 					facRnd.status = newStatus;
 				}
 				//clear packed product
-				facRnd.packedProduct = clearPackedProducts(facRnd.packedProduct);
-
+				if(angular.isArray(facRnd.packedProduct)){
+					facRnd.packedProduct = clearPackedProducts(facRnd.packedProduct);
+				}
 				return facRnd;
 			}
 
@@ -63,6 +66,32 @@ angular.module('planning')
 				}
 
 				return roundDailySchedules.map(cleanUpASchedule);
+			};
+
+			_this.isSelectedFacilityRound = function(facilityRound, selectedFacilities){
+				var facility = facilityRound.facility;
+				return (facility && selectedFacilities[facility.id] === true);
+			};
+
+			_this.copySchedules = function(template, selectedFacilityList){
+				var result = [];
+				var currentRoundTemplate = angular.copy(template);
+				var selectedList = angular.copy(selectedFacilityList);
+				currentRoundTemplate.forEach(function(dailySchedule){
+					if(angular.isArray(dailySchedule.facilityRounds)){
+						var facilityRnd;
+						for(var i in dailySchedule.facilityRounds){
+							facilityRnd = dailySchedule.facilityRounds[i];
+							if(!_this.isSelectedFacilityRound(facilityRnd, selectedList)){
+								dailySchedule.facilityRounds.splice(i, 1);
+							}
+						}
+						if(dailySchedule.facilityRounds.length > 0){
+							result.push(dailySchedule); //skip empty facility rounds
+						}
+					}
+				});
+				return result;
 			};
 
 		});
