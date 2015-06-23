@@ -5,6 +5,11 @@ angular.module('lmisApp')
     var vm = this;
     vm.currentUser = Auth.getCurrentUser();
     vm.reportingFilters = FACILITY_FILTERS;
+    vm.hideChart = false;
+
+    vm.toggleChart = function() {
+      vm.hideChart = !vm.hideChart;
+    };
 
     function bindSummaries(summaries) {
       vm.summaries = summaries;
