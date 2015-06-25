@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('planning')
-		.controller('ManageFacilitiesCtrl', function ($state, $modal, deliveryRound, copyRoundService, scheduleService, log) {
+		.controller('ManageFacilitiesCtrl', function ($state, $modal, deliveryRound, copyRoundService, scheduleService, log, locationService) {
 			var vm = this;
 
 			vm.deliveryRound = deliveryRound;
@@ -36,8 +36,34 @@ angular.module('planning')
 				});
 			};
 
+			vm.openAddFacilitiesDialog = function() {
+				var addFacilitiesDialog = $modal.open({
+					animation: true,
+					templateUrl: 'app/planning/facilities/dialogs/add/add-facility-dialog.html',
+					controller: 'AddFacilityDialogCtrl',
+					controllerAs: 'afdCtrl',
+					size: 'lg',
+					keyboard: false,
+					backdrop: 'static',
+					resolve: {
+						locationLevels: function(locationService){
+							return locationService.levels()
+									.catch(function(){
+										return [];
+									});
+						},
+						deliveryRound: function(){
+							return vm.deliveryRound;
+						}
+					}
+				});
+				
+				addFacilitiesDialog.result
+						.then(vm.onSelection);
+			};
+
 			vm.copyFromRoundDialog = function() {
-				var modalInstance = $modal.open({
+				var copyRoundDialog = $modal.open({
 					animation: true,
 					templateUrl: 'app/planning/facilities/dialogs/copy-round/copy-round.html',
 					controller: 'CopyRoundTemplateDialogCtrl',
@@ -58,7 +84,7 @@ angular.module('planning')
 					}
 				});
 
-				modalInstance.result
+				copyRoundDialog.result
 						.then(vm.onSelection);
 			};
 
