@@ -2,7 +2,7 @@
   <div class="panel panel-heading">
     <div class="row">
       <div class="col-sm-6 pull-left">
-        <h4>Import Facilities for {{ mfCtrl.deliveryRound._id }}</h4>
+        <h4>Import Facilities into {{ mfCtrl.deliveryRound._id }}</h4>
       </div>
 
       <div class="col-sm-6">
@@ -17,9 +17,9 @@
             <i class="fa fa-files-o"></i>
             <span>Copy Round</span>
           </button>
-          <button class="btn btn-default">
+          <button class="btn btn-default" ng-click="mfCtrl.openAddFacilitiesDialog()">
             <i class="fa fa-hospital-o"></i>
-            <span>Add Facility</span>
+            <span>Add Facilities</span>
           </button>
         </div>
       </div>
