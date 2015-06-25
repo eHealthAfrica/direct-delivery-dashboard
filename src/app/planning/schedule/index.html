@@ -1,11 +1,11 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="row">
-      <div class="col-sm-6 pull-left">
-        <h4>Schedules for Delivery Round: {{ srCtrl.deliveryRound._id }}</h4>
+      <div class="col-sm-4 pull-left">
+        <h4><i class="fa fa-truck"></i> Schedules for Delivery Round: {{ srCtrl.deliveryRound._id }}</h4>
       </div>
 
-      <div class="col-sm-6">
+      <div class="col-sm-8">
         <div class="btn-group pull-right">
           <button class="btn btn-success">
             <i class="fa fa-floppy-o"></i>
@@ -13,8 +13,13 @@
           </button>
 
           <button class="btn btn-primary">
-            <i class="icon-cloud-upload"></i>
-            <span>Upload Schedule CSV</span>
+            <i class="fa fa-cloud-upload"></i>
+            <span>Upload Schedule Info</span>
+          </button>
+
+          <button class="btn btn-default">
+            <i class="fa fa-cloud-download"></i>
+            <span>Export</span>
           </button>
 
           <a class="btn btn-default"
@@ -44,7 +49,8 @@
         <th class="col-sm-2">Driver</th>
         <th class="col-sm-1">Drop</th>
         <th class="col-sm-1">Window</th>
-        <th class="col-sm-2">Status</th>
+        <th class="col-sm-1">Distance (KM)</th>
+        <th class="col-sm-1">Status</th>
         <th class="col-sm-1">Action</th>
       </tr>
       </thead>
@@ -57,6 +63,7 @@
         <td ng-bind="facRnd.driverID"></td>
         <td ng-bind="facRnd.drop"></td>
         <td ng-bind="facRnd.window"></td>
+        <td ng-bind="facRnd.distance"></td>
         <td ng-bind="facRnd.status"></td>
         <td>
           <button class="btn btn-primary">Save</button>
@@ -64,6 +71,5 @@
       </tr>
       </tbody>
     </table>
-   {{ srCtrl.dailyDeliveries[0][0] }}
   </div>
 </div>
