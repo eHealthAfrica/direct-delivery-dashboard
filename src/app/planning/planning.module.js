@@ -6,5 +6,5 @@ angular.module('planning', [
 	'utility',
 	'log',
 	'delivery',
-	'user'
+	'users'
 ]);
