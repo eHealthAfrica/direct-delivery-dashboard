@@ -34,4 +34,8 @@ angular.module('utility')
       return (date && date !== null && (new Date(date)).toString() !== 'Invalid Date');
     };
 
+    this.isEmptyObject = function(obj){
+      return angular.isObject(obj) && Object.keys(obj).length === 0;
+    };
+
   });
