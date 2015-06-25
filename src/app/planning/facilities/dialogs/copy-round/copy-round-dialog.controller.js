@@ -1,6 +1,6 @@
 angular.module('planning')
-		.controller('CopyRoundTemplateDialogCtrl', function($modalInstance, deliveryService, $modalInstance,
-                                                        deliveryRound, deliveryRounds, log, copyRoundService) {
+		.controller('CopyRoundTemplateDialogCtrl', function($modalInstance, deliveryService, deliveryRound,
+                                                        deliveryRounds, log, copyRoundService) {
 			var vm = this;
 
 			vm.selectedRoundId = '';
