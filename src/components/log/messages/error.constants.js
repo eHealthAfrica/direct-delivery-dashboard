@@ -61,5 +61,10 @@ angular.module('log')
       title: 'Batch schedules save failed',
       message: 'An error occurred while saving schedules',
       remedy: 'Please, try again if this persists, contact support.'
+    },
+    selectLevelToImportFromErr: {
+      title: 'Select administrative level to import from',
+      message: '',
+      remedy: 'Please, select administrative level and sub-levels'
     }
   });
