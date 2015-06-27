@@ -33,17 +33,17 @@
             </ul>
           </span>
       </h4>
-      <div class="col-sm-4" ng-repeat="location in afdCtrl.selectedlevelLocs track by $index">
+      <div class="col-sm-2" ng-repeat="location in afdCtrl.selectedlevelLocs track by $index">
         <label>
           <input type="checkbox"
                   ng-model ="afdCtrl.selectedIds[location._id]"
-                 ng-checked="afdCtrl.isSelected($index)">
+                 ng-checked="afdCtrl.isSelected(location._id)">
           {{ location.name }}
         </label>
       </div>
     </form>
   </div>
-  <br/><br/>
+  <br/><br/><br/><br/>
 </div>
 <!-- modal footer section-->
 <div class="modal-footer">

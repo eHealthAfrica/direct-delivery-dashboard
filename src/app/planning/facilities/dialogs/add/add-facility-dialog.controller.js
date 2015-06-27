@@ -27,7 +27,7 @@ angular.module('planning')
 			};
 
 			vm.isSelected = function(id) {
-				return vm.selectedIds[id];
+				return vm.selectedIds[id] === true;
 			};
 
 			function selectAll(locations) {
