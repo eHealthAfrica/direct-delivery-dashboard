@@ -24,4 +24,14 @@ angular.module('location')
             .then(pouchUtil.rejectIfEmpty);
       };
 
+      _this.getAncestorIds = function(keys) {
+        var view = 'location/by-ancestors-id';
+        var params = {
+          include_docs: true,
+          keys: keys
+        };
+        return dbService.getView(view, params)
+            .then(pouchUtil.pluckDocs);
+      };
+
   });
