@@ -66,5 +66,10 @@ angular.module('log')
       title: 'Select administrative level to import from',
       message: '',
       remedy: 'Please, select administrative level and sub-levels'
+    },
+    fetchByAncestorsFailed: {
+      title: 'Fetch locations failed',
+      message: 'An error while retrieving facilities under selected areas',
+      remedy: 'Please, try again if this persists contact support.'
     }
   });
