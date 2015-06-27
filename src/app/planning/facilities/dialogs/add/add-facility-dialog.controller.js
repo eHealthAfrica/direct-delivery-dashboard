@@ -1,6 +1,6 @@
 angular.module('planning')
 		.controller('AddFacilityDialogCtrl', function($modalInstance, deliveryService, deliveryRound, locationService,
-                                                  locationLevels, utility) {
+                                                  locationLevels, utility, log) {
 
 			var vm = this;
 			vm.deliveryRound = deliveryRound;
@@ -63,11 +63,15 @@ angular.module('planning')
 				if(utility.isEmptyObject(vm.selectedIds)) {
 					return log.error('selectLevelToImportFromErr');
 				}
-				locationService.getBatch()
+				var ancestorIds = Object.keys(vm.selectedIds);
+				locationService.getAncestorIds(ancestorIds)
 						.then(function(facilities) {
-							$modalInstance.close(facilities);
+							//console.log(facilities);
+							///$modalInstance.close(facilities);
 						})
-						.catch(log.error);
+						.catch(function(err) {
+							log.error('fetchByAncestorsFailed', err);
+						});
 
 			};
 
