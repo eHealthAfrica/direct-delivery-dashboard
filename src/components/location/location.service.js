@@ -14,14 +14,14 @@ angular.module('location')
       };
 
       _this.getLocationsByLevel = function(level) {
-        var locations = [];
-
-        return $q.when(locations.filter(function(loc){
-                  return (loc.level && loc.level.toString() === level.toString());
-                })
-            .sort(function(a, b){
-              return a.name > b.name;
-            }));
+        var view = 'location/by-level';
+        var params = {
+          include_docs: true,
+          key: level
+        };
+        return dbService.getView(view, params)
+            .then(pouchUtil.pluckDocs)
+            .then(pouchUtil.rejectIfEmpty);
       };
 
   });
