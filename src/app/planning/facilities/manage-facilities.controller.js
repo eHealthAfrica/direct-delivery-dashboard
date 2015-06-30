@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('planning')
-		.controller('ManageFacilitiesCtrl', function ($state, $modal, deliveryRound, copyRoundService, scheduleService, log, locationService) {
+		.controller('ManageFacilitiesCtrl', function ($state, $modal, deliveryRound, addFacilityService,
+                                                  copyRoundService, scheduleService, log, locationLevels) {
 			var vm = this;
 
 			vm.deliveryRound = deliveryRound;
@@ -9,6 +10,7 @@ angular.module('planning')
 			vm.selectedList = {};
 			vm.selectOptions = [ 'All', 'None' ];
 			vm.roundTemplate = [];
+			vm.locationLevels = locationLevels;
 
 			vm.disableSave = function(){
 				return angular.isObject(vm.selectedList) && Object.keys(vm.selectedList).length === 0;
@@ -36,6 +38,20 @@ angular.module('planning')
 				});
 			};
 
+			vm.onAddFacility = function(facilityList) {
+				facilityList.forEach(function(facility) {
+					var temp = {
+						name: facility.name,
+						id: facility._id,
+						ward: facility.ancestors[5].name,
+						lga: facility.ancestors[4].name,
+						zone: facility.ancestors[3].name
+					};
+					vm.facilityList.push(temp);
+					vm.selectedList[temp.id] = true;
+				});
+			};
+
 			vm.openAddFacilitiesDialog = function() {
 				var addFacilitiesDialog = $modal.open({
 					animation: true,
@@ -46,11 +62,8 @@ angular.module('planning')
 					keyboard: false,
 					backdrop: 'static',
 					resolve: {
-						locationLevels: function(locationService){
-							return locationService.levels()
-									.catch(function(){
-										return [];
-									});
+						locationLevels: function(){
+							return vm.locationLevels;
 						},
 						deliveryRound: function(){
 							return vm.deliveryRound;
@@ -59,7 +72,7 @@ angular.module('planning')
 				});
 				
 				addFacilitiesDialog.result
-						.then(vm.onSelection);
+						.then(vm.onAddFacility);
 			};
 
 			vm.copyFromRoundDialog = function() {
@@ -106,7 +119,10 @@ angular.module('planning')
 
 			vm.save = function(){
 				var roundSchedules = copyRoundService.copySchedules(vm.roundTemplate, vm.selectedList);
-				scheduleService.saveSchedules(roundSchedules)
+				var roundId = vm.deliveryRound._id;
+				var newFacilitySchedules = addFacilityService.prepareSchedules(vm.facilityList, vm.selectedList, roundId);
+				var deliveryRoundSchedules = roundSchedules.concat(newFacilitySchedules);
+				scheduleService.saveSchedules(deliveryRoundSchedules)
 						.then(onSuccess)
 						.catch(OnError);
 			};

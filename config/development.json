@@ -1,3 +1,4 @@
 {
-  "db": "http://localhost:5984/deliveries"
+  "db": "http://localhost:5984/deliveries",
+  "mailerUrl": "https://api.sendgrid.com/api/mail.send.json?"
 }
