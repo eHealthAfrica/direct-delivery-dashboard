@@ -24,6 +24,8 @@ angular.module('planning')
 									};
 									schedules.push(schedule);
 								});
+					}else{
+						schedules.push(dailySchedule);
 					}
 				}
 
