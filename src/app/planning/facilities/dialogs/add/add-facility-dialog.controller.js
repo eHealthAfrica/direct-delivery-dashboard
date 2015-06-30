@@ -59,17 +59,69 @@ angular.module('planning')
 				}
 			};
 
-			vm.addToList = function() {
-				if(utility.isEmptyObject(vm.selectedIds)) {
+			function getQueryKey(level, selectedIds){
+				var keys = [];
+				for(var k in selectedIds){
+					var selected = selectedIds[k];
+					if(selected === true){
+						var queryKey = [level, k];
+						keys.push(queryKey);
+					}
+				}
+				return keys;
+			}
+
+			function getUniqueAncestorList(facilities) {
+				var facilityAncestors = {};
+				facilities.forEach(function(facility) {
+					if(angular.isArray(facility.ancestors)){
+						facility.ancestors
+								.forEach(function(ancestorId) {
+									facilityAncestors[ancestorId] = true;
+								});
+					}
+				});
+				return Object.keys(facilityAncestors);
+			}
+
+			function collateDocs(facilities, ancestors) {
+				function byId(list, id){
+					return list.filter(function(ancestor){
+						return ancestor._id === id;
+					});
+				}
+				return facilities.map(function(facility){
+					var ancestorId;
+					for(var i in facility.ancestors){
+						ancestorId = facility.ancestors[i];
+						var matches = byId(ancestors, ancestorId);
+						var ancestor = utility.takeFirst(matches);
+						facility.ancestors[i] = ancestor;
+					}
+					return facility;
+				});
+			}
+
+			vm.addToList = function () {
+				if (utility.isEmptyObject(vm.selectedIds)) {
 					return log.error('selectLevelToImportFromErr');
 				}
-				var ancestorIds = Object.keys(vm.selectedIds);
-				locationService.getAncestorIds(ancestorIds)
-						.then(function(facilities) {
-							//console.log(facilities);
-							///$modalInstance.close(facilities);
+
+				var lastLevel = vm.locationLevels[vm.locationLevels.length - 1];
+				var queryKeys = getQueryKey(lastLevel._id, vm.selectedIds);
+				locationService.getByLevelAndAncestor(queryKeys)
+						.then(function (facilities) {
+							var ancestorsId = getUniqueAncestorList(facilities);
+							return locationService.getByIds(ancestorsId)
+									.then(function (ancestors) {
+										var result  = collateDocs(facilities, ancestors);
+										if (result.length === 0) {
+											return log.info('noFacilityInAdminLevels');
+										}
+										$modalInstance.close(result);
+									});
 						})
-						.catch(function(err) {
+						.catch(function (err) {
 							log.error('fetchByAncestorsFailed', err);
 						});
 
