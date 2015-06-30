@@ -24,7 +24,17 @@ angular.module('location')
             .then(pouchUtil.rejectIfEmpty);
       };
 
-      _this.getAncestorIds = function(keys) {
+      _this.getByLevelAndAncestor = function(keys) {
+        var view = 'location/by-level-and-ancestors-id';
+        var params = {
+          include_docs: true,
+          keys: keys
+        };
+        return dbService.getView(view, params)
+            .then(pouchUtil.pluckDocs);
+      };
+
+      _this.getByIds = function(keys) {
         var view = 'location/by-ancestors-id';
         var params = {
           include_docs: true,
