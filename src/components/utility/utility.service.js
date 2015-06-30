@@ -12,6 +12,10 @@ angular.module('utility')
       return $filter('date')(new Date(date), dateFormat);
     };
 
+    this.takeFirst = function(list){
+      return list[0];
+    };
+
     /**
      * This takes a date object, extract only "yyyy-MM-dd" part
      * and return it as date object.
