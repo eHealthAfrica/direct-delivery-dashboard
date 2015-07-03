@@ -85,14 +85,20 @@
                 >Clear Filter</button>
               </td>
             </tr>
+          </tbody>
+          <tbody
+            ng-repeat="summary in facilitiesCtrl.summaries | filter:filter | orderBy: '-createdDate'"
+            ng-switch on="facilitiesCtrl.stockCountRowCollapse[summary.facilityUUID]"
+            >
             <tr
-              ng-repeat="summary in facilitiesCtrl.summaries | filter:filter | orderBy: '-createdDate'"
+              ng-click="facilitiesCtrl.toggleRow(summary.facilityUUID)"
+              class="pointer"
               ng-class="{
                 'bg-success': summary.daysFromLastCountDate <= 7,
                 'bg-warning': summary.daysFromLastCountDate > 7 && summary.daysFromLastCountDate <= 14,
                 'bg-danger': summary.daysFromLastCountDate > 14
               }"
-            >
+              >
               <td ng-if="facilitiesCtrl.currentUser.showZones && facilitiesCtrl.hideChart" ng-bind="summary.zone"></td>
               <td ng-if="facilitiesCtrl.currentUser.showLgas" ng-bind="summary.lga"></td>
               <td>
@@ -125,6 +131,29 @@
                 </ul>
               </td>
             </tr>
+            <tr ng-switch-when="true">
+              <td colspan="{{facilitiesCtrl.tableColumns}}">
+                <div>
+                  <table class="table table-bordered table-condensed table-striped">
+                    <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Count Date</th>
+                      <th>Created Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="facilityStockCount in summary.grouped">
+                      <td>{{ $index + 1 }}</td>
+                      <td>{{ ((facilityStockCount)).countDate | date: 'dd MMM yyyy' }}</td>
+                      <td>{{ ((facilityStockCount)).created | date: 'dd MMM yyyy HH:mm' }}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </td>
+            </tr>
+
           </tbody>
         </table>
       </div>
