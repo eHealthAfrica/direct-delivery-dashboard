@@ -6,9 +6,24 @@ angular.module('lmisApp')
     vm.currentUser = Auth.getCurrentUser();
     vm.reportingFilters = FACILITY_FILTERS;
     vm.hideChart = false;
+    vm.tableColumns = 6;
 
     vm.toggleChart = function() {
       vm.hideChart = !vm.hideChart;
+      vm.tableColumns = vm.hideChart ? 9 : 6;
+    };
+
+    vm.toggleRow = function(facilityID) {
+
+      if (vm.stockCountRowCollapse.hasOwnProperty(facilityID)) {
+        var currentState = vm.stockCountRowCollapse[facilityID];
+        setStockCountRowCollapse();
+        vm.stockCountRowCollapse[facilityID] = !currentState;
+      }
+      else {
+        setStockCountRowCollapse();
+        vm.stockCountRowCollapse[facilityID] = true;
+      }
     };
 
     function bindSummaries(summaries) {
@@ -25,6 +40,13 @@ angular.module('lmisApp')
     function bindCSVData(summaries) {
       vm.csvData = facilityCSV(summaries);
     }
+
+    function setStockCountRowCollapse() {
+      vm.stockCountRowCollapse = {};
+    }
+
+    setStockCountRowCollapse();
+
 
     var d = $q.defer();
     d.promise
