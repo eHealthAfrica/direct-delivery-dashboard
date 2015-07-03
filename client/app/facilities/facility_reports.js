@@ -32,11 +32,13 @@ angular.module('lmisApp')
     function formatSummaries(resolvedPromises) {
       var summaries = resolvedPromises.summaries.summary;
       var facilities = resolvedPromises.facilities;
+      var groupedCounts = resolvedPromises.summaries.groupedStockCount;
 
       return summaries.map(function(summary) {
         var facilityDetail = facilities[summary.facilityUUID];
         return {
           zone: facilityDetail.zone,
+          facilityUUID: summary.facilityUUID,
           lga: facilityDetail.lga,
           facility: summary.facility,
           isNonReporting: isNonReporting(summary.daysFromLastCountDate),
@@ -47,6 +49,7 @@ angular.module('lmisApp')
           reminderDay: summary.reminderDay,
           currentDueDate: formatDate(summary.currentDueDate),
           createdDate: summary.createdDate,
+          grouped: groupedCounts[summary.facilityUUID] || [],
           contact: {
             name: facilityDetail.contact.name,
             phone: facilityDetail.phone,
