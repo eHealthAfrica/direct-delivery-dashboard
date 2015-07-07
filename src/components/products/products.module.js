@@ -2,4 +2,9 @@
  * Created by ehealthafrica on 7/7/15.
  */
 
-angular.module('products', []);
+angular.module('products', [
+  'core',
+  'config',
+  'pouchdb',
+  'utility'
+]);
