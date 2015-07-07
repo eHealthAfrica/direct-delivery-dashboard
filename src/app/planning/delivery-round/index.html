@@ -15,7 +15,7 @@
       <tr>
         <th>State</th>
         <th>Code</th>
-        <th>Start</th>
+        <th>Status</th>
         <th>End</th>
         <th>Created</th>
         <th>Action</th>
@@ -25,6 +25,7 @@
       <tr ng-repeat="round in crCtrl.deliveryRounds">
         <td ng-bind="::round.state"></td>
         <td ng-bind="::round.roundCode"></td>
+        <td ng-bind="::round.status"></td>
         <td ng-bind="::round.startDate | date:'d-MMM-yyyy'"></td>
         <td ng-bind="::round.endDate | date:'d-MMM-yyyy'"></td>
         <td ng-bind="::round.createdOn | date: 'yyyy-MM-dd HH:mm:ss'"></td>
