@@ -1,5 +1,5 @@
 angular.module('planning')
-		.service('planningService', function (dbService, pouchUtil, log, utility) {
+		.service('planningService', function (dbService, pouchUtil, log, utility, ROUND_STATUS) {
 
 			var deliveryDocType = 'deliveryRound';
 
@@ -51,6 +51,10 @@ angular.module('planning')
 				doc._id = this.getRoundCode(doc);
 				doc = formatDoc(doc, doc._id);
 				return dbService.save(doc);
+			};
+
+			this.isEmailReady = function(deliveryRound) {
+				return deliveryRound.status && deliveryRound.status !== ROUND_STATUS.PLANNING;
 			};
 
 			this.onSaveError = function(err){
