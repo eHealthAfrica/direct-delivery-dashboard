@@ -1,6 +1,6 @@
 angular.module('planning')
 		.controller('RoundDialogCtrl', function ($scope, log, $modalInstance, config, deliveryRound,
-                                             $state, planningService) {
+                                             $state, planningService, stateAdminLevels) {
 
 			var vm = this;//view model
       vm.edit = false;
@@ -8,6 +8,7 @@ angular.module('planning')
       if(!angular.isObject(deliveryRound)){
 	      vm.deliveryRound = {
 		      state: '',
+		      stateCode: '',
 		      roundNo: '',
 		      startDate: new Date(),
 		      endDate: ''
@@ -17,11 +18,7 @@ angular.module('planning')
 	      vm.edit = true;
       }
 
-			//TODO: load this from DB when location and facility has been pulled in.
-			vm.states = [
-				{ name: "Kano", code: 'KN' },
-				{ name: "Bauchi", code: 'BA'}
-			];
+			vm.states = stateAdminLevels;
 
 			function openDatePicker($event) {
 				$event.preventDefault();
@@ -33,6 +30,18 @@ angular.module('planning')
 			$scope.start = {
 				opened: false,
 				open: openDatePicker
+			};
+
+			vm.setStateCode = function() {
+				var state;
+				for(var i in vm.states){
+					state = vm.states[i];
+					if(angular.isString(state.name)
+							&& state.name.toLowerCase() === vm.deliveryRound.state.toLocaleLowerCase()) {
+						vm.deliveryRound.stateCode = state._id;
+						break;
+					}
+				}
 			};
 
 			vm.setRoundNumber = function(){

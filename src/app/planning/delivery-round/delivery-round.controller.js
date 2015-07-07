@@ -24,6 +24,12 @@ angular.module('planning')
 							}
 							return planningService.getByRoundId(deliveryRoundId)
 									.catch(handleError);
+						},
+						stateAdminLevels: function(locationService, config) {
+             return locationService.getLocationsByLevel(config.deliveryRoundAdminLevel)
+		             .catch(function() {
+			             return [];
+		             })
 						}
 					}
 				});

@@ -8,7 +8,8 @@
       <div class="form-group">
         <label>State</label>
         <select class="form-control" ng-model="nrdCtrl.deliveryRound.state"
-                ng-disabled="nrdCtrl.edit">
+                ng-disabled="nrdCtrl.edit"
+                ng-change="nrdCtrl.setStateCode()">
           <option value="">select state</option>
           <option ng-repeat="state in nrdCtrl.states"
                   ng-value="state.name"
