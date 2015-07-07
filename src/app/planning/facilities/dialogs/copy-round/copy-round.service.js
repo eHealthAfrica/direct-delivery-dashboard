@@ -1,10 +1,14 @@
 angular.module('planning')
-		.service('copyRoundService', function () {
+		.service('copyRoundService', function (DELIVERY_STATUS) {
 
 			var _this = this;
 
-			var newStatus = 'Upcoming: 1st attempt';
-			//TODO: move this to a constant of delivery statuses
+			_this.shouldResetStatus = function(status){
+				return (status !== DELIVERY_STATUS.CANCELED_CCE
+					&& status !== DELIVERY_STATUS.FAILED_CCE);
+			};
+
+			var newStatus = DELIVERY_STATUS.UPCOMING_FIRST;
 
 			function clearPackingList(packingList) {
 				delete packingList.packedQty;
@@ -26,10 +30,12 @@ angular.module('planning')
 				delete facRnd.arrivedAt;
 				delete facRnd.receivedBy;
 				delete facRnd.recipientPhoneNo;
+				delete facRnd.drop;
+				delete facRnd.window;
 				facRnd.signature = {};
 				facRnd.cancelReport = {};
-				//TODO: Ask Michael or Adamu, how they assign delivery status when copying sheets
-				if(!facRnd.status || facRnd.status !== 'Canceled: CCE'){
+
+				if(_this.shouldResetStatus(facRnd.status)){
 					facRnd.status = newStatus;
 				}
 				//clear packed product
