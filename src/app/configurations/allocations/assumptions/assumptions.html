@@ -1,0 +1,15 @@
+<div class="btn-group pull-right btn-group-sm">
+  <a
+      class="btn btn-info"
+      ng-model="radioModel"
+      btn-radio="'Left'"
+      uncheckable
+      ui-sref="configurations.allocations.assumptions.preview">
+    <i class="fa fa-search"></i> preview
+  </a>
+  <a class="btn btn-default" ng-model="radioModel" btn-radio="'Right'" uncheckable>
+    <i class="fa fa-wrench"></i> edit
+  </a>
+</div>
+<p class="clearfix"></p>
+<ui-view></ui-view>

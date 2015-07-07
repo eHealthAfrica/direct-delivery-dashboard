@@ -1,0 +1,21 @@
+<div class="tabbable tabs-below panel panel-default">
+  <div class="panel-heading">
+    <ul class="nav nav-pills">
+      <li ng-class="{active: selectedTab == 1}">
+        <a ui-sref="configurations.allocations.assumptions" ng-click="selectedTab = 1;">
+          <i class="fa fa-sliders"></i> Assumptions
+        </a>
+      </li>
+      <li ng-class="{active: selectedTab == 2}">
+        <a ui-sref="configurations.allocations.calculations" ng-click="selectedTab = 2;">
+          <i class="fa fa-calculator"></i> Calculations
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="panel-body">
+    <div class="tab-content" ng-show="selectedTab == 1">
+      <ui-view></ui-view>
+    </div>
+  </div>
+</div>

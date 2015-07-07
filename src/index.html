@@ -39,11 +39,14 @@
     <script src="../bower_components/angular-pouchdb/dist/angular-pouchdb.js"></script>
     <script src="../bower_components/jQuery.print/jQuery.print.js"></script>
     <script src="../bower_components/angular-messages/angular-messages.js"></script>
+    <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
     <!-- build:js({.tmp,src}) scripts/app.js -->
     <!-- inject:js -->
+    <script src="app/configurations/allocations/allocations.module.js"></script>
+    <script src="app/configurations/allocations/assumptions/assumptions.states.js"></script>
     <script src="components/log/log.module.js"></script>
     <script src="components/log/messages/warning.constants.js"></script>
     <script src="components/log/messages/success.constants.js"></script>
@@ -63,7 +66,7 @@
     <script src="app/reports/all/all.controller.js"></script>
     <script src="app/configurations/configurations.module.js"></script>
     <script src="app/configurations/menu/configurations.menu.states.js"></script>
-    <script src="app/configurations/allocations/allocations.module.js"></script>
+    <script src="app/configurations/allocations/allocations.states.js"></script>
     <script src="components/navbar/navbar.module.js"></script>
     <script src="components/navbar/navbar.service.js"></script>
     <script src="components/navbar/navbar.controller.js"></script>
