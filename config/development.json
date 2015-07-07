@@ -1,4 +1,8 @@
 {
   "db": "http://localhost:5984/deliveries",
-  "mailerUrl": "https://api.sendgrid.com/api/mail.send.json?"
+  "mailerAPI": "https://mandrillapp.com/api/1.0/messages/send.json",
+  "apiKey": "apiKey",
+  "senderEmail": "no-reply@test.org",
+  "senderName": "EHA Direct-Delivery",
+  "deliveryRoundAdminLevel": "2"
 }
