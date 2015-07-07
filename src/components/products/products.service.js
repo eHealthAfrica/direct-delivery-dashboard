@@ -20,8 +20,7 @@ angular.module('products')
 
       return db.query(view, conf)
         .then(function(res){
-          console.log(res);
-          return res;
+          return utilityService.pluck(res);
         });
     };
 

@@ -10,7 +10,7 @@ angular.module('utility', [])
       var pluckedData = [];
 
       for(row in queryData.rows){
-        pluckedData.push(row.doc)
+        pluckedData.push(queryData.rows[row].doc)
       }
       return pluckedData;
     }

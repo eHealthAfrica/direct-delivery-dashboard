@@ -3,5 +3,7 @@
  */
 angular.module('allocations')
   .controller('AssumptionsController', function(products){
-
+    console.log(products);
+    var vm = this;
+    vm.products = products;
   });
