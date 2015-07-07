@@ -25,5 +25,9 @@ angular.module('log')
     schedulesSaved: {
       title: 'Schedules saved successfully',
       message: 'Schedules saved successfully!'
+    },
+    completePlanningSuccess: {
+      title: 'Delivery round complete planning',
+      message: 'Delivery round planning has been complete and ready for next phase'
     }
   });
