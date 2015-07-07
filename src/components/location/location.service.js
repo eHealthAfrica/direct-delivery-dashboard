@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('location')
-  .service('locationService', function(dbService, pouchUtil, $q) {
+  .service('locationService', function(dbService, pouchUtil) {
 
       var _this = this;
 
