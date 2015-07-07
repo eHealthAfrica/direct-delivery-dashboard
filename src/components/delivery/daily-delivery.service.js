@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('delivery', [])
+angular.module('delivery')
 		.service('deliveryService', function(dbService, pouchUtil){
 
 			this.getByRoundId = function(roundId) {
