@@ -57,6 +57,13 @@ angular.module('planning')
 				return deliveryRound.status && deliveryRound.status !== ROUND_STATUS.PLANNING;
 			};
 
+			this.completePlanning = function(deliveryRound) {
+				if(deliveryRound.status && deliveryRound.status === ROUND_STATUS.PLANNING){
+					deliveryRound.status = ROUND_STATUS.ROUTING_READY;
+				}
+				return this.saveRound(deliveryRound);
+			};
+
 			this.onSaveError = function(err){
 				if(err.status === 401){
 					return log.error('unauthorizedAccess', err);
