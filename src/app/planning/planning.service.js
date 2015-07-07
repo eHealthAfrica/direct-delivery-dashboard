@@ -33,7 +33,7 @@ angular.module('planning')
 				}
 				var startYear = new Date(deliveryRound.startDate).getFullYear();
 				return [
-					deliveryRound.state,
+					deliveryRound.stateCode || deliveryRound.state,
 					deliveryRound.roundNo,
 					startYear
 				].join('-');
