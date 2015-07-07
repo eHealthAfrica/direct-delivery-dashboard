@@ -1,15 +1,17 @@
 angular.module('planning')
 		.controller('RoundDialogCtrl', function ($scope, log, $modalInstance, config, deliveryRound,
-                                             $state, planningService, stateAdminLevels) {
+                                             $state, planningService, stateAdminLevels, ROUND_STATUS) {
 
 			var vm = this;//view model
       vm.edit = false;
+			vm.ROUND_STATUS = ROUND_STATUS;
 
       if(!angular.isObject(deliveryRound)){
 	      vm.deliveryRound = {
 		      state: '',
 		      stateCode: '',
 		      roundNo: '',
+		      status: vm.ROUND_STATUS.PLANNING,
 		      startDate: new Date(),
 		      endDate: ''
 	      };
