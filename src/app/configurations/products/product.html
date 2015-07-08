@@ -6,12 +6,13 @@
     <div class="btn-group btn-group-sm">
       <button class="btn btn-default"><i class="fa fa-plus"></i> add product</button>
     </div>
+    <p></p>
+    <div class="alert alert-info" ng-if="productsController.products.length ===0">
+      <i class="fa fa-info-circle"></i>
+      Product list could not be retrieved. please reload the page after sometime. if it is still not retrieved, contact site administrator.
+    </div>
   </div>
-  <div class="alert alert-info" ng-if="productsController.products.length ===0">
-    <i class="fa fa-info-circle"></i>
-    Product list could not be retrieved. please reload the page after sometime. if it is still not retrieved, contact site administrator.
-  </div>
-  <table class="table table-bordered" productsController.products.length > 0>
+  <table class="table table-bordered" ng-if="productsController.products.length > 0">
     <thead>
       <tr>
         <th>Name</th>
