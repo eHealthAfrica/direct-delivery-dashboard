@@ -4,6 +4,6 @@
 
 function(doc){
   if(doc.doc_type === 'product'){
-
+    emit(doc.uuid, null);
   }
 }
