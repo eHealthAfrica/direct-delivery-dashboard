@@ -160,4 +160,52 @@ angular.module('users')
         return response;
       }
     }
+
+    this.getDriversBy = function(state) {
+      //TODO: call from view
+      var drivers = [
+        {
+          "_id": "abdullahi@example.com",
+          "forename": "Abdullahi"
+        },
+        {
+          "_id": "bashir@example.com",
+          "forename": "Bashir"
+        },
+        {
+          "_id": "ibrahim@example.com",
+          "forename": "Ibrahim"
+        },
+        {
+          "_id": "khalil@example.com",
+          "forename": "Khalil"
+        },
+        {
+          "_id": "tijjani@example.com",
+          "forename": "Tijjani"
+        },
+        {
+          "_id": "umar@example.com",
+          "forename": "Umar"
+        },
+        {
+          "_id": "basheer@example.com",
+          "forename": "Basheer"
+        },
+        {
+          "_id": "garba@example.com",
+          "forename": "Garba"
+        },
+        {
+          "_id": "bello@example.com",
+          "forename": "Bello"
+        },
+        {
+          "_id": "sani@example.com",
+          "forename": "Sani"
+        }
+      ];
+      return $q.when(drivers);
+    };
+
   });

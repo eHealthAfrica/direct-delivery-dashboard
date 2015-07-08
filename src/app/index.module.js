@@ -9,7 +9,10 @@ angular.module('directDeliveryDashboard', [
     'log',
     'login',
     'reports',
+    'planning',
     'users',
+    'db',
+    'location',
     'configurations',
     'allocations'
   ])

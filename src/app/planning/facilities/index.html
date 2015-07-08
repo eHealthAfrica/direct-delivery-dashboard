@@ -1,0 +1,72 @@
+<div class="panel panel-default">
+  <div class="panel panel-heading">
+    <div class="row">
+      <div class="col-sm-6 pull-left">
+        <h4>Import Facilities into {{ mfCtrl.deliveryRound._id }}</h4>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="btn-group pull-right">
+          <button class="btn btn-success"
+                  ng-disabled="mfCtrl.disableSave()"
+                  ng-click="mfCtrl.save()">
+            <i class="fa fa-floppy-o"></i>
+            <span>Save</span>
+          </button>
+          <button class="btn btn-primary" ng-click="mfCtrl.copyFromRoundDialog()">
+            <i class="fa fa-files-o"></i>
+            <span>Copy Round</span>
+          </button>
+          <button class="btn btn-default" ng-click="mfCtrl.openAddFacilitiesDialog()">
+            <i class="fa fa-hospital-o"></i>
+            <span>Add Facilities</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-body">
+
+    <table ng-show="mfCtrl.facilityList.length > 0"
+           class="table table-condensed table-striped table-bordered">
+      <thead>
+      <tr>
+        <th class="col-sm-1">#</th>
+        <th class="col-sm-2">Zone</th>
+        <th class="col-sm-2">LGA</th>
+        <th class="col-sm-2">Ward</th>
+        <th class="col-sm-3">Facility</th>
+        <th class="col-sm-2">Code</th>
+        <th class="col-sm-1">
+          <span class="dropdown" dropdown on-toggle="toggled(open)">
+            <a href class="dropdown-toggle" dropdown-toggle>Select</a>
+            <ul class="dropdown-menu">
+              <li ng-repeat="option in mfCtrl.selectOptions">
+                <a href ng-click="mfCtrl.onSelect(option)">{{option}}</a>
+              </li>
+            </ul>
+          </span>
+        </th>
+      </tr>
+
+      </thead>
+      <tbody>
+      <tr ng-repeat="facility in mfCtrl.facilityList track by $index">
+        <td ng-bind="($index + 1)"></td>
+        <td ng-bind="facility.zone"></td>
+        <td ng-bind="facility.lga"></td>
+        <td ng-bind="facility.ward"></td>
+        <td ng-bind="facility.name"></td>
+        <td ng-bind="facility.id"></td>
+        <td>
+          <input type="checkbox"
+                 ng-model="mfCtrl.selectedList[facility.id]"
+                 ng-checked="mfCtrl.selectedList[facility.id]">
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

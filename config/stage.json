@@ -1,5 +1,5 @@
 {
-  "db": "http://localhost:5984/deliveries",
+  "db": "https://dev.couchdb.ebola.eocng.org/deliveries",
   "mailerAPI": "https://mandrillapp.com/api/1.0/messages/send.json",
   "apiKey": "apiKey",
   "senderEmail": "no-reply@test.org",
