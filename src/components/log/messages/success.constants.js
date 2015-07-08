@@ -17,5 +17,17 @@ angular.module('log')
     userRemoved: {
       title: 'Users',
       message: 'User deleted'
+    },
+    savedDeliveryRound: {
+      title: 'Saved delivery round',
+      message: 'Delivery round was saved successfully!'
+    },
+    schedulesSaved: {
+      title: 'Schedules saved successfully',
+      message: 'Schedules saved successfully!'
+    },
+    completePlanningSuccess: {
+      title: 'Delivery round complete planning',
+      message: 'Delivery round planning has been complete and ready for next phase'
     }
   });

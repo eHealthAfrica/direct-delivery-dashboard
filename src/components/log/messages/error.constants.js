@@ -31,5 +31,45 @@ angular.module('log')
       title: 'Users',
       message: 'Invalid user id',
       remedy: 'Please select a valid user from the list'
+    },
+    unauthorizedAccess: {
+      title: 'Unauthorized access',
+      message: 'You are not allowed to access perform this operation',
+      remedy: 'Please, re-login, try again if you have access and contact support if it persists'
+    },
+    updateConflict: {
+      title: 'Document update conflict',
+      message: 'The document you want to modified has been updated or created',
+      remedy: 'Please, refresh and try again'
+    },
+    saveDeliveryRoundFailed: {
+      title: 'Save delivery round failed',
+      message: 'An unknown error occurred while saving delivery round',
+      remedy: 'Please, try again and contact support if it persists'
+    },
+    deliveryRoundNotFound: {
+      title: 'Delivery round does not exist',
+      message: 'Sorry, could not find delivery round, maybe it has been deleted',
+      remedy: 'Please, create a new delivery round or contact support'
+    },
+    deliveryRoundDoesNotHaveDailySchedule: {
+      title: 'Daily schedules not available',
+      message: 'Delivery round does not have daily schedules',
+      remedy: 'Select another round or use other scheduling options'
+    },
+    saveBatchScheduleFailed: {
+      title: 'Batch schedules save failed',
+      message: 'An error occurred while saving schedules',
+      remedy: 'Please, try again if this persists, contact support.'
+    },
+    selectLevelToImportFromErr: {
+      title: 'Select administrative level to import from',
+      message: '',
+      remedy: 'Please, select administrative level and sub-levels'
+    },
+    fetchByAncestorsFailed: {
+      title: 'Fetch locations failed',
+      message: 'An error while retrieving facilities under selected areas',
+      remedy: 'Please, try again if this persists contact support.'
     }
   });
