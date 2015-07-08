@@ -21,7 +21,6 @@ angular.module('planning')
 				if(option === none){
 					return vm.selectedList = {};
 				}
-				vm.selectedList = {};
 				vm.facilityList.forEach(function(facility){
 					vm.selectedList[facility.id] = true;
 				})
@@ -31,10 +30,12 @@ angular.module('planning')
 				vm.facilityList = [];
 				vm.roundTemplate = roundTemplate;
 				vm.roundTemplate.forEach(function(dailySchedule){
-					dailySchedule.facilityRounds.forEach(function(facilityRound){
-						vm.facilityList.push(facilityRound.facility);
-						vm.selectedList[facilityRound.facility.id] = true;
-					});
+					if(angular.isArray(dailySchedule.facilityRounds)){
+						dailySchedule.facilityRounds.forEach(function(facilityRound){
+							vm.facilityList.push(facilityRound.facility);
+							vm.selectedList[facilityRound.facility.id] = true;
+						});
+					}
 				});
 			};
 

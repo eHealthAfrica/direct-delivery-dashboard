@@ -80,19 +80,18 @@ angular.module('planning')
 			};
 
 			_this.copySchedules = function(template, selectedFacilityList){
+				console.log(selectedFacilityList);
 				var result = [];
 				var currentRoundTemplate = angular.copy(template);
 				var selectedList = angular.copy(selectedFacilityList);
 				currentRoundTemplate.forEach(function(dailySchedule){
 					if(angular.isArray(dailySchedule.facilityRounds)){
-						var facilityRnd;
-						for(var i in dailySchedule.facilityRounds){
-							facilityRnd = dailySchedule.facilityRounds[i];
-							if(!_this.isSelectedFacilityRound(facilityRnd, selectedList)){
-								dailySchedule.facilityRounds.splice(i, 1);
-							}
-						}
+						dailySchedule.facilityRounds = dailySchedule.facilityRounds
+								.filter(function(facilityRnd){
+									return _this.isSelectedFacilityRound(facilityRnd, selectedList)
+								});
 						if(dailySchedule.facilityRounds.length > 0){
+							console.warn(dailySchedule.facilityRounds);
 							result.push(dailySchedule); //skip empty facility rounds
 						}
 					}
