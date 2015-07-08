@@ -11,6 +11,13 @@ angular.module('allocations')
     })
     .state('configurations.allocations.assumptions.preview', {
       url: '/preview',
-      templateUrl: 'app/configurations/allocations/assumptions/preview.html'
+      templateUrl: 'app/configurations/allocations/assumptions/preview.html',
+      controller: "AssumptionsController",
+      controllerAs: 'assumptionsController',
+      resolve: {
+        products : function(productService){
+          return productService.getAll();
+        }
+      }
     })
   });
