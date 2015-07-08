@@ -6,5 +6,5 @@ angular.module('products')
   .controller('ProductsController', function(products){
     var vm = this;
 
-    vm.products = products;
+    vm.products = angular.isArray(products) ? products : [];
   });

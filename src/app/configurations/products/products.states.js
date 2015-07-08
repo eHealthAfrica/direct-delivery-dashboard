@@ -13,7 +13,10 @@ angular.module('products')
         controllerAs: 'productsController',
         resolve: {
           products : function(productService){
-            return productService.getAll();
+            return productService.getAll()
+              .catch(function(err){
+                return [];
+              });
           }
         }
       })

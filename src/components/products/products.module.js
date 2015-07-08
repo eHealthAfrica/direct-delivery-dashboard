@@ -6,5 +6,5 @@ angular.module('products', [
   'core',
   'config',
   'pouchdb',
-  'utility'
+  'db'
 ]);

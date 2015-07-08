@@ -3,7 +3,7 @@
  */
 
 angular.module('products')
-  .service('productService', function(config,pouchDB, utilityService){
+  .service('productService', function(config,pouchDB, pouchUtil){
 
     var db = pouchDB(config.db);
 
@@ -20,7 +20,7 @@ angular.module('products')
 
       return db.query(view, conf)
         .then(function(res){
-          return utilityService.pluck(res);
+          return pouchUtil.pluckDocs(res);
         });
     };
 
