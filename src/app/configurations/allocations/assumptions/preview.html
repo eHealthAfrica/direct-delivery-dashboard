@@ -6,7 +6,7 @@
     <th class="bg-info">Schedule</th>
     <th class="bg-warning">Wastage</th>
     <th class="bg-success">Buffer</th>
-    <th></th>
+    <th>Select</th>
   </thead>
   <tbody>
     <tr ng-repeat="assumption in assumptionsController.assumptionList track by $index" ng-click="assumptionsController.editAssumption(assumption)">
@@ -16,7 +16,7 @@
       <td ng-bind="assumption.schedule" ></td>
       <td ng-bind="assumption.wastage" ></td>
       <td>{{assumption.buffer}} %</td>
-      <td><a><i class="fa fa-wrench"></i> </a></td>
+      <td><input type="checkbox" ng-click="assumptionsController.addToOpenForEdit(assumption)"/></td>
     </tr>
   </tbody>
 </table>

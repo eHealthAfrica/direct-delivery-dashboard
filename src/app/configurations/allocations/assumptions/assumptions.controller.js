@@ -8,6 +8,7 @@ angular.module('allocations')
     console.log(assumptionList);
 
     vm.hoverRows = false;
+    vm.openForEdit = [];
 
     vm.editAssumption = function(data){
       var modalInstance = $modal.open({
@@ -34,5 +35,21 @@ angular.module('allocations')
       .catch(function (err) {
         log.info('canceledAssumptionEdit', err);
       });
+    };
+
+    vm.addToOpenForEdit = function(doc){
+      vm.openForEdit.push(doc);
+    }
+
+    vm.suspendAllocation = function(){
+      for(i in vm.openForEdit){
+        vm.openForEdit[i].suspended = true;
+      }
+      assumptionService.save(vm.openForEdit)
+        .then(clearOpenForEdit)
+    };
+
+    function clearOpenForEdit(){
+      vm.openForEdit = [];
     }
   });

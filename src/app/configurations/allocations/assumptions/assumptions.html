@@ -16,11 +16,13 @@
     </button>
   </div>
   <div class="btn-group" role="group" aria-label="...">
-    <button type="button" class="btn btn-info" ng-model="radioModel" btn-radio="'Left'">
-      <i class="fa fa-th"></i> control column
-    </button>
-    <button type="button" class="btn btn-info" ng-model="radioModel" btn-radio="'right'">
-      <i class="fa fa-comment-o"></i> tooltip
+    <button
+        type="button"
+        class="btn btn-danger"
+        ng-model="radioModel"
+        btn-radio="'Left'"
+        ng-class="{'disabled': assumptionsController.openForEdit.length ===0}">
+      <i class="fa fa-pause"></i> suspend allocation
     </button>
   </div>
   <div class="btn-group pull-right" role="group" aria-label="...">
