@@ -5,5 +5,9 @@ angular.module('log')
       noFacilityInAdminLevels: {
         title: 'Empty facility list',
         message: 'Please select different admin levels or upload facilities for selected levels'
+      },
+      canceledAssumptionEdit: {
+        title: 'Update cancelled',
+        message: 'editing assumption cancelled'
       }
   });

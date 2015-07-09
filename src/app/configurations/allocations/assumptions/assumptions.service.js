@@ -3,7 +3,7 @@
  */
 
 angular.module('allocations')
-  .service('assumptionService', function(pouchDB, config, pouchUtil, log, productService){
+  .service('assumptionService', function(pouchDB, config, pouchUtil, log, productService, dbService){
 
     var db = pouchDB(config.db);
     var service = this;
@@ -23,8 +23,8 @@ angular.module('allocations')
           return err;
         });
     };
-    service.create = function(){
-
+    service.save = function(data){
+      return dbService.save(data);
     };
 
     /**
