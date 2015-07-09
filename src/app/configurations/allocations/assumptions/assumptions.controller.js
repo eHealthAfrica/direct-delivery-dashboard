@@ -2,8 +2,7 @@
  * Created by ehealthafrica on 7/7/15.
  */
 angular.module('allocations')
-  .controller('AssumptionsController', function(products){
-    console.log(products);
+  .controller('AssumptionsController', function(assumptionList){
     var vm = this;
-    vm.products = products;
+    vm.assumptionList = assumptionList;
   });

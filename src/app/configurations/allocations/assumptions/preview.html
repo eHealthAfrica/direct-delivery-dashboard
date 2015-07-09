@@ -1,20 +1,26 @@
-<table class="table table-bordered">
+<table class="table table-bordered table-hover" ng-if="assumptionsController.assumptionList.length > 0">
   <thead>
     <th>Product</th>
-    <th>Presentation</th>
-    <th>Coverage</th>
-    <th>Schedule</th>
-    <th>Wastage</th>
-    <th>Buffer</th>
+    <th class="bg-primary">Presentation</th>
+    <th class="bg-danger">Coverage</th>
+    <th class="bg-info">Schedule</th>
+    <th class="bg-warning">Wastage</th>
+    <th class="bg-success">Buffer</th>
+    <th></th>
   </thead>
   <tbody>
-    <tr ng-if="assumptionsController.products.length > 0" ng-repeat="products in assumptionsController.products track by $index">
-      <td ng-bind="products.code"></td>
-      <td>0</td>
-      <td>0 %</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0 %</td>
+    <tr ng-repeat="assumption in assumptionsController.assumptionList track by $index">
+      <td><span tooltip="click on row to edit"><b>{{assumption.product.code}}</b></span></td>
+      <td ng-bind="assumption.presentation"></td>
+      <td>{{assumption.coverage}} %</td>
+      <td ng-bind="assumption.schedule" ></td>
+      <td ng-bind="assumption.wastage" ></td>
+      <td>{{assumption.buffer}} %</td>
+      <td><a><i class="fa fa-wrench"></i> </a></td>
     </tr>
   </tbody>
 </table>
+<div class="alert alert-warning" ng-if="!(assumptionsController.assumptionList.length > 0)">
+  <i class="fa fa-info-circle"></i>
+  we couldn't retrieve previous assumptions, please check that you have added products. If so, please contact admin.
+</div>
