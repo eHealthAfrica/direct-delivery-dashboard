@@ -5,6 +5,9 @@ angular.module('allocations')
   .controller('AssumptionsController', function(assumptionList, $modal, log, assumptionService){
     var vm = this;
     vm.assumptionList = assumptionList;
+    console.log(assumptionList);
+
+    vm.hoverRows = false;
 
     vm.editAssumption = function(data){
       var modalInstance = $modal.open({
