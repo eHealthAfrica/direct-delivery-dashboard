@@ -7,11 +7,7 @@ angular.module('allocations')
     $stateProvider.state('configurations.allocations.assumptions', {
       parent: 'configurations.allocations',
       url: '/assumptions',
-      templateUrl: 'app/configurations/allocations/assumptions/assumptions.html'
-    })
-    .state('configurations.allocations.assumptions.preview', {
-      url: '/preview',
-      templateUrl: 'app/configurations/allocations/assumptions/preview.html',
+      templateUrl: 'app/configurations/allocations/assumptions/assumptions.html',
       controller: "AssumptionsController",
       controllerAs: 'assumptionsController',
       resolve: {

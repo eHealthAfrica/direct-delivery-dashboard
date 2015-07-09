@@ -1,7 +1,7 @@
 <hr/>
 <div class="btn-toolbar" role="toolbar" aria-label="...">
   <div class="btn-group" role="group" aria-label="...">
-    <button type="button" class="btn btn-default btn-checkbox btn-group-md" btn-checkbox ng-model="checkModel.left">
+    <button type="button" class="btn btn-default btn-checkbox btn-group-md" btn-checkbox ng-model="checkModel.left" ng-click="">
       <i class="fa fa-paint-brush"></i> color code
     </button>
     <button type="button" class="btn btn-default btn-checkbox" btn-checkbox ng-model="checkModel.middle">
@@ -34,4 +34,4 @@
   </div>
 </div>
 <hr/>
-<ui-view></ui-view>
+<div ng-include="'app/configurations/allocations/assumptions/preview.html'"></div>
