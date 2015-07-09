@@ -1,3 +1,126 @@
+<div class="col-md-12 page-header">
+  <div class="col-sm-6 pull-left">
+    <h1><i class="fa fa-truck fa-lg"></i> Delivery Round: KN-21-2015 </h1>
+  </div>
+
+  <div class="col-sm-6 pull-right">
+    <div class="form-group has-feedback">
+      <input type="text" class="form-control input-lg filter" placeholder="Round code"
+             ng-model="homeCtrl.selectedRound"
+             typeahead="roundCode for roundCode in homeCtrl.roundCodes">
+    </div>
+  </div>
+</div>
+
+<!-- Summary Table Section-->
 <div class="col-md-12">
-  <h1 class="page-header">Welcome to Direct Delivery Dashboard</h1>
+  <br/><br/>
+  <div class="col-md-3">
+    <div class="jumbotron alert-default">
+      <h1>252</h1>
+      <h4>Grand Total</h4>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="jumbotron alert-success">
+      <h1>247</h1>
+      <h4>Total Delivered</h4>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="jumbotron alert-info">
+      <h1>75 %</h1>
+      <h4>Working CCE</h4>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="jumbotron alert-warning">
+      <h1>220</h1>
+      <h4>Billable Deliveries</h4>
+    </div>
+  </div>
+</div>
+<!-- end summary section -->
+
+<!-- Delivery Round Chart section-->
+<div class="col-md-12">
+  <!-- current status chart -->
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading"><h4>Round Status</h4></div>
+      <div class="panel-body">
+        <div class="container-fluid">
+          <nvd3-pie-chart
+              class="row"
+              data="homeCtrl.roundStatus"
+              id="deliveryStatusChart"
+              height="450"
+              color="homeCtrl.colorFunction()"
+              x="homeCtrl.xFunction()"
+              y="homeCtrl.yFunction()"
+              donut="true"
+              tooltips="true"
+              donutRatio=".35"
+              showLegend="true"
+              legendColor="homeCtrl.colorFunction()">
+          </nvd3-pie-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end of current round chart -->
+
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading"><h4>Round Progress</h4></div>
+      <div class="panel-body">
+        <div class="container-fluid">
+          <nvd3-multi-bar-horizontal-chart
+              data="homeCtrl.progressData"
+              id="roundProgressChart"
+              margin="{ left: 80 }"
+              height="450"
+              tooltips="true"
+              showXAxis="true"
+              showYAxis="true"
+              showLabels="true"
+              stacked="true"
+              yaxistickformat="homeCtrl.roundOff()"
+              showLegend="true">
+            <svg></svg>
+          </nvd3-multi-bar-horizontal-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- on time delivery section -->
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading"><h3>On Time Delivery</h3></div>
+      <div class="panel-body">
+        <div class="container-fluid">
+          <nvd3-pie-chart
+              data="homeCtrl.onTime"
+              id="onTimeChart"
+              height="450"
+              color="homeCtrl.onTimeColors()"
+              x="homeCtrl.xFunction()"
+              y="homeCtrl.yFunction()"
+              donut="true"
+              tooltips="true"
+              labelType="percent"
+              donutRatio=".35"
+              showLabels="true"
+              showLegend="true"
+              legendColor="homeCtrl.onTimeColors()">
+          </nvd3-pie-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end of on time delivery -->
+
 </div>

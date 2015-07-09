@@ -5,6 +5,8 @@ angular.module('home')
     $stateProvider.state('home', {
       parent: 'index',
       url: '/',
+      controller: 'HomeCtrl',
+      controllerAs: 'homeCtrl',
       templateUrl: 'app/home/home.html',
       data: {
         label: 'Home'
