@@ -9,6 +9,7 @@ angular.module('allocations')
 
     vm.hoverRows = false;
     vm.openForEdit = [];
+    vm.suspendable = false;
 
     vm.editAssumption = function(data){
       var modalInstance = $modal.open({
@@ -36,16 +37,53 @@ angular.module('allocations')
         log.info('canceledAssumptionEdit', err);
       });
     };
-
+    function toggleSuspensionState(doc){
+      if(!doc.suspended){
+        return vm.suspendable = true;
+      }
+      return vm.suspendable = false;
+    }
     vm.addToOpenForEdit = function(doc){
       vm.openForEdit.push(doc);
-    }
+      toggleSuspensionState(doc);
+    };
 
     vm.suspendAllocation = function(){
+      var msg = '';
       for(i in vm.openForEdit){
         vm.openForEdit[i].suspended = true;
       }
+      if(vm.openForEdit.length > 1){
+        msg = 'for '+ vm.openForEdit.length +' products'
+      }else{
+        msg = 'for '+ vm.openForEdit[0].product.code;
+      }
       assumptionService.save(vm.openForEdit)
+        .then(function(res){
+          log.success('assumptionSuspension', res, msg)
+        })
+        .then(clearOpenForEdit)
+    };
+    vm.resumeAllocation = function(){
+      var msg = '';
+      // effect changes on only previuosly suspended docs
+      var suspendedOnly = vm.openForEdit.filter(function(doc){
+        var outcome = false;
+        if(doc.suspended){
+          doc.suspended = false;
+          outcome = true;
+        }
+        return outcome;
+      });
+      if(suspendedOnly.length > 0){
+        msg = 'for '+ suspendedOnly.length +' products'
+      }else{
+        msg = 'for '+ suspendedOnly[0].product.code;
+      }
+      assumptionService.save(suspendedOnly)
+        .then(function(res){
+          log.success('assumptionSuspension', res, msg)
+        })
         .then(clearOpenForEdit)
     };
 

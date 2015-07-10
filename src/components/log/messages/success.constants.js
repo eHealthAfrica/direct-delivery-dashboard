@@ -33,5 +33,9 @@ angular.module('log')
     assumptionEdited: {
       title: 'Update successfully',
       message: 'Assumption edited successfully!'
+    },
+    assumptionSuspension: {
+      title: 'Allocation suspended',
+      message: 'allocation has been suspended'
     }
   });

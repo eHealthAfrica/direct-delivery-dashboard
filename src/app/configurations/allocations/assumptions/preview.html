@@ -9,8 +9,19 @@
     <th>Select</th>
   </thead>
   <tbody>
-    <tr ng-repeat="assumption in assumptionsController.assumptionList track by $index" ng-click="assumptionsController.editAssumption(assumption)">
-      <td><span tooltip="click on row to edit"><b>{{assumption.product.code}}</b></span></td>
+    <tr ng-repeat="assumption in assumptionsController.assumptionList track by $index">
+      <td>
+        <a
+            tooltip="click to edit assumption"
+            ng-click="assumptionsController.editAssumption(assumption)"
+            href=""
+            class="btn"
+            ng-class="{'disabled': assumption.suspended}"
+            >
+          <b>{{assumption.product.code}}</b>
+          <small ng-if="assumption.suspended" ng-class="{'bg-danger': assumption.suspended}"> *suspended </small>
+        </a>
+      </td>
       <td ng-bind="assumption.presentation"></td>
       <td>{{assumption.coverage}} %</td>
       <td ng-bind="assumption.schedule" ></td>
