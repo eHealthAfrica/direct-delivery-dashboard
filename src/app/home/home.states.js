@@ -8,6 +8,12 @@ angular.module('home')
       controller: 'HomeCtrl',
       controllerAs: 'homeCtrl',
       templateUrl: 'app/home/home.html',
+      resolve: {
+        roundReport: function(deliveryRoundService) {
+          var key = 'KN-78-2015';
+          return deliveryRoundService.getReport(key)
+        }
+      },
       data: {
         label: 'Home'
       }

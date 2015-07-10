@@ -15,31 +15,52 @@
 <!-- Summary Table Section-->
 <div class="col-md-12">
   <br/><br/>
+
   <div class="col-md-3">
     <div class="jumbotron alert-default">
-      <h1>252</h1>
-      <h4>Grand Total</h4>
+      <h1 ng-bind="homeCtrl.roundReport.total"></h1>
+      <h4>
+        <ng-pluralize
+            count="homeCtrl.roundReport.total"
+            when="{
+              'NaN': 'Delivery Scheduled',
+              '0' : 'Delivery Scheduled',
+              '1' : 'Delivery Scheduled',
+              'other': 'Deliveries Scheduled'
+            }">
+        </ng-pluralize>
+      </h4>
     </div>
   </div>
 
   <div class="col-md-3">
     <div class="jumbotron alert-success">
-      <h1>247</h1>
+      <h1 ng-bind="homeCtrl.roundReport.delivered"></h1>
       <h4>Total Delivered</h4>
     </div>
   </div>
 
   <div class="col-md-3">
     <div class="jumbotron alert-info">
-      <h1>75 %</h1>
+      <h1>{{ homeCtrl.roundReport.workingCCE }} %</h1>
       <h4>Working CCE</h4>
     </div>
   </div>
 
   <div class="col-md-3">
     <div class="jumbotron alert-warning">
-      <h1>220</h1>
-      <h4>Billable Deliveries</h4>
+      <h1 ng-bind="homeCtrl.roundReport.billables"></h1>
+      <h4>
+        <ng-pluralize
+            count="homeCtrl.roundReport.billables"
+            when="{
+              'NaN': 'Billable Deliveries',
+              '0' : 'Billable Delivery',
+              '1' : 'Billable Delivery',
+              'other':'Billable Deliveries'
+            }">
+        </ng-pluralize>
+      </h4>
     </div>
   </div>
 </div>
@@ -53,34 +74,9 @@
       <div class="panel-heading"><h4>Round Status</h4></div>
       <div class="panel-body">
         <div class="container-fluid">
-          <nvd3-pie-chart
-              class="row"
-              data="homeCtrl.roundStatus"
-              id="deliveryStatusChart"
-              height="450"
-              color="homeCtrl.colorFunction()"
-              x="homeCtrl.xFunction()"
-              y="homeCtrl.yFunction()"
-              donut="true"
-              tooltips="true"
-              donutRatio=".35"
-              showLegend="true"
-              legendColor="homeCtrl.colorFunction()">
-          </nvd3-pie-chart>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- end of current round chart -->
-
-  <div class="col-md-4">
-    <div class="panel panel-default">
-      <div class="panel-heading"><h4>Round Progress</h4></div>
-      <div class="panel-body">
-        <div class="container-fluid">
           <nvd3-multi-bar-horizontal-chart
-              data="homeCtrl.progressData"
-              id="roundProgressChart"
+              data="homeCtrl.roundStatus"
+              id="roundStatusChart"
               margin="{ left: 80 }"
               height="450"
               tooltips="true"
@@ -96,10 +92,23 @@
       </div>
     </div>
   </div>
+  <!-- end of current round chart -->
+
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading"><h4>Round Progress</h4></div>
+      <div class="panel-body">
+        <div class="container-fluid">
+         Show something here!
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- on time delivery section -->
   <div class="col-md-4">
     <div class="panel panel-default">
-      <div class="panel-heading"><h3>On Time Delivery</h3></div>
+      <div class="panel-heading"><h4>On Time Delivery</h4></div>
       <div class="panel-body">
         <div class="container-fluid">
           <nvd3-pie-chart
@@ -107,8 +116,8 @@
               id="onTimeChart"
               height="450"
               color="homeCtrl.onTimeColors()"
-              x="homeCtrl.xFunction()"
-              y="homeCtrl.yFunction()"
+              x="homeCtrl.xPieFunction()"
+              y="homeCtrl.yPieFunction()"
               donut="true"
               tooltips="true"
               labelType="percent"

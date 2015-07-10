@@ -1,57 +1,39 @@
 'use strict';
 
 angular.module('directDeliveryDashboard')
-		.controller('HomeCtrl', function(DELIVERY_STATUS, $window) {
+		.controller('HomeCtrl', function(DELIVERY_STATUS, $window, roundReport) {
 
-			var vm = this; //view model
-      vm.selectedRound = '';
-			vm.roundCodes = [ 'KN-21-2015', 'KN-22-2015', 'KN-23-2015' ];
+			console.log(roundReport);
 
-			vm.roundStatus = [
-				{ key: DELIVERY_STATUS.UPCOMING_FIRST, y: 5 },
-				{ key: 'Success', y: 2 },
-				{ key: DELIVERY_STATUS.CANCELED_CCE, y: 9 },
-				{ key: DELIVERY_STATUS.CANCELED_STAFF, y: 7 },
-				{ key: DELIVERY_STATUS.CANCELED_OTHER, y: 4 },
-				{ key: DELIVERY_STATUS.FAILED_CCE, y: 3 },
-				{ key: DELIVERY_STATUS.FAILED_OTHER, y: 9 }
+			var vm = this; //view models
+			vm.roundReport = roundReport;
+			vm.onTime = [
+				{ key: 'Behind Time', y: roundReport.behindTime, color: 'orange' },
+				{ key: 'On Time', y: roundReport.onTime, color: 'green' }
 			];
 
-			vm.margin = { left:0, top:0, bottom:0, right:0};
-
-			var colorArray = ['grey', 'green', '#CC0000', '#FF6666', '#FF3333', '#FF6666', '#FFE6E6'];
-			vm.colorFunction = function() {
-				return function(d, i) {
-					return colorArray[i];
+			vm.onTimeColors = function() {
+				return function(d) {
+					return d.data.color;
 				};
 			};
 
-			vm.xFunction = function(){
+			vm.xPieFunction = function(){
 				return function(d) {
 					return d.key;
 				};
 			};
 
-			vm.yFunction = function(){
+			vm.yPieFunction = function(){
 				return function(d){
 					return d.y;
 				};
 			};
 
+      vm.selectedRound = '';
+			vm.roundCodes = [ 'KN-21-2015', 'KN-22-2015', 'KN-23-2015' ];
 
-			var onTimeColors = ['green', 'orange'];
-			vm.onTime = [
-				{ key: 'On Time', y: 75 },
-				{ key: 'Behind Time', y: 25 },
-			];
-			vm.onTimeColors = function() {
-				return function(d, i) {
-					return onTimeColors[i];
-				};
-			};
-
-
-			vm.progressData = [
+			vm.roundStatus = [
 				{
 					"key": "Success",
 					"color": "green",
@@ -100,12 +82,13 @@ angular.module('directDeliveryDashboard')
 				};
 			};
 
+			vm.margin = { left:0, top:0, bottom:0, right:0};
 
-			var progressColorArray = ['orange', 'green', 'red', 'grey'];
-			vm.progressColorFn = function() {
+			var colorArray = ['grey', 'green', '#CC0000', '#FF6666', '#FF3333', '#FF6666', '#FFE6E6'];
+			vm.colorFunction = function() {
 				return function(d, i) {
-					return progressColorArray[i];
+					return colorArray[i];
 				};
-			}
+			};
 
 		});
