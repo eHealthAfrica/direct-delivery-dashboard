@@ -21,16 +21,17 @@
         class="btn btn-danger"
         ng-model="radioModel"
         btn-radio="'Left'"
-        ng-class="{'disabled': (assumptionsController.openForEdit.length ===0 && !assumptionsController.suspendable) }"
+        ng-class="{'disabled': assumptionsController.openForEdit.length ==0 }"
         ng-click="assumptionsController.suspendAllocation()">
       <i class="fa fa-pause"></i> suspend allocation
     </button>
+    {{assumptionsController.openForEdit.length}}
     <button
         type="button"
         class="btn btn-success"
         ng-model="radioModel"
         btn-radio="'Left'"
-        ng-class="{'disabled': (assumptionsController.openForEdit.length ===0 && !assumptionsController.suspendable)  }"
+        ng-class="{'disabled': (assumptionsController.openForEdit.length ==0 && (assumptionsController.suspendable == false))  }"
         ng-click="assumptionsController.suspendAllocation()">
       <i class="fa fa-play"></i> resume allocation
     </button>
