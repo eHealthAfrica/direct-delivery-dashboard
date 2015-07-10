@@ -1,4 +1,4 @@
-function(doc) {
+function (doc) {
 
 	var successTag = 'success';
 	var cceTag = 'cce';
@@ -50,7 +50,8 @@ function(doc) {
 	}
 
 	function hasWorkingCCE(status) {
-		return (status.toLowerCase().indexOf(cceTag) === -1);;
+		return (status.toLowerCase().indexOf(cceTag) === -1);
+		;
 	}
 
 	function isDelivered(status) {
@@ -72,7 +73,7 @@ function(doc) {
 		return facRndReport
 	}
 
-	if (doc.doc_type === 'dailyDelivery' && isValidStatus(doc.status) && !isInvalidDate(doc.date)) {
+	if (doc.doc_type === 'dailyDelivery' && !isInvalidDate(doc.date)) {
 
 		var facRnd;
 		var facRndReport;
@@ -81,10 +82,12 @@ function(doc) {
 		if (doc.facilityRounds) {
 			for (var i in doc.facilityRounds) {
 				facRnd = doc.facilityRounds[i];
-				facRndReport = genReport(facRnd.targetDate, doc.date, facRnd.status);
-				emit(doc.deliveryRoundID, facRndReport);
+				if (isValidStatus(facRnd.status)) {
+					facRndReport = genReport(facRnd.targetDate, doc.date, facRnd.status);
+					emit(doc.deliveryRoundID, facRndReport);
+				}
 			}
-		} else {
+		} else if (isValidStatus(doc.status)) {
 			//newer single facility round document
 			facRnd = doc;
 			facRndReport = genReport(facRnd.targetDate, facRnd.date, facRnd.status);
