@@ -7,15 +7,13 @@
         </a>
       </li>
       <li ng-class="{active: selectedTab == 2}">
-        <a ui-sref="configurations.allocations.calculations" ng-click="selectedTab = 2;">
+        <a ui-sref="calculations" ng-click="selectedTab = 2;">
           <i class="fa fa-calculator"></i> Calculations
         </a>
       </li>
     </ul>
   </div>
   <div class="panel-body">
-    <div class="tab-content" ng-show="selectedTab == 1">
-      <ui-view></ui-view>
-    </div>
+    <ui-view></ui-view>
   </div>
 </div>

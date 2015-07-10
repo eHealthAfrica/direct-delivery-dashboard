@@ -5,10 +5,9 @@
 angular.module('allocations')
   .config(function($stateProvider){
     $stateProvider
-      .state('configurations.allocations.calculations', {
-        parent: 'conigurations.allocations',
+      .state('calculations', {
+        parent: 'configurations.allocations',
         url: '/calculations',
-        templateUrl: 'app/configurations/allocations/calculations/index.html',
-
+        templateUrl: 'app/configurations/allocations/calculations/index.html'
       })
   });

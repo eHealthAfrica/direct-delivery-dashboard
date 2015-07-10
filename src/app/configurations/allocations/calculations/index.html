@@ -1,1 +1,49 @@
-<h3 class="page-header">Calculations</h3>
+<hr/>
+   <form class="form-inline" role="form">
+      <div class="form-group">
+        <select class="form-control">
+          <option value="">select state</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <select class="form-control">
+          <option value="">select lga</option>
+        </select>
+      </div>
+     <div class="form-group">
+        <select class="form-control">
+          <option value="">select ward</option>
+        </select>
+     </div>
+     <div class=" clearfix pull-right">
+        <span class="dropdown" dropdown on-toggle="toggled(open)">
+           <a href class="dropdown-toggle btn btn-default" dropdown-toggle>
+              change data view
+              <span class="caret"></span>
+           </a>
+           <ul class="dropdown-menu">
+             <li><a href ng-click="calculationsController.changeDataView('tp')">target populations</a></li>
+             <li class="divider"></li>
+             <li><a href ng-click="calculationsController.changeDataView('coverage')">coverage</a></li>
+             <li><a href ng-click="calculationsController.changeDataView('schedule')">schedule</a></li>
+             <li><a href ng-click="calculationsController.changeDataView('wastage')">wastage</a></li>
+             <li><a href ng-click="calculationsController.changeDataView('buffer')">buffer</a></li>
+             <li class="divider"></li>
+             <li><a href ng-click="calculationsController.changeDataView('mr')">monthly requirements</a></li>
+             <li><a href ng-click="calculationsController.changeDataView('mmax')">monthly max.</a></li>
+             <li><a href ng-click="calculationsController.changeDataView('bmax')">bi-weekly max</a></li>
+             <li><a href ng-click="calculationsController.changeDataView('bmin')">bi-weekly min</a></li>
+           </ul>
+        </span>
+     </div>
+   </form>
+<hr/>
+<table class="table table-bordered">
+  <tr>
+    <th>Facility</th>
+    <th tooltip="Annual target population of children under the age of 1 year for 2015">Annual TP U1 (2015)</th>
+    <th tooltip="Bi-weekly target population of children under the age of 1 year for 2015">Bi-weekly TP U1 (2015)</th>
+    <th tooltip="Annual target population of women in child bearing age">Annual TP WCBA (2015)</th>
+    <th tooltip="Bi-weekly target population of women in child bearing age">Bi-weekly TP WCBA (2015)</th>
+  </tr>
+</table>
