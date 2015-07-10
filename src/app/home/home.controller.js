@@ -7,10 +7,15 @@ angular.module('directDeliveryDashboard')
 
 			var vm = this; //view models
 			vm.roundReport = roundReport;
-			vm.onTime = [
-				{ key: 'Behind Time', y: roundReport.behindTime, color: 'orange' },
-				{ key: 'On Time', y: roundReport.onTime, color: 'green' }
-			];
+
+			vm.onTime = [];
+			if(roundReport.onTime || roundReport.behindTime > 0){
+				vm.onTime = [
+					{ key: 'Behind Time', y: roundReport.behindTime, color: 'orange' },
+					{ key: 'On Time', y: roundReport.onTime, color: 'green' }
+				];
+			}
+
 
 			vm.onTimeColors = function() {
 				return function(d) {
