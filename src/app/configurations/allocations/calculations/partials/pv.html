@@ -1,5 +1,6 @@
 <table class="table table-bordered">
   <tr>
-    <th ng-repeat="product in calculationsController.productList" ng-bind="::product"></th>
+    <th>Facility</th>
+    <th ng-repeat="product in calculationsController.productList" ng-bind="::product.code"></th>
   </tr>
 </table>

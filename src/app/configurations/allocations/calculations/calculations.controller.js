@@ -8,14 +8,21 @@ angular.module('allocations')
 
     vm.productList = products || [];
     vm.renderedPartial = 'tp';
-    vm.renderedViewLabel = 'change data view';
+    vm.renderedViewLabel = 'target populations';
     vm.renderedData = [];
+    vm.locationStatesOfInterest = ['KN'];
 
-    vm.switchRenderedPartial = function(){
-      if(vm.renderedView === 'tp'){
-        return vm.renderedView === 'pv';
-      }
-      return vm.renderedView ==='tp';
+
+    vm.locationStates = locations.filter(function(location){
+      var i = vm.locationStatesOfInterest.indexOf(location._id);
+      return (i != -1);
+    });
+
+    switchRenderedPartial = function(partial){
+      return vm.renderedPartial = partial;
+    };
+    switchRenderedData = function(view){
+      return vm.renderedData;
     };
 
     vm.filterLocation = function(location){
@@ -23,6 +30,8 @@ angular.module('allocations')
     };
     vm.changeDataView = function(partial, viewLabel){
       vm.renderedViewLabel = viewLabel;
+      switchRenderedPartial(partial);
+      switchRenderedData(viewLabel.replace(' ', ''));
     };
 
   });

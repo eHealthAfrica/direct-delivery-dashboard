@@ -12,11 +12,11 @@ angular.module('allocations')
         controller: 'CalculationsController',
         controllerAs: 'calculationsController',
         resolve: {
-          products : function(){
-            return [];
+          products : function(productService){
+            return productService.getAll();
           },
-          locations : function(){
-            return [];
+          locations : function(locationService){
+            return locationService.getLocationsByLevel();
           }
         }
       })
