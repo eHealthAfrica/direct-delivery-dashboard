@@ -18,21 +18,21 @@
      <div class=" clearfix pull-right">
         <span class="dropdown" dropdown on-toggle="toggled(open)">
            <a href class="dropdown-toggle btn btn-default" dropdown-toggle>
-              change data view
+              {{calculationsController.renderedViewLabel}}
               <span class="caret"></span>
            </a>
            <ul class="dropdown-menu">
-             <li><a href ng-click="calculationsController.changeDataView('tp')">target populations</a></li>
+             <li><a href ng-click="calculationsController.changeDataView('tp', 'target populations')">target populations</a></li>
              <li class="divider"></li>
-             <li><a href ng-click="calculationsController.changeDataView('coverage')">coverage</a></li>
-             <li><a href ng-click="calculationsController.changeDataView('schedule')">schedule</a></li>
-             <li><a href ng-click="calculationsController.changeDataView('wastage')">wastage</a></li>
-             <li><a href ng-click="calculationsController.changeDataView('buffer')">buffer</a></li>
+             <li><a href ng-click="calculationsController.changeDataView('coverage', 'coverage')">coverage</a></li>
+             <li><a href ng-click="calculationsController.changeDataView('schedule', 'schedule')">schedule</a></li>
+             <li><a href ng-click="calculationsController.changeDataView('wastage', 'wastage')">wastage</a></li>
+             <li><a href ng-click="calculationsController.changeDataView('buffer', 'buffer')">buffer</a></li>
              <li class="divider"></li>
-             <li><a href ng-click="calculationsController.changeDataView('mr')">monthly requirements</a></li>
-             <li><a href ng-click="calculationsController.changeDataView('mmax')">monthly max.</a></li>
-             <li><a href ng-click="calculationsController.changeDataView('bmax')">bi-weekly max</a></li>
-             <li><a href ng-click="calculationsController.changeDataView('bmin')">bi-weekly min</a></li>
+             <li><a href ng-click="calculationsController.changeDataView('mr', 'monthly requirements')">monthly requirements</a></li>
+             <li><a href ng-click="calculationsController.changeDataView('mmax', 'monthly max.')">monthly max.</a></li>
+             <li><a href ng-click="calculationsController.changeDataView('bmax', 'bi-weekly max')">bi-weekly max</a></li>
+             <li><a href ng-click="calculationsController.changeDataView('bmin', 'bi-weekly min')">bi-weekly min</a></li>
            </ul>
         </span>
      </div>
