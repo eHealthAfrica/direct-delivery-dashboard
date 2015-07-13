@@ -42,6 +42,7 @@ angular.module('allocations')
       }
       return locationService.getByLevelAndAncestor(keys)
         .then(function(response){
+          console.log(response);
           return response;
         })
     };
@@ -51,7 +52,7 @@ angular.module('allocations')
         return vm.selectedLga;
       })
       .then(vm.filterByLocation)
-      .then(calculationService.getTargetPop);
+      //.then(calculationService.getTargetPop);
 
     function  switchRenderedPartial (partial){
       return vm.renderedPartial = partial;

@@ -1,0 +1,109 @@
+{
+  "docs": [
+    {
+      "_id": "TP-KNS-BBJ-KKI-101",
+      "facility": {
+        "_id": "KNS-BBJ-KKI-101",
+        "name": "Kuki Health Post"
+      },
+      "year": "2015",
+      "annualU1": 642,
+      "bi-weeklyU1": 27,
+      "annualWCBA": 803,
+      "bi-weekly": 33,
+      "doc_type": "target-pop"
+    },
+    {
+      "_id": "TP-KNS-BBJ-RTN-201",
+      "facility": {
+        "_id": "KNS-BBJ-RTN-201",
+        "name": "Tiga General Hospital"
+      },
+      "year": "2015",
+      "annualU1": 355,
+      "bi-weeklyU1": 15,
+      "annualWCBA": 444,
+      "bi-weekly": 18,
+      "doc_type": "target-pop"
+    },
+    {
+      "_id": "TP-KNS-GZW-BBW-101",
+      "facility": {
+        "_id": "KNS-GZW-BBW-101",
+        "name": "Babawa Model Primary Health Care"
+      },
+      "year": "2015",
+      "annualU1": 355,
+      "bi-weeklyU1": 15,
+      "annualWCBA": 444,
+      "bi-weekly": 18,
+      "doc_type": "target-pop"
+    },
+    {
+      "_id": "TP-KNS-GZW-GZW-101",
+      "facility": {
+        "_id": "KNS-GZW-GZW-101",
+        "name": "Gezawa Health Post"
+      },
+      "year": "2015",
+      "annualU1": 312,
+      "bi-weeklyU1": 13,
+      "annualWCBA": 390,
+      "bi-weekly": 16,
+      "doc_type": "target-pop"
+    },
+    {
+      "_id": "TP-KNS-MJB-KNY-101",
+      "facility": {
+        "_id": "KNS-MJB-KNY-101",
+        "name": "Kunya Primary Health Center"
+      },
+      "year": "2015",
+      "annualU1": 627,
+      "bi-weeklyU1": 26,
+      "annualWCBA": 784,
+      "bi-weekly": 33,
+      "doc_type": "target-pop"
+    },
+    {
+      "_id": "TP-KNS-MJB-KTM-101",
+      "facility": {
+        "_id": "KNS-MJB-KTM-101",
+        "name": "Geranya Health Post"
+      },
+      "year": "2015",
+      "annualU1": 306,
+      "bi-weeklyU1": 13,
+      "annualWCBA": 382,
+      "bi-weekly": 16,
+      "doc_type": "target-pop"
+    },
+    {
+      "_id": "TP-KNS-RGG-BLI-101",
+      "facility": {
+        "_id": "KNS-RGG-BLI-101",
+        "name": "Beli Basic Health Clinic"
+      },
+      "year": "2015",
+      "annualU1": 581,
+      "bi-weeklyU1": 24,
+      "annualWCBA": 726,
+      "bi-weekly": 30,
+      "doc_type": "target-pop"
+    },
+    {
+      "_id": "TP-KNS-RGG-GGW-103",
+      "facility": {
+        "_id": "KNS-RGG-GGW-103",
+        "name": "Gwangwan Health Clinic"
+      },
+      "year": "2015",
+      "annualU1": 581,
+      "bi-weeklyU1": 24,
+      "annualWCBA": 726,
+      "bi-weekly": 30,
+      "doc_type": "target-pop"
+    }
+
+  ]
+}
