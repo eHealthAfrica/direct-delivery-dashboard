@@ -3,27 +3,39 @@
  */
 
 angular.module('allocations')
-  .controller('CalculationsController', function(products, locations){
+  .controller('CalculationsController', function(products, locations, locationService, calculationService, pouchUtil, log){
     var vm = this;
 
     vm.productList = products || [];
     vm.renderedPartial = 'tp';
     vm.renderedViewLabel = 'target populations';
     vm.renderedData = [];
-    vm.locationStatesOfInterest = ['KN'];
+    vm.locationStates = ['KN', 'BA'];
+    vm.selectedState = 'KN';
+    vm.lgas = [];
+    vm.wards = [];
 
+    vm.findLga = function(state){
+      locationService.getByIds([state])
+        .then(function(response){
+          vm.lgas = response;
+        })
+        .catch(function(err){
+          log.error('', err, 'could not fetch lga list, please try again. contact admin if this persists.');
+        });
+    };
+    vm.findWard = function(lga){
 
-    vm.locationStates = locations.filter(function(location){
-      var i = vm.locationStatesOfInterest.indexOf(location._id);
-      return (i != -1);
-    });
+    };
+    vm.filterLocation = function(level, id){
 
-    switchRenderedPartial = function(partial){
+    };
+    function  switchRenderedPartial (partial){
       return vm.renderedPartial = partial;
-    };
-    switchRenderedData = function(view){
+    }
+    function switchRenderedData (view){
       return vm.renderedData;
-    };
+    }
 
     vm.filterLocation = function(location){
 

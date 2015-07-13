@@ -13,10 +13,16 @@ angular.module('allocations')
         controllerAs: 'calculationsController',
         resolve: {
           products : function(productService){
-            return productService.getAll();
+            return productService.getAll()
+              .catch(function(err){
+                return [];
+              });
           },
           locations : function(locationService){
-            return locationService.getLocationsByLevel();
+            return locationService.getLocationsByLevel()
+              .catch(function(err){
+                return [];
+              });
           }
         }
       })

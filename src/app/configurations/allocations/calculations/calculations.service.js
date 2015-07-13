@@ -18,5 +18,9 @@ angular.module('allocations')
     };
     service.saveCustomAllocation = function(){
 
+    };
+
+    service.getTargetPop = function(keys){
+
     }
 });
