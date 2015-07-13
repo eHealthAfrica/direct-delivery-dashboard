@@ -42,4 +42,8 @@ angular.module('utility')
       return angular.isObject(obj) && Object.keys(obj).length === 0;
     };
 
+    this.contains = function(str, subStr) {
+      return str.includes(subStr);
+    };
+
   });
