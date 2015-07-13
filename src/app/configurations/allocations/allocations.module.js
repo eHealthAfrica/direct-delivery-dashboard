@@ -3,5 +3,8 @@
  */
 
 angular.module('allocations',[
-    'core'
+  'core',
+  'config',
+  'pouchdb',
+  'products'
 ]);

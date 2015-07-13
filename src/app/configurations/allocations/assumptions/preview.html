@@ -8,8 +8,13 @@
     <th>Buffer</th>
   </thead>
   <tbody>
-    <tr>
-      <td colspan="6">No products listed</td>
+    <tr ng-if="assumptionsController.products.length > 0" ng-repeat="products in assumptionsController.products track by $index">
+      <td ng-bind="products.code"></td>
+      <td>0</td>
+      <td>0 %</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0 %</td>
     </tr>
   </tbody>
 </table>

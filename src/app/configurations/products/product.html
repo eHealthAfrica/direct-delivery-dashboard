@@ -1,0 +1,40 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+
+  </div>
+  <div class="panel-body">
+    <div class="btn-group btn-group-sm">
+      <button class="btn btn-default"><i class="fa fa-plus"></i> add product</button>
+    </div>
+    <p></p>
+    <div class="alert alert-info" ng-if="productsController.products.length ===0">
+      <i class="fa fa-info-circle"></i>
+      Product list could not be retrieved. please reload the page after sometime. if it is still not retrieved, contact site administrator.
+    </div>
+  </div>
+  <table class="table table-bordered" ng-if="productsController.products.length > 0">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Code</th>
+        <th>Description</th>
+        <th>Measured in</th>
+        <th>Storage Type</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="product in productsController.products">
+        <td ng-bind="product.name"></td>
+        <td ng-bind="product.code"></td>
+        <td ng-bind="product.description"></td>
+        <td ng-bind="product.baseUOM"></td>
+        <td ng-bind="product.storageID"></td>
+        <td>
+          <a class="btn"><i class="fa fa-wrench"></i> edit</a>
+           <a class="btn text-danger"><i class="fa fa-close"></i> remove</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
