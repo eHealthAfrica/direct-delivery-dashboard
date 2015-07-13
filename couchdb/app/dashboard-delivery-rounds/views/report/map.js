@@ -1,4 +1,4 @@
-function (doc) {
+function(doc) {
 
 	var successTag = 'success';
 	var cceTag = 'cce';
@@ -33,8 +33,10 @@ function (doc) {
 		return (!date || date === null || new Date(date).toString() === 'Invalid Date');
 	}
 
-	function isOnTime(targetDate, deliveryDate) {
+	function isOnTime(targetDate, deliveryDate, status) {
 		var TWO_DAYS = 172800000; //milli-seconds
+
+
 
 		//assume that target date is same as delivery date if not set, hence on time
 		if (isInvalidDate(targetDate)) {
@@ -51,26 +53,27 @@ function (doc) {
 
 	function hasWorkingCCE(status) {
 		return (status.toLowerCase().indexOf(cceTag) === -1);
-		;
 	}
 
 	function isDelivered(status) {
 		return status.toLowerCase().indexOf(successTag) !== -1;
 	}
 
-	function genReport(targetDate, deliveryDate, status) {
+	function genReport(targetDate, deliveryDate, status, zone) {
 		//default facility report object to be passed to reduce function.
 		var facRndReport = {
+			status: status,
+			zone: zone,
 			onTime: 0,
 			billable: 0,
 			workingCCE: 0,
 			delivered: 0
 		};
-		facRndReport.onTime = isOnTime(targetDate, deliveryDate) ? 1 : 0;
+		facRndReport.onTime = isOnTime(targetDate, deliveryDate, status) ? 1 : 0;
 		facRndReport.billable = isBillable(status) ? 1 : 0;
 		facRndReport.workingCCE = hasWorkingCCE(status) ? 1 : 0;
 		facRndReport.delivered = isDelivered(status) ? 1 : 0;
-		return facRndReport
+		return facRndReport;
 	}
 
 	if (doc.doc_type === 'dailyDelivery' && !isInvalidDate(doc.date)) {
@@ -83,15 +86,19 @@ function (doc) {
 			for (var i in doc.facilityRounds) {
 				facRnd = doc.facilityRounds[i];
 				if (isValidStatus(facRnd.status)) {
-					facRndReport = genReport(facRnd.targetDate, doc.date, facRnd.status);
-					emit(doc.deliveryRoundID, facRndReport);
+					facRnd.status = facRnd.status.toLowerCase();
+					facRndReport = genReport(facRnd.targetDate, doc.date, facRnd.status, facRnd.facility.zone);
+					emit([doc.deliveryRoundID, doc.date], facRndReport);
 				}
 			}
-		} else if (isValidStatus(doc.status)) {
+		} else {
 			//newer single facility round document
 			facRnd = doc;
-			facRndReport = genReport(facRnd.targetDate, facRnd.date, facRnd.status);
-			emit(facRnd.deliveryRoundID, facRndReport);
+			if (isValidStatus(facRnd.status)) {
+				facRnd.status = facRnd.status.toLowerCase();
+				facRndReport = genReport(facRnd.targetDate, facRnd.date, facRnd.status, facRnd.facility.zone);
+				emit([facRnd.deliveryRoundID, facRnd.date], facRndReport);
+			}
 		}
 	}
 
