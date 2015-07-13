@@ -10,7 +10,7 @@
       "annualU1": 642,
       "bi-weeklyU1": 27,
       "annualWCBA": 803,
-      "bi-weekly": 33,
+      "bi-weeklyWCBA": 33,
       "doc_type": "target-pop"
     },
     {
@@ -23,7 +23,7 @@
       "annualU1": 355,
       "bi-weeklyU1": 15,
       "annualWCBA": 444,
-      "bi-weekly": 18,
+      "bi-weeklyWCBA": 18,
       "doc_type": "target-pop"
     },
     {
@@ -36,7 +36,7 @@
       "annualU1": 355,
       "bi-weeklyU1": 15,
       "annualWCBA": 444,
-      "bi-weekly": 18,
+      "bi-weeklyWCBA": 18,
       "doc_type": "target-pop"
     },
     {
@@ -49,7 +49,7 @@
       "annualU1": 312,
       "bi-weeklyU1": 13,
       "annualWCBA": 390,
-      "bi-weekly": 16,
+      "bi-weeklyWCBA": 16,
       "doc_type": "target-pop"
     },
     {
@@ -62,7 +62,7 @@
       "annualU1": 627,
       "bi-weeklyU1": 26,
       "annualWCBA": 784,
-      "bi-weekly": 33,
+      "bi-weeklyWCBA": 33,
       "doc_type": "target-pop"
     },
     {
@@ -75,7 +75,7 @@
       "annualU1": 306,
       "bi-weeklyU1": 13,
       "annualWCBA": 382,
-      "bi-weekly": 16,
+      "bi-weeklyWCBA": 16,
       "doc_type": "target-pop"
     },
     {
@@ -88,7 +88,7 @@
       "annualU1": 581,
       "bi-weeklyU1": 24,
       "annualWCBA": 726,
-      "bi-weekly": 30,
+      "bi-weeklyWCBA": 30,
       "doc_type": "target-pop"
     },
     {
@@ -101,7 +101,7 @@
       "annualU1": 581,
       "bi-weeklyU1": 24,
       "annualWCBA": 726,
-      "bi-weekly": 30,
+      "bi-weeklyWCBA": 30,
       "doc_type": "target-pop"
     }
 

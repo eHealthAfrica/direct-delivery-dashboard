@@ -3,7 +3,7 @@
  */
 
 angular.module('allocations')
-  .service('calculationService', function(locationService, dbService){
+  .service('calculationService', function(locationService, dbService, pouchUtil){
 
     var service = this;
     //TODO: change all static level reference to dynamic types
@@ -27,7 +27,7 @@ angular.module('allocations')
      * data.
      */
     service.getTargetPop = function(facilities){
-      var view = 'alloccations/target_population',
+      var view = 'allocations/target-population',
         keys = [],
         options = {
         include_docs: true
@@ -42,9 +42,6 @@ angular.module('allocations')
       }
       options.keys = keys;
       return dbService.getView(view, options)
-        .then(function(response){
-          console.log(response);
-          return response;
-        });
+        .then(pouchUtil.pluckDocs);
     }
 });
