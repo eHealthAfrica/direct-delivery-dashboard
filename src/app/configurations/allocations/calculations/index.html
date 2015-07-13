@@ -10,7 +10,11 @@
         </select>
       </div>
       <div class="form-group">
-        <select class="form-control" ng-options="lga.name for lga in calculationsController.lgas" ng-model="calculationsController.selectedLga">
+        <select
+            class="form-control"
+            ng-options="lga.name for lga in calculationsController.lgas"
+            ng-change="calculationsController.filterByLocation(calculationsController.selectedLga)"
+            ng-model="calculationsController.selectedLga">
         </select>
       </div>
      <div class=" clearfix pull-right">
