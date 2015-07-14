@@ -134,6 +134,7 @@ angular.module('planning')
 
 				while(index --){
 					row = rows[index].value;
+					row.status = utility.capitalize(row.status);
 
 					if(angular.isObject(row)) {
 						if(angular.isNumber(row.onTime)){
@@ -192,5 +193,28 @@ angular.module('planning')
 				return dbService.getView('delivery-rounds/all')
 						.then(pouchUtil.pluckIDs);
 			};
+
+			/**
+			 * This sorts rows by delivery round date.
+			 * @param state
+			 * @returns {*}
+			 */
+			this.getLatestBy = function(state){
+				var view = 'delivery-rounds/by-state-and-end-date';
+				var params = {
+					startkey: [ state ],
+					endkey: [ state, {} ]
+				};
+				return dbService.getView(view, params)
+						.then(pouchUtil.pluckIDs)
+						.then(pouchUtil.rejectIfEmpty)
+						.then(function(rounds){
+							var latestRoundId =  rounds[rounds.length - 1]; //pick most recent delivery
+							return {
+								latestRoundId: latestRoundId,
+								roundCodes: rounds
+							};
+						});
+			}
 
 		});
