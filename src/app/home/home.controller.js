@@ -1,13 +1,12 @@
 'use strict';
 
 angular.module('directDeliveryDashboard')
-		.controller('HomeCtrl', function(DELIVERY_STATUS, $window, roundReport, roundCodes, deliveryRoundService, log) {
+		.controller('HomeCtrl', function(DELIVERY_STATUS, $window, roundReport, deliveryRoundService, log) {
 
 			var vm = this; //view models
 			vm.selectedRound = '';
-			vm.roundCodes = roundCodes;
+			vm.roundCodes = roundReport.roundInfo.roundCodes || [];
 			vm.roundReport = roundReport;
-
 			vm.onTime = [];
 
 			//TODO: move to generate report service function
