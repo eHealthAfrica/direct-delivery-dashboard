@@ -3,7 +3,7 @@
       <div class="form-group">
         <select
             class="form-control"
-            ng-change="calculationsController.findLga(calculationsController.selectedState)"
+            ng-change="calculationsController.switchLocationState(calculationsController.selectedState)"
             ng-model="calculationsController.selectedState"
             ng-options="state for state in calculationsController.locationStates"
             ng-init="calculationsController.selectedState">
@@ -13,7 +13,7 @@
         <select
             class="form-control"
             ng-options="lga.name for lga in calculationsController.lgas"
-            ng-change="calculationsController.filterByLocation(calculationsController.selectedLga)"
+            ng-change="calculationsController.switchLocationLga(calculationsController.selectedLga)"
             ng-model="calculationsController.selectedLga">
         </select>
       </div>
