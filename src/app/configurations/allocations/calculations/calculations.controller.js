@@ -13,8 +13,8 @@ angular.module('allocations')
     };
     vm.productList = products || [];
     vm.renderedPartial = 'tp';
-    vm.renderedViewLabel = 'target populations'; 
-    vm.activeView = 'targetPop';
+    vm.renderedViewLabel = 'target populations';
+    vm.activeView = 'targetpopulation';
     vm.renderedData = [];
     vm.locationStates = ['KN', 'BA'];
     vm.selectedState = 'KN';
@@ -95,7 +95,9 @@ angular.module('allocations')
 
 
     vm.changeDataView = function (partial, viewLabel) {
-      vm.renderedViewLabel = viewLabel;
+      var view = viewLabel.replace(' ', '');
+      vm.renderedViewLabel = view;
+      vm.activeView = view;
       switchRenderedPartial(partial);
     };
 

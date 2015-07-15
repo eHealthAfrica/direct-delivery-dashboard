@@ -3,16 +3,23 @@
  */
 
 angular.module('allocations')
-  .service('calculationService', function(locationService, dbService, pouchUtil){
+  .service('calculationService', function(locationService, dbService, pouchUtil, assumptionService){
 
     var service = this;
 
-    function setActiveTemplate (){
-
+    function prepareTemplate (){
+      var temp = {
+        coverage : {}
+      };
+      return assumptionService.getAll()
+        .then(function(response){
+          for(var i in response){
+            temp.coverage = response.coverage;
+          }
+          return temp;
+        });
     }
-    function getCustomTemplate (facilityID){
 
-    }
 
     //TODO: change all static level reference to dynamic types
     service.getCurrentTemplate = function(){
@@ -54,7 +61,16 @@ angular.module('allocations')
     };
 
     service.computeCoverage = function(facilities){
+      var hay = {};
+      var res = [];
 
+      return prepareTemplate()
+        .then(function(response){
+          console.log(response);
+          for(var i in facilities){
+            hay.facility = facilities[i].product.name;
+          }
+        });
     };
     service.computeSchedule = function(facilities){
 
