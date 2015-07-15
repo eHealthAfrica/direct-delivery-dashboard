@@ -6,6 +6,14 @@ angular.module('allocations')
   .service('calculationService', function(locationService, dbService, pouchUtil){
 
     var service = this;
+
+    function setActiveTemplate (){
+
+    }
+    function getCustomTemplate (facilityID){
+
+    }
+
     //TODO: change all static level reference to dynamic types
     service.getCurrentTemplate = function(){
 
@@ -43,5 +51,18 @@ angular.module('allocations')
       options.keys = keys;
       return dbService.getView(view, options)
         .then(pouchUtil.pluckDocs);
-    }
+    };
+
+    service.computeCoverage = function(facilities){
+
+    };
+    service.computeSchedule = function(facilities){
+
+    };
+    service.computeWastage = function(facilities){
+
+    };
+    service.computeBuffer = function(facilities){
+
+    };
 });
