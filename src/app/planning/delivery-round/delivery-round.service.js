@@ -155,9 +155,9 @@ angular.module('planning')
 				statusByZone = sortByZone(zonePadding(collatedZones, statusByZone));
 				roundReport.status = statusByZone.sort(function(r1, r2){
 					if (r1.key < r2.key) {
-						return -1;
-					} else if (r1.key > r2.key) {
 						return 1;
+					} else if (r1.key > r2.key) {
+						return -1;
 					} else {
 						return 0;
 					}

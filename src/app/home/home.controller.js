@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('directDeliveryDashboard')
-		.controller('HomeCtrl', function(DELIVERY_STATUS, $window, roundReport, deliveryRoundService, log, $scope) {
+		.controller('HomeCtrl', function(DELIVERY_STATUS, $window, roundReport, deliveryRoundService, log) {
 
 			var vm = this; //view models
 			vm.selectedRound = '';
@@ -22,7 +22,7 @@ angular.module('directDeliveryDashboard')
 						.then(function (rndReport) {
 							rndReport.deliveryRoundID = vm.selectedRound;
 							vm.roundReport = rndReport;
-							vm.setTimeline(vm.roundReport);
+							vm.setTimeline();
 						})
 						.catch(function (err) {
 							var msg = [
@@ -66,7 +66,7 @@ angular.module('directDeliveryDashboard')
 				}
 			};
 
-			vm.setTimeline = function(rndReport){
+			vm.setTimeline = function(){
 				vm.data = [
 					{
 						name: 'Milestones',
@@ -89,16 +89,6 @@ angular.module('directDeliveryDashboard')
 				];
 			};
 
-			vm.setTimeline(vm.roundReport);
-
-
-
-			$scope.registerApi = function(api) {
-				api.core.on.ready($scope, function () {
-					// Call API methods and register events.
-					api.data.on.change(vm.data, vm.data);
-				});
-			}
-
+			vm.setTimeline();
 
 		});
