@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="../bower_components/angular-toastr/dist/angular-toastr.css" />
     <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.css" />
     <link rel="stylesheet" href="../bower_components/nvd3/src/nv.d3.css" />
+    <link rel="stylesheet" href="../bower_components/angular-gantt/assets/angular-gantt.css" />
+    <link rel="stylesheet" href="../bower_components/angular-gantt/assets/angular-gantt-plugins.css" />
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -44,6 +46,10 @@
     <script src="../bower_components/d3/d3.js"></script>
     <script src="../bower_components/nvd3/nv.d3.js"></script>
     <script src="../bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js"></script>
+    <script src="../bower_components/moment/moment.js"></script>
+    <script src="../bower_components/angular-moment/angular-moment.js"></script>
+    <script src="../bower_components/angular-gantt/assets/angular-gantt.js"></script>
+    <script src="../bower_components/angular-gantt/assets/angular-gantt-plugins.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -78,12 +84,12 @@
     <script src="app/planning/schedule/schedules.service.js"></script>
     <script src="app/planning/schedule/schedule.states.js"></script>
     <script src="app/planning/schedule/schedule-round.controller.js"></script>
+    <script src="app/planning/facilities/manage-facilities.controller.js"></script>
+    <script src="app/planning/facilities/facilities.states.js"></script>
     <script src="app/planning/delivery-round/delivery-round.states.js"></script>
     <script src="app/planning/delivery-round/delivery-round.service.js"></script>
     <script src="app/planning/delivery-round/delivery-round.controller.js"></script>
     <script src="app/planning/delivery-round/delivery-round.constants.js"></script>
-    <script src="app/planning/facilities/manage-facilities.controller.js"></script>
-    <script src="app/planning/facilities/facilities.states.js"></script>
     <script src="components/products/products.module.js"></script>
     <script src="app/configurations/products/products.states.js"></script>
     <script src="app/configurations/products/products.controller.js"></script>
@@ -100,10 +106,10 @@
     <script src="components/mailer/mandrill.service.js"></script>
     <script src="components/mailer/mailer.service.js"></script>
     <script src="components/log/log.service.js"></script>
-    <script src="components/footer/footer.module.js"></script>
-    <script src="components/footer/footer.controller.js"></script>
     <script src="components/location/location.module.js"></script>
     <script src="components/location/location.service.js"></script>
+    <script src="components/footer/footer.module.js"></script>
+    <script src="components/footer/footer.controller.js"></script>
     <script src="components/drivers/drivers.module.js"></script>
     <script src="components/drivers/drivers.service.js"></script>
     <script src="components/delivery/delivery.module.js"></script>
@@ -117,10 +123,6 @@
     <script src="components/auth/auth.module.js"></script>
     <script src="components/auth/auth.service.js"></script>
     <script src="components/auth/auth.config.js"></script>
-    <script src="app/home/home.module.js"></script>
-    <script src="app/home/home.states.js"></script>
-    <script src="app/index.module.js"></script>
-    <script src="app/home/home.controller.js"></script>
     <script src="app/users/users.states.js"></script>
     <script src="app/users/users.service.js"></script>
     <script src="app/users/users.controller.js"></script>
@@ -133,6 +135,10 @@
     <script src="app/login/login.module.js"></script>
     <script src="app/login/login.states.js"></script>
     <script src="app/login/login.controller.js"></script>
+    <script src="app/home/home.module.js"></script>
+    <script src="app/home/home.states.js"></script>
+    <script src="app/index.module.js"></script>
+    <script src="app/home/home.controller.js"></script>
     <script src="app/configurations/configurations.states.js"></script>
     <script src="app/index.states.js"></script>
     <script src="app/index.controller.js"></script>

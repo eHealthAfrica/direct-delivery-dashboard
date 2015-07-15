@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('directDeliveryDashboard')
-		.controller('HomeCtrl', function(DELIVERY_STATUS, $window, roundReport, deliveryRoundService, log) {
+		.controller('HomeCtrl', function(DELIVERY_STATUS, $window, roundReport, deliveryRoundService, log, $scope) {
 
 			var vm = this; //view models
 			vm.selectedRound = '';
@@ -22,6 +22,7 @@ angular.module('directDeliveryDashboard')
 						.then(function (rndReport) {
 							rndReport.deliveryRoundID = vm.selectedRound;
 							vm.roundReport = rndReport;
+							vm.setTimeline(vm.roundReport);
 						})
 						.catch(function (err) {
 							var msg = [
@@ -58,5 +59,46 @@ angular.module('directDeliveryDashboard')
 					return $window.d3.round(d);
 				};
 			};
+
+			vm.xAxisTickFormat_Time_Format = function(){
+				return function(d){
+					return d3.time.format('%d-%m-%y')(new Date(d))
+				}
+			};
+
+			vm.setTimeline = function(rndReport){
+				vm.data = [
+					{
+						name: 'Milestones',
+						color: '#45607D',
+						tasks: [
+							{
+								name: 'Progress',
+								color: '#93C47D',
+								from: vm.roundReport.timeline.startDate,
+								to: vm.roundReport.timeline.markDate
+							},
+							{
+								name: 'End',
+								color: '#FF0000',
+								from: vm.roundReport.timeline.endDate,
+								to: vm.roundReport.timeline.endDate
+							}
+						]
+					}
+				];
+			};
+
+			vm.setTimeline(vm.roundReport);
+
+
+
+			$scope.registerApi = function(api) {
+				api.core.on.ready($scope, function () {
+					// Call API methods and register events.
+					api.data.on.change(vm.data, vm.data);
+				});
+			}
+
 
 		});
