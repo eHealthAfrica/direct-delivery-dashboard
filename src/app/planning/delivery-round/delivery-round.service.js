@@ -75,53 +75,85 @@ angular.module('planning')
 			}
 
 			_this.collateZoneReport = function(roundReport, row) {
-				if(!angular.isObject(roundReport.status[row.status]) || !angular.isArray(roundReport.status[row.status].values)){
-					//TODO: read zones dynamically.
+				if(!angular.isObject(roundReport.status[row.status]) || !angular.isObject(roundReport.status[row.status].zones)){
 					roundReport.status[row.status] = {
 						"key": row.status,
 						"color": getColor(row.status),
-						"values": [
-							[ "Bichi" , 0 ],
-							[ "Nassarawa" , 0 ],
-							[ "Rano" , 0 ],
-							[ "Wudil" , 0 ]
-						]
+						"zones": {}
 					};
 				}
-
-				var statusByZoneReports = roundReport.status[row.status].values;
-				if(statusByZoneReports.length === 0){
-					var temp = [ row.zone, 1 ];
-					statusByZoneReports.push(temp);
-					roundReport.status[row.status].values = statusByZoneReports;
-				} else {
-					statusByZoneReports = _this.updateZoneStatusCount(row.zone, statusByZoneReports);
+				var initVal = [ row.zone, 0 ];
+				var szReport = roundReport.status[row.status].zones[row.zone];
+				if(!szReport){
+					szReport = initVal;
 				}
-				roundReport.status[row.status].values = statusByZoneReports;
-				return roundReport;
+				roundReport.status[row.status].zones[row.zone] = szReport;
+				return  _this.updateZoneStatusCount(row.zone, row.status, roundReport);
 			};
 
-			_this.updateZoneStatusCount = function(zone, zoneReports) {
-				var zr;
-				for(var i in zoneReports) {
-					zr = zoneReports[i];
-					if(zr[0] === zone) {
-						zr[1] += 1;
-						zoneReports[i] = zr;
+			_this.updateZoneStatusCount = function(zone, status, rndReport) {
+				var countIndex = 1;
+				//update current row zone and status count
+				rndReport.status[status].zones[zone][countIndex] += 1;
+				return rndReport;
+			};
+
+			function zonePadding(collatedZones, statusReport) {
+				var sr;
+				collatedZones.forEach(function(zone){
+					for(var i in statusReport){
+						sr = statusReport[i];
+						var matchingZoneRows = sr.values
+								.filter(function (row) {
+									return row[0] === zone;
+								});
+						if(matchingZoneRows.length === 0){
+							sr.values.push([zone, 0]);
+						}
 					}
+					statusReport[i] = sr;
+				});
+				return statusReport;
+			}
+
+			function sortByZone (statusByZone){
+				for(var i in statusByZone){
+					var r = statusByZone[i];
+					r.values.sort(function(r1, r2){
+						if ( r1[0] < r2[0] )
+							return -1;
+						if ( r1[0] > r2[0])
+							return 1;
+						return 0;
+					});
+					statusByZone[i] = r;
 				}
-				return zoneReports;
-			};
+				return statusByZone;
+			}
 
 			function zoneReportToArray(roundReport){
-				var zoneStatus = [];
-				for(var k in roundReport.status){
-					var temp = roundReport.status[k];
-					if(angular.isObject(temp)){
-						zoneStatus.push(temp);
+				var collatedZones = [];
+				var statusByZone = [];
+				var statusReport;
+				for(var status in roundReport.status){
+					var statusZoneReport = roundReport.status[status];
+					statusReport = {};
+					statusReport.key = statusZoneReport.key;
+					statusReport.color = statusZoneReport.color;
+					statusReport.values = [];
+					for(var z in roundReport.status[status].zones){
+						if(collatedZones.indexOf(z) === -1){
+							collatedZones.push(z);
+						}
+						var zoneReport = roundReport.status[status].zones[z];
+						statusReport.values.push(zoneReport);
+					}
+					if(statusReport){
+						statusByZone.push(statusReport);
 					}
 				}
-				roundReport.status = zoneStatus;
+				statusByZone = sortByZone(zonePadding(collatedZones, statusByZone));
+				roundReport.status = statusByZone;
 				return roundReport;
 			}
 
@@ -131,12 +163,15 @@ angular.module('planning')
 				var roundReport = _this.getDefaultReport();
 				roundReport.total = rows.length;
 				var row;
+				var collatedZones = {};
 
 				while(index --){
 					row = rows[index].value;
 					row.status = utility.capitalize(row.status);
 
 					if(angular.isObject(row)) {
+						collatedZones[row.zone] = true;
+
 						if(angular.isNumber(row.onTime)){
 							roundReport.onTime += row.onTime;
 							if(isBehindTime(row)){
