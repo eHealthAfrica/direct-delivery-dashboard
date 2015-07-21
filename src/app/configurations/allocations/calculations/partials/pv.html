@@ -8,7 +8,7 @@
     <td >
       <a href ng-bind="allocation.facility"></a>
     </td>
-    <td ng-repeat="product in allocation.coverage">{{product}}%</td>
+    <td ng-repeat="product in allocation[calculationsController.activeView]">{{product}} {{calculationsController.suffix}}</td>
     <td><a href><i class="fa fa-wrench"></i></td>
   </tr>
 </table>
