@@ -77,4 +77,5 @@ angular.module('log')
       message: 'An unknown error occurred while saving assumption',
       remedy: 'Please, try again and contact support if it persists'
     }
+
   });

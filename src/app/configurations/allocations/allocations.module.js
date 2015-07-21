@@ -7,5 +7,6 @@ angular.module('allocations',[
   'config',
   'pouchdb',
   'products',
+  'location',
   'log'
 ]);

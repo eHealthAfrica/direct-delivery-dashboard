@@ -24,16 +24,11 @@ angular.module('allocations')
         });
     };
     service.save = function(data){
+
+      if(angular.isArray(data)){
+        return dbService.saveDocs(data);
+      }
       return dbService.save(data);
     };
 
-    /**
-     * updatelist is to look through product list
-     * and add newly added product(s) to the assumptions list
-     * @return array. the updated assumptions list
-     * this should update vm data on controllers
-     */
-    service.updatelist = function(){
-
-    }
   });
