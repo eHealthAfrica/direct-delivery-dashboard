@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('directDeliveryDashboard', [
+    'nvd3ChartDirectives',
     'core',
     'navbar',
     'footer',
