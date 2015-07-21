@@ -22,11 +22,11 @@
     "angular-gantt": "~1.2.6"
   },
   "devDependencies": {
-    "angular-mocks": "1.4.3",
+    "angular-mocks": "~1.4.3",
     "es5-shim": "~4.0.5"
   },
   "resolutions": {
-    "angular": "1.4.3",
+    "angular": "~1.4.3",
     "d3": "~3.4.1",
     "angular-mocks": "~1.4.3"
   },
