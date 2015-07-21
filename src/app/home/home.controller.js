@@ -22,6 +22,7 @@ angular.module('directDeliveryDashboard')
 						.then(function (rndReport) {
 							rndReport.deliveryRoundID = vm.selectedRound;
 							vm.roundReport = rndReport;
+							vm.setTimeline();
 						})
 						.catch(function (err) {
 							var msg = [
@@ -58,5 +59,35 @@ angular.module('directDeliveryDashboard')
 					return $window.d3.round(d);
 				};
 			};
+
+
+			vm.setTimeline = function(){
+				var endDateLastHour = 82799000;
+				vm.scale = 'day';
+				vm.data = [
+					{
+						name: 'Milestones',
+						color: '#45607D',
+						tasks: [
+							{
+								name: 'Progress',
+								color: '#93C47D',
+								from: vm.roundReport.timeline.startDate,
+								to: new Date(vm.roundReport.timeline.markDate.getTime() + endDateLastHour),
+								priority: 1 //enables progress to overlap end point
+							},
+							{
+								name: 'End',
+								color: '#FF0000',
+								from: vm.roundReport.timeline.endDate,
+								to: new Date(vm.roundReport.timeline.endDate.getTime() + endDateLastHour).toJSON(),
+								priority: 0
+							}
+						]
+					}
+				];
+			};
+
+			vm.setTimeline();
 
 		});

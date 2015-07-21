@@ -153,7 +153,15 @@ angular.module('planning')
 					}
 				}
 				statusByZone = sortByZone(zonePadding(collatedZones, statusByZone));
-				roundReport.status = statusByZone;
+				roundReport.status = statusByZone.sort(function(r1, r2){
+					if (r1.key < r2.key) {
+						return 1;
+					} else if (r1.key > r2.key) {
+						return -1;
+					} else {
+						return 0;
+					}
+				});
 				return roundReport;
 			}
 
@@ -164,13 +172,25 @@ angular.module('planning')
 				roundReport.total = rows.length;
 				var row;
 				var collatedZones = {};
+        var startDate;
+				var endDate;
+
 
 				while(index --){
 					row = rows[index].value;
 					row.status = utility.capitalize(row.status);
+          var rowDate = new Date(rows[index].key[1]);//date index
 
 					if(angular.isObject(row)) {
 						collatedZones[row.zone] = true;
+
+						if(!startDate || (utility.isValidDate(rowDate) && startDate >= rowDate)){
+							startDate = rowDate;
+						}
+
+						if(!endDate || (utility.isValidDate(rowDate) && endDate <= rowDate)){
+							endDate = rowDate;
+						}
 
 						if(angular.isNumber(row.onTime)){
 							roundReport.onTime += row.onTime;
@@ -201,6 +221,13 @@ angular.module('planning')
 				if(angular.isNumber(roundReport.workingCCE)){
 					roundReport.workingCCE = roundReport.workingCCE.toFixed(0);
 				}
+				var today = utility.formatDate(new Date());
+				var markDate = (today < endDate)? today : endDate;
+				roundReport.timeline = {
+					startDate: startDate,
+					endDate: endDate,
+					markDate: markDate
+				};
 				return roundReport;
 			}
 
@@ -235,7 +262,7 @@ angular.module('planning')
 			 * @returns {*}
 			 */
 			this.getLatestBy = function(state){
-				var view = 'delivery-rounds/by-state-and-end-date';
+				var view = 'dashboard-delivery-rounds/by-state-and-end-date';
 				var params = {
 					startkey: [ state ],
 					endkey: [ state, {} ]
