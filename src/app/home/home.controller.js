@@ -60,13 +60,10 @@ angular.module('directDeliveryDashboard')
 				};
 			};
 
-			vm.xAxisTickFormat_Time_Format = function(){
-				return function(d){
-					return d3.time.format('%d-%m-%y')(new Date(d))
-				}
-			};
 
 			vm.setTimeline = function(){
+				var endDateLastHour = 82799000;
+				vm.scale = 'day';
 				vm.data = [
 					{
 						name: 'Milestones',
@@ -76,13 +73,15 @@ angular.module('directDeliveryDashboard')
 								name: 'Progress',
 								color: '#93C47D',
 								from: vm.roundReport.timeline.startDate,
-								to: vm.roundReport.timeline.markDate
+								to: new Date(vm.roundReport.timeline.markDate.getTime() + endDateLastHour),
+								priority: 1 //enables progress to overlap end point
 							},
 							{
 								name: 'End',
 								color: '#FF0000',
 								from: vm.roundReport.timeline.endDate,
-								to: vm.roundReport.timeline.endDate
+								to: new Date(vm.roundReport.timeline.endDate.getTime() + endDateLastHour).toJSON(),
+								priority: 0
 							}
 						]
 					}
