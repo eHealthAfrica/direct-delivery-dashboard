@@ -7,11 +7,6 @@ angular.module('products')
 
     var db = pouchDB(config.db);
 
-
-    this.productsListMock = [
-      {}
-    ];
-
     this.getAll = function(){
       var conf = {
         include_docs : true

@@ -15,8 +15,11 @@ angular.module('allocations')
       controller: "AssumptionsController",
       controllerAs: 'assumptionsController',
       resolve: {
-        products : function(productService){
-          return productService.getAll();
+        assumptionList : function(assumptionService){
+          return assumptionService.getAll()
+            .catch(function(err){
+              return []
+            });
         }
       }
     })
