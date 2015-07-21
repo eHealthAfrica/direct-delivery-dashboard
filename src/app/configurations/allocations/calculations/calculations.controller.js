@@ -6,7 +6,7 @@ angular.module('allocations')
   .controller('CalculationsController', function (products, locations, locationService, calculationService, pouchUtil, log) {
     var vm = this;
     var viewMap = {
-      targetPop: "getTargetPop",
+      targetpopulation: "getTargetPop",
       coverage: "computeCoverage",
       wastage: "computeWastage",
       schedule: "computeSchedule"

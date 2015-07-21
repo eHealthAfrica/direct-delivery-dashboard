@@ -1,18 +1,34 @@
 /**
- * Created by ehealthafrica on 7/15/15.
+ * Created by ehealthafrica on 7/8/15.
  */
 
 angular.module('allocations')
-  .service('templateService', function(log){
+  .service('assumptionService', function(pouchDB, config, pouchUtil, log, productService, dbService){
 
+    var db = pouchDB(config.db);
     var service = this;
 
-    service.setTemplate = function(){
+    service.getAll = function(){
+      var view = 'allocations/assumptions';
+      var config = {
+        include_docs : true
+      };
 
+      return db.query(view, config)
+        .then(function(response){
+          return pouchUtil.pluckDocs(response);
+        })
+        .catch(function(err){
+          log.error(err);
+          return err;
+        });
     };
+    service.save = function(data){
 
-    service.getTemplate = function(){
-
+      if(angular.isArray(data)){
+        return dbService.saveDocs(data);
+      }
+      return dbService.save(data);
     };
 
   });

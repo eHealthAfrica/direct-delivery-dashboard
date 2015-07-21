@@ -13,8 +13,9 @@ angular.module('allocations')
       };
       return assumptionService.getAll()
         .then(function(response){
+          console.log(response);
           for(var i in response){
-            temp.coverage = response.coverage;
+            temp.coverage[response[i].product.code] = response[i].coverage;
           }
           return temp;
         });
@@ -63,13 +64,17 @@ angular.module('allocations')
     service.computeCoverage = function(facilities){
       var hay = {};
       var res = [];
-
       return prepareTemplate()
         .then(function(response){
-          console.log(response);
           for(var i in facilities){
-            hay.facility = facilities[i].product.name;
+            hay.facility = facilities[i].name;
+            for(var c in response){
+              hay[c] = response[c];
+            }
+            res.push(angular.copy(hay));
           }
+          console.log(res);
+          return res;
         });
     };
     service.computeSchedule = function(facilities){
