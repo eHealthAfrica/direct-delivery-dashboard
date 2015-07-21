@@ -71,5 +71,11 @@ angular.module('log')
       title: 'Fetch locations failed',
       message: 'An error while retrieving facilities under selected areas',
       remedy: 'Please, try again if this persists contact support.'
+    },
+    assumptionSaveFailed: {
+      title: 'Saving failed',
+      message: 'An unknown error occurred while saving assumption',
+      remedy: 'Please, try again and contact support if it persists'
     }
+
   });

@@ -29,5 +29,9 @@ angular.module('log')
     completePlanningSuccess: {
       title: 'Delivery round complete planning',
       message: 'Delivery round planning has been complete and ready for next phase'
+    },
+    assumptionEdited: {
+      title: 'Update successfully',
+      message: 'Assumption edited successfully!'
     }
   });

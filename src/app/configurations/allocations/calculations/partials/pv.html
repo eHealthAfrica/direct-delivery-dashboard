@@ -1,0 +1,14 @@
+<table class="table table-bordered">
+  <tr>
+    <th>Facility</th>
+    <th ng-repeat="product in calculationsController.productList" ng-bind="::product.code"></th>
+    <th>edit</th>
+  </tr>
+  <tr ng-repeat="allocation in calculationsController.renderedData track by $index">
+    <td >
+      <a href ng-bind="allocation.facility"></a>
+    </td>
+    <td ng-repeat="product in allocation.coverage">{{product}}%</td>
+    <td><a href><i class="fa fa-wrench"></i></td>
+  </tr>
+</table>

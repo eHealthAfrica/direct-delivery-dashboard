@@ -1,0 +1,186 @@
+{
+  "docs": [
+    {
+      "_id": "ADS-0.05ml-assumptions",
+      "product": {
+        "_id": "ADS-0.05ml",
+        "code": "ADS-0.05ml"
+      },
+      "presentation": 0,
+      "coverage":0,
+      "schedule": 0,
+      "wastage": 0,
+      "buffer": 0,
+      "doc_type": "assumptions"
+    },
+    {
+      "_id": "BCG-assumptions",
+      "product": {
+        "_id": "BCG",
+        "code": "BCG"
+      },
+      "presentation": 20,
+      "coverage":83.0,
+      "schedule": 1,
+      "wastage": 2,
+      "buffer": 25.0,
+      "doc_type": "assumptions"
+    },
+    {
+      "_id": "DT-assumptions",
+      "product": {
+        "_id": "DT",
+        "code": "DT"
+      },
+      "presentation": 0,
+      "coverage":0,
+      "schedule": 0,
+      "wastage": 0,
+      "buffer": 0,
+      "doc_type": "assumptions"
+    },
+    {
+      "_id": "HepA-assumptions",
+      "product": {
+        "_id": "HepA",
+        "code": "HepA"
+      },
+      "presentation": 0,
+      "coverage":0,
+      "schedule": 0,
+      "wastage": 0,
+      "buffer": 0,
+      "doc_type": "assumptions"
+    },
+    {
+      "_id": "HepB-assumptions",
+      "product": {
+        "_id": "HepB",
+        "code": "HepB"
+      },
+      "presentation": 0,
+      "coverage":0,
+      "schedule": 0,
+      "wastage": 0,
+      "buffer": 0,
+      "doc_type": "assumptions"
+    },
+    {
+      "_id": "HPV-assumptions",
+      "product": {
+        "_id": "HPV",
+        "code": "HPV"
+      },
+      "presentation": 10,
+      "coverage":83.0,
+      "schedule": 1,
+      "wastage": 1.33,
+      "buffer": 25,
+      "doc_type": "assumptions"
+    },
+    {
+      "_id": "Measles-assumptions",
+      "product": {
+        "_id": "Measles",
+        "code": "Measles"
+      },
+      "presentation": 10,
+      "coverage":83.0,
+      "schedule": 1,
+      "wastage": 1.43,
+      "buffer": 25,
+      "doc_type": "assumptions"
+    },
+    {
+      "_id": "Men-A-assumptions",
+      "product": {
+        "_id": "Men-A",
+        "code": "Men-A"
+      },
+      "presentation": 10,
+      "coverage":83.0,
+      "schedule": 1,
+      "wastage": 1.43,
+      "buffer": 25,
+      "doc_type": "assumptions"
+    },
+    {
+      "_id": "OPV-assumptions",
+      "product": {
+        "_id": "OPV",
+        "code": "OPV"
+      },
+      "presentation": 20,
+      "coverage":83.0,
+      "schedule": 4,
+      "wastage": 1.33,
+      "buffer": 25,
+      "doc_type": "assumptions"
+    },
+    {
+      "_id": "Penta-assumptions",
+      "product": {
+        "_id": "Penta",
+        "code": "Penta"
+      },
+      "presentation": 10,
+      "coverage":83.0,
+      "schedule": 3,
+      "wastage": 1.33,
+      "buffer": 25,
+      "doc_type": "assumptions"
+    },
+    {
+      "_id": "SB-2.5L-assumptions",
+      "product": {
+        "_id": "SB-2.5L",
+        "code": "SB-2.5L"
+      },
+      "presentation": 0,
+      "coverage":0,
+      "schedule": 0,
+      "wastage": 0,
+      "buffer": 0,
+      "doc_type": "assumptions"
+    },
+    {
+      "_id": "Syr-Dil-2ml-assumptions",
+      "product": {
+        "_id": "Syr-Dil-2ml",
+        "code": "Syr-Dil-2ml"
+      },
+      "presentation": 0,
+      "coverage":0,
+      "schedule": 0,
+      "wastage": 1.1,
+      "buffer": 0,
+      "doc_type": "assumptions"
+    },
+    {
+      "_id": "TT-assumptions",
+      "product": {
+        "_id": "TT",
+        "code": "TT"
+      },
+      "presentation": 10,
+      "coverage":83.0,
+      "schedule": 2,
+      "wastage": 1.33,
+      "buffer": 25,
+      "doc_type": "assumptions"
+    },
+    {
+      "_id": "YF-assumptions",
+      "product": {
+        "_id": "YF",
+        "code": "YF"
+      },
+      "presentation": 10,
+      "coverage":83.0,
+      "schedule": 1,
+      "wastage": 1.43,
+      "buffer": 25,
+      "doc_type": "assumptions"
+    }
+  ]
+}

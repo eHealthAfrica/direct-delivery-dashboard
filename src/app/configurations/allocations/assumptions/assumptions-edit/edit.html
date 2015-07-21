@@ -1,0 +1,33 @@
+<div class="panel panel-info">
+  <div class="panel-heading">editing assumptions for {{assumptionsEditController.data.product.code}}</div>
+  <div class="panel-body">
+    <form class="form" role="form">
+      <div class="form-group">
+        <label>Presentation</label>
+        <input class="form-control" ng-model="assumptionsEditController.data.presentation"/>
+      </div>
+      <div class="form-group">
+        <label>Coverage</label>
+        <input class="form-control" ng-model="assumptionsEditController.data.coverage"/>
+      </div>
+      <div class="form-group">
+        <label>Schedule</label>
+        <input class="form-control" ng-model="assumptionsEditController.data.schedule"/>
+      </div>
+      <div class="form-group">
+        <label>Wastage</label>
+        <input class="form-control" ng-model="assumptionsEditController.data.wastage"/>
+      </div>
+      <div class="form-group">
+        <label>Buffer</label>
+        <input class="form-control" ng-model="assumptionsEditController.data.buffer"/>
+      </div>
+    </form>
+  </div>
+  <div class="panel-footer clearfix">
+    <div class="pull-right">
+      <button class="btn btn-default" ng-click="assumptionsEditController.cancel()">cancel</button>
+      <button class="btn btn-success" ng-click="assumptionsEditController.submit()">save changes</button>
+    </div>
+  </div>
+</div>
