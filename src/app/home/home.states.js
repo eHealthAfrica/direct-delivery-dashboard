@@ -12,7 +12,7 @@ angular.module('home')
 					roundReport: function (deliveryRoundService) {
 						var userDefaultState = 'Kano';//TODO: pick from user document states they can access.
 						var key = '';
-						var roundInfo;
+						var roundInfo = [];
 						return deliveryRoundService.getLatestBy(userDefaultState)
 								.then(function (ri) {
 									roundInfo = ri;
