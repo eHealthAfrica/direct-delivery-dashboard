@@ -7,47 +7,41 @@
       "estimatedKM": "110",
       "vehicle": "395KC",
       "fuelVoucher": "5320",
-      "deliveryID": {
+      "delivery": {
         "_id": "18d13ea4fb9088959921e8794eb6461c",
         "date": "2015-06-02",
         "driverID": "abdullahi@example.com",
-        "deliveryRoundID": "KN-21-2015",
-        "facilityRounds": [
-          {
-            "facility": {
-              "zone": "Rano",
-              "lga": "Rogo",
-              "ward": "Jajaye",
-              "name": "Jajaye Basic Health Clinic",
-              "id": "KNS RGG JJY 101",
-              "contact": "BELLO YAHAYA",
-              "phoneNo": 8084493252
-            }
-          },
-          {
-            "facility": {
-              "zone": "Rano",
-              "lga": "Rogo",
-              "ward": "Rogo S/Gari",
-              "name": "Rogo Health Post",
-              "id": "KNS RGG RSG 201",
-              "contact": "Jamilu Nazifi",
-              "phoneNo": 8022843883
-            }
-          },
-          {
-            "facility": {
-              "zone": "Rano",
-              "lga": "Rogo",
-              "ward": "Zoza",
-              "name": "Kaleku Primary Health Clinic",
-              "id": "KNS RGG ZZA 101",
-              "contact": "ISHAQ ABDULLAHI",
-              "phoneNo": 8142111488
-            }
-          }
-        ]
+        "deliveryRoundID": "KN-21-2015"
       },
+      "facilityRounds": [
+        {
+          "zone": "Rano",
+          "lga": "Rogo",
+          "ward": "Jajaye",
+          "name": "Jajaye Basic Health Clinic",
+          "id": "KNS RGG JJY 101",
+          "contact": "BELLO YAHAYA",
+          "phoneNo": 8084493252
+        },
+        {
+          "zone": "Rano",
+          "lga": "Rogo",
+          "ward": "Rogo S/Gari",
+          "name": "Rogo Health Post",
+          "id": "KNS RGG RSG 201",
+          "contact": "Jamilu Nazifi",
+          "phoneNo": 8022843883
+        },
+        {
+          "zone": "Rano",
+          "lga": "Rogo",
+          "ward": "Zoza",
+          "name": "Kaleku Primary Health Clinic",
+          "id": "KNS RGG ZZA 101",
+          "contact": "ISHAQ ABDULLAHI",
+          "phoneNo": 8142111488
+        }
+      ],
       "doc_type": "finance"
     },
     {
@@ -57,47 +51,41 @@
       "estimatedKM": "175",
       "vehicle": "394KC",
       "fuelVoucher": "5658",
-      "deliveryID": {
+      "delivery": {
         "_id": "18d13ea4fb9088959921e8794eb6461c",
         "date": "2015-06-02",
         "driverID": "abdullahi@example.com",
-        "deliveryRoundID": "KN-21-2015",
-        "facilityRounds": [
-          {
-            "facility": {
-              "zone": "Rano",
-              "lga": "Rogo",
-              "ward": "Jajaye",
-              "name": "Jajaye Basic Health Clinic",
-              "id": "KNS RGG JJY 101",
-              "contact": "BELLO YAHAYA",
-              "phoneNo": 8084493252
-            }
-          },
-          {
-            "facility": {
-              "zone": "Rano",
-              "lga": "Rogo",
-              "ward": "Rogo S/Gari",
-              "name": "Rogo Health Post",
-              "id": "KNS RGG RSG 201",
-              "contact": "Jamilu Nazifi",
-              "phoneNo": 8022843883
-            }
-          },
-          {
-            "facility": {
-              "zone": "Rano",
-              "lga": "Rogo",
-              "ward": "Zoza",
-              "name": "Kaleku Primary Health Clinic",
-              "id": "KNS RGG ZZA 101",
-              "contact": "ISHAQ ABDULLAHI",
-              "phoneNo": 8142111488
-            }
-          }
-        ]
+        "deliveryRoundID": "KN-21-2015"
       },
+      "facilityRounds": [
+        {
+          "zone": "Rano",
+          "lga": "Rogo",
+          "ward": "Jajaye",
+          "name": "Jajaye Basic Health Clinic",
+          "id": "KNS RGG JJY 101",
+          "contact": "BELLO YAHAYA",
+          "phoneNo": 8084493252
+        },
+        {
+          "zone": "Rano",
+          "lga": "Rogo",
+          "ward": "Rogo S/Gari",
+          "name": "Rogo Health Post",
+          "id": "KNS RGG RSG 201",
+          "contact": "Jamilu Nazifi",
+          "phoneNo": 8022843883
+        },
+        {
+          "zone": "Rano",
+          "lga": "Rogo",
+          "ward": "Zoza",
+          "name": "Kaleku Primary Health Clinic",
+          "id": "KNS RGG ZZA 101",
+          "contact": "ISHAQ ABDULLAHI",
+          "phoneNo": 8142111488
+        }
+      ],
       "doc_type": "finance"
     },
     {
@@ -107,47 +95,41 @@
       "estimatedKM": "198",
       "vehicle": "88ZF",
       "fuelVoucher": "5800",
-      "deliveryID": {
+      "delivery": {
         "_id": "18d13ea4fb9088959921e8794eb6461c",
         "date": "2015-06-02",
         "driverID": "abdullahi@example.com",
-        "deliveryRoundID": "KN-21-2015",
-        "facilityRounds": [
-          {
-            "facility": {
-              "zone": "Rano",
-              "lga": "Rogo",
-              "ward": "Jajaye",
-              "name": "Jajaye Basic Health Clinic",
-              "id": "KNS RGG JJY 101",
-              "contact": "BELLO YAHAYA",
-              "phoneNo": 8084493252
-            }
-          },
-          {
-            "facility": {
-              "zone": "Rano",
-              "lga": "Rogo",
-              "ward": "Rogo S/Gari",
-              "name": "Rogo Health Post",
-              "id": "KNS RGG RSG 201",
-              "contact": "Jamilu Nazifi",
-              "phoneNo": 8022843883
-            }
-          },
-          {
-            "facility": {
-              "zone": "Rano",
-              "lga": "Rogo",
-              "ward": "Zoza",
-              "name": "Kaleku Primary Health Clinic",
-              "id": "KNS RGG ZZA 101",
-              "contact": "ISHAQ ABDULLAHI",
-              "phoneNo": 8142111488
-            }
-          }
-        ]
+        "deliveryRoundID": "KN-21-2015"
       },
+      "facilityRounds": [
+        {
+          "zone": "Rano",
+          "lga": "Rogo",
+          "ward": "Jajaye",
+          "name": "Jajaye Basic Health Clinic",
+          "id": "KNS RGG JJY 101",
+          "contact": "BELLO YAHAYA",
+          "phoneNo": 8084493252
+        },
+        {
+          "zone": "Rano",
+          "lga": "Rogo",
+          "ward": "Rogo S/Gari",
+          "name": "Rogo Health Post",
+          "id": "KNS RGG RSG 201",
+          "contact": "Jamilu Nazifi",
+          "phoneNo": 8022843883
+        },
+        {
+          "zone": "Rano",
+          "lga": "Rogo",
+          "ward": "Zoza",
+          "name": "Kaleku Primary Health Clinic",
+          "id": "KNS RGG ZZA 101",
+          "contact": "ISHAQ ABDULLAHI",
+          "phoneNo": 8142111488
+        }
+      ],
       "doc_type": "finance"
     }
   ]
