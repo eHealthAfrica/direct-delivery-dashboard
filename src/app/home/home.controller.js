@@ -5,6 +5,7 @@ angular.module('directDeliveryDashboard')
 
 			var vm = this; //view models
 			vm.selectedRound = '';
+
 			vm.roundCodes = roundReport.roundInfo.roundCodes || [];
 			vm.roundReport = roundReport;
 			vm.onTime = [];
@@ -62,6 +63,9 @@ angular.module('directDeliveryDashboard')
 
 
 			vm.setTimeline = function(){
+				if(!vm.roundReport.timeline){
+					return;
+				}
 				var endDateLastHour = 82799000;
 				vm.scale = 'day';
 				vm.data = [
