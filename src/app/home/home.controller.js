@@ -77,7 +77,7 @@ angular.module('directDeliveryDashboard')
 								name: 'Progress',
 								color: '#93C47D',
 								from: vm.roundReport.timeline.startDate,
-								to: new Date(vm.roundReport.timeline.markDate),
+								to: new Date(vm.roundReport.timeline.markDate.getTime() + endDateLastHour),
 								priority: 1 //enables progress to overlap end point
 							},
 							{
