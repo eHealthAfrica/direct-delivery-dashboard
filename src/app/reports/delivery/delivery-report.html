@@ -1,9 +1,122 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">Round Reports</h3>
+    <div class="row">
+      <div class="col-sm-4 pull-left">
+        <h4>Delivery Round Reports</h4>
+      </div>
+      <!-- date range selector -->
+      <div class="col-sm-8 pull-right">
+        <div class="form-group">
+          <label for="fromDate">Period</label>
+
+          <div class="row">
+            <div class="col-md-4">
+              <div class="input-group">
+                <input id="fromDate" type="text" class="form-control"
+                       ng-model="devRepCtrl.startFrom"
+                       datepicker-popup="{{devRepCtrl.dateFormat}}"
+                       is-open="devRepCtrl.start.opened"/>
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-default"
+                              ng-click="devRepCtrl.start.open($event)">
+                        <i class="fa fa-calendar"></i>
+                      </button>
+                    </span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="input-group">
+                <input type="text" class="form-control" ng-model="devRepCtrl.stopOn"
+                       datepicker-popup="{{devRepCtrl.dateFormat}}"
+                       is-open="devRepCtrl.stop.opened"/>
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-default"
+                              ng-click="devRepCtrl.stop.open($event)">
+                        <i class="fa fa-calendar"></i>
+                      </button>
+                    </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end of date range selector -->
+    </div>
   </div>
   <div class="panel-body">
-    Delivery Round Report Here
+    <div classs="row">
+      <table class="table table-condensed table-striped table-bordered">
+        <thead>
+        <tr>
+          <th class="col-sm-1">#</th>
+          <th class="col-sm-2">Zone</th>
+          <th class="col-sm-2 alert-success">Success</th>
+          <th class="col-sm-2 alert-danger">Failed</th>
+          <th class="col-sm-2 alert-warning">Canceled</th>
+          <th class="col-sm-2 alert-info">Grand Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>1</td>
+          <td>Bichi</td>
+          <td>632</td>
+          <td>33</td>
+          <td>65</td>
+          <td>730</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Nassarawa</td>
+          <td>560</td>
+          <td>23</td>
+          <td>49</td>
+          <td>632</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Rano</td>
+          <td>750</td>
+          <td>45</td>
+          <td>65</td>
+          <td>860</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Wudil</td>
+          <td>695</td>
+          <td>22</td>
+          <td>32</td>
+          <td>749</td>
+        </tr>
+        <tr>
+          <th>5</th>
+          <th>Total</th>
+          <th>{{ (695 + 560 + 632 + 750) }}</th>
+          <th>{{ (22 + 45 + 23 + 33) }}</th>
+          <th>{{ (32 + 45 + 49 + 65) }}</th>
+          <th>{{ (730 + 632 + 860 + 749) }}</th>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div classs="row">
+      <nvd3-line-chart
+          data="devRepCtrl.exampleData"
+          id="deliveryGraph"
+          xAxisTickFormat="devRepCtrl.formatXAxis()"
+          tooltips="true"
+          showLegend="true"
+          interactive="true"
+          showLabels="true"
+          showValues="true"
+          useInteractiveGuideline="true"
+          height="350"
+          noData="No Data Available!"
+          showXAxis="true"
+          showYAxis="true">
+        <svg></svg>
+      </nvd3-line-chart>
+    </div>
   </div>
-
 </div>
