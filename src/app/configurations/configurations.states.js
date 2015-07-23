@@ -1,6 +1,4 @@
-/**
- * Created by ehealthafrica on 7/1/15.
- */
+'use strict';
 
 angular.module('configurations')
   .config(function($stateProvider){
