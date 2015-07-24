@@ -6,6 +6,7 @@
       "distanceAfter":"60550",
       "estimatedDistance":"110",
       "vehicle":"395KC",
+      "amountGiven":"3000",
       "fuelVoucher":"5320",
       "state":"Kano",
       "delivery":{
@@ -44,6 +45,7 @@
       "distanceAfter":"49551",
       "estimatedDistance":"175",
       "vehicle":"394KC",
+      "amountGiven":"0",
       "fuelVoucher":"5658",
       "state":"Kano",
       "delivery":{
@@ -76,6 +78,7 @@
       "distanceAfter":"40770",
       "estimatedDistance":"198",
       "vehicle":"88ZF",
+      "amountGiven":"3000",
       "fuelVoucher":"5800",
       "state":"Kano",
       "delivery":{
@@ -122,6 +125,7 @@
       "distanceAfter":"21805",
       "estimatedDistance":"112",
       "vehicle":"89ZF",
+      "amountGiven":"0",
       "fuelVoucher":"4700",
       "state":"Kano",
       "delivery":{
@@ -169,6 +173,7 @@
       "distanceAfter":"34593",
       "estimatedDistance":"125",
       "vehicle":"621KC",
+      "amountGiven":"0",
       "fuelVoucher":"5850",
       "state":"Kano",
       "delivery":{
