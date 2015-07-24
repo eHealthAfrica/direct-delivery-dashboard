@@ -100,5 +100,8 @@ angular.module('allocations')
       vm.activeView = view;
       switchRenderedPartial(partial);
     };
+    findLga(vm.selectedState)
+      .then(getFacilities)
+      .then(calculationService.getMonthlyRequirement);
 
   });

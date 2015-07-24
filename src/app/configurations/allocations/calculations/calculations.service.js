@@ -13,7 +13,6 @@ angular.module('allocations')
       };
       return assumptionService.getAll()
         .then(function(response){
-          console.log(response);
           for(var i in response){
             temp.coverage[response[i].product.code] = response[i].coverage;
           }
@@ -86,4 +85,79 @@ angular.module('allocations')
     service.computeBuffer = function(facilities){
 
     };
+    service.getTemplate = function(templateID){
+      return assumptionService.getAll()
+    };
+    service.getAllocations = function(facilities){
+
+      function fillwithTemplate(facility, template){
+        for(var i in template){ //Todo: adjust this to suit the new template structure
+          facility['coverage'][template[i].product._id] = parseInt(template[i].coverage);
+          facility['wastage'][template[i].product._id] = parseInt(template[i].wastage);
+          facility['schedule'][template[i].product._id] = parseInt(template[i].schedule);
+        }
+        return facility;
+      }
+      function setAllocations (templateObj){
+        facilities.forEach(function(facility){
+          facility.coverage = {};
+          facility.wastage  = {};
+          facility.schedule = {};
+          fillwithTemplate(facility, templateObj);
+        });
+        return facilities;
+      }
+      return service.getTemplate()
+        .then(setAllocations)
+    };
+    /***
+     *  calculates monthly requirements using allocation
+     *  and target population
+     * @param facilities: array
+     * @returns {*} facilities inputed with MR(monthly requirement) field add to each
+     */
+    service.getMonthlyRequirement = function(facilities){
+      return service.getAllocations(facilities)
+        .then(service.getTargetPop)
+        .then(function(r){
+          for(i in facilities){
+            for(v in r){
+              if(r[v].facility._id === facilities[i]._id){
+                facilities[i].annualU1 = parseInt(r[v].annualU1);
+                facilities[i]['bi-weeklyU1'] = parseInt(r[v]['bi-weeklyU1']);
+              }
+            }
+          }
+          return facilities;
+        })
+        .then(function(response) {
+          response.forEach(function (facility) {
+            var productList = facility.coverage.keys();
+            var index;
+            for(pl in productList){
+              index = productList[pl];
+              facility.MR[productList[pl]] = (facility['bi-weeklyU1'] * 2) * facility.coverage[index] * facility.schedule[index] * facility.wastage[index];
+            }
+
+          });
+          console.log(facilities);
+          return facilities;
+        });
+    };
+     service.getMonthlyMax = function(facilities){
+      return service.getMonthlyRequirement(facilities)
+        .then(function(response){
+          response.each(function(facility){
+            var mmax = facility.MR * (1 + facility.buffer);
+            return Math.ceil(mmax)
+          })
+        })
+    };
+    service.getBiWeeklyMax = function(){
+
+    };
+    service.getBiWeeklyMin = function(facilities){
+
+    }
+
 });
