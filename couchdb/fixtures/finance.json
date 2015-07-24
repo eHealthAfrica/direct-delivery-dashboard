@@ -7,6 +7,7 @@
       "estimatedKM": "110",
       "vehicle": "395KC",
       "fuelVoucher": "5320",
+      "amountGiven": 3000,
       "delivery": {
         "_id": "18d13ea4fb9088959921e8794eb6461c",
         "date": "2015-06-02",
@@ -45,6 +46,7 @@
       "estimatedKM": "175",
       "vehicle": "394KC",
       "fuelVoucher": "5658",
+      "amountGiven": 4000,
       "delivery": {
         "_id": "18d13ea4fb9088959921e8794eb6461c",
         "date": "2015-06-02",
@@ -83,6 +85,7 @@
       "estimatedKM": "198",
       "vehicle": "88ZF",
       "fuelVoucher": "5800",
+      "amountGiven": 5000,
       "delivery": {
         "_id": "18d13ea4fb9088959921e8794eb6461c",
         "date": "2015-06-02"
