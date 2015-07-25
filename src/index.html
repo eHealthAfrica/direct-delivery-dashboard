@@ -55,35 +55,29 @@
 
     <!-- build:js({.tmp,src}) scripts/app.js -->
     <!-- inject:js -->
-    <script src="app/configurations/allocations/allocations.module.js"></script>
-    <script src="app/configurations/allocations/assumptions/assumptions-edit/assumptions.edit.controller.js"></script>
     <script src="app/planning/planning.module.js"></script>
     <script src="app/planning/facilities/dialogs/copy-round/copy-round.service.js"></script>
     <script src="app/planning/facilities/dialogs/copy-round/copy-round-dialog.controller.js"></script>
     <script src="app/planning/facilities/dialogs/add/add-facility.service.js"></script>
     <script src="app/planning/facilities/dialogs/add/add-facility-dialog.controller.js"></script>
-    <script src="app/configurations/allocations/calculations/calculations.states.js"></script>
-    <script src="app/configurations/allocations/calculations/calculations.service.js"></script>
-    <script src="app/configurations/allocations/calculations/calculations.controller.js"></script>
-    <script src="app/configurations/allocations/assumptions/assumptions.states.js"></script>
-    <script src="app/configurations/allocations/assumptions/assumptions.service.js"></script>
-    <script src="app/configurations/allocations/assumptions/assumptions.controller.js"></script>
+    <script src="app/configurations/allocations/allocations.module.js"></script>
+    <script src="app/configurations/allocations/assumptions/assumptions-edit/assumptions.edit.controller.js"></script>
     <script src="app/reports/reports.module.js"></script>
     <script src="app/reports/invoice/round/round.states.js"></script>
     <script src="app/reports/invoice/round/round.controller.js"></script>
     <script src="app/reports/invoice/round/round.constants.js"></script>
     <script src="app/planning/delivery-round/dialog/round-dialog.controller.js"></script>
+    <script src="app/configurations/allocations/assumptions/assumptions.states.js"></script>
+    <script src="app/configurations/allocations/assumptions/assumptions.service.js"></script>
+    <script src="app/configurations/allocations/assumptions/assumptions.controller.js"></script>
+    <script src="app/configurations/allocations/calculations/calculations.states.js"></script>
+    <script src="app/configurations/allocations/calculations/calculations.service.js"></script>
+    <script src="app/configurations/allocations/calculations/calculations.controller.js"></script>
     <script src="components/log/log.module.js"></script>
     <script src="components/log/messages/warning.constants.js"></script>
     <script src="components/log/messages/success.constants.js"></script>
     <script src="components/log/messages/info.constants.js"></script>
     <script src="components/log/messages/error.constants.js"></script>
-    <script src="components/products/products.module.js"></script>
-    <script src="app/configurations/products/products.states.js"></script>
-    <script src="app/configurations/products/products.controller.js"></script>
-    <script src="app/configurations/configurations.module.js"></script>
-    <script src="app/configurations/menu/configurations.menu.states.js"></script>
-    <script src="app/configurations/allocations/allocations.states.js"></script>
     <script src="app/users/users.module.js"></script>
     <script src="app/users/update/update.states.js"></script>
     <script src="app/users/form/form.controller.js"></script>
@@ -94,6 +88,7 @@
     <script src="app/reports/invoice/invoice.controller.js"></script>
     <script src="app/reports/facility/facility-report.states.js"></script>
     <script src="app/reports/delivery/delivery-report.states.js"></script>
+    <script src="app/reports/delivery/delivery-report.controller.js"></script>
     <script src="app/planning/schedule/schedules.service.js"></script>
     <script src="app/planning/schedule/schedule.states.js"></script>
     <script src="app/planning/schedule/schedule-round.controller.js"></script>
@@ -103,12 +98,18 @@
     <script src="app/planning/delivery-round/delivery-round.service.js"></script>
     <script src="app/planning/delivery-round/delivery-round.controller.js"></script>
     <script src="app/planning/delivery-round/delivery-round.constants.js"></script>
+    <script src="components/products/products.module.js"></script>
+    <script src="app/configurations/products/products.states.js"></script>
+    <script src="app/configurations/products/products.controller.js"></script>
+    <script src="app/configurations/configurations.module.js"></script>
+    <script src="app/configurations/menu/configurations.menu.states.js"></script>
+    <script src="app/configurations/allocations/allocations.states.js"></script>
     <script src="components/utility/utility.module.js"></script>
     <script src="components/utility/utility.service.js"></script>
+    <script src="components/products/products.service.js"></script>
     <script src="components/navbar/navbar.module.js"></script>
     <script src="components/navbar/navbar.service.js"></script>
     <script src="components/navbar/navbar.controller.js"></script>
-    <script src="components/products/products.service.js"></script>
     <script src="components/mailer/mailer.module.js"></script>
     <script src="components/mailer/mandrill.service.js"></script>
     <script src="components/mailer/mailer.service.js"></script>
@@ -130,7 +131,6 @@
     <script src="components/auth/auth.module.js"></script>
     <script src="components/auth/auth.service.js"></script>
     <script src="components/auth/auth.config.js"></script>
-    <script src="app/configurations/configurations.states.js"></script>
     <script src="app/users/users.states.js"></script>
     <script src="app/users/users.service.js"></script>
     <script src="app/users/users.controller.js"></script>
@@ -146,6 +146,7 @@
     <script src="app/home/home.states.js"></script>
     <script src="app/index.module.js"></script>
     <script src="app/home/home.controller.js"></script>
+    <script src="app/configurations/configurations.states.js"></script>
     <script src="app/index.states.js"></script>
     <script src="app/index.controller.js"></script>
     <script src="app/config.js"></script>
