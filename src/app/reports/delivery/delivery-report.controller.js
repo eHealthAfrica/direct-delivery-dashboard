@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('reports')
-		.controller('DeliveryReportCtrl', function ($window, config) {
+		.controller('DeliveryReportCtrl', function ($window, config, reportsService) {
 
 			var vm = this;//viewModel
 
@@ -29,6 +29,24 @@ angular.module('reports')
 				return function(d){
 					return $window.d3.time.format('%d %b %Y')(new Date(d));
 				};
+			};
+
+			vm.zoneReport = [];
+			vm.statusReport = {};
+
+			vm.getReport = function(){
+				reportsService.getDeliveryReportWithin(vm.startFrom, vm.stopOn)
+						.then(function(res){
+							vm.zoneReport = res.zones;
+							vm.statusReport = res.status;
+						})
+						.catch(function(err){
+							console.error(err);
+						});
+			};
+
+			vm.calcSum = function(rp){
+
 			};
 
 			vm.exampleData = [
