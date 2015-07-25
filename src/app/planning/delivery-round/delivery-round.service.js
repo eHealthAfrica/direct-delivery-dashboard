@@ -256,18 +256,22 @@ angular.module('planning')
 						.then(pouchUtil.pluckIDs);
 			};
 
+			_this.getBy = function(key){
+				var view = 'dashboard-delivery-rounds/by-state-and-end-date';
+				return dbService.getView(view, key)
+			};
+
 			/**
 			 * This sorts rows by delivery round date.
 			 * @param state
 			 * @returns {*}
 			 */
 			this.getLatestBy = function(state){
-				var view = 'dashboard-delivery-rounds/by-state-and-end-date';
 				var params = {
 					startkey: [ state ],
 					endkey: [ state, {} ]
 				};
-				return dbService.getView(view, params)
+				return _this.getBy(params)
 						.then(pouchUtil.pluckIDs)
 						.then(pouchUtil.rejectIfEmpty)
 						.then(function(rounds){
