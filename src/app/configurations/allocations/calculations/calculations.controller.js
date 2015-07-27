@@ -7,9 +7,14 @@ angular.module('allocations')
     var vm = this;
     var viewMap = {
       targetpopulation: "getTargetPop",
-      coverage: "computeCoverage",
-      wastage: "computeWastage",
-      schedule: "computeSchedule"
+      coverage: "getAllocations",
+      wastage: "getAllocations",
+      schedule: "getAllocations",
+      buffer: "getAllocations",
+      BWMax: "getBiWeekly",
+      BWMin: "getBiWeekly",
+      MMax: "getMonthlyMax",
+      MR: "getMonthlyRequirement"
     };
     vm.productList = products || [];
     vm.renderedPartial = 'tp';
@@ -63,7 +68,7 @@ angular.module('allocations')
           return response;
         })
         .catch(function(err){
-          log.error('','', 'could not retrieve facilitie, please reload and try again')
+          log.error('','', 'could not retrieve facilities, please reload and try again')
         })
     }
     function switchRenderedPartial(partial) {
@@ -93,15 +98,10 @@ angular.module('allocations')
 
     vm.switchLocationState(vm.selectedState);
 
-
     vm.changeDataView = function (partial, viewLabel) {
       var view = viewLabel.replace(' ', '');
       vm.renderedViewLabel = view;
       vm.activeView = view;
       switchRenderedPartial(partial);
     };
-    findLga(vm.selectedState)
-      .then(getFacilities)
-      .then(calculationService.getMonthlyRequirement);
-
   });

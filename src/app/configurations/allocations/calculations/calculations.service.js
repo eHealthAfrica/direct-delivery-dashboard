@@ -3,35 +3,34 @@
  */
 
 angular.module('allocations')
-  .service('calculationService', function(locationService, dbService, pouchUtil, assumptionService){
+  .service('calculationService', function (locationService, dbService, pouchUtil, assumptionService) {
 
     var service = this;
 
-    function prepareTemplate (){
+    function prepareTemplate() {
       var temp = {
-        coverage : {}
+        coverage: {}
       };
       return assumptionService.getAll()
-        .then(function(response){
-          for(var i in response){
+        .then(function (response) {
+          for (var i in response) {
             temp.coverage[response[i].product.code] = response[i].coverage;
           }
           return temp;
         });
     }
 
-
     //TODO: change all static level reference to dynamic types
-    service.getCurrentTemplate = function(){
+    service.getCurrentTemplate = function () {
 
     };
-    service.getLocation = function(){
+    service.getLocation = function () {
       return locationService.get
     };
-    service.getfacility = function(){
+    service.getfacility = function () {
       return locationService.getLocationByLevel("6");
     };
-    service.saveCustomAllocation = function(){
+    service.saveCustomAllocation = function () {
 
     };
 
@@ -41,33 +40,33 @@ angular.module('allocations')
      * @return facilities.  match each facility entered with corresponding returned
      * data.
      */
-    service.getTargetPop = function(facilities){
+    service.getTargetPop = function (facilities) {
       var view = 'allocations/target-population',
         keys = [],
         options = {
-        include_docs: true
-      };
+          include_docs: true
+        };
 
-      if(angular.isArray(facilities)){
-        for($i in facilities){
+      if (angular.isArray(facilities)) {
+        for ($i in facilities) {
           keys.push(facilities[$i]._id);
         }
-      }else{
-       keys.push(facilities._id);
+      } else {
+        keys.push(facilities._id);
       }
       options.keys = keys;
       return dbService.getView(view, options)
         .then(pouchUtil.pluckDocs);
     };
 
-    service.computeCoverage = function(facilities){
+    service.computeCoverage = function (facilities) {
       var hay = {};
       var res = [];
       return prepareTemplate()
-        .then(function(response){
-          for(var i in facilities){
+        .then(function (response) {
+          for (var i in facilities) {
             hay.facility = facilities[i].name;
-            for(var c in response){
+            for (var c in response) {
               hay[c] = response[c];
             }
             res.push(angular.copy(hay));
@@ -76,37 +75,41 @@ angular.module('allocations')
           return res;
         });
     };
-    service.computeSchedule = function(facilities){
+    service.computeSchedule = function (facilities) {
 
     };
-    service.computeWastage = function(facilities){
+    service.computeWastage = function (facilities) {
 
     };
-    service.computeBuffer = function(facilities){
+    service.computeBuffer = function (facilities) {
 
     };
-    service.getTemplate = function(templateID){
-      return assumptionService.getAll()
+    service.getTemplate = function (templateID) {
+      return assumptionService.get(templateID);
     };
-    service.getAllocations = function(facilities){
+    service.getAllocations = function (facilities) {
 
-      function fillwithTemplate(facility, template){
-        for(var i in template){ //Todo: adjust this to suit the new template structure
-          facility['coverage'][template[i].product._id] = parseInt(template[i].coverage);
-          facility['wastage'][template[i].product._id] = parseInt(template[i].wastage);
-          facility['schedule'][template[i].product._id] = parseInt(template[i].schedule);
+      function fillwithTemplate(facility, template) {
+        for (var i in template.products) { //Todo: adjust this to suit the new template structure
+          facility['coverage'][i] = parseInt(template.products[i].coverage);
+          facility['wastage'][i] = template.products[i].wastage;
+          facility['schedule'][i] = parseInt(template.products[i].schedule);
+          facility['buffer'][i] = parseInt(template.products[i].buffer);
         }
         return facility;
       }
-      function setAllocations (templateObj){
-        facilities.forEach(function(facility){
+
+      function setAllocations(templateObj) {
+        facilities.forEach(function (facility) {
           facility.coverage = {};
-          facility.wastage  = {};
+          facility.wastage = {};
           facility.schedule = {};
+          facility.buffer = {};
           fillwithTemplate(facility, templateObj);
         });
         return facilities;
       }
+
       return service.getTemplate()
         .then(setAllocations)
     };
@@ -116,13 +119,13 @@ angular.module('allocations')
      * @param facilities: array
      * @returns {*} facilities inputed with MR(monthly requirement) field add to each
      */
-    service.getMonthlyRequirement = function(facilities){
+    service.getMonthlyRequirement = function (facilities) {
       return service.getAllocations(facilities)
         .then(service.getTargetPop)
-        .then(function(r){
-          for(i in facilities){
-            for(v in r){
-              if(r[v].facility._id === facilities[i]._id){
+        .then(function (r) {
+          for (i in facilities) {
+            for (v in r) {
+              if (r[v].facility._id === facilities[i]._id) {
                 facilities[i].annualU1 = parseInt(r[v].annualU1);
                 facilities[i]['bi-weeklyU1'] = parseInt(r[v]['bi-weeklyU1']);
               }
@@ -130,34 +133,69 @@ angular.module('allocations')
           }
           return facilities;
         })
-        .then(function(response) {
+        .then(function (response) {
           response.forEach(function (facility) {
-            var productList = facility.coverage.keys();
+            var productList = Object.keys(facility.coverage);
             var index;
-            for(pl in productList){
+            facility.MR = {};
+            for (pl in productList) {
               index = productList[pl];
-              facility.MR[productList[pl]] = (facility['bi-weeklyU1'] * 2) * facility.coverage[index] * facility.schedule[index] * facility.wastage[index];
+              facility.MR[productList[pl]] = Math.ceil((facility['bi-weeklyU1'] * 2) * (facility.coverage[index] / 100) * facility.schedule[index] * facility.wastage[index]);
             }
 
           });
-          console.log(facilities);
           return facilities;
         });
     };
-     service.getMonthlyMax = function(facilities){
-      return service.getMonthlyRequirement(facilities)
-        .then(function(response){
-          response.each(function(facility){
-            var mmax = facility.MR * (1 + facility.buffer);
-            return Math.ceil(mmax)
-          })
-        })
-    };
-    service.getBiWeeklyMax = function(){
-
-    };
-    service.getBiWeeklyMin = function(facilities){
-
+    function percentile(acc, per) {
+      return (parseInt(acc) / 100) * parseInt(per);
     }
 
-});
+    service.getMonthlyMax = function (facilities) {
+
+      function getMax(facility) {
+        var r = {};
+        for (var i in facility.MR) {
+          r[i] = Math.ceil(facility.MR[i] * (1 + (facility.buffer[i] / 100)));
+        }
+        return r;
+      }
+
+      return service.getMonthlyRequirement(facilities)
+        .then(function (response) {
+          response.forEach(function (facility) {
+            facility.MMax = getMax(facility);
+            return facility;
+          });
+
+          return facilities;
+        })
+    };
+    service.getBiWeekly = function (facilities) {
+      function setBWMax(MMax) {
+        var r = {};
+        for (var i in MMax) {
+          r[i] = Math.ceil(MMax[i] / 2);
+        }
+        return r;
+      }
+
+      function setBWMin(MMax) {
+        var r = {};
+        for (var i in MMax) {
+          r[i] = Math.ceil(MMax[i] * 0.25);
+        }
+        return r;
+      }
+
+      return service.getMonthlyMax(facilities)
+        .then(function (response) {
+          for (var i in response) {
+            response[i].BWMax = setBWMax(response[i].MMax);
+            response[i].BWMin = setBWMin(response[i].MMax);
+          }
+          return response;
+        })
+    };
+
+  });
