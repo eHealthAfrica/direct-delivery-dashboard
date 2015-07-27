@@ -1,5 +1,5 @@
 <hr/>
-<div class="btn-toolbar" role="toolbar" aria-label="...">
+<!--<div class="btn-toolbar" role="toolbar" aria-label="...">
   <div class="btn-group" role="group" aria-label="...">
     <button type="button" class="btn btn-default btn-checkbox btn-group-md" btn-checkbox ng-model="checkModel.left">
       <i class="fa fa-paint-brush"></i> color code
@@ -32,6 +32,34 @@
       <i class="fa fa-wrench"></i> edit
     </a>
   </div>
+</div>-->
+<div class="clearfix">
+  <a class="btn btn-success pull-right" ng-click="assumptionsCtrl.addAssumption()">
+    <i class="fa fa-plus"></i>
+    create new template
+  </a>
 </div>
 <hr/>
-<ui-view></ui-view>
+<table ng-if="assumptionsCtrl.assumptionList.length > 0" class="table table-bordered">
+  <thead>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Primary state</th>
+    <th>Primary year</th>
+    <th></th>
+  </thead>
+  <tbody>
+    <tr ng-repeat="template in assumptionsCtrl.assumptionList track by $index">
+      <td ng-bind="template._id"></td>
+      <td ng-bind="template.description"></td>
+      <td ng-bind="template.primary.state"></td>
+      <td ng-bind="template.primary.year"></td>
+      <td>
+        <a class="btn btn-primary" ng-click="assumptionsCtrl.addAssumption(template)">
+          <i class="fa fa-wrench"></i>
+          <em>view / edit</em>
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,38 @@
+<div class="panel panel-info">
+  <div class="panel-heading">editing assumptions for {{assumptionsEditController.data.product.code}}</div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-8">
+        <form>
+          <div class="form-group">
+            <label>template name</label>
+            <input type="text" class="form-control">
+          </div>
+           <div class="form-group">
+            <label>description</label>
+            <input type="text" class="form-control">
+          </div>
+           <div class="form-group">
+            <label>State of primary use</label>
+            <select>
+              <option></option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Year of primary use</label>
+           <input type="year">
+          </div>
+        </form>
+      </div>
+      <div class="col-md-4">
+        <h4 class="page-heading">Product List</h4>
+        <p ng-repeat="product in tempAddCtrl.template.products track by $index">
+          <a   class="btn btn-info">{{product.code}} <i class="fa fa-remove"></i></a>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="panel-footer clearfix">
+    <button class="btn btn-success pull-right">Submit</button>
+  </div>
+</div>
