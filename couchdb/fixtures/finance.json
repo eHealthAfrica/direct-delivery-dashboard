@@ -1,0 +1,211 @@
+{
+  "docs":[
+    {
+      "_id":"f8bd85d9cb0e4817c12b16597b325816",
+      "distanceBefore":"60331",
+      "distanceAfter":"60550",
+      "estimatedDistance":"110",
+      "vehicle":"395KC",
+      "amountGiven":"3000",
+      "fuelVoucher":"5320",
+      "state":"Kano",
+      "delivery":{
+        "_id":"1104540520b49334bcaf1341853eb4a4",
+        "date":"2015-06-15",
+        "driverID":"tijjani@example.com",
+        "deliveryRoundID":"KN-24-2015"
+      },
+      "facilityRounds":[
+        {
+          "zone":"Rano",
+          "lga":"Doguwa",
+          "ward":"Maraku",
+          "name":"Maraku Health Post",
+          "id":"KNS DGW MRK 101",
+          "contact":"Jafaru Alhassan",
+          "phoneNo":8098616907
+        },
+        {
+          "facility":{
+            "zone":"Rano",
+            "lga":"Doguwa",
+            "ward":"Zainabi",
+            "name":"Zainabi Health Post",
+            "id":"KNS DGW ZNB 101",
+            "contact":"Aliko Moh'd Inuwa",
+            "phoneNo":7038776929
+          }
+        }
+      ],
+      "doc_type":"finance"
+    },
+    {
+      "_id":"b371d6cadee04c03840d3850670b737f",
+      "distanceBefore":"49273",
+      "distanceAfter":"49551",
+      "estimatedDistance":"175",
+      "vehicle":"394KC",
+      "amountGiven":"0",
+      "fuelVoucher":"5658",
+      "state":"Kano",
+      "delivery":{
+        "_id":"18c3701c0fa4aef49a05140f1c31705f",
+        "date":"2015-05-14",
+        "driverID":"umar@example.com",
+        "deliveryRoundID":"KN-22-2015"
+      },
+      "facilityRounds":[
+        {
+          "zone":"Nassarawa",
+          "lga":"Dala",
+          "ward":"Adakawa",
+          "name":"Adakawa Health Post",
+          "id":"KNS DAL ADK 101"
+        },
+        {
+          "zone":"Nassarawa",
+          "lga":"Dala",
+          "ward":"Dala",
+          "name":"Rijiya Biyu HC",
+          "id":"KNS DAL DLA 103"
+        }
+      ],
+      "doc_type":"finance"
+    },
+    {
+      "_id":"c940f76e435a4dc5ca8180237eeb2c42",
+      "distanceBefore":"40537",
+      "distanceAfter":"40770",
+      "estimatedDistance":"198",
+      "vehicle":"88ZF",
+      "amountGiven":"3000",
+      "fuelVoucher":"5800",
+      "state":"Kano",
+      "delivery":{
+        "_id":"18c3701c0fa4aef49a05140f1c31b91d",
+        "date":"2015-05-18",
+        "driverID":"bashir@example.com",
+        "deliveryRoundID":"KN-22-2015"
+      },
+      "facilityRounds":[
+        {
+          "zone":"Bichi",
+          "lga":"Shanono",
+          "ward":"Tsuare",
+          "name":"Tsaure Basic Health Clinic",
+          "id":"KNS SNN TRE 101"
+        },
+        {
+          "zone":"Bichi",
+          "lga":"Shanono",
+          "ward":"Faruruwa",
+          "name":"Faruruwa Basic Health Clinic",
+          "id":"KNS SNN FRA 101"
+        },
+        {
+          "zone":"Bichi",
+          "lga":"Shanono",
+          "ward":"Kadamu",
+          "name":"Kadamu Model Primary Health Center",
+          "id":"KNS SNN KDM 101"
+        },
+        {
+          "zone":"Bichi",
+          "lga":"Shanono",
+          "ward":"Kokkiya",
+          "name":"Kokiya Health Post",
+          "id":"KNS SNN KKY 101"
+        }
+      ],
+      "doc_type":"finance"
+    },
+    {
+      "_id":"ce33597792b14617d31b3036ebcef9ff",
+      "distanceBefore":"21705",
+      "distanceAfter":"21805",
+      "estimatedDistance":"112",
+      "vehicle":"89ZF",
+      "amountGiven":"0",
+      "fuelVoucher":"4700",
+      "state":"Kano",
+      "delivery":{
+        "_id":"18c3701c0fa4aef49a05140f1c3176ad",
+        "_rev":"33-bd56fdb6ef76b5309ce8f9a97c5d3e4d",
+        "date":"2015-05-14",
+        "driverID":"abdullahi@example.org",
+        "deliveryRoundID":"KN-22-2015"
+      },
+      "facilityRounds":[
+        {
+          "zone":"Rano",
+          "lga":"Tudun Wada",
+          "ward":"Nata/ala",
+          "name":"Nata'ala ",
+          "id":"KNS TWD NTA 101",
+          "contact":"Shehu M Sale"
+        },
+        {
+          "zone":"Rano",
+          "lga":"Tudun Wada",
+          "ward":"Shuwaki",
+          "name":"Rugu Rugu Basic Health Clinic"
+        },
+        {
+          "zone":"Rano",
+          "lga":"Tudun Wada",
+          "ward":"Yaryasa",
+          "name":"Yaryasa Health Post",
+          "id":"KNS TWD YYS 104"
+        },
+        {
+          "zone":"Rano",
+          "lga":"Kiru",
+          "ward":"Yalwa",
+          "name":"Kafin Maiyaki Primary Health Center",
+          "id":"KNS KKU YLW 101"
+        }
+      ],
+      "doc_type":"finance"
+    },
+    {
+      "_id":"5a3b17bc4194498be0374c43e01acd00",
+      "distanceBefore":"34371",
+      "distanceAfter":"34593",
+      "estimatedDistance":"125",
+      "vehicle":"621KC",
+      "amountGiven":"0",
+      "fuelVoucher":"5850",
+      "state":"Kano",
+      "delivery":{
+        "_id":"18d13ea4fb9088959921e8794eb6461c",
+        "date":"2015-06-02",
+        "driverID":"abdullahi@example.com",
+        "deliveryRoundID":"KN-21-2015"
+      },
+      "facilityRounds":[
+        {
+          "zone":"Rano",
+          "lga":"Rogo",
+          "ward":"Jajaye",
+          "name":"Jajaye Basic Health Clinic",
+          "id":"KNS RGG JJY 101"
+        },
+        {
+          "zone":"Rano",
+          "lga":"Rogo",
+          "ward":"Rogo S/Gari",
+          "name":"Rogo Health Post",
+          "id":"KNS RGG RSG 201"
+        },
+        {
+          "zone":"Rano",
+          "lga":"Rogo",
+          "ward":"Zoza",
+          "name":"Kaleku Primary Health Clinic",
+          "id":"KNS RGG ZZA 101"
+        }
+      ],
+      "doc_type":"finance"
+    }
+  ]
+}
