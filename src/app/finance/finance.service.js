@@ -26,7 +26,8 @@ angular.module('finance')
         totalAmountSpent: totalAmountSpent,
         averageFuelUsage: averageFuelUsage,
         kmDifference: kmDifference,
-        fuelVoucher: row.fuelVoucher
+        fuelVoucher: row.fuelVoucher,
+        round: row.delivery.deliveryRoundID
       };
     }
 
