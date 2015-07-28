@@ -12,6 +12,6 @@ function get(cb) {
     if (err){
       return cb(err);
     }
-    cb(null, rows.toArray());
+    return cb(null, rows.toArray());
   });
 }
