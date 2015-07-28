@@ -7,6 +7,7 @@ var db = new (cradle.Connection)().database('ccu_breakdown');
 
 exports.byDate = byDate;
 exports.all = all;
+exports.getWithin = getWithin;
 
 function byDate(options, cb) {
   var opts = {
@@ -30,5 +31,24 @@ function all(cb) {
     if (err) return cb(err);
 
     return cb(null, utility.removeDesignDocs(rows.toArray()));
+  });
+}
+
+
+function getWithin(startDate, endDate, cb) {
+  var opts = {
+    startkey: startDate,
+    endkey: endDate
+  };
+
+  if (opts) {
+    if (opts.descending !== undefined)
+      opts.descending = utility.parseBool(options.descending);
+  }
+
+  db.view('ccu_breakdown/by_date', opts, function(err, rows) {
+    if (err) return cb(err);
+
+    return cb(null, rows.toArray());
   });
 }
