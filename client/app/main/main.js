@@ -7,6 +7,10 @@ angular.module('lmisApp')
         templateUrl: 'app/main/main.html',
         controller: 'MainCtrl',
         authenticate: true,
-        resolve: {}
+        resolve: {
+          weeklyReport: ['Report', function (Report) {
+            return Report.getWithin();
+          }]
+        }
       });
   });
