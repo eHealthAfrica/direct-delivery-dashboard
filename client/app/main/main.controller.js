@@ -46,4 +46,30 @@ angular.module('lmisApp')
 				};
 			};
 
-		});
+		})
+  .controller('MainStockReport', function($scope, facilityReports){
+
+    $scope.working = true;
+    $scope.stockReports = {
+      noReports: [],
+      lateReports: [],
+      total: ''
+    };
+    facilityReports.load()
+      .then(function(response){
+        $scope.stockReports.total = response.length;
+        for(var i in response){
+          if(response[i].isNonReporting){
+            $scope.stockReports.noReports.push(response[i])
+          }else{
+            if(response[i].daysFromLastCountDate > 7){
+              $scope.stockReports.lateReports.push(response[i])
+            }
+          }
+        }
+        $scope.working = false;
+      })
+      .catch(function(err){
+        console.log(err);
+      });
+  });
