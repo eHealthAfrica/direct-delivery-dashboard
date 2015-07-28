@@ -7,32 +7,6 @@ angular.module('lmisApp')
         templateUrl: 'app/main/main.html',
         controller: 'MainCtrl',
         authenticate: true,
-        resolve: {
-          productTypes: [
-            'ProductType', function(ProductType) {
-              return ProductType.all();
-            }
-          ],
-          stockCounts: [
-            'stockCount', function(stockCount) {
-              return stockCount.byFacilityAndDate()
-                .then(function(rows) {
-                  return rows.filter(function(row) {
-                    return !!row.facility;
-                  });
-                });
-            }
-          ],
-          stockOuts: [
-            'stockOut', function(stockOut) {
-              return stockOut.byDate({ limit: 10 });
-            }
-          ],
-          ccuBreakdowns: [
-            'ccuBreakdown', function(ccuBreakdown) {
-              return ccuBreakdown.byDate({ limit: 10 });
-            }
-          ]
-        }
+        resolve: {}
       });
   });
