@@ -15,7 +15,6 @@ angular.module('lmisApp')
 			_this.getWithin = function(startDate, endDate){
 				return $http.get(URL)
 						.then(function(res){
-							console.log(res.data);
 							return res.data;
 						});
 			};
