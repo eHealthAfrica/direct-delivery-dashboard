@@ -60,12 +60,12 @@ function getReportWithin(startDate, endDate) {
 				var appConfigs = res[0];
 				var cceBrks = res[1];
 				var stockCounts = res[2];
-				return collateByLevels(appConfigs, cceBrks, stockCounts)
+				return generateReport(appConfigs, cceBrks, stockCounts)
 			});
 }
 
 
-function collateCCE(appConfigByFacility, breakDowns) {
+function collateCCE(appConfigByFacility, activeZones, breakDowns) {
 	var processed = {};
 	var uniqueCount = 0;
 	var result = {};
@@ -95,11 +95,64 @@ function collateCCE(appConfigByFacility, breakDowns) {
 			}
 		}
 	}
-	return result;
+
+	return padZones(activeZones, result);
+}
+
+function padZones(activeZones, zoneReport){
+	var report = {};
+	for(var z in activeZones){
+		var zoneCceBrkTotal = zoneReport[z];
+		var zoneTotal = activeZones[z];
+		if(!isNaN(zoneCceBrkTotal) && !isNaN(zoneTotal) && zoneTotal > 0){
+			report[z] = (((zoneTotal - zoneCceBrkTotal) / zoneTotal) * 100).toFixed(0);;
+		}else{
+			report[z] = 0;
+		}
+	}
+	return report;
+}
+
+/**
+ * TODO: It is not yet clear how this should be calculated, currently calculated based on
+ * Stock Count i.e a Facility is considered to be reporting if they have stock count within
+ * the week because stock count is weekly thing while CCU and Stock Out varies.
+ */
+function collateReporting(appConfigByFacility, activeZones, stockCounts){
+	var index = stockCounts.length;
+	var sc;
+	var reporting = {};
+	var collected = {};
+	while(index --) {
+		sc = stockCounts[index];
+    if(sc.facility && appConfigByFacility[sc.facility]){
+	    if(!collected[sc.facility]){
+		    var scFacility = appConfigByFacility[sc.facility].facility;
+		    var zone = formatStr(scFacility.zone);
+		    reporting = setDefault(reporting, zone, 0);
+		    reporting[zone] += 1;
+		    collected[sc.facility] = true;
+	    }
+    }
+	}
+
+	return padZones(activeZones, reporting);
+}
+
+function formatStr(str){
+	return str.trim().toLowerCase();
+}
+
+function setDefault(obj, key, value){
+	if(!obj[key]){
+		obj[key] = value;
+	}
+	return obj;
 }
 
 function hashByFacility(appConfigs) {
 	var configByFacility = {};
+	var zoneCounts = {};
 	var index = appConfigs.length;
 	var appCfg;
 	while (index--) {
@@ -108,19 +161,30 @@ function hashByFacility(appConfigs) {
 			continue; //skip
 		}
 		var facilityId = appCfg.facility._id;
+		var zone = appCfg.facility.zone;
+		zone = formatStr(zone);
 		configByFacility[facilityId] = appCfg;
+		zoneCounts = setDefault(zoneCounts, zone, 0);
+		zoneCounts[zone] += 1;
 	}
-	return configByFacility;
+	return {
+		configByFacility: configByFacility,
+		countByZone: zoneCounts
+	};
 }
 
-function collateByLevels(appConfigs, cceBrks, stockCounts) {
+function generateReport(appConfigs, cceBrks, stockCounts) {
+	var appCfgInfo = hashByFacility(appConfigs);
+	var appConfigByFacility = appCfgInfo.configByFacility;
+	var activeZones = appCfgInfo.countByZone;
 
-	var appConfigByFacility = hashByFacility(appConfigs);
-  var cceBreakdownZoneReport = collateCCE(appConfigByFacility, cceBrks);
+  var cceBreakdownZoneReport = collateCCE(appConfigByFacility, activeZones, cceBrks);
+  var reporting = collateReporting(appConfigByFacility, activeZones, stockCounts);
 
 	return {
-		stockCount: stockCounts,
+		reporting: reporting,
 		appConfig: appConfigs,
-		cceBreakdown: cceBreakdownZoneReport
+		cceBreakdown: cceBreakdownZoneReport,
+		activeZones: activeZones
 	};
 }
