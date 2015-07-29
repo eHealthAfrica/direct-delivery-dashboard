@@ -1,10 +1,13 @@
 'use strict';
 
 angular.module('lmisApp')
-		.controller('MainCtrl', function ($scope, Auth) {
+		.controller('MainCtrl', function ($scope, Auth, weeklyReport) {
 			$scope.currentUser = Auth.getCurrentUser();
+			$scope.weeklyReport = weeklyReport;
 		})
 		.controller('MainStockOutCtrl', function ($scope, $window) {
+
+			console.warn($scope.weeklyReport);
 
 			$scope.weeklySituationReport = [
 				{

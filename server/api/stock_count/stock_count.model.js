@@ -7,6 +7,8 @@ var db = new (cradle.Connection)().database('stockcount');
 
 exports.all = all;
 exports.unopened = unopened;
+exports.getWithin = getWithin;
+
 
 function all(cb) {
   db.all({ include_docs: true }, function(err, rows) {
@@ -49,5 +51,18 @@ function unopened(cb) {
       });
 
     return cb(null, rows);
+  });
+}
+
+function getWithin(startDate, endDate, cb) {
+  var opts = {
+    startkey: startDate,
+    endkey: endDate
+  };
+  db.view('stockcount/by_date', opts, function(err, rows){
+    if(err){
+      return cb(err);
+    }
+    return cb(null, rows.toArray());
   });
 }
