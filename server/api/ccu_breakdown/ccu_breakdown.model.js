@@ -46,7 +46,7 @@ function getWithin(startDate, endDate, cb) {
       opts.descending = utility.parseBool(options.descending);
   }
 
-  db.view('ccu_breakdown/by_date', opts, function(err, rows) {
+  db.view('ccu_breakdown/by_latest_broken_date', opts, function(err, rows) {
     if (err) return cb(err);
 
     return cb(null, rows.toArray());
