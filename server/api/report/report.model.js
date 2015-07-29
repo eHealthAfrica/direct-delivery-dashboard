@@ -4,7 +4,7 @@ var cradle = require('cradle');
 var q = require('q');
 
 var utility = require('../../components/utility');
-var CceBreakdown  = require('../../api/ccu_breakdown/ccu_breakdown.model');
+var CceBreakdown = require('../../api/ccu_breakdown/ccu_breakdown.model');
 var AppConfig = require('../../api/app_config/app_config.model');
 var StockCount = require('../../api/stock_count/stock_count.model');
 
@@ -15,10 +15,10 @@ exports.getReportWithin = getReportWithin;
 
 function getCCEBreakdown(startDate, endDate) {
 	var deferred = q.defer();
-	CceBreakdown.getWithin(startDate, endDate, function(err, rows){
-		if(rows){
+	CceBreakdown.getWithin(startDate, endDate, function (err, rows) {
+		if (rows) {
 			deferred.resolve(rows);
-		}else{
+		} else {
 			deferred.reject(err);
 		}
 	});
@@ -26,24 +26,24 @@ function getCCEBreakdown(startDate, endDate) {
 	return deferred.promise;
 }
 
-function getStockCount(startDate, endDate){
+function getStockCount(startDate, endDate) {
 	var deferred = q.defer();
-	StockCount.getWithin(startDate, endDate, function(err, rows){
-		if(rows){
+	StockCount.getWithin(startDate, endDate, function (err, rows) {
+		if (rows) {
 			deferred.resolve(rows);
-		}else{
+		} else {
 			deferred.reject(err);
 		}
 	});
 	return deferred.promise;
 }
 
-function getAppConfig(){
+function getAppConfig() {
 	var deferred = q.defer();
-	AppConfig.get(function(err, rows){
-		if(rows){
+	AppConfig.all(function (err, rows) {
+		if (rows) {
 			deferred.resolve(rows);
-		}else{
+		} else {
 			deferred.reject(err);
 		}
 	});
@@ -55,7 +55,6 @@ function getReportWithin(startDate, endDate) {
 	promises.push(getAppConfig());
 	promises.push(getCCEBreakdown(startDate, endDate));
 	promises.push(getStockCount(startDate, endDate));
-	console.info('Get Report Within called');
 	return q.all(promises)
 			.then(function (res) {
 				var appConfigs = res[0];
@@ -65,11 +64,63 @@ function getReportWithin(startDate, endDate) {
 			});
 }
 
+
+function collateCCE(appConfigByFacility, breakDowns) {
+	var processed = {};
+	var uniqueCount = 0;
+	var result = {};
+	var index = breakDowns.length;
+
+	var ccuBrkStatus;
+	while (index--) {
+		ccuBrkStatus = breakDowns[index];
+		var key = ccuBrkStatus.facility;
+		//TODO: find a work-around that does not depend on app config
+		var temp = appConfigByFacility[ccuBrkStatus.facility];
+		var facilityInfo;
+		if (temp && temp.facility) {
+			facilityInfo = temp.facility;
+		}
+		if (facilityInfo) {
+			if (!processed[key]) {
+				processed[key] = ccuBrkStatus.status.created;
+				var zone = facilityInfo.zone.trim().toLowerCase();
+
+				if (result[zone] === null || isNaN(result[zone])) {
+					result[zone] = 0;
+				}
+
+				result[zone] += 1;
+				uniqueCount += 1;
+			}
+		}
+	}
+	return result;
+}
+
+function hashByFacility(appConfigs) {
+	var configByFacility = {};
+	var index = appConfigs.length;
+	var appCfg;
+	while (index--) {
+		appCfg = appConfigs[index];
+		if(!appCfg.facility){
+			continue; //skip
+		}
+		var facilityId = appCfg.facility._id;
+		configByFacility[facilityId] = appCfg;
+	}
+	return configByFacility;
+}
+
 function collateByLevels(appConfigs, cceBrks, stockCounts) {
-	//TODO: implement the actual collation of result to be visualized!
+
+	var appConfigByFacility = hashByFacility(appConfigs);
+  var cceBreakdownZoneReport = collateCCE(appConfigByFacility, cceBrks);
+
 	return {
 		stockCount: stockCounts,
 		appConfig: appConfigs,
-		cceBreakdown: cceBrks
+		cceBreakdown: cceBreakdownZoneReport
 	};
 }
