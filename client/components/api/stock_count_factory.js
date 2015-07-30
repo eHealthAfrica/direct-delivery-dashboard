@@ -146,44 +146,80 @@ angular.module('lmisApp')
 
       getStockCountWithFacilitiesAndAppConfig()
         .then(function(resolved) {
-          var facilities = resolved[0],
-            stockCount = resolved[1],
-            appConfig = utility.castArrayToObject(resolved[2], '_id');
-
-          var groupedStockCount = groupByFacility(stockCount);
+          var groupedStockCount = groupByFacility(resolved[1]);
           var summaryHeader = [];
 
-          for (var key in groupedStockCount) {
-            var sortedStockCount = getSortedStockCount(groupedStockCount[key]);
-            var latestStockCount = sortedStockCount[0];
-            var previousStockCount = sortedStockCount[1] ? sortedStockCount[1] : null;
-
-            if (angular.isDefined(facilities[key])) {
-
-              var facilityConfig = appConfig[facilities[key].email];
-              if (angular.isDefined(facilityConfig)) {
-                var currentDueDate = getStockCountDueDate(facilityConfig.facility.stockCountInterval, facilityConfig.facility.reminderDay);
-                var nextCountDate = currentDueDate.getTime() + new Date(1000 * 60 * 60 * 24 * facilityConfig.facility.stockCountInterval).getTime();
-                var daysFromLastCount = getDaysFromLastCountDate(new Date(latestStockCount.countDate));
-
+          (function () {
+            var configData = resolved[2];
+            for (var i = 0; i < configData.length; i++) {
+              var appConfig = configData[i];
+              var facilityStockCount = groupedStockCount[appConfig.facility._id] || [];
+              var sortedStockCount = getSortedStockCount(facilityStockCount);
+              var latestStockCount = sortedStockCount[0] || {};
+              var previousStockCount = sortedStockCount[1] || null;
+              var contact = {name: ''};
+              if (appConfig.facility.contact) {
+                contact = appConfig.facility.contact.name;
+              }
+              var currentDueDate = getStockCountDueDate(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
+              var nextCountDate = currentDueDate.getTime() + new Date(1000 * 60 * 60 * 24 * appConfig.facility.stockCountInterval).getTime();
+              var daysFromLastCount =  latestStockCount.countDate ? getDaysFromLastCountDate(new Date(latestStockCount.countDate)) : null;
+              var hasPendingCount = latestStockCount.countDate ? hasPendingStockCount(new Date(latestStockCount.countDate), currentDueDate) : true;
+              if (!appConfig.facility.name.match(/Test.*/) && !contact.name.match(/Test.*/)) {
                 summaryHeader.push({
-                  facility: facilityConfig.facility.name,
-                  createdDate: latestStockCount.created,
-                  facilityUUID: key,
-                  reminderDay: utility.getWeekDay(facilityConfig.facility.reminderDay),
+                  facility: appConfig.facility.name,
+                  createdDate: latestStockCount.created || '',
+                  facilityUUID: appConfig.facility._id,
+                  reminderDay: utility.getWeekDay(appConfig.facility.reminderDay),
                   previousCountDate: previousStockCount !== null ? previousStockCount.countDate : 'None',
                   previousCreatedDate: previousStockCount !== null ? previousStockCount.created : 'None',
                   currentDueDate: currentDueDate,
                   mostRecentCountDate: latestStockCount.countDate,
                   nextCountDate: nextCountDate,
-                  stockCountInterval: facilityConfig.facility.stockCountInterval,
-                  completedCounts: groupedStockCount[key].length,
-                  hasPendingStockCount: hasPendingStockCount(new Date(latestStockCount.countDate), currentDueDate),
+                  stockCountInterval: appConfig.facility.stockCountInterval,
+                  completedCounts: facilityStockCount.length,
+                  hasPendingStockCount: hasPendingCount,
                   daysFromLastCountDate: daysFromLastCount
                 });
               }
+
             }
-          }
+          })();
+
+
+          /*for (var key in groupedStockCount) {
+            if (groupedStockCount.hasOwnProperty(key)) {
+              var sortedStockCount = getSortedStockCount(groupedStockCount[key]);
+              var latestStockCount = sortedStockCount[0];
+              var previousStockCount = sortedStockCount[1] ? sortedStockCount[1] : null;
+
+              if (angular.isDefined(facilities[key])) {
+
+                var facilityConfig = appConfig[facilities[key].email];
+                if (angular.isDefined(facilityConfig)) {
+                  var currentDueDate = getStockCountDueDate(facilityConfig.facility.stockCountInterval, facilityConfig.facility.reminderDay);
+                  var nextCountDate = currentDueDate.getTime() + new Date(1000 * 60 * 60 * 24 * facilityConfig.facility.stockCountInterval).getTime();
+                  var daysFromLastCount = getDaysFromLastCountDate(new Date(latestStockCount.countDate));
+
+                  summaryHeader.push({
+                    facility: facilityConfig.facility.name,
+                    createdDate: latestStockCount.created,
+                    facilityUUID: key,
+                    reminderDay: utility.getWeekDay(facilityConfig.facility.reminderDay),
+                    previousCountDate: previousStockCount !== null ? previousStockCount.countDate : 'None',
+                    previousCreatedDate: previousStockCount !== null ? previousStockCount.created : 'None',
+                    currentDueDate: currentDueDate,
+                    mostRecentCountDate: latestStockCount.countDate,
+                    nextCountDate: nextCountDate,
+                    stockCountInterval: facilityConfig.facility.stockCountInterval,
+                    completedCounts: groupedStockCount[key].length,
+                    hasPendingStockCount: hasPendingStockCount(new Date(latestStockCount.countDate), currentDueDate),
+                    daysFromLastCountDate: daysFromLastCount
+                  });
+                }
+              }
+            }
+          }*/
 
           deferred.resolve({
             summary: summaryHeader,
