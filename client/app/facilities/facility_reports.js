@@ -4,6 +4,7 @@ angular.module('lmisApp')
   .factory('facilityReports', function($q, $window, stockCount, Facility) {
     function isNonReporting(lastReport, threshold) {
       // Time in days before a facility is classed as non reporting
+      if (!lastReport) return false;
       threshold = threshold || 7;
       return lastReport > threshold;
     }
