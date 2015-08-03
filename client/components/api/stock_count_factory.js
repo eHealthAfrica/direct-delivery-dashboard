@@ -186,41 +186,6 @@ angular.module('lmisApp')
             }
           })();
 
-
-          /*for (var key in groupedStockCount) {
-            if (groupedStockCount.hasOwnProperty(key)) {
-              var sortedStockCount = getSortedStockCount(groupedStockCount[key]);
-              var latestStockCount = sortedStockCount[0];
-              var previousStockCount = sortedStockCount[1] ? sortedStockCount[1] : null;
-
-              if (angular.isDefined(facilities[key])) {
-
-                var facilityConfig = appConfig[facilities[key].email];
-                if (angular.isDefined(facilityConfig)) {
-                  var currentDueDate = getStockCountDueDate(facilityConfig.facility.stockCountInterval, facilityConfig.facility.reminderDay);
-                  var nextCountDate = currentDueDate.getTime() + new Date(1000 * 60 * 60 * 24 * facilityConfig.facility.stockCountInterval).getTime();
-                  var daysFromLastCount = getDaysFromLastCountDate(new Date(latestStockCount.countDate));
-
-                  summaryHeader.push({
-                    facility: facilityConfig.facility.name,
-                    createdDate: latestStockCount.created,
-                    facilityUUID: key,
-                    reminderDay: utility.getWeekDay(facilityConfig.facility.reminderDay),
-                    previousCountDate: previousStockCount !== null ? previousStockCount.countDate : 'None',
-                    previousCreatedDate: previousStockCount !== null ? previousStockCount.created : 'None',
-                    currentDueDate: currentDueDate,
-                    mostRecentCountDate: latestStockCount.countDate,
-                    nextCountDate: nextCountDate,
-                    stockCountInterval: facilityConfig.facility.stockCountInterval,
-                    completedCounts: groupedStockCount[key].length,
-                    hasPendingStockCount: hasPendingStockCount(new Date(latestStockCount.countDate), currentDueDate),
-                    daysFromLastCountDate: daysFromLastCount
-                  });
-                }
-              }
-            }
-          }*/
-
           deferred.resolve({
             summary: summaryHeader,
             groupedStockCount: groupedStockCount
