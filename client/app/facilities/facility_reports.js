@@ -11,6 +11,22 @@ angular.module('lmisApp')
       return lastReport > threshold;
     }
 
+    function reportingStatus(lastReport) {
+      var state = '';
+      if (lastReport <= 7) {
+        state = 1;
+      }
+
+      if (lastReport > 7 && lastReport <= 14) {
+        state = 0;
+      }
+
+      if (lastReport > 14) {
+        state = -1;
+      }
+      return state;
+    }
+
     function formatDate(date, dateTimeString) {
       dateTimeString = dateTimeString || 'DD MMM YYYY';
       return $window.moment(date).format(dateTimeString);
