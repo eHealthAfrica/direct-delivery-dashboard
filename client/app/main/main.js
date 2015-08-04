@@ -8,8 +8,11 @@ angular.module('lmisApp')
         controller: 'MainCtrl',
         authenticate: true,
         resolve: {
-          weeklyReport: ['Report', function (Report) {
-            return Report.getWithin();
+          weeklyReport: ['Report', 'utility', function (Report, utility) {
+            var prvWkRange = utility.getPreviousWeekRange();
+            var startDate = utility.getFullDate(prvWkRange.startDate);
+            var endDate = utility.getFullDate(prvWkRange.endDate);
+            return Report.getWithin(startDate, endDate);
           }]
         }
       });

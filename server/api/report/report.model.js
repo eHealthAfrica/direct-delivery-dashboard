@@ -102,12 +102,14 @@ function collateCCE(appConfigByFacility, activeZones, breakDowns) {
 function padZones(activeZones, zoneReport){
 	var report = {};
 	for(var z in activeZones){
-		var zoneCceBrkTotal = zoneReport[z];
+		var zoneRPCount = zoneReport[z];
 		var zoneTotal = activeZones[z];
-		if(!isNaN(zoneCceBrkTotal) && !isNaN(zoneTotal) && zoneTotal > 0){
-			report[z] = (((zoneTotal - zoneCceBrkTotal) / zoneTotal) * 100).toFixed(0);;
-		}else{
+		if(!isNaN(zoneRPCount) && !isNaN(zoneTotal) && zoneTotal > 0){
+			report[z] = (((zoneTotal - zoneRPCount) / zoneTotal) * 100).toFixed(0);;
+		}else if (isNaN(zoneTotal) || zoneTotal === 0){
 			report[z] = 0;
+		}else {
+			report[z] = 100;//assume zone total has no breakdown or missing report.
 		}
 	}
 	return report;
