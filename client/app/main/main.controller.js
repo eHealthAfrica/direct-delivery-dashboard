@@ -1,19 +1,40 @@
 'use strict';
 
 angular.module('lmisApp')
-		.controller('MainCtrl', function ($scope, Auth, weeklyReport) {
+		.controller('MainCtrl', function ($scope, Auth) {
 			$scope.currentUser = Auth.getCurrentUser();
-			$scope.weeklyReport = weeklyReport;
 		})
-		.controller('MainStockOutCtrl', function ($scope, $window) {
+		.controller('WeeklyReportGraphCtrl', function ($scope, $window, Report, utility) {
+      $scope.weeklySituationReport = [];
+      var prvWKRange = utility.getPreviousWeekRange();
+      $scope.startDate = utility.getFullDate(prvWKRange.startDate);
+      $scope.endDate = utility.getFullDate(prvWKRange.endDate);
+      $scope.isLoadingGraphData = true;
 
-			$scope.weeklySituationReport = $scope.weeklyReport;
+      Report.getWithin($scope.startDate, $scope.endDate)
+          .then(function (res) {
+            $scope.weeklySituationReport = res;
+          })
+          .catch(function (err) {
+            $scope.weeklySituationReport = [];
+            //TODO: alert via growl and set $scope.weeklySituationReport to empty array
+            console.error(err);
+          })
+          .finally(function () {
+            $scope.isLoadingGraphData = false;
+          });
 
-			$scope.roundOff = function () {
-				return function (d) {
-					return $window.d3.round(d);
-				};
-			};
+      $scope.roundOff = function () {
+        return function (d) {
+          return $window.d3.format('%')(d);
+        };
+      };
+
+      $scope.yValue = function () {
+        return function (d) {
+          return (d[1] / 100);
+        };
+      };
 
 		})
   .controller('MainStockReport', function($scope, facilityReports){
