@@ -13,11 +13,10 @@ angular.module('lmisApp')
 			});
 
 			_this.getWithin = function(startDate, endDate){
-				var param = '?startDate='+ startDate +'&endDate=' + endDate;
+				var param = [ '?startDate=', startDate, '&endDate=', endDate].join('');
 				return $http.get(URL + param)
 						.then(function(res){
 							var report = res.data;
-							console.log(report.activeZones);
 							var chartData = [
 								{
 									"key": "Functional CCE",
@@ -47,7 +46,8 @@ angular.module('lmisApp')
 							for(var i in zones){
 								var zone = zones[i];
 								var zoneTotal = report.activeZones[zone];
-								var zoneLabel  =  [ zones[i], '(', zoneTotal, ')'].join(' ');
+								var facility = (zoneTotal === 0 || zoneTotal === 1)? 'Facility' : 'Facilities';
+								var zoneLabel  =  [ zones[i], '(', zoneTotal, facility, ')'].join(' ');
 								chartData[0].values.push([ utility.capitalize(zoneLabel), report.cceBreakdown[zone] ]);
 								chartData[1].values.push([ utility.capitalize(zoneLabel), 52 ]);//TODO: replace with stock to plan when completed
 								chartData[2].values.push([ utility.capitalize(zoneLabel), report.reporting[zone] ]);
