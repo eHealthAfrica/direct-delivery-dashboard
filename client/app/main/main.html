@@ -44,14 +44,21 @@
       <div class="panel-heading">
         <h4>REPORTING | Late Facilities</h4>
       </div>
-      <div ng-show="working" align="center"><i class="fa fa-spin fa-spinner fa-3x"></i>
-      </div>
+
       <div ui-grid="lateGridOption" ui-grid-pagination
-           ng-if="stockReports.lateReports.length > 0 && !working"></div>
-      <div class="alert alert-info"
-           ng-show="stockReports.lateReports.length === 0 && !working">
-        <i class="fa fa-info-circle"></i>
-        <span>No facilities reporting late</span>
+           ng-if="stockReports.lateReports.length > 0 && !working">
+      </div>
+
+      <div class="panel-body" ng-if="(working || stockReports.lateReports.length === 0)">
+        <div ng-show="working" align="center">
+          <i class="fa fa-spin fa-spinner fa-3x"></i>
+        </div>
+
+        <div class="alert alert-info"
+             ng-show="stockReports.lateReports.length === 0 && !working">
+          <i class="fa fa-info-circle"></i>
+          <span>No facility is reporting late!</span>
+        </div>
       </div>
       <div class="panel-footer"></div>
     </div>
@@ -63,19 +70,22 @@
       <div class="panel-heading">
         <h4>REPORTING | Silent Facilities ( {{stockReports.noReports.length}} )</h4>
       </div>
-      <div ng-show="working" align="center"><i class="fa fa-spin fa-spinner fa-3x"></i>
-      </div>
 
       <div ui-grid="gridOptions" ui-grid-pagination
            ng-if="stockReports.noReports.length > 0 && !working">
       </div>
 
-      <div class="alert alert-info"
-           ng-show="stockReports.noReports.length === 0 && !working">
-        <i class="fa fa-info-circle"></i>
-        <span>No facilities is silent!</span>
+      <div class="panel-body" ng-if="(working || stockReports.noReports.length === 0)">
+        <div ng-show="working" align="center">
+          <i class="fa fa-spin fa-spinner fa-3x"></i>
+        </div>
+        <div class="alert alert-info"
+             ng-show="stockReports.noReports.length === 0 && !working">
+          <i class="fa fa-info-circle"></i>
+          <span>All facilities are reporting!</span>
+        </div>
       </div>
+      <div class="panel-footer"></div>
     </div>
-    <div class="panel-footer"></div>
   </div>
 </div>
