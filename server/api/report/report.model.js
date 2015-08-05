@@ -185,7 +185,6 @@ function generateReport(appConfigs, cceBrks, stockCounts) {
 
 	return {
 		reporting: reporting,
-		appConfig: appConfigs,
 		cceBreakdown: cceBreakdownZoneReport,
 		activeZones: activeZones
 	};
