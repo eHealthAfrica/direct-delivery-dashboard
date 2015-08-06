@@ -51,10 +51,11 @@ angular.module('lmisApp')
     }
 
     function getStockCountWithFacilitiesAndAppConfig() {
+      var hasWorkingPhone = true;
       var promises = [
         Facility.all(),
         utility.request(URL),
-        AppConfig.all()
+        AppConfig.byPhoneStatus(hasWorkingPhone)
       ];
 
       return $q.all(promises);
