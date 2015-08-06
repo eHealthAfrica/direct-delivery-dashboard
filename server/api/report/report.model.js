@@ -64,39 +64,77 @@ function getReportWithin(startDate, endDate) {
 			});
 }
 
+function isNotANumber(n){
+	return ((n === null) || isNaN(n));
+}
 
-function collateCCE(appConfigByFacility, activeZones, breakDowns) {
-	var processed = {};
-	var uniqueCount = 0;
+function groupByZone(breakdowns, appConfigByFacility, activeZones){
+	var latestCCEStatusByFacility = collateCCE(breakdowns);
 	var result = {};
-	var index = breakDowns.length;
-
-	var ccuBrkStatus;
-	while (index--) {
-		ccuBrkStatus = breakDowns[index];
-		var key = ccuBrkStatus.facility;
-		//TODO: find a work-around that does not depend on app config
-		var temp = appConfigByFacility[ccuBrkStatus.facility];
-		var facilityInfo;
-		if (temp && temp.facility) {
-			facilityInfo = temp.facility;
+	var facilityCCEStatus;
+	var zone;
+	var facility;
+	var appConfig;
+	for(var facId in appConfigByFacility){
+		appConfig = appConfigByFacility[facId];
+		if(!appConfig || !appConfig.facility || !appConfig.facility.zone){
+			continue; //skip
 		}
-		if (facilityInfo) {
-			if (!processed[key]) {
-				processed[key] = ccuBrkStatus.status.created;
-				var zone = facilityInfo.zone.trim().toLowerCase();
-
-				if (result[zone] === null || isNaN(result[zone])) {
-					result[zone] = 0;
-				}
-
-				result[zone] += 1;
-				uniqueCount += 1;
-			}
+		facility = appConfig.facility;
+		facilityCCEStatus = latestCCEStatusByFacility[facId];
+		zone = (facility.zone)?  facility.zone.trim().toLowerCase() : 'Unknown';
+		if(isNotANumber(result[zone])){
+			result[zone] = 0;
+		}
+		if(facilityCCEStatus && !isNotANumber(facilityCCEStatus.statusCount)){
+			result[zone] += facilityCCEStatus.statusCount
 		}
 	}
 
-	return padZones(activeZones, result);
+	//pad for non-active zones.
+	var ONE_HUNDRED = 100;
+	var report = {};
+	for(var z in activeZones){
+		var zoneRPCount = result[z];
+		var zoneTotal = activeZones[z];
+		if(!isNaN(zoneRPCount) && !isNaN(zoneTotal) && zoneTotal > 0){
+			var workingTotal = zoneTotal - zoneRPCount;
+			if(workingTotal === 0){
+				report[z] = ONE_HUNDRED;
+			}else{
+				report[z] = ((workingTotal / zoneTotal) * ONE_HUNDRED).toFixed(2);
+			}
+		}else {
+			report[z] = 0;//assume zone total has no breakdown or missing report.
+		}
+	}
+	return report;
+}
+
+
+function collateCCE(breakDowns) {
+	var processed = {};
+	var index = breakDowns.length;
+
+	var ccuBrkStatus;
+	var NOT_FAULTY = 1;
+	while (index--) {
+		ccuBrkStatus = breakDowns[index];
+		var facilityId = ccuBrkStatus.facility;
+		if (!processed[facilityId]) {
+			processed[facilityId] = {};
+		}
+		var isNew = !processed[facilityId].latestDate;
+		if (isNew) {
+			processed[facilityId].latestDate = ccuBrkStatus.created;
+			processed[facilityId].statusCount = 0;
+		}
+
+		if (new Date(processed[facilityId].latestDate) <= new Date(ccuBrkStatus.created)) {
+			processed[facilityId].statusCount = (ccuBrkStatus.status === NOT_FAULTY) ? 0 : 1;
+		}
+	}
+	return processed;
 }
 
 function padZones(activeZones, zoneReport){
@@ -105,11 +143,9 @@ function padZones(activeZones, zoneReport){
 		var zoneRPCount = zoneReport[z];
 		var zoneTotal = activeZones[z];
 		if(!isNaN(zoneRPCount) && !isNaN(zoneTotal) && zoneTotal > 0){
-			report[z] = (((zoneTotal - zoneRPCount) / zoneTotal) * 100).toFixed(0);;
-		}else if (isNaN(zoneTotal) || zoneTotal === 0){
-			report[z] = 0;
+			report[z] = ((zoneRPCount / zoneTotal) * 100).toFixed(0);
 		}else {
-			report[z] = 100;//assume zone total has no breakdown or missing report.
+			report[z] = 0;//missing report.
 		}
 	}
 	return report;
@@ -137,7 +173,6 @@ function collateReporting(appConfigByFacility, activeZones, stockCounts){
 	    }
     }
 	}
-
 	return padZones(activeZones, reporting);
 }
 
@@ -180,7 +215,7 @@ function generateReport(appConfigs, cceBrks, stockCounts) {
 	var appConfigByFacility = appCfgInfo.configByFacility;
 	var activeZones = appCfgInfo.countByZone;
 
-  var cceBreakdownZoneReport = collateCCE(appConfigByFacility, activeZones, cceBrks);
+  var cceBreakdownZoneReport = groupByZone(cceBrks, appConfigByFacility, activeZones);
   var reporting = collateReporting(appConfigByFacility, activeZones, stockCounts);
 
 	return {
