@@ -150,42 +150,37 @@ angular.module('lmisApp')
           var facilities = resolved[0];
           var summaryHeader = [];
           var configObject = {};
+          var appConfigData = resolved[2];
+          for (var i = 0; i < appConfigData.length; i++) {
+            var appConfig = appConfigData[i];
+            var facilityStockCount = groupedStockCount[appConfig.facility._id] || [];
+            var sortedStockCount = getSortedStockCount(facilityStockCount);
+            var latestStockCount = sortedStockCount[0] || {};
+            var previousStockCount = sortedStockCount[1] || null;
+            appConfig.facility = facilities[appConfig.facility._id] || appConfig.facility;
+            var currentDueDate = getStockCountDueDate(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
+            var nextCountDate = currentDueDate.getTime() + new Date(1000 * 60 * 60 * 24 * appConfig.facility.stockCountInterval).getTime();
+            var daysFromLastCount =  latestStockCount.countDate ? getDaysFromLastCountDate(new Date(latestStockCount.countDate)) : null;
+            var hasPendingCount = latestStockCount.countDate ? hasPendingStockCount(new Date(latestStockCount.countDate), currentDueDate) : true;
 
-          (function () {
-            var configData = resolved[2];
-            for (var i = 0; i < configData.length; i++) {
-              var appConfig = configData[i];
-              var facilityStockCount = groupedStockCount[appConfig.facility._id] || [];
-              var sortedStockCount = getSortedStockCount(facilityStockCount);
-              var latestStockCount = sortedStockCount[0] || {};
-              var previousStockCount = sortedStockCount[1] || null;
-              appConfig.facility = facilities[appConfig.facility._id] || appConfig.facility;
-              var currentDueDate = getStockCountDueDate(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
-              var nextCountDate = currentDueDate.getTime() + new Date(1000 * 60 * 60 * 24 * appConfig.facility.stockCountInterval).getTime();
-              var daysFromLastCount =  latestStockCount.countDate ? getDaysFromLastCountDate(new Date(latestStockCount.countDate)) : null;
-              var hasPendingCount = latestStockCount.countDate ? hasPendingStockCount(new Date(latestStockCount.countDate), currentDueDate) : true;
-              if (!appConfig.facility.name.match(/Test.*/) && !appConfig.facility.contact.name.match(/Test.*/)) {
-                configObject[appConfig.facility._id] = appConfig;
-                summaryHeader.push({
-                  facility: appConfig.facility.name,
-                  createdDate: latestStockCount.created || '',
-                  facilityUUID: appConfig.facility._id,
-                  reminderDay: utility.getWeekDay(appConfig.facility.reminderDay),
-                  previousCountDate: previousStockCount !== null ? previousStockCount.countDate : 'None',
-                  previousCreatedDate: previousStockCount !== null ? previousStockCount.created : 'None',
-                  currentDueDate: currentDueDate,
-                  mostRecentCountDate: latestStockCount.countDate,
-                  nextCountDate: nextCountDate,
-                  stockCountInterval: appConfig.facility.stockCountInterval,
-                  completedCounts: facilityStockCount.length,
-                  hasPendingStockCount: hasPendingCount,
-                  daysFromLastCountDate: daysFromLastCount,
-                  workingPhone: appConfig.workingPhone
-                });
-              }
-
+              configObject[appConfig.facility._id] = appConfig;
+              summaryHeader.push({
+                facility: appConfig.facility.name,
+                createdDate: latestStockCount.created || '',
+                facilityUUID: appConfig.facility._id,
+                reminderDay: utility.getWeekDay(appConfig.facility.reminderDay),
+                previousCountDate: previousStockCount !== null ? previousStockCount.countDate : 'None',
+                previousCreatedDate: previousStockCount !== null ? previousStockCount.created : 'None',
+                currentDueDate: currentDueDate,
+                mostRecentCountDate: latestStockCount.countDate,
+                nextCountDate: nextCountDate,
+                stockCountInterval: appConfig.facility.stockCountInterval,
+                completedCounts: facilityStockCount.length,
+                hasPendingStockCount: hasPendingCount,
+                daysFromLastCountDate: daysFromLastCount,
+                workingPhone: appConfig.workingPhone
+              });
             }
-          })();
 
 
           deferred.resolve({
