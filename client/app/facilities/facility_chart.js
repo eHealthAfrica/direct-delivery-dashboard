@@ -15,23 +15,30 @@ angular.module('lmisApp')
         delayedReport: {
           key: 'Delayed Report',
           count: 0
+        },
+        faultyPhones: {
+          key: 'Faulty Phones',
+          count: 0
         }
       };
 
       summaries.forEach(function(summary) {
         if (summary.reportingStatus === -1) {
-          tally.nonReporting.count++;
+          tally.faultyPhones.count++;
         } else if (summary.reportingStatus === 1) {
           tally.reporting.count++;
-        } else {
+        } else if (summary.reportingStatus === 2) {
           tally.delayedReport.count ++;
+        } else {
+          tally.nonReporting.count ++;
         }
       });
 
       return [
         tally.reporting,
         tally.nonReporting,
-        tally.delayedReport
+        tally.delayedReport,
+        tally.faultyPhones
       ];
     }
 
