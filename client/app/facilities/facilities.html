@@ -118,16 +118,16 @@
               <td class="text-center">
                 <a
                   type="button"
-                  ng-click="updateStatus(summary.id)"
-                  ng-disabled="isSaving[summary.id] || !facilitiesCtrl.showToggleButton()"
+                  ng-click="facilitiesCtrl.updateStatus(summary.id)"
+                  ng-disabled="facilitiesCtrl.isSaving[summary.id] || !facilitiesCtrl.showToggleButton()"
                   class="btn"
-                  ng-class="{'btn-success': currentStatus[summary.id], 'btn-danger': !currentStatus[summary.id]}"
+                  ng-class="{'btn-success': facilitiesCtrl.currentStatus[summary.id], 'btn-danger': !facilitiesCtrl.currentStatus[summary.id]}"
                   >
-                  <span ng-if="isSaving[summary.id]">
+                  <span ng-if="facilitiesCtrl.isSaving[summary.id]">
                     <i class="fa fa-spinner fa-spin fa-lg"></i>
                   </span>
-                  <span ng-if="!isSaving[summary.id]">
-                    <i class="fa" ng-class="{'fa-times fa-lg': !currentStatus[summary.id], 'fa-check fa-lg': currentStatus[summary.id] }"></i>
+                  <span ng-if="!facilitiesCtrl.isSaving[summary.id]">
+                    <i class="fa" ng-class="{'fa-times fa-lg': !facilitiesCtrl.currentStatus[summary.id], 'fa-check fa-lg': facilitiesCtrl.currentStatus[summary.id] }"></i>
                   </span>
                 </a>
               </td>
