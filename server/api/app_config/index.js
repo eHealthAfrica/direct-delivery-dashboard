@@ -7,5 +7,6 @@ var auth = require('../../auth/auth.service');
 var router = express.Router();
 
 router.get('/', auth.isAuthenticated(), controller.index);
+router.get('/by-status/:phoneStatus', auth.isAuthenticated(), controller.byStatus);
 
 module.exports = router;

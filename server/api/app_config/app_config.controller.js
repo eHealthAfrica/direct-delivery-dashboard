@@ -11,3 +11,12 @@ exports.index = function(req, res, next) {
     res.json(appConfig);
   });
 };
+
+exports.byStatus = function(req, res, next) {
+  var phoneStatus = (req.params.phoneStatus.toLowerCase() === 'true'); //cast to boolean type
+  AppConfig.byPhoneStatus(phoneStatus, function(err, appConfig) {
+    if (err) return next(err);
+
+    res.json(appConfig);
+  });
+};
