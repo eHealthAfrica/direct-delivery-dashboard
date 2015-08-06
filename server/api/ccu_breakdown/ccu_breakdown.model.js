@@ -37,7 +37,6 @@ function all(cb) {
 
 function getWithin(startDate, endDate, cb) {
   var opts = {
-    startkey: startDate,
     endkey: endDate
   };
 
