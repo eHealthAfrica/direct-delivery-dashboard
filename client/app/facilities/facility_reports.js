@@ -2,7 +2,7 @@
 
 angular.module('lmisApp')
   .factory('facilityReports', function($q, $window, stockCount) {
-    var FAULTY_PHONES = -1,
+    var FAULTY_PHONE = -1,
         NON_REPORTING = 0,
         ON_TIME_REPORT = 1,
         DELAYING_REPORT = 2;
@@ -26,7 +26,7 @@ angular.module('lmisApp')
     function reportingStatus(lastReport, workingPhone) {
       var status = 0;
       if (!workingPhone) {
-        return FAULTY_PHONES
+        return FAULTY_PHONE
       }
       if (workingPhone && (lastReport > 7 && lastReport <= 14)) {
         return DELAYING_REPORT;
@@ -96,6 +96,12 @@ angular.module('lmisApp')
     return {
       getPhoneStatus: getPhoneStatus,
       getReportingStatus: reportingStatus,
+      reportingConstants: {
+        FAULTY_PHONE: FAULTY_PHONE,
+        NON_REPORTING: NON_REPORTING,
+        ON_TIME_REPORT: ON_TIME_REPORT,
+        DELAYING_REPORT: DELAYING_REPORT
+      },
       load: function() {
         var facilityPromises = {
           summaries: stockCount.stockCountSummaryByFacility()

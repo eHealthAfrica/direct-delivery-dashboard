@@ -5,6 +5,7 @@ angular.module('lmisApp')
     var vm = this;
     vm.currentUser = Auth.getCurrentUser();
     vm.reportingFilters = FACILITY_FILTERS;
+    vm.reporting = facilityReports.reportingConstants;
     vm.hideChart = false;
     vm.tableColumns = 8;
     vm.isSaving = {};

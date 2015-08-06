@@ -95,9 +95,9 @@
             >
             <tr
               ng-class="{
-                'bg-success': summary.daysFromLastCountDate <= 7,
-                'bg-warning': summary.daysFromLastCountDate > 7 && summary.daysFromLastCountDate <= 14,
-                'bg-danger': summary.daysFromLastCountDate > 14 || !summary.daysFromLastCountDate
+                'bg-success': summary.reportingStatus === facilitiesCtrl.reporting.ON_TIME_REPORT,
+                'bg-warning': summary.reportingStatus === facilitiesCtrl.reporting.DELAYING_REPORT,
+                'bg-danger': summary.reportingStatus === facilitiesCtrl.reporting.NON_REPORTING || summary.reportingStatus === facilitiesCtrl.reporting.FAULTY_PHONE
               }"
               >
               <td ng-if="facilitiesCtrl.currentUser.showZones && facilitiesCtrl.hideChart" ng-bind="summary.zone"></td>
