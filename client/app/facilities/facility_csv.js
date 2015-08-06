@@ -1,16 +1,18 @@
 'use strict';
 
 angular.module('lmisApp')
-  .service('facilityCSV', function(utility) {
+  .service('facilityCSV', function(utility, facilityReports) {
     var headers = [
       'Zone',
       'LGA',
       'Facility',
       'Reporting',
+      'Count Date',
       'Report Date',
       'Contact Name',
       'Contact Phone',
-      'Contact Email'
+      'Contact Email',
+      'Working Phone'
     ];
 
     var filename = 'reporting-facilities';
@@ -26,7 +28,8 @@ angular.module('lmisApp')
           reportDate: summary.createdDate,
           contactName: summary.contact.name,
           contactPhone: summary.contact.phone,
-          contactEmail: summary.contact.email
+          contactEmail: summary.contact.email,
+          phoneStatus: summary.reportingStatus !== facilityReports.reportingConstants.FAULTY_PHONE
         };
       });
     }
