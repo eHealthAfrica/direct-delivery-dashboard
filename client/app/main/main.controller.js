@@ -48,6 +48,7 @@ angular.module('lmisApp')
 			//silent reporting table options
 			var initialPaginationSize = 10;
 			$scope.gridOptions = {
+				enableFiltering: true,
 				paginationPageSizes: [initialPaginationSize, 25, 50, 100],
 				paginationPageSize: initialPaginationSize,
 				minRowsToShow: initialPaginationSize,
