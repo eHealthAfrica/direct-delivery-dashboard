@@ -6,23 +6,6 @@ angular.module('lmisApp')
       .when('/', {
         templateUrl: 'app/main/main.html',
         controller: 'MainCtrl',
-        authenticate: true,
-        resolve: {
-          productTypes: [
-            'ProductType', function(ProductType) {
-              return ProductType.codes();
-            }
-          ],
-          stockOuts: [
-            'stockOut', function(stockOut) {
-              return stockOut.byDate()
-                .then(function(rows) {
-                  return rows.filter(function(row) {
-                    return !!row.facility;
-                  });
-                });
-            }
-          ]
-        }
+        authenticate: true
       });
   });
