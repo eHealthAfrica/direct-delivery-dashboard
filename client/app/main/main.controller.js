@@ -48,19 +48,30 @@ angular.module('lmisApp')
 			//silent reporting table options
 			var initialPaginationSize = 10;
 			$scope.gridOptions = {
-				paginationPageSizes: [initialPaginationSize],
+				enableFiltering: true,
+				paginationPageSizes: [initialPaginationSize, 25, 50, 100],
 				paginationPageSize: initialPaginationSize,
 				minRowsToShow: initialPaginationSize,
 				columnDefs: [
 					{field: 'zone', name: 'Zone'},
 					{field: 'lga', name: 'LGA'},
 					{field: 'facility', name: 'Facility'}
-				]
+				],
+				onRegisterApi: function(gridApi){
+					gridApi.pagination.on.paginationChanged($scope, function (pageNumber, pageSize) {
+						$scope.gridOptions.minRowsToShow = pageSize;
+					});
+				}
 			};
 			$scope.gridOptions.data = [];
 
 			//non-reporting table options
 			$scope.lateGridOption = angular.copy($scope.gridOptions);
+			$scope.lateGridOption.onRegisterApi = function (gridApi) {
+				gridApi.pagination.on.paginationChanged($scope, function (pageNumber, pageSize) {
+					$scope.lateGridOption.minRowsToShow = pageSize;
+				});
+			};
 			$scope.lateGridOption.data = [];
 
 			facilityReports.load()
