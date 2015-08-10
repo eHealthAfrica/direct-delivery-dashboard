@@ -35,6 +35,32 @@
   </div>
 </div>
 </div>
+<div class="row" ng-controller="MainStockOutReport">
+  <div class="col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Stock Out Summay for Facilities {{from.date | date:'dd MMM yyyy'}} - {{ to.date | date:'dd MMM yyyy'}}</h3>
+      </div>
+      <div class="table-scroller">
+        <table class="table table-condensed table-bordered table-striped table-condensed">
+          <thead>
+          <tr>
+            <th>{{place.columnTitle}}</th>
+            <th ng-repeat="productType in productTypes">{{productType}}
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="total in totals | orderBy:'place'">
+            <td>{{total.place}}</td>
+            <td ng-repeat="value in total.values track by $index">{{value}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="row" ng-controller="MainStockReport">
   <div class="col-sm-6">
     <div class="panel panel-warning">

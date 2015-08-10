@@ -10,7 +10,22 @@ angular.module('lmisApp')
         resolve: {
           weeklyReport: ['Report', function (Report) {
             return Report.getWithin();
-          }]
+          }],
+          productTypes: [
+            'ProductType', function(ProductType) {
+              return ProductType.codes();
+            }
+          ],
+          stockOuts: [
+            'stockOut', function(stockOut) {
+              return stockOut.byDate()
+                .then(function(rows) {
+                  return rows.filter(function(row) {
+                    return !!row.facility;
+                  });
+                });
+            }
+          ]
         }
       });
   });
