@@ -8,9 +8,6 @@ angular.module('lmisApp')
         controller: 'MainCtrl',
         authenticate: true,
         resolve: {
-          weeklyReport: ['Report', function (Report) {
-            return Report.getWithin();
-          }],
           productTypes: [
             'ProductType', function(ProductType) {
               return ProductType.codes();
