@@ -2,7 +2,7 @@
   <div class="col-xs-12">
     <h2 class="page-header">Facilities</h2>
     <div class="row">
-      <div class="col-xs-12 col-sm-7 col-md-8">
+      <div class="col-xs-12" ng-class="{'col-sm-7 col-md-8': !facilitiesCtrl.hideChart}">
         <div>
           <h3 class="pull-left">Reporting</h3>
           <button
@@ -16,17 +16,28 @@
         <table id="facilities-reporting" class="table table-bordered table-condensed table-fixed">
           <thead>
             <tr>
-              <th ng-if="facilitiesCtrl.currentUser.showZones" style="width: 12%">Zone</th>
-              <th ng-if="facilitiesCtrl.currentUser.showLgas" style="width: 12%">LGA</th>
-              <th style="width: 15%">Facility</th>
-              <th style="width: 12%">Last Report Date</th>
-              <th style="">Days Since Last Report</th>
-              <th style="width: 35%">Contact Info</th>
+              <th ng-if="facilitiesCtrl.currentUser.showZones && facilitiesCtrl.hideChart" style="width: 10%">Zone</th>
+              <th ng-if="facilitiesCtrl.currentUser.showLgas" style="width: 10%">LGA</th>
+              <th style="width: 10%">Facility</th>
+              <th style="width: 8%">Reminder Day</th>
+              <th style="width: 10%">Last Report Date</th>
+              <th style="width: 5%" ng-if="facilitiesCtrl.hideChart">Current Report Date</th>
+              <th style="width: 5%" ng-if="facilitiesCtrl.hideChart">Next Report</th>
+              <th style="width: 7%">Days Since Last Report</th>
+              <th style="width: 5%">Phone Status</th>
+              <th style="width: 20%">
+                <div>Contact Info</div>
+              </th>
+              <th style="width: 8%">
+                <div class="pull-right pointer" ng-click="facilitiesCtrl.toggleChart()">
+                  <i class="fa" ng-class="{'fa-plus-square fa-2x': !facilitiesCtrl.hideChart, 'fa-minus-square fa-2x': facilitiesCtrl.hideChart}"></i>
+                </div>
+              </th>
             </tr>
           </thead>
           <tbody>
             <tr class="active">
-              <td ng-if="facilitiesCtrl.currentUser.showZones">
+              <td ng-if="facilitiesCtrl.currentUser.showZones && facilitiesCtrl.hideChart">
                 <input
                   type="text"
                   class="form-control filter"
@@ -50,15 +61,20 @@
                   ng-model="filter.facility"
                 >
               </td>
+
+              <td></td>
+
               <td>
                 <input
                   type="text"
                   class="form-control filter"
                   placeholder="Date"
                   ng-model="filter.lastCountDate"
-                >
+                  >
               </td>
-              <td colspan="2">
+              <td ng-if="facilitiesCtrl.hideChart"></td>
+              <td ng-if="facilitiesCtrl.hideChart"></td>
+              <td colspan="4" class="text-center">
                 <label for="status">Status</label>
                 <select
                   name="status"
@@ -72,15 +88,19 @@
                 >Clear Filter</button>
               </td>
             </tr>
-            <tr
-              ng-repeat="summary in facilitiesCtrl.summaries | filter:filter"
-              ng-class="{
-                'bg-success': summary.daysFromLastCountDate <= 7,
-                'bg-warning': summary.daysFromLastCountDate > 7 && summary.daysFromLastCountDate <= 14,
-                'bg-danger': summary.daysFromLastCountDate > 14
-              }"
+          </tbody>
+          <tbody
+            ng-repeat="summary in facilitiesCtrl.summaries | filter:filter | orderBy: 'daysFromLastCountDate'"
+            ng-switch on="facilitiesCtrl.stockCountRowCollapse[summary.id]"
             >
-              <td ng-if="facilitiesCtrl.currentUser.showZones" ng-bind="summary.zone"></td>
+            <tr
+              ng-class="{
+                'bg-success': summary.reportingStatus === facilitiesCtrl.reporting.ON_TIME_REPORT,
+                'bg-warning': summary.reportingStatus === facilitiesCtrl.reporting.DELAYING_REPORT,
+                'bg-danger': summary.reportingStatus === facilitiesCtrl.reporting.NON_REPORTING || summary.reportingStatus === facilitiesCtrl.reporting.FAULTY_PHONE
+              }"
+              >
+              <td ng-if="facilitiesCtrl.currentUser.showZones && facilitiesCtrl.hideChart" ng-bind="summary.zone"></td>
               <td ng-if="facilitiesCtrl.currentUser.showLgas" ng-bind="summary.lga"></td>
               <td>
                 <a
@@ -90,8 +110,27 @@
                   <span ng-bind="summary.facility"></span>
                 </a>
               </td>
+              <td ng-bind="summary.reminderDay"></td>
               <td ng-bind="summary.lastCountDate"></td>
+              <td ng-if="facilitiesCtrl.hideChart" ng-bind="summary.currentDueDate"></td>
+              <td ng-if="facilitiesCtrl.hideChart" ng-bind="summary.nextCountDate"></td>
               <td ng-bind="summary.daysFromLastCountDate"></td>
+              <td class="text-center">
+                <a
+                  type="button"
+                  ng-click="facilitiesCtrl.updateStatus(summary.id)"
+                  ng-disabled="facilitiesCtrl.isSaving[summary.id] || !facilitiesCtrl.showToggleButton()"
+                  class="btn"
+                  ng-class="{'btn-success': facilitiesCtrl.currentStatus[summary.id], 'btn-danger': !facilitiesCtrl.currentStatus[summary.id]}"
+                  >
+                  <span ng-if="facilitiesCtrl.isSaving[summary.id]">
+                    <i class="fa fa-spinner fa-spin fa-lg"></i>
+                  </span>
+                  <span ng-if="!facilitiesCtrl.isSaving[summary.id]">
+                    <i class="fa" ng-class="{'fa-times fa-lg': !facilitiesCtrl.currentStatus[summary.id], 'fa-check fa-lg': facilitiesCtrl.currentStatus[summary.id] }"></i>
+                  </span>
+                </a>
+              </td>
               <td>
                 <ul class="list-unstyled">
                   <li>
@@ -108,11 +147,42 @@
                   </li>
                 </ul>
               </td>
+              <td class="text-center" >
+                <button
+                  ng-click="facilitiesCtrl.toggleRow(summary.id)"
+                  class="btn btn-primary">
+                  <i class="fa fa-eye"></i>
+                  History
+                </button>
+              </td>
             </tr>
+            <tr ng-switch-when="true">
+              <td colspan="{{facilitiesCtrl.tableColumns}}">
+                <div>
+                  <table class="table table-bordered table-condensed table-striped">
+                    <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Due Date</th>
+                      <th>Date Sent</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="facilityStockCount in summary.grouped">
+                      <td>{{ $index + 1 }}</td>
+                      <td>{{ ((facilityStockCount)).countDate | date: 'dd MMM yyyy' }}</td>
+                      <td>{{ ((facilityStockCount)).created | date: 'dd MMM yyyy HH:mm' }}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </td>
+            </tr>
+
           </tbody>
         </table>
       </div>
-      <div class="col-xs-12 col-sm-5 col-md-4">
+      <div class="col-xs-12 col-sm-5 col-md-4" ng-if="!facilitiesCtrl.hideChart">
         <nvd3-pie-chart
           data="facilitiesCtrl.chart.data"
           id="reporting-facilities-chart"
@@ -121,6 +191,7 @@
           width="500"
           height="500"
           showLabels="true"
+          color="['#dff0d8', '#f2dede', '#fcf8e3', '#A60000']"
           tooltips="true"
           tooltipcontent="facilitiesCtrl.chart.functions.tooltip()"
         >
