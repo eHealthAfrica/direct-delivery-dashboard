@@ -8,5 +8,6 @@ angular.module('allocations',[
   'pouchdb',
   'products',
   'location',
-  'log'
+  'log',
+  'ui.sortable'
 ]);

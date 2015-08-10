@@ -15,6 +15,9 @@ angular.module('allocations')
       },
       products: products
     };
+
+    vm.productList = products;
+
     if(data){
       vm.template._id = data._id || '';
       vm.template.description = data.description || '';
