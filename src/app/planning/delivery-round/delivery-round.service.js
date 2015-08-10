@@ -221,12 +221,12 @@ angular.module('planning')
 				if(angular.isNumber(roundReport.workingCCE)){
 					roundReport.workingCCE = roundReport.workingCCE.toFixed(0);
 				}
-				var today = utility.formatDate(new Date());
-				var markDate = (today < endDate)? today : endDate;
+				var today = new Date(utility.formatDate(new Date()));
+				var markDate = (today > endDate)? today : endDate;
 				roundReport.timeline = {
 					startDate: startDate,
-					endDate: endDate,
-					markDate: markDate
+					endDate: markDate,
+					markDate: new Date()
 				};
 				return roundReport;
 			}
