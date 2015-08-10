@@ -25,6 +25,30 @@ angular.module('lmisApp')
             .then(function(res){
               return res.data;
             });
+      },
+      get: function(id) {
+        var d = $q.defer();
+        $http.get([URL, id].join('/'))
+          .success(function(data) {
+            d.resolve(data);
+          })
+          .error(function(err) {
+            d.reject(err);
+          });
+
+        return d.promise;
+      },
+      put: function(id, appData) {
+        var d = $q.defer();
+        $http.put([URL, id].join('/'), appData)
+          .success(function(data) {
+            d.resolve(data);
+          })
+          .error(function(err) {
+            d.reject(err);
+          });
+
+        return d.promise;
       }
     };
   });
