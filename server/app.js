@@ -41,14 +41,23 @@ cradle.setup(config.couch);
 
 // Setup server
 var app = express();
+var bodyParser = require('body-parser');    // pull information from HTML POST (express4)// log every request to the console
+app.use(bodyParser.urlencoded({'extended':'true'}));            // parse application/x-www-form-urlencoded
+app.use(bodyParser.json());                                     // parse application/json
+app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
+
 var server = require('http').createServer(app);
 require('./config/express')(app);
 require('./routes')(app);
 
+//log exceptions without halting system
+process.on('uncaughtException', function (err) {
+  console.log(err);
+});
 // Start server
 server.listen(config.port, config.ip, function() {
   console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
 });
 
 // Expose app
-exports = module.exports = app;
+var exports = module.exports = app;
