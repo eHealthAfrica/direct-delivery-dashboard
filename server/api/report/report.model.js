@@ -38,9 +38,10 @@ function getStockCount(startDate, endDate) {
 	return deferred.promise;
 }
 
-function getAppConfig() {
+function getActiveFacilityAppConfigs() {
 	var deferred = q.defer();
-	AppConfig.all(function (err, rows) {
+	var hasWorkingPhone = true;
+	AppConfig.byPhoneStatus(hasWorkingPhone, function (err, rows) {
 		if (rows) {
 			deferred.resolve(rows);
 		} else {
@@ -52,7 +53,7 @@ function getAppConfig() {
 
 function getReportWithin(startDate, endDate) {
 	var promises = [];
-	promises.push(getAppConfig());
+	promises.push(getActiveFacilityAppConfigs());
 	promises.push(getCCEBreakdown(startDate, endDate));
 	promises.push(getStockCount(startDate, endDate));
 	return q.all(promises)
