@@ -3,7 +3,7 @@
  */
 
 angular.module('allocations')
-  .controller('AssumptionsTemplateAddCtrl', function(data, products){
+  .controller('AssumptionsTemplateAddCtrl', function($scope, data, products){
 
     var vm = this;
     vm.template = {
@@ -17,6 +17,9 @@ angular.module('allocations')
     };
 
     vm.productList = products;
+    vm.dragging = false;
+
+
 
     if(data){
       vm.template._id = data._id || '';
@@ -32,7 +35,32 @@ angular.module('allocations')
       }
     }
 
+    vm.draggable = {
+      connectWith: ".dropzone",
+      start: function (e, ui) {
+        $scope.$apply(function() {
+          $scope.dragging = true
+        });
+        $('.dropzone').sortable('refresh');
+      },
+      update: function (e, ui) {
+        if (ui.item.sortable.droptarget[0].classList[0] !== "dropzone")
+          ui.item.sortable.cancel();
+      },
+      stop: function (e, ui) {
 
+        if (ui.item.sortable.droptarget == undefined) {
+          $scope.$apply($scope.dragging = false);
+          return;
+        }else if (ui.item.sortable.droptarget[0].classList[0] == "dropzone") {
+          // run code when item is dropped in the dropzone
+          $scope.$apply($scope.dragging = false);
+        }else{
+          $scope.$apply($scope.dragging = false);
+        }
+
+      }
+    };
 
 
   });

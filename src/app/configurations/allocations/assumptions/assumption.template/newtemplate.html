@@ -29,15 +29,15 @@
             <label>Year of primary use</label>
            <input type="year">
           </div>
-          <div ng-show="dragging" class="dropzone" ui-sortable="dropzone" ng-model="dropzoneFields">
-            <div ng-repeat="item in dropzoneFields track by $index"></div>
-          </div>
         </form>
+        <div  class="dropzone" ui-sortable="dropzone" ng-model="dropzoneFields">
+          <div ng-repeat="item in tempAddCtrl.template.products track by $index"></div>
+        </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4" style="overflow: auto">
         <h4 class="page-heading">Product List</h4>
-        <ul ng-hide="tempAddCtrl.template.products.length == 0" class="nav nav-list small" ui-sortable="draggable" ng-model="availableFields">
-            <li ng-repeat="product in tempAddCtrl.template.products track by $index">
+        <ul ng-hide="tempAddCtrl.productList.length == 0" class="nav nav-list small draglist" ui-sortable="draggable" ng-model="tempAddCtrl.template.products">
+            <li ng-repeat="product in tempAddCtrl.productList track by $index">
               <a    class="btn btn-info">{{product.code}} </a>
             </li>
         </ul>

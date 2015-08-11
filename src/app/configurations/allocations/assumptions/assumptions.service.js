@@ -23,6 +23,13 @@ angular.module('allocations')
           return err;
         });
     };
+    service.get = function(id){
+      //Todo: edit to fetch from  db
+      return service.getAll()
+        .then(function(response){
+          return response[0];
+        });
+    };
     service.save = function(data){
 
       if(angular.isArray(data)){
