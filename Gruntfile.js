@@ -296,15 +296,7 @@ module.exports = function(grunt) {
       options: {
         // This should be the name of your apps angular module
         module: 'lmisApp',
-        htmlmin: {
-          collapseBooleanAttributes: true,
-          collapseWhitespace: true,
-          removeAttributeQuotes: true,
-          removeEmptyAttributes: true,
-          removeRedundantAttributes: true,
-          removeScriptTypeAttributes: true,
-          removeStyleLinkTypeAttributes: true
-        },
+        htmlmin: {},
         usemin: 'app/app.js'
       },
       main: {
