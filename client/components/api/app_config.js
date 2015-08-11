@@ -19,6 +19,13 @@ angular.module('lmisApp')
 
         return d.promise;
       },
+      byPhoneStatus: function(status){
+        var byStatusUrl = [ URL, '/by-status/', status ].join('');
+        return $http.get(byStatusUrl)
+            .then(function(res){
+              return res.data;
+            });
+      },
       get: function(id) {
         var d = $q.defer();
         $http.get([URL, id].join('/'))
