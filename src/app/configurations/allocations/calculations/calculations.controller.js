@@ -7,10 +7,14 @@ angular.module('allocations')
     var vm = this;
     var viewMap = {
       targetpopulation: "getTargetPop",
-      coverage: "computeCoverage",
-      wastage: "computeWastage",
-      schedule: "computeSchedule",
-      buffer : "computeBuffer"
+      coverage: "getAllocations",
+      wastage: "getAllocations",
+      schedule: "getAllocations",
+      buffer: "getAllocations",
+      BWMax: "getBiWeekly",
+      BWMin: "getBiWeekly",
+      MMax: "getMonthlyMax",
+      MR: "getMonthlyRequirement"
     };
     vm.productList = products || [];
     vm.renderedPartial = 'tp';
@@ -64,7 +68,7 @@ angular.module('allocations')
           return response;
         })
         .catch(function(err){
-          log.error('','', 'could not retrieve facilitie, please reload and try again')
+          log.error('','', 'could not retrieve facilities, please reload and try again')
         })
     }
     function switchRenderedPartial(partial) {
@@ -102,5 +106,4 @@ angular.module('allocations')
       vm.suffix = suffix || '';
       switchRenderedPartial(partial);
     };
-
   });
