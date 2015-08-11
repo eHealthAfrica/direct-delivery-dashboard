@@ -27,14 +27,16 @@ angular.module('lmisApp')
                       return !!row.facility;
                     })
                     .map(function(row) {
+                      var latestCCUStatus = row.ccuStatus ? cceStatus[row.ccuStatus.reverse()[0].status] : 'Working';
+                      var lastFault = row.ccuStatus ? cceFaults[row.ccuStatus.reverse()[0].fault] : 'None';
                       return {
                         facility: row.facility,
                         created: row.created,
                         name: row.ccuProfile.ModelName,
                         manufacturer: row.ccuProfile.Manufacturer,
-                        status: row.ccuStatus.reverse()[0].status,
-                        statusText: cceStatus[row.ccuStatus.reverse()[0].status],
-                        lastFault: cceFaults[row.ccuStatus.reverse()[0].fault],
+                        status: latestCCUStatus,
+                        statusText: latestCCUStatus,
+                        lastFault: lastFault,
                         contact: {
                           name: row.facility.contact.name,
                           email: row.facility.email,
