@@ -39,6 +39,7 @@ angular.module('lmisApp')
 		})
 		.controller('MainStockReport', function ($scope, facilityReports) {
 			$scope.working = true;
+      var reports = facilityReports.reportingConstants;
 			$scope.stockReports = {
 				noReports: [],
 				lateReports: [],
@@ -74,23 +75,22 @@ angular.module('lmisApp')
 			};
 			$scope.lateGridOption.data = [];
 
-			facilityReports.load()
-					.then(function (response) {
-						$scope.stockReports.total = response.length;
-						for (var i in response) {
-							if (response[i].isNonReporting) {
-								$scope.stockReports.noReports.push(response[i])
-							} else {
-								if (response[i].daysFromLastCountDate > 7) {
-									$scope.stockReports.lateReports.push(response[i])
-								}
-							}
-						}
-						$scope.lateGridOption.data = $scope.stockReports.lateReports;
-						$scope.gridOptions.data = $scope.stockReports.noReports;
-						$scope.working = false;
-					})
-					.catch(function (err) {
-						console.log(err);
-					});
+      facilityReports.load()
+        .then(function (response){
+          var stockCountSummaries = response.summaries;
+          $scope.stockReports.total = stockCountSummaries.length;
+          for(var i in stockCountSummaries){
+            if(stockCountSummaries[i].reportingStatus === reports.NON_REPORTING){
+              $scope.stockReports.noReports.push(stockCountSummaries[i])
+            }else if (stockCountSummaries[i].reportingStatus === reports.DELAYING_REPORT){
+              $scope.stockReports.lateReports.push(stockCountSummaries[i]);
+            }
+          }
+          $scope.lateGridOption.data = $scope.stockReports.lateReports;
+          $scope.gridOptions.data = $scope.stockReports.noReports;
+          $scope.working = false;
+        })
+        .catch(function(err){
+          console.log(err);
+        });
 		});
