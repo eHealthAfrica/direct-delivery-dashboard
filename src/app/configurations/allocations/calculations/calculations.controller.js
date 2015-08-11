@@ -98,10 +98,12 @@ angular.module('allocations')
 
     vm.switchLocationState(vm.selectedState);
 
-    vm.changeDataView = function (partial, viewLabel) {
+
+    vm.changeDataView = function (partial, viewLabel, suffix) {
       var view = viewLabel.replace(' ', '');
       vm.renderedViewLabel = view;
       vm.activeView = view;
+      vm.suffix = suffix || '';
       switchRenderedPartial(partial);
     };
   });
