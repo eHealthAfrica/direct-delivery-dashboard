@@ -94,7 +94,7 @@ angular.module('lmisApp')
           console.log(err);
         });
 		})
-  .controller('CCEBreakdownReport', function ($scope, $q, ccuBreakdown, AppConfig) {
+  .controller('CCEBreakdownReportCtrl', function ($scope, $q, ccuBreakdown, AppConfig) {
     $scope.isLoadingCCEChart = true;
 
     function sortStatus(a, b) {
@@ -167,4 +167,114 @@ angular.module('lmisApp')
       };
     };
 
+    $scope.tooltip = function () {
+      return function(key, x) {
+        return key + ': ' + parseInt(x, 10);
+      }
+    }
+
+  })
+  .controller('MainStockOutReportCtrl', function ($scope, $q, ProductType, stockOut, $window) {
+    $scope.isLoadingStockOutData = true;
+    function productTypeToObject(list) {
+      var productTypes = {};
+      for (var i = 0; i < list.length; i++) {
+        productTypes[list[i]] = 0;
+      }
+
+      return productTypes;
+    }
+
+    function toChart(object) {
+      function formatObjectToChatValues(object) {
+        var chartValues = [];
+        for (var key in object) {
+          if (object.hasOwnProperty(key)) {
+            chartValues.push([key, object[key]]);
+          }
+        }
+        return chartValues;
+      }
+
+      var chartData = [];
+      for (var key in object) {
+        if (object.hasOwnProperty(key)) {
+          chartData.push( {
+            key: key,
+            values: formatObjectToChatValues(object[key])
+          });
+        }
+
+      }
+
+      return chartData
+    }
+
+    function groupStockOut(rows, productTypes) {
+      function setType(groups, row, type) {
+        var altZones = {
+          '9875dca640bb11e4b3c53ca9f44c7824': 'Bichi',
+          'b3e25c1240bb11e4b3c53ca9f44c7824': 'Dawakin Tofa',
+          'cc3015ac40bb11e4b3c53ca9f44c7824': 'Gwale',
+          'e1837db840bb11e4b3c53ca9f44c7824': 'Nassarawa',
+          '07f03e8c40bc11e4b3c53ca9f44c7824': 'Wudil'
+        };
+        var altName = type === 'facility' ? 'name' : type;
+        var typeName = row.facility[altName];
+        if (type === 'zone') {
+          typeName = typeName === '' || typeName === undefined ? altZones[row.facility.zoneUUID] : typeName;
+        }
+        if (!groups[type][typeName]) {
+          var productCount = angular.copy(productTypes);
+          productCount[row.productType] ++;
+          groups[type][typeName] = productCount;
+        } else {
+          if (!groups[type][typeName][row.productType]) {
+            groups[type][typeName][row.productType] = 1;
+          } else {
+            groups[type][typeName][row.productType] ++;
+          }
+        }
+        return groups[type];
+      }
+      var groups = {
+        facility: {},
+        ward: {},
+        lga: {},
+        zone: {}
+      };
+
+      for (var i = 0; i < rows.length; i++) {
+        groups.facility = setType(groups, rows[i], 'facility');
+        groups.ward = setType(groups, rows[i], 'ward');
+        groups.lga = setType(groups, rows[i], 'lga');
+        groups.zone = setType(groups, rows[i], 'zone');
+      }
+
+      return groups;
+    }
+
+    function setChart(response) {
+      var productTypesObject = productTypeToObject(response.productTypes);
+      var groupedStockOut = groupStockOut(response.stockOuts, productTypesObject);
+      $scope.stoutOutChartData = toChart(groupedStockOut.zone);
+      $scope.isLoadingStockOutData = false;
+    }
+
+    var promises = {
+      productTypes: ProductType.codes(),
+      stockOuts: stockOut.byDate()
+    };
+
+    $q.all(promises)
+      .then(setChart)
+      .catch(function () {
+        $scope.isLoadingStockOutData = false;
+      });
+
+    $scope.roundY = function () {
+      return function (d) {
+        return $window.d3.round(d);
+      };
+    };
   });
