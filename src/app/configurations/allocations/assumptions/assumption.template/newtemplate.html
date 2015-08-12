@@ -30,18 +30,33 @@
            <input type="year">
           </div>
         </form>
-        <div  class="dropzone" ui-sortable="dropzone" ng-model="dropzoneFields">
-          <div ng-repeat="item in tempAddCtrl.template.products track by $index"></div>
+        <div class="dropzone thumbnail" data-drop="true" data-jqyoui-options ng-model="tempAddCtrl.template.products" jqyoui-droppable style=''>
+          <div
+              class="btn btn-success"
+              data-drag="true"
+              data-jqyoui-options
+              ng-repeat="product in tempAddCtrl.template.products track by $index"
+              ng-model="product"
+              jqyoui-draggable ng-hide="!product">{{product.code}}</div>
         </div>
       </div>
-      <div class="col-md-4" style="overflow: auto">
-        <h4 class="page-heading">Product List</h4>
-        <ul ng-hide="tempAddCtrl.productList.length == 0" class="nav nav-list small draglist" ui-sortable="draggable" ng-model="tempAddCtrl.template.products">
+      <div class="col-md-4" >
+        <h4 class="page-heading" draggable="true">Product List</h4>
+        <ul ng-hide="tempAddCtrl.productList.length == 0" class="nav nav-list small draglist" >
             <li ng-repeat="product in tempAddCtrl.productList track by $index">
-              <a    class="btn btn-info">{{product.code}} </a>
+              <a
+                  class="btn btn-info"
+                  data-drag="true"
+                  data-jqyoui-options="{revert: 'invalid'}"
+                  ng-model="product"
+                  jqyoui-draggable="{animate:true}"
+                  ng-hide="!product.code">{{product.code}}
+              </a>
             </li>
         </ul>
       </div>
+
+
     </div>
   </div>
   <div class="panel-footer clearfix">

@@ -12,6 +12,7 @@ td.actions {
   width: 1px;
   white-space: nowrap;
 }
+
 .dropzone {
   position: relative;
   padding: 14px;
@@ -19,21 +20,17 @@ td.actions {
   margin-bottom: 14px;
   border-radius: 5px;
   font-size: 60px;
-  height: 100px;
+  height: auto;
   color: grey;
   text-align: center;
-  background: #cccc99;
 }
 
 .dropzone:after {
-  content: 'drop zone';
   position: absolute;
   top: 0;
   right: 0;
   left: 0;
   bottom: 0;
-  background: #cccc99;
-  z-index: 2045;
 }
 
 .noFields {
@@ -41,12 +38,13 @@ td.actions {
   border: 2px dashed grey;
 }
 
-ul ul>* {
-  cursor: move !important;
+ul.draglist {
+  cursor: move;
+  z-index: 30000;
 }
 
 ul.draglist li {
-  padding: 3px;
+  padding: 4px;
 }
 // injector
 @import 'reports/invoice/round/round.scss';

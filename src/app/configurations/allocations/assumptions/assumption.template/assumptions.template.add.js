@@ -13,7 +13,7 @@ angular.module('allocations')
         state: '',
         year: ''
       },
-      products: products
+      products: []
     };
 
     vm.productList = products;
@@ -30,37 +30,7 @@ angular.module('allocations')
       if(angular.isArray(data.products)){
        vm.template.products = data.products;
       }
-      if(data.products.length ===0){
-       vm.template.products = products;
-      }
+
     }
-
-    vm.draggable = {
-      connectWith: ".dropzone",
-      start: function (e, ui) {
-        $scope.$apply(function() {
-          $scope.dragging = true
-        });
-        $('.dropzone').sortable('refresh');
-      },
-      update: function (e, ui) {
-        if (ui.item.sortable.droptarget[0].classList[0] !== "dropzone")
-          ui.item.sortable.cancel();
-      },
-      stop: function (e, ui) {
-
-        if (ui.item.sortable.droptarget == undefined) {
-          $scope.$apply($scope.dragging = false);
-          return;
-        }else if (ui.item.sortable.droptarget[0].classList[0] == "dropzone") {
-          // run code when item is dropped in the dropzone
-          $scope.$apply($scope.dragging = false);
-        }else{
-          $scope.$apply($scope.dragging = false);
-        }
-
-      }
-    };
-
 
   });

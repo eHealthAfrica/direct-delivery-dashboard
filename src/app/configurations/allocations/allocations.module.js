@@ -9,5 +9,5 @@ angular.module('allocations',[
   'products',
   'location',
   'log',
-  'ui.sortable'
+  'ngDragDrop'
 ]);
