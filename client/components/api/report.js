@@ -42,14 +42,17 @@ angular.module('lmisApp')
 											return 1;
 										return 0;
 									});
-
+							var ONE_HUNDRED = 100;
 							for(var i in zones){
 								var zone = zones[i];
 								var zoneTotal = report.activeZones[zone];
 								var facility = (zoneTotal === 0 || zoneTotal === 1)? 'Facility' : 'Facilities';
 								var zoneLabel  =  [ zones[i], '(', zoneTotal, facility, ')'].join(' ');
 								chartData[0].values.push([ utility.capitalize(zoneLabel), report.cceBreakdown[zone] ]);
-								chartData[1].values.push([ utility.capitalize(zoneLabel), 52 ]);//TODO: replace with stock to plan when completed
+
+								var stp = ((report.stockToPlan[zone].STP / zoneTotal) * ONE_HUNDRED);
+								chartData[1].values.push([ utility.capitalize(zoneLabel), stp]);
+
 								chartData[2].values.push([ utility.capitalize(zoneLabel), report.reporting[zone] ]);
 							}
 
