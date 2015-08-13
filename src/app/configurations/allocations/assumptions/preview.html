@@ -9,8 +9,8 @@
     <th></th>
   </thead>
   <tbody>
-    <tr ng-repeat="assumption in assumptionsController.assumptionList track by $index" ng-click="assumptionsController.editAssumption(assumption)">
-      <td><span tooltip="click on row to edit"><b>{{assumption.product.code}}</b></span></td>
+    <tr ng-repeat="(key, assumption) in assumptionsController.assumptionList.products track by $index" ng-click="assumptionsController.editAssumption(assumption)">
+      <td><span tooltip="click on row to edit"><b>{{key}}</b></span></td>
       <td ng-bind="assumption.presentation"></td>
       <td>{{assumption.coverage}} %</td>
       <td ng-bind="assumption.schedule" ></td>
