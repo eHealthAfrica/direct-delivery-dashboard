@@ -1,28 +1,55 @@
 'use strict';
 
 angular.module('lmisApp')
-		.controller('MainCtrl', function ($scope, Auth) {
+		.controller('MainCtrl', function ($scope, Auth, SETTINGS, Report, utility) {
 			$scope.currentUser = Auth.getCurrentUser();
-		})
-		.controller('WeeklyReportGraphCtrl', function ($scope, $window, Report, utility) {
-			$scope.weeklySituationReport = [];
-			var prvWKRange = utility.getPreviousWeekRange();
-			$scope.startDate = utility.getFullDate(prvWKRange.startDate);
-			$scope.endDate = utility.getFullDate(prvWKRange.endDate);
+			$scope.mediumDateFormat = SETTINGS.mediumDate;
 			$scope.isLoadingGraphData = true;
+			$scope.weeklySituationReport = [];
 
-			Report.getWithin($scope.startDate, $scope.endDate)
-					.then(function (res) {
-						$scope.weeklySituationReport = res;
-					})
-					.catch(function (err) {
-						$scope.weeklySituationReport = [];
-						//TODO: alert via growl and set $scope.weeklySituationReport to empty array
-						console.error(err);
-					})
-					.finally(function () {
-						$scope.isLoadingGraphData = false;
-					});
+			var prvWKRange = utility.getPreviousWeekRange();
+
+			$scope.from = {
+				opened: false,
+				date: utility.getFullDate(prvWKRange.startDate),
+				open: function($event) {
+					$event.preventDefault();
+					$event.stopPropagation();
+
+					this.opened = true;
+				}
+			};
+
+			$scope.to = {
+				opened: false,
+				date: utility.getFullDate(prvWKRange.endDate),
+				open: function($event) {
+					$event.preventDefault();
+					$event.stopPropagation();
+
+					this.opened = true;
+				}
+			};
+
+			$scope.updateGraph = function(){
+				$scope.isLoadingGraphData = true;
+				Report.getWithin(utility.getFullDate($scope.from.date), utility.getFullDate($scope.to.date))
+						.then(function (res) {
+							$scope.weeklySituationReport = res;
+						})
+						.catch(function (err) {
+							$scope.weeklySituationReport = [];
+							//TODO: alert via growl and set $scope.weeklySituationReport to empty array
+							console.error(err);
+						})
+						.finally(function () {
+							$scope.isLoadingGraphData = false;
+						});
+			};
+
+			$scope.updateGraph(); //call on Ctrl start up
+		})
+		.controller('WeeklyReportGraphCtrl', function ($scope, SETTINGS, $window) {
 
 			$scope.roundOff = function () {
 				return function (d) {
