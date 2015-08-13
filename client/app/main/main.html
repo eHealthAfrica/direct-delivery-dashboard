@@ -1,10 +1,55 @@
-<div class="row">
+<div class="row" ng-controller="MainCtrl">
   <div class="col-md-12">
     <div class="row" ng-controller="WeeklyReportGraphCtrl">
       <div class="col-md-12" align="center">
-        <h2>Weekly Situation Report
-          ( {{ startDate | date : 'mediumDate' }} - {{ endDate | date : 'mediumDate' }})
+        <h2>Situation Report
+          ({{ from.date | date : mediumDateFormat }} - {{ to.date | date : mediumDateFormat }})
         </h2>
+        <br/>
+      </div>
+
+      <div class="container-fliud" align="center">
+        <div class="col-md-4">
+          <div class="form-group">
+            <div class="input-group input-group-lg">
+              <input type="text" class="form-control input-lg"
+                     ng-model="from.date"
+                     max-date="to.date"
+                     datepicker-popup
+                     is-open="from.opened"/>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default btn-lg" ng-click="from.open($event)">
+                <i class="glyphicon glyphicon-calendar"></i>
+              </button>
+            </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <div class="input-group input-group-lg">
+              <input type="text" class="form-control inpu-lg" ng-model="to.date"
+                     datepicker-popup
+                     min-date="from.date"
+                     is-open="to.opened"/>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default btn-lg" ng-click="to.open($event)">
+                <i class="glyphicon glyphicon-calendar"></i>
+              </button>
+            </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" align="left">
+          <button type="button" class="btn btn-primary btn-lg"
+                  ng-disabled="isLoadingGraphData"
+                  ng-click="updateGraph()">
+            Apply
+          </button>
+        </div>
+        <br/><br/>
       </div>
 
       <div class="col-md-12">
