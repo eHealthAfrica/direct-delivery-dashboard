@@ -86,7 +86,6 @@ function getReportWithin(startDate, endDate) {
 	promises.push(getStockCount(startDate, endDate));
 	promises.push(getPresentations());
 	promises.push(getProfiles());
-	promises.push(getAllocations());
 	return q.all(promises)
 			.then(function (res) {
 				var appConfigs = res[0];
@@ -94,8 +93,7 @@ function getReportWithin(startDate, endDate) {
 				var stockCounts = res[2];
 				var presentations = res[3];
 				var profiles = res[4];
-				var allocations = res[5];
-				return generateReport(appConfigs, cceBrks, stockCounts, presentations, profiles, allocations)
+				return generateReport(appConfigs, cceBrks, stockCounts, presentations, profiles)
 			});
 }
 
@@ -303,119 +301,8 @@ function groupByFacility(stockCounts, presentations, profiles) {
 	return latestStockCountByFacility;
 }
 
-function getAllocations() {
-	var FACILITY_ALLOC = [
-		{
-			facility: 'eb1826dbeb4867a030f463fe20018d02',
-			"allocations": [
-				{
-					"productType": "BCG",
-					"max": 240,
-					"baseUOM": "Doses"
-				},
-				{
-					"productType": "MV",
-					"max": 120,
-					"baseUOM": "Doses"
-				},
-				{
-					"productType": "YF",
-					"max": 120,
-					"baseUOM": "Doses"
-				},
-				{
-					"productType": "OPV",
-					"max": 480,
-					"baseUOM": "Doses"
-				},
-				{
-					"productType": "IPV",
-					"max": 120,
-					"baseUOM": "Doses"
-				},
-				{
-					"productType": "TT",
-					"max": 480,
-					"baseUOM": "Doses"
-				},
-				{
-					"productType": "Penta",
-					"max": 360,
-					"baseUOM": "Doses"
-				},
-				{
-					"productType": "HBV",
-					"max": 120,
-					"baseUOM": "Doses"
-				},
-				{
-					"productType": "YF Dil",
-					"max": 12,
-					"baseUOM": "Units"
-				},
-				{
-					"productType": "MV Dil",
-					"max": 12,
-					"baseUOM": "Units"
-				},
-				{
-					"productType": "BCG Dil",
-					"max": 24,
-					"baseUOM": "Units"
-				},
-				{
-					"productType": "0.05ml",
-					"max": 528,
-					"baseUOM": "Units"
-				},
-				{
-					"productType": "0.5ml",
-					"max": 1452,
-					"baseUOM": "Units"
-				},
-				{
-					"productType": "RC 2ml",
-					"max": 28,
-					"baseUOM": "Units"
-				},
-				{
-					"productType": "RC 5ml",
-					"max": 28,
-					"baseUOM": "Units"
-				},
-				{
-					"productType": "Safety Boxes",
-					"max": 24,
-					"baseUOM": "Units"
-				},
-				{
-					"productType": "Droppers",
-					"max": 24,
-					"baseUOM": "Units"
-				},
-				{
-					"productType": "Cards",
-					"max": 480,
-					"baseUOM": "Units"
-				}
-			]
-		}
-	];
-	return q.when(FACILITY_ALLOC);
-}
-
 function calcStockToPlan(facAlloc, facStockCount) {
 	var allocByPType = hashBy(facAlloc, 'productType');
-	var LOMIS_DD_PRODUCT_MAP = {
-		"00f987e4-54e1-46f0-820b-b249a6d38759": 'MV',
-		"e55e1452-b0ab-4046-9d7e-3a98f1f968d0": 'BCG',
-		"19e16c20-04b7-4e06-a679-7f7b60d976be": 'YF',
-		"db513859-4491-4db7-9343-4980a16c8b04": 'OPV',
-		"ipv": 'IPV',
-		"939d5e05-2aa4-4883-9246-35c60dfa06a5": 'TT',
-		"1203c362-b7a8-499a-b7ba-b842bace7920": 'Penta',
-		"0930b906-4802-4a65-8516-057bd839db3e": 'HBV'
-	};
   var notSTP = 0;
 	var ptCount;
 	var incomplete = false;
@@ -423,7 +310,7 @@ function calcStockToPlan(facAlloc, facStockCount) {
 	for (var ptId in facStockCount) {
 		ptCount = facStockCount[ptId];
 		//TODO: calculate incomplete
-		var ptAlloc = allocByPType[LOMIS_DD_PRODUCT_MAP[ptId]];
+		var ptAlloc = allocByPType[ptId];
 		if (ptAlloc && ptAlloc.max) {
 			var bufStk = (ptAlloc.max * ONE_FOURTH);
 			if(ptCount < bufStk){
@@ -514,10 +401,21 @@ function updateZoneSTP(zone, stpRpt, stpRptByZone){
 	return stpRptByZone;
 }
 
-function generateReport(appConfigs, cceBrks, stockCounts, presentations, profiles, allocations) {
+function generateReport(appConfigs, cceBrks, stockCounts, presentations, profiles) {
 	var appCfgInfo = hashByFacility(appConfigs);
 	var appConfigByFacility = appCfgInfo.configByFacility;
 	var activeZones = appCfgInfo.countByZone;
+	var allocations = [];
+	appConfigs
+			.forEach(function (appCfg) {
+				if(appCfg.facility && appCfg.facility.allocation){
+					var alloc = {
+						facility: appCfg.facility._id,
+						allocations: appCfg.facility.allocation
+					};
+					allocations.push(alloc);
+				}
+			});
 
 	var stpByZone = getSTPReport(stockCounts, presentations, profiles, allocations, appConfigByFacility);
 	var cceBreakdownZoneReport = groupByZone(cceBrks, appConfigByFacility, activeZones);
