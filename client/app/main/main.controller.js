@@ -76,12 +76,13 @@ angular.module('lmisApp')
 			//silent reporting table options
 			var initialPaginationSize = 10;
 			$scope.gridOptions = {
+				enableColumnMenus: false,
 				enableFiltering: true,
 				paginationPageSizes: [initialPaginationSize, 25, 50, 100],
 				paginationPageSize: initialPaginationSize,
 				minRowsToShow: initialPaginationSize,
 				columnDefs: [
-					{field: 'zone', name: 'Zone'},
+					{field: 'zone', name: 'Zone', sortable: false },
 					{field: 'lga', name: 'LGA'},
 					{field: 'facility', name: 'Facility'}
 				],
