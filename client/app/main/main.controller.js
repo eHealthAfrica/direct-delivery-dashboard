@@ -121,4 +121,189 @@ angular.module('lmisApp')
         .catch(function(err){
           console.log(err);
         });
-		});
+		})
+  .controller('CCEBreakdownReportCtrl', function ($scope, $q, ccuBreakdown, AppConfig) {
+    $scope.isLoadingCCEChart = true;
+
+    function sortStatus(a, b) {
+      return new Date(b.created).getTime() - new Date(a.created).getTime();
+    }
+
+    function groupCCEBreakdown(rows) {
+      var facilities = {};
+
+      for (var i = 0; i < rows.length; i++) {
+        if (rows[i].facility) {
+          if (!facilities[rows[i].facility._id]) {
+            facilities[rows[i].facility._id] = rows[i].ccuStatus;
+          } else {
+            facilities[rows[i].facility._id].concat(rows[i].ccuStatus);
+          }
+        }
+      }
+
+      return facilities;
+    }
+
+    function setChartData(response) {
+      var byFacilities = groupCCEBreakdown(response.ccuBreakdown);
+      var appConfig = response.appConfig;
+      var chartData = {
+        broken: 0,
+        fixed: 0
+      };
+
+      for (var i = 0; i < appConfig.length; i++) {
+        var key = appConfig[i].facility._id;
+        if (byFacilities.hasOwnProperty(key)) {
+          byFacilities[key].sort(sortStatus);
+          var status = byFacilities[key][0] ? byFacilities[key][0].status : 1;
+          if (status === 0) {
+            chartData.broken ++;
+          } else {
+            chartData.fixed ++;
+          }
+        } else {
+          chartData.fixed ++;
+        }
+      }
+
+      $scope.breakdownChartData = [
+        {key: 'Broken', y: chartData.broken},
+        {key: 'Working', y: chartData.fixed}
+      ];
+
+      $scope.isLoadingCCEChart = false;
+    }
+
+    $q.all({ccuBreakdown: ccuBreakdown.byDate(), appConfig: AppConfig.all()})
+      .then(setChartData)
+      .catch(function (reason) {
+        $scope.isLoadingCCEChart = false;
+        console.log(reason);
+      });
+
+    $scope.xFunction = function() {
+      return function(d) {
+        return d.key;
+      };
+    };
+
+    $scope.yFunction = function() {
+      return function(d) {
+        return d.y;
+      };
+    };
+
+    $scope.tooltip = function () {
+      return function(key, x) {
+        return key + ': ' + parseInt(x, 10);
+      }
+    }
+
+  })
+  .controller('MainStockOutReportCtrl', function ($scope, $q, ProductType, stockOut, $window) {
+    $scope.isLoadingStockOutData = true;
+    function productTypeToObject(list) {
+      var productTypes = {};
+      for (var i = 0; i < list.length; i++) {
+        productTypes[list[i]] = 0;
+      }
+
+      return productTypes;
+    }
+
+    function toChart(object) {
+      function formatObjectToChatValues(object) {
+        var chartValues = [];
+        for (var key in object) {
+          if (object.hasOwnProperty(key)) {
+            chartValues.push([key, object[key]]);
+          }
+        }
+        return chartValues;
+      }
+
+      var chartData = [];
+      for (var key in object) {
+        if (object.hasOwnProperty(key)) {
+          chartData.push( {
+            key: key,
+            values: formatObjectToChatValues(object[key])
+          });
+        }
+
+      }
+
+      return chartData
+    }
+
+    function groupStockOut(rows, productTypes) {
+      function setType(groups, row, type) {
+        //TODO: remove hard coded zone object when facilities clean up is complete
+        var altZones = {
+          '9875dca640bb11e4b3c53ca9f44c7824': 'Bichi',
+          'b3e25c1240bb11e4b3c53ca9f44c7824': 'Dawakin Tofa',
+          'cc3015ac40bb11e4b3c53ca9f44c7824': 'Gwale',
+          'e1837db840bb11e4b3c53ca9f44c7824': 'Nassarawa',
+          '07f03e8c40bc11e4b3c53ca9f44c7824': 'Wudil'
+        };
+        var altName = type === 'facility' ? 'name' : type;
+        var typeName = row.facility[altName];
+        if (type === 'zone') {
+          typeName = typeName === '' || typeName === undefined ? altZones[row.facility.zoneUUID] : typeName;
+        }
+        if (!groups[type][typeName]) {
+          var productCount = angular.copy(productTypes);
+          productCount[row.productType] ++;
+          groups[type][typeName] = productCount;
+        } else {
+          if (!groups[type][typeName][row.productType]) {
+            groups[type][typeName][row.productType] = 1;
+          } else {
+            groups[type][typeName][row.productType] ++;
+          }
+        }
+        return groups[type];
+      }
+      var groups = {
+        facility: {},
+        ward: {},
+        lga: {},
+        zone: {}
+      };
+
+      for (var i = 0; i < rows.length; i++) {
+        groups.facility = setType(groups, rows[i], 'facility');
+        groups.ward = setType(groups, rows[i], 'ward');
+        groups.lga = setType(groups, rows[i], 'lga');
+        groups.zone = setType(groups, rows[i], 'zone');
+      }
+
+      return groups;
+    }
+
+    function setChart(response) {
+      var productTypesObject = productTypeToObject(response.productTypes);
+      var groupedStockOut = groupStockOut(response.stockOuts, productTypesObject);
+      $scope.stoutOutChartData = toChart(groupedStockOut.zone);
+      $scope.isLoadingStockOutData = false;
+    }
+
+    var promises = {
+      productTypes: ProductType.codes(),
+      stockOuts: stockOut.byDate()
+    };
+
+    $q.all(promises)
+      .then(setChart)
+      .catch(function () {
+        $scope.isLoadingStockOutData = false;
+      });
+
+    $scope.roundY = function () {
+      return function (d) {
+        return $window.d3.round(d);
+      };
+    };
+  });

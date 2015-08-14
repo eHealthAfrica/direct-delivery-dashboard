@@ -82,6 +82,68 @@
   </div>
 </div>
 
+<div class="row">
+  <div class="col-md-8" ng-controller="MainStockOutReportCtrl">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">STOCKOUT REPORT | By item, zone</h3>
+      </div>
+      <div class="panel-body">
+        <div ng-show="isLoadingStockOutData" align="center">
+          <i class="fa fa-spin fa-spinner fa-3x"></i>
+        </div>
+        <div ng-hide="isLoadingStockOutData">
+          <nvd3-multi-bar-chart
+            data="stoutOutChartData"
+            id="stockOutChart"
+            margin="{ left: 80 }"
+            height="450"
+            tooltips="true"
+            showXAxis="true"
+            showYAxis="true"
+            showLabels="true"
+            stacked="true"
+            yAxisTickFormat="roundY()"
+            showLegend="true">
+            <svg></svg>
+          </nvd3-multi-bar-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4" ng-controller="CCEBreakdownReportCtrl">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Current CCE Status </h3>
+      </div>
+
+      <div class="panel-body">
+        <div ng-show="isLoadingCCEChart" align="center">
+          <i class="fa fa-spin fa-spinner fa-3x"></i>
+        </div>
+        <div ng-hide="isLoadingCCEChart" style="max-height: 450px;">
+          <nvd3-pie-chart
+            data="breakdownChartData"
+            id="breakdownPie"
+            width="400"
+            height="450"
+            tooltips="true"
+            interactive="true"
+            x="xFunction()"
+            y="yFunction()"
+            showLabels="true"
+            showValues="true"
+            labelType="percent"
+            color="['#A60000', '#dff0d8']"
+            tooltipcontent="tooltip()"
+            showLegend="false">
+          </nvd3-pie-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="row" ng-controller="MainStockReport">
   <!-- Late facility reporting section -->
   <div class="col-sm-6">
