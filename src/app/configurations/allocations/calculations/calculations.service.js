@@ -7,16 +7,34 @@ angular.module('allocations')
 
     var service = this;
 
-    function prepareTemplate() {
+    function prepareTemplate (facilities){
       var temp = {
-        coverage: {}
+        coverage : {},
+        schedule : {},
+        wastage  : {},
+        buffer   : {}
       };
       return assumptionService.getAll()
-        .then(function (response) {
-          for (var i in response) {
+        .then(function(response){
+          for(var i in response){
             temp.coverage[response[i].product.code] = response[i].coverage;
+            temp.schedule[response[i].product.code] = response[i].schedule;
+            temp.wastage[response[i].product.code] = response[i].wastage;
+            temp.buffer[response[i].product.code] = response[i].buffer;
           }
           return temp;
+        })
+        .then(function(data){
+          var hay = {};
+          var res = [];
+          for(var i in facilities){
+            hay.facility = facilities[i].name;
+            for(var c in data){
+              hay[c] = data[c];
+            }
+            res.push(angular.copy(hay));
+          }
+          return res;
         });
     }
 
@@ -59,30 +77,17 @@ angular.module('allocations')
         .then(pouchUtil.pluckDocs);
     };
 
-    service.computeCoverage = function (facilities) {
-      var hay = {};
-      var res = [];
-      return prepareTemplate()
-        .then(function (response) {
-          for (var i in facilities) {
-            hay.facility = facilities[i].name;
-            for (var c in response) {
-              hay[c] = response[c];
-            }
-            res.push(angular.copy(hay));
-          }
-          console.log(res);
-          return res;
-        });
+    service.computeCoverage = function(facilities){
+      return prepareTemplate(facilities);
     };
-    service.computeSchedule = function (facilities) {
-
+    service.computeSchedule = function(facilities){
+      return prepareTemplate(facilities);
     };
-    service.computeWastage = function (facilities) {
-
+    service.computeWastage = function(facilities){
+      return prepareTemplate(facilities);
     };
-    service.computeBuffer = function (facilities) {
-
+    service.computeBuffer = function(facilities){
+      return prepareTemplate(facilities);
     };
     service.getTemplate = function (templateID) {
       return assumptionService.get(templateID);
