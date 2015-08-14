@@ -13,31 +13,32 @@
         <form>
           <div class="form-group">
             <label>template name</label>
-            <input type="text" class="form-control">
+            <input type="text" class="form-control" ng-model="tempAddCtrl.template.name">
           </div>
            <div class="form-group">
             <label>description</label>
-            <input type="text" class="form-control">
+            <input type="text" class="form-control" ng-model="tempAddCtrl.template.description">
           </div>
            <div class="form-group">
             <label>State of primary use</label>
-            <select>
-              <option></option>
+            <select data-ng-model="tempAddCtrl.template.primary.state">
+              <option>{{tempAddCtrl.template.primary.state}}</option>
             </select>
           </div>
           <div class="form-group">
             <label>Year of primary use</label>
-           <input type="year">
+           <input type="year" ng-model="tempAddCtrl.template.primary.year">
           </div>
         </form>
-        <div class="dropzone thumbnail" data-drop="true" data-jqyoui-options ng-model="tempAddCtrl.template.products" jqyoui-droppable style=''>
+        <label>Products</label>
+        <div
+            class="dropzone thumbnail"
+            ondrop="return tempAddCtrl.dragDrop(event)">
           <div
               class="btn btn-success"
-              data-drag="true"
-              data-jqyoui-options
-              ng-repeat="product in tempAddCtrl.template.products track by $index"
-              ng-model="product"
-              jqyoui-draggable ng-hide="!product">{{product.code}}</div>
+              ng-repeat="(product, value) in tempAddCtrl.template.products track by $index">
+            {{product}}
+          </div>
         </div>
       </div>
       <div class="col-md-4" >
@@ -45,12 +46,11 @@
         <ul ng-hide="tempAddCtrl.productList.length == 0" class="nav nav-list small draglist" >
             <li ng-repeat="product in tempAddCtrl.productList track by $index">
               <a
-                  class="btn btn-info"
-                  data-drag="true"
-                  data-jqyoui-options="{revert: 'invalid'}"
-                  ng-model="product"
-                  jqyoui-draggable="{animate:true}"
-                  ng-hide="!product.code">{{product.code}}
+                class="btn btn-info"
+                ng-click="tempAddCtrl.updateTemplateProducts(product)"
+                ng-bind="product.code"
+                ng-disabled="tempAddCtrl.template.products[product.code]">
+
               </a>
             </li>
         </ul>
@@ -60,6 +60,9 @@
     </div>
   </div>
   <div class="panel-footer clearfix">
-    <button class="btn btn-success pull-right">Submit</button>
+    <span class="pull-right">
+      <button class="btn btn-default " ng-click="tempAddCtrl.cancel()">Cancel</button>
+      <button class="btn btn-success " ng-click="tempAddCtrl.close()">Submit</button>
+    </span>
   </div>
 </div>
