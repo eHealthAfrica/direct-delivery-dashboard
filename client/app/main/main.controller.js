@@ -212,6 +212,7 @@ angular.module('lmisApp')
 
     function groupStockOut(rows, productTypes) {
       function setType(groups, row, type) {
+        //TODO: remove hard coded zone object when facilities clean up is complete
         var altZones = {
           '9875dca640bb11e4b3c53ca9f44c7824': 'Bichi',
           'b3e25c1240bb11e4b3c53ca9f44c7824': 'Dawakin Tofa',
