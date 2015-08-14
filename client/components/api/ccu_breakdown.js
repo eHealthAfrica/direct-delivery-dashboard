@@ -52,6 +52,7 @@ angular.module('lmisApp')
 
               return {
                 name: name,
+                ccuStatus: row.ccuStatus || [],
                 created: row.created,
                 facility: facilities[row.facility]
               };
