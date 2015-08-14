@@ -37,7 +37,6 @@ rsync -avz -e ssh "$dist/" $user@$host:$root/$now/
 ssh -T $user@$host << EOF
   cd "$root/$now" &&
   npm install --production &&
-  sudo supervisorctl stop lmisdb &&
   ln -fsn "$root/$now" "$root/latest" &&
-  sudo supervisorctl start lmisdb
+  supervisorctl restart lmis-dashboard
 EOF

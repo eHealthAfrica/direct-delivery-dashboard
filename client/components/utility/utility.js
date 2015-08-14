@@ -1,7 +1,7 @@
 'use strict';
 // AngularJS will instantiate a singleton by calling "new" on this function
 angular.module('lmisApp')
-		.service('utility', function utility($filter, $q, $http) {
+		.service('utility', function utility($filter, $q, $http, $window) {
 			this.castArrayToObject = function (array, key) {
 				var newObject = {};
 				key = angular.isUndefined(key) ? 'uuid' : key;
@@ -193,4 +193,16 @@ angular.module('lmisApp')
 					return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
 				});
 			};
+
+			this.getPreviousWeekRange = function(date) {
+				var d = date  || new Date();
+				var cwStartDay = $window.moment(d).startOf('week').toDate();
+				var start = moment(cwStartDay).subtract(7, 'days').toDate();
+        var end = moment(cwStartDay).subtract(1, 'days').toDate();
+				return {
+					startDate: start,
+					endDate: end
+				};
+			};
+
 		});

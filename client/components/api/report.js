@@ -13,7 +13,8 @@ angular.module('lmisApp')
 			});
 
 			_this.getWithin = function(startDate, endDate){
-				return $http.get(URL)
+				var param = [ '?startDate=', startDate, '&endDate=', endDate].join('');
+				return $http.get(URL + param)
 						.then(function(res){
 							var report = res.data;
 							var chartData = [
@@ -33,18 +34,26 @@ angular.module('lmisApp')
 									"values": []
 								}
 							];
-              var zones = Object.keys(report.activeZones).sort(function(r1, r2){
-	              if ( r1[0] < r2[0] )
-		              return -1;
-	              if ( r1[0] > r2[0])
-		              return 1;
-	              return 0;
-              });
+							var zones = Object.keys(report.activeZones)
+									.sort(function (r1, r2) {
+										if (r1[0] < r2[0])
+											return -1;
+										if (r1[0] > r2[0])
+											return 1;
+										return 0;
+									});
+							var ONE_HUNDRED = 100;
 							for(var i in zones){
-								var zone  = zones[i];
-								chartData[0].values.push([ utility.capitalize(zone), report.cceBreakdown[zone] ]);
-								chartData[1].values.push([ utility.capitalize(zone), 52 ]);//TODO: replace with stock to plan when completed
-								chartData[2].values.push([ utility.capitalize(zone), report.reporting[zone] ]);
+								var zone = zones[i];
+								var zoneTotal = report.activeZones[zone];
+								var facility = (zoneTotal === 0 || zoneTotal === 1)? 'Facility' : 'Facilities';
+								var zoneLabel  =  [ zones[i], '(', zoneTotal, facility, ')'].join(' ');
+								chartData[0].values.push([ utility.capitalize(zoneLabel), report.cceBreakdown[zone] ]);
+
+								var stp = ((report.stockToPlan[zone].STP / zoneTotal) * ONE_HUNDRED);
+								chartData[1].values.push([ utility.capitalize(zoneLabel), stp]);
+
+								chartData[2].values.push([ utility.capitalize(zoneLabel), report.reporting[zone] ]);
 							}
 
 							return chartData;

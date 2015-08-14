@@ -6,11 +6,6 @@ angular.module('lmisApp')
       .when('/', {
         templateUrl: 'app/main/main.html',
         controller: 'MainCtrl',
-        authenticate: true,
-        resolve: {
-          weeklyReport: ['Report', function (Report) {
-            return Report.getWithin();
-          }]
-        }
+        authenticate: true
       });
   });
