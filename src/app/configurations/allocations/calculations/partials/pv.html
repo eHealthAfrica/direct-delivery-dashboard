@@ -6,9 +6,14 @@
   </tr>
   <tr ng-repeat="allocation in calculationsController.renderedData track by $index">
     <td >
-      <a href ng-bind="allocation.facility"></a>
+      <a href ng-bind="allocation.name"></a>
     </td>
-    <td ng-repeat="product in allocation.coverage">{{product}}%</td>
+    <td ng-repeat="product in allocation[calculationsController.activeView]">
+      {{product}}
+      <span ng-show="calculationsController.activeView ==='coverage' || calculationsController.activeView === 'buffer'">
+        %
+      </span>
+    </td>
     <td><a href><i class="fa fa-wrench"></i></td>
   </tr>
 </table>
