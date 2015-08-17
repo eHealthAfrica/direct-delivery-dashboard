@@ -23,6 +23,12 @@ angular.module('allocations')
               .catch(function(err){
                 return [];
               });
+          },
+          assumptionList : function(assumptionService){
+            return assumptionService.getAll()
+              .catch(function(err){
+                return []
+              });
           }
         }
       })
