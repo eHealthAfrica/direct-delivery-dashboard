@@ -35,7 +35,7 @@ angular.module('allocations')
         return dbService.saveDocs(data);
       }
       if(data.name){
-        return dbService.insertWithId(data, data.name.trim());
+        return dbService.insertWithId(data, data.name.trim().split(' ').join('-'));
       }
       return dbService.save(data);
     };

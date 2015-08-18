@@ -3,7 +3,7 @@
  */
 
 angular.module('allocations')
-  .controller('AssumptionsTemplateAddCtrl', function($scope, data, products,  $modalInstance){
+  .controller('AssumptionsTemplateAddCtrl', function($scope, data, products, states,  $modalInstance){
 
     var vm = this;
     vm.template = {
@@ -19,7 +19,7 @@ angular.module('allocations')
 
     vm.productList = products;
     vm.dragging = false;
-
+    //console.log(states);
 
 
     if(data){
