@@ -122,7 +122,33 @@ angular.module('lmisApp')
           console.log(err);
         });
 		})
-  .controller('CCEBreakdownReportCtrl', function ($scope, $q, ccuBreakdown, AppConfig) {
+  .controller('CCEBreakdownReportCtrl', function ($scope, $q, ccuBreakdown, AppConfig, utility) {
+    var serverResponse = {};
+    var prvWKRange = utility.getPreviousWeekRange();
+    $scope.cceReportFilter = {
+      today:  utility.getFullDate(new Date()),
+      from: {
+        opened: false,
+        date: utility.getFullDate(prvWKRange.startDate),
+        open: function($event) {
+          $event.preventDefault();
+          $event.stopPropagation();
+
+          this.opened = !this.opened;
+        }
+      },
+      to: {
+        opened: false,
+        date: utility.getFullDate(prvWKRange.endDate),
+        open: function($event) {
+          $event.preventDefault();
+          $event.stopPropagation();
+
+          this.opened = !this.opened;
+        }
+      }
+    };
+
     $scope.isLoadingCCEChart = true;
 
     function sortStatus(a, b) {
@@ -146,8 +172,11 @@ angular.module('lmisApp')
     }
 
     function setChartData(response) {
-      var byFacilities = groupCCEBreakdown(response.ccuBreakdown);
-      var appConfig = response.appConfig;
+      if (response) {
+        serverResponse = response;
+      }
+      var byFacilities = groupCCEBreakdown(serverResponse.ccuBreakdown);
+      var appConfig = serverResponse.appConfig;
       var chartData = {
         broken: 0,
         fixed: 0
@@ -157,10 +186,14 @@ angular.module('lmisApp')
         var key = appConfig[i].facility._id;
         if (byFacilities.hasOwnProperty(key)) {
           byFacilities[key].sort(sortStatus);
+          var dateFrom = utility.getFullDate($scope.cceReportFilter.from.date);
+          var dateTo = utility.getFullDate($scope.cceReportFilter.to.date);
+          var created = byFacilities[key][0] ? utility.getFullDate(byFacilities[key][0].created) : utility.getFullDate(new Date());
           var status = byFacilities[key][0] ? byFacilities[key][0].status : 1;
-          if (status === 0) {
+          //console.log([created+ '>='+ dateFrom, created >= dateFrom].join(' '), [created + '<='+ dateTo, created <= dateTo].join(' '), status);
+          if (status === 0 && (created >= dateFrom && created <= dateTo)) {
             chartData.broken ++;
-          } else {
+          } else if (created <= dateTo){
             chartData.fixed ++;
           }
         } else {
@@ -199,7 +232,11 @@ angular.module('lmisApp')
       return function(key, x) {
         return key + ': ' + parseInt(x, 10);
       }
-    }
+    };
+
+    $scope.updateCCEView = function () {
+      setChartData();
+    };
 
   })
   .controller('MainStockOutReportCtrl', function ($scope, $q, ProductType, stockOut, $window, utility) {
