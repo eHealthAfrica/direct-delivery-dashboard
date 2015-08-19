@@ -165,6 +165,46 @@
           <i class="fa fa-spin fa-spinner fa-3x"></i>
         </div>
         <div ng-hide="isLoadingCCEChart" style="max-height: 450px;">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <div class="input-group">
+                  <input type="text" class="form-control"
+                         ng-model="cceReportFilter.from.date"
+                         max-date="cceReportFilter.to.date"
+                         datepicker-popup
+                         is-open="cceReportFilter.from.opened"/>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="cceReportFilter.from.open($event)">
+                <i class="glyphicon glyphicon-calendar"></i>
+              </button>
+            </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <div class="input-group">
+                  <input type="text" class="form-control"
+                         ng-model="cceReportFilter.to.date"
+                         min-date="cceReportFilter.from.date"
+                         max-date="cceReportFilter.today"
+                         datepicker-popup
+                         is-open="cceReportFilter.to.opened"/>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="cceReportFilter.to.open($event)">
+                <i class="glyphicon glyphicon-calendar"></i>
+              </button>
+            </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <button class="btn btn-primary" ng-click="updateCCEView()">Apply</button>
+            </div>
+          </div>
           <nvd3-pie-chart
             data="breakdownChartData"
             id="breakdownPie"
