@@ -202,7 +202,33 @@ angular.module('lmisApp')
     }
 
   })
-  .controller('MainStockOutReportCtrl', function ($scope, $q, ProductType, stockOut, $window) {
+  .controller('MainStockOutReportCtrl', function ($scope, $q, ProductType, stockOut, $window, utility) {
+    var serverResponse = {};
+    var prvWKRange = utility.getPreviousWeekRange();
+    $scope.stockOutFilter = {
+      today:  utility.getFullDate(new Date()),
+      from: {
+        opened: false,
+        date: utility.getFullDate(prvWKRange.startDate),
+        open: function($event) {
+          $event.preventDefault();
+          $event.stopPropagation();
+
+          this.opened = !this.opened;
+        }
+      },
+      to: {
+        opened: false,
+        date: utility.getFullDate(prvWKRange.endDate),
+        open: function($event) {
+          $event.preventDefault();
+          $event.stopPropagation();
+
+          this.opened = !this.opened;
+        }
+      }
+    };
+
     $scope.isLoadingStockOutData = true;
     function productTypeToObject(list) {
       var productTypes = {};
@@ -240,19 +266,9 @@ angular.module('lmisApp')
 
     function groupStockOut(rows, productTypes) {
       function setType(groups, row, type) {
-        //TODO: remove hard coded zone object when facilities clean up is complete
-        var altZones = {
-          '9875dca640bb11e4b3c53ca9f44c7824': 'Bichi',
-          'b3e25c1240bb11e4b3c53ca9f44c7824': 'Dawakin Tofa',
-          'cc3015ac40bb11e4b3c53ca9f44c7824': 'Gwale',
-          'e1837db840bb11e4b3c53ca9f44c7824': 'Nassarawa',
-          '07f03e8c40bc11e4b3c53ca9f44c7824': 'Wudil'
-        };
+
         var altName = type === 'facility' ? 'name' : type;
         var typeName = row.facility[altName];
-        if (type === 'zone') {
-          typeName = typeName === '' || typeName === undefined ? altZones[row.facility.zoneUUID] : typeName;
-        }
         if (!groups[type][typeName]) {
           var productCount = angular.copy(productTypes);
           productCount[row.productType] ++;
@@ -274,18 +290,27 @@ angular.module('lmisApp')
       };
 
       for (var i = 0; i < rows.length; i++) {
-        groups.facility = setType(groups, rows[i], 'facility');
-        groups.ward = setType(groups, rows[i], 'ward');
-        groups.lga = setType(groups, rows[i], 'lga');
-        groups.zone = setType(groups, rows[i], 'zone');
+        var dateFrom = utility.getFullDate($scope.stockOutFilter.from.date);
+        var dateTo = utility.getFullDate($scope.stockOutFilter.to.date);
+        var created =  utility.getFullDate(rows[i].created);
+        if (created >= dateFrom && created <= dateTo) {
+          groups.facility = setType(groups, rows[i], 'facility');
+          groups.ward = setType(groups, rows[i], 'ward');
+          groups.lga = setType(groups, rows[i], 'lga');
+          groups.zone = setType(groups, rows[i], 'zone');
+        }
+
       }
 
       return groups;
     }
 
     function setChart(response) {
-      var productTypesObject = productTypeToObject(response.productTypes);
-      var groupedStockOut = groupStockOut(response.stockOuts, productTypesObject);
+      if (response) {
+        serverResponse = response;
+      }
+      var productTypesObject = productTypeToObject(serverResponse.productTypes);
+      var groupedStockOut = groupStockOut(serverResponse.stockOuts, productTypesObject);
       $scope.stoutOutChartData = toChart(groupedStockOut.zone);
       $scope.isLoadingStockOutData = false;
     }
@@ -306,4 +331,8 @@ angular.module('lmisApp')
         return $window.d3.round(d);
       };
     };
+
+    $scope.updateView = function () {
+      setChart();
+    }
   });
