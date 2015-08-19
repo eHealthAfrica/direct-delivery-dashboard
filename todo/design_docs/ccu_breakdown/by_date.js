@@ -10,6 +10,8 @@ var ccu_breakdown_by_date_map_reduce = {
       emit(new Date(doc.created), {
         facility: doc.facility.uuid || doc.facility,
         created: doc.created,
+        ccuStatus: doc.ccuStatus,
+        modified: doc.modified,
         ccuProfile: {
           dhis2_modelid: doc.ccuProfile.dhis2_modelid
         }
