@@ -54,6 +54,7 @@ angular.module('lmisApp')
                 name: name,
                 ccuStatus: row.ccuStatus || [],
                 created: row.created,
+                modified: row.modified,
                 facility: facilities[row.facility]
               };
             }));
