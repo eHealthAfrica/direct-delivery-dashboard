@@ -219,7 +219,8 @@ angular.module('planning')
 				}
 
 				if(angular.isNumber(roundReport.workingCCE)){
-					roundReport.workingCCE = roundReport.workingCCE.toFixed(0);
+					var decimalPlaces = 2;
+					roundReport.workingCCE = roundReport.workingCCE.toFixed(decimalPlaces);
 				}
 				var today = new Date(utility.formatDate(new Date()));
 				var markDate = (today < endDate)? today : endDate;
