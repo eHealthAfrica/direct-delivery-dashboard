@@ -7,7 +7,7 @@ angular.module('reports')
 			var db = pouchDB(config.db);
 
 			//TODO: most of there should be moved to Server side if we start using server side rendering engine
-
+      //or move to CouchDB
 			this.getDeliveryRounds = function () {
 				return db.query('reports/delivery-rounds')
 						.then(function (response) {
@@ -64,53 +64,44 @@ angular.module('reports')
 				return zoneReport;
 			};
 
-			_this.collateByDate = function (dateReport, rowDate, rowStatus) {
-				if (!dateReport[rowDate]) {
-					dateReport[rowDate] = _this.getStatusTypes();
-				}
-				dateReport[rowDate][rowStatus] += 1;
-				return dateReport;
-			};
-
 			function collateSortedDate(ddReports) {
 				var cumDayCount = {};
 				ddReports
 						.sort(function (a, b) {
 							//ascending
-							return (new Date(a.value.date) - new Date(b.value.date));
+							return (new Date(a.date) - new Date(b.date));
 						})
 						.forEach(function (row) {
-							var dr;
-							if (row.value && row.value.date) {
-								dr = row.value;
-								if (!cumDayCount[dr.date]) {
-									cumDayCount[dr.date] = _this.getStatusTypes();
+							if (row.date) {
+								if (!cumDayCount[row.date]) {
+									cumDayCount[row.date] = _this.getStatusTypes();
 								}
-								cumDayCount[dr.date][dr.status] += 1;
+								cumDayCount[row.date][row.status] += 1;
 							}
 						});
-
 				return cumDayCount;
 			}
 
 			_this.collateReport = function (res, deliveryRounds) {
 
-				//TODO: move this collation to reduce view
+				//TODO: move this collation to reduce view if possible
 				var rows = res.rows;
 
 				var index = rows.length;
 				var report = {
 					zones: {},
-					dates: collateSortedDate(rows),
+					dates: {},
 					status: _this.getStatusTypes()
 				};
 
 				var row;
+				var roundRows = [];
 				while (index--) {
 					row = rows[index].value;
 					if (deliveryRounds && row.deliveryRoundID && deliveryRounds.indexOf(row.deliveryRoundID) === -1) {
 						continue;//skip
 					}
+					roundRows.push(row);
 					var rowZone = row.zone.trim().toLowerCase();
 					var rowStatus = row.status.trim().toLowerCase();
 
@@ -130,7 +121,9 @@ angular.module('reports')
 					};
 					zones.push(zoneReport);
 				}
+
 				report.zones = zones;
+				report.dates = collateSortedDate(roundRows);
 				return report;
 			};
 
