@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('reports')
-		.service('reportsService', function (pouchDB, config, dbService) {
+		.service('reportsService', function (pouchDB, config, dbService, deliveryRoundService) {
 
 			var _this = this;
 			var db = pouchDB(config.db);
+
+			//TODO: most of there should be moved to Server side if we start using server side rendering engine
 
 			this.getDeliveryRounds = function () {
 				return db.query('reports/delivery-rounds')
@@ -49,7 +51,8 @@ angular.module('reports')
 				return {
 					success: 0,
 					failed: 0,
-					canceled: 0
+					canceled: 0,
+					total: 0
 				};
 			};
 
@@ -61,44 +64,64 @@ angular.module('reports')
 				return zoneReport;
 			};
 
-			_this.collateByDate = function(dateReport, rowDate, rowStatus) {
-				if(!dateReport[rowDate]){
+			_this.collateByDate = function (dateReport, rowDate, rowStatus) {
+				if (!dateReport[rowDate]) {
 					dateReport[rowDate] = _this.getStatusTypes();
 				}
 				dateReport[rowDate][rowStatus] += 1;
 				return dateReport;
 			};
 
-			_this.collateReport = function (res) {
+			function collateSortedDate(ddReports) {
+				var cumDayCount = {};
+				ddReports
+						.sort(function (a, b) {
+							//ascending
+							return (new Date(a.value.date) - new Date(b.value.date));
+						})
+						.forEach(function (row) {
+							var dr;
+							if (row.value && row.value.date) {
+								dr = row.value;
+								if (!cumDayCount[dr.date]) {
+									cumDayCount[dr.date] = _this.getStatusTypes();
+								}
+								cumDayCount[dr.date][dr.status] += 1;
+							}
+						});
+
+				return cumDayCount;
+			}
+
+			_this.collateReport = function (res, deliveryRounds) {
+
 				//TODO: move this collation to reduce view
 				var rows = res.rows;
-				var index = rows.length;
 
+				var index = rows.length;
 				var report = {
 					zones: {},
-					dates: {},
+					dates: collateSortedDate(rows),
 					status: _this.getStatusTypes()
 				};
 
 				var row;
 				while (index--) {
 					row = rows[index].value;
-
+					if (deliveryRounds && row.deliveryRoundID && deliveryRounds.indexOf(row.deliveryRoundID) === -1) {
+						continue;//skip
+					}
 					var rowZone = row.zone.trim().toLowerCase();
 					var rowStatus = row.status.trim().toLowerCase();
-					var rowDate = row.date;
 
-          //collate report
+					//collate report
 					report.zones = _this.collateStatusByZone(report.zones, rowZone, rowStatus);
-          report.dates = _this.collateByDate(report.dates, rowDate, rowStatus);
 					report.status[rowStatus] += 1;
+					report.status.total += 1;
 				}
 
-				report.status.total = rows.length;
-
-
 				var zones = [];
-				for(var z in report.zones){
+				for (var z in report.zones) {
 					var zoneReport = {
 						zone: z,
 						success: report.zones[z].success,
@@ -107,12 +130,11 @@ angular.module('reports')
 					};
 					zones.push(zoneReport);
 				}
-
 				report.zones = zones;
 				return report;
 			};
 
-			_this.getDeliveryReportWithin = function (startDate, endDate) {
+			_this.getDeliveryReportWithin = function (startDate, endDate, deliveryRounds) {
 				var view = 'dashboard-delivery-rounds/report-by-date';
 				startDate = new Date(startDate).toJSON();
 				endDate = new Date(endDate).toJSON();
@@ -121,19 +143,27 @@ angular.module('reports')
 					endkey: [endDate, {}, {}]
 				};
 				return dbService.getView(view, options)
-						.then(_this.collateReport);
+						.then(function (res) {
+							return _this.collateReport(res, deliveryRounds);
+						});
 			};
 
-			//_this.getByWithin = function(state, startDate, endDate) {
-			//	var params = {
-			//		startkey: [ state ],
-			//		endkey: [ state, {} ]
-			//	};
-			//	return _this.getBy(params)
-			//			.then(function(){
-			//
-			//			});
-			//};
+
+			_this.getByWithin = function (state, startDate, endDate) {
+				var params = {
+					startkey: [state],
+					endkey: [state, {}]
+				};
+
+				return deliveryRoundService.getBy(params)
+						.then(function (res) {
+							var deliveryRoundIds = [];
+							res.rows.forEach(function (row) {
+								deliveryRoundIds.push(row.id);
+							});
+							return _this.getDeliveryReportWithin(startDate, endDate, deliveryRoundIds);
+						});
+			};
 
 
 		});

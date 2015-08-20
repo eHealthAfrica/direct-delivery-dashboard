@@ -1,13 +1,15 @@
 'use strict';
 
 angular.module('reports')
-		.controller('DeliveryReportCtrl', function ($window, config, reportsService) {
+		.controller('DeliveryReportCtrl', function ($window, config, reportsService, log) {
 
 			var vm = this;//viewModel
 
 			vm.dateFormat = config.dateFormat;
-			vm.startFrom = new Date('2015-05-01');//TODO:set to least delivery date by default
 			vm.stopOn = new Date();
+			var ONE_MONTH = 2.62974e9;//milli secs
+			var ONE_MONTH_BEFORE = vm.stopOn.getTime() - ONE_MONTH;
+			vm.startFrom = new Date(ONE_MONTH_BEFORE);
 
 			function openDatePicker($event) {
 				$event.preventDefault();
@@ -25,8 +27,8 @@ angular.module('reports')
 				open: openDatePicker
 			};
 
-			vm.formatXAxis = function() {
-				return function(d){
+			vm.formatXAxis = function () {
+				return function (d) {
 					return $window.d3.time.format('%d %b %Y')(new Date(d));
 				};
 			};
@@ -34,52 +36,48 @@ angular.module('reports')
 			vm.zoneReport = [];
 			vm.statusReport = {};
 
-			vm.getReport = function(){
-				reportsService.getDeliveryReportWithin(vm.startFrom, vm.stopOn)
-						.then(function(res){
+			vm.getReport = function () {
+				reportsService.getByWithin('Kano', vm.startFrom, vm.stopOn)
+						.then(function (res) {
 							vm.zoneReport = res.zones;
 							vm.statusReport = res.status;
+							vm.exampleData = vm.getGraphData(res.dates);
 						})
-						.catch(function(err){
-							console.error(err);
+						.catch(function (err) {
+							log.error('cumulativeReportErr', err);
 						});
 			};
 
-			vm.calcSum = function(rp){
+			vm.getReport(); //call on init
 
-			};
-
-			vm.exampleData = [
-				{
-					"key": "Success",
-					"color": "green",
-					"values": [
-						[ 1430438400000, 0 ],
-						[ 1431648000000, 300 ],
-						[ 1434240000000, 550 ],
-						[ 1435622400000, 800 ]
-					]
-				},
-				{
-					"key": "Failed",
-					"color": "red",
-					"values": [
-						[ 1430438400000, 0 ],
-						[ 1431648000000, 200 ],
-						[ 1434240000000, 318 ],
-						[ 1435622400000, 420 ]
-					]
-				},
-				{
-					"key": "Canceled",
-					"color": "orange",
-					"values": [
-						[ 1430438400000, 0 ],
-						[ 1431648000000, 15 ],
-						[ 1434240000000, 30 ],
-						[ 1435622400000, 55 ]
-					]
+			vm.getGraphData = function (dateStatusCounts) {
+				var graphData = [
+					{
+						"key": "Success",
+						"color": "green",
+						"values": []
+					},
+					{
+						"key": "Failed",
+						"color": "red",
+						"values": []
+					},
+					{
+						"key": "Canceled",
+						"color": "orange",
+						"values": []
+					}
+				];
+				var dsc;
+				for(var date in dateStatusCounts){
+					if(dateStatusCounts.hasOwnProperty(date)) {
+						dsc = dateStatusCounts[date];
+						graphData[0].values.push([new Date(date), dsc.success]);
+						graphData[1].values.push([new Date(date), dsc.failed]);
+						graphData[2].values.push([new Date(date), dsc.canceled]);
+					}
 				}
-			];
+				return graphData;
+			};
 
 		});
