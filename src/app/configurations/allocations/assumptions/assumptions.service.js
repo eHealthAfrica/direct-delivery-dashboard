@@ -24,16 +24,18 @@ angular.module('allocations')
         });
     };
     service.get = function(id){
-      //Todo: edit to fetch from  db
-      return service.getAll()
+      return dbService.get(id)
         .then(function(response){
-          return response[0];
+          return response;
         });
     };
     service.save = function(data){
-
+      console.log(data);
       if(angular.isArray(data)){
         return dbService.saveDocs(data);
+      }
+      if(data.name){
+        return dbService.insertWithId(data, data.name.trim());
       }
       return dbService.save(data);
     };
