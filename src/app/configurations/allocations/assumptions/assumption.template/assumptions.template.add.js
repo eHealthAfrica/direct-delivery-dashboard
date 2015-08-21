@@ -19,7 +19,7 @@ angular.module('allocations')
 
     vm.productList = products;
     vm.dragging = false;
-    //console.log(states);
+    console.log(states);
 
 
     if(data){

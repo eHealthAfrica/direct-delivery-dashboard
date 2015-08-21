@@ -130,6 +130,9 @@ angular.module('allocations')
         custom: true,
         doc_type: 'allocation_template'
       };
+      if(data.customTemplateRev){
+        emptyTemplate._rev = data.customTemplateRev;
+      }
       for(product in data.buffer){
 
         if(! emptyTemplate.products[product]){

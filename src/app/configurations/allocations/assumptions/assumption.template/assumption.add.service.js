@@ -20,7 +20,7 @@ angular.module('allocations')
             return productService.getAll();
           },
           states: function(locationService){
-            return locationService.getLocationsByLevel('3')
+            return locationService.getLocationsByLevel('2')
               .catch(function(err){
                 return [];
               });
