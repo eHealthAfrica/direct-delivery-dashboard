@@ -13,6 +13,39 @@ td.actions {
   white-space: nowrap;
 }
 
+.dropzone {
+  position: relative;
+  padding: 14px;
+  border: 2px dashed grey;
+  margin-bottom: 14px;
+  border-radius: 5px;
+  font-size: 60px;
+  height: auto;
+  color: grey;
+  text-align: center;
+}
+
+.dropzone:after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.noFields {
+  padding: 14px;
+  border: 2px dashed grey;
+}
+
+ul.draglist {
+  cursor: move;
+  z-index: 30000;
+}
+
+ul.draglist li {
+  padding: 4px;
+}
 // injector
 @import 'reports/invoice/round/round.scss';
 // endinjector

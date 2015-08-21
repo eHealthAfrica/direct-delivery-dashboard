@@ -2,25 +2,27 @@
  * Created by ehealthafrica on 7/7/15.
  */
 angular.module('allocations')
-  .controller('AssumptionsController', function(assumptionList, $modal, log, assumptionService){
+  .controller('AssumptionsCtrl', function(assumptionList, $modal, log, assumptionService){
     var vm = this;
-    vm.assumptionList = assumptionList[0];
-
-    vm.editAssumption = function(data){
+    vm.assumptionList = assumptionList;
+    vm.addAssumption = function(data){
       var modalInstance = $modal.open({
         animation: true,
-        templateUrl: 'app/configurations/allocations/assumptions/assumptions-edit/edit.html',
-        controller: 'AssumptionsEditController',
-        controllerAs: 'assumptionsEditController',
+        templateUrl: 'app/configurations/allocations/assumptions/assumption.template/newtemplate.html',
+        controller: 'AssumptionsTemplateAddCtrl',
+        controllerAs: 'tempAddCtrl',
         resolve: {
           data: function(){
             return data;
+          },
+          products : function(productService){
+            return productService.getAll();
           }
         }
       });
-      modalInstance.result.then(function (data) {
+      modalInstance.result.then(function (formData) {
 
-        assumptionService.save(data)
+        assumptionService.save(formData)
           .then(function(data){
             return log.success('assumptionEdited', data);
           })

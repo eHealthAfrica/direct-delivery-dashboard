@@ -1,7 +1,7 @@
 <table class="table table-bordered">
   <tr>
     <th>Facility</th>
-    <th ng-repeat="product in calculationsController.productList" ng-bind="::product.code"></th>
+    <th ng-repeat="(product, vlaue) in calculationsController.selectedTemplate.products track by $index" ng-bind="::product"></th>
     <th>edit</th>
   </tr>
   <tr ng-repeat="allocation in calculationsController.renderedData track by $index">

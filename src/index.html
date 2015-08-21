@@ -50,29 +50,42 @@
     <script src="../bower_components/angular-moment/angular-moment.js"></script>
     <script src="../bower_components/angular-gantt/assets/angular-gantt.js"></script>
     <script src="../bower_components/angular-gantt/assets/angular-gantt-plugins.js"></script>
+    <script src="../bower_components/jquery-ui/jquery-ui.js"></script>
+    <script src="../bower_components/angular-dragdrop/src/angular-dragdrop.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
     <!-- build:js({.tmp,src}) scripts/app.js -->
     <!-- inject:js -->
+    <script src="app/configurations/allocations/allocations.module.js"></script>
+    <script src="app/configurations/allocations/assumptions/assumptions-edit/assumptions.edit.controller.js"></script>
     <script src="app/planning/planning.module.js"></script>
     <script src="app/planning/facilities/dialogs/copy-round/copy-round.service.js"></script>
     <script src="app/planning/facilities/dialogs/copy-round/copy-round-dialog.controller.js"></script>
     <script src="app/planning/facilities/dialogs/add/add-facility.service.js"></script>
     <script src="app/planning/facilities/dialogs/add/add-facility-dialog.controller.js"></script>
-    <script src="app/configurations/allocations/allocations.module.js"></script>
-    <script src="app/configurations/allocations/assumptions/assumptions-edit/assumptions.edit.controller.js"></script>
-    <script src="app/reports/reports.module.js"></script>
-    <script src="app/reports/invoice/round/round.states.js"></script>
-    <script src="app/reports/invoice/round/round.controller.js"></script>
-    <script src="app/reports/invoice/round/round.constants.js"></script>
-    <script src="app/planning/delivery-round/dialog/round-dialog.controller.js"></script>
     <script src="app/configurations/allocations/calculations/calculations.states.js"></script>
     <script src="app/configurations/allocations/calculations/calculations.service.js"></script>
     <script src="app/configurations/allocations/calculations/calculations.controller.js"></script>
     <script src="app/configurations/allocations/assumptions/assumptions.states.js"></script>
     <script src="app/configurations/allocations/assumptions/assumptions.service.js"></script>
     <script src="app/configurations/allocations/assumptions/assumptions.controller.js"></script>
+    <script src="app/reports/reports.module.js"></script>
+    <script src="app/reports/invoice/round/round.states.js"></script>
+    <script src="app/reports/invoice/round/round.controller.js"></script>
+    <script src="app/reports/invoice/round/round.constants.js"></script>
+    <script src="app/planning/delivery-round/dialog/round-dialog.controller.js"></script>
+    <script src="components/log/log.module.js"></script>
+    <script src="components/log/messages/warning.constants.js"></script>
+    <script src="components/log/messages/success.constants.js"></script>
+    <script src="components/log/messages/info.constants.js"></script>
+    <script src="components/log/messages/error.constants.js"></script>
+    <script src="components/products/products.module.js"></script>
+    <script src="app/configurations/products/products.states.js"></script>
+    <script src="app/configurations/products/products.controller.js"></script>
+    <script src="app/configurations/configurations.module.js"></script>
+    <script src="app/configurations/menu/configurations.menu.states.js"></script>
+    <script src="app/configurations/allocations/allocations.states.js"></script>
     <script src="app/users/users.module.js"></script>
     <script src="app/users/update/update.states.js"></script>
     <script src="app/users/form/form.controller.js"></script>
@@ -129,6 +142,7 @@
     <script src="components/products/products.service.js"></script>
     <script src="components/utility/utility.module.js"></script>
     <script src="components/utility/utility.service.js"></script>
+    <script src="components/products/products.service.js"></script>
     <script src="components/navbar/navbar.module.js"></script>
     <script src="components/navbar/navbar.service.js"></script>
     <script src="components/navbar/navbar.controller.js"></script>
@@ -142,6 +156,7 @@
     <script src="components/footer/footer.controller.js"></script>
     <script src="components/drivers/drivers.module.js"></script>
     <script src="components/drivers/drivers.service.js"></script>
+    <script src="components/dragndrop/drag.js"></script>
     <script src="components/delivery/delivery.module.js"></script>
     <script src="components/delivery/delivery.constant.js"></script>
     <script src="components/delivery/delivery-status.filter.js"></script>
@@ -153,6 +168,25 @@
     <script src="components/auth/auth.module.js"></script>
     <script src="components/auth/auth.service.js"></script>
     <script src="components/auth/auth.config.js"></script>
+    <script src="app/configurations/configurations.states.js"></script>
+    <script src="app/users/users.states.js"></script>
+    <script src="app/users/users.service.js"></script>
+    <script src="app/users/users.controller.js"></script>
+    <script src="app/users/user-email.directive.js"></script>
+    <script src="app/reports/reports.states.js"></script>
+    <script src="app/reports/reports.service.js"></script>
+    <script src="app/planning/planning.states.js"></script>
+    <script src="app/planning/planning.service.js"></script>
+    <script src="app/login/login.module.js"></script>
+    <script src="app/login/login.states.js"></script>
+    <script src="app/login/login.controller.js"></script>
+    <script src="app/home/home.module.js"></script>
+    <script src="app/home/home.states.js"></script>
+    <script src="app/index.module.js"></script>
+    <script src="app/home/home.controller.js"></script>
+    <script src="app/finance/finance.states.js"></script>
+    <script src="app/finance/finance.service.js"></script>
+    <script src="app/configurations/configurations.states.js"></script>
     <script src="app/index.states.js"></script>
     <script src="app/index.controller.js"></script>
     <script src="app/config.js"></script>

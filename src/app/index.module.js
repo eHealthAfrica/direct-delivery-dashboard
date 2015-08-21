@@ -21,7 +21,8 @@ angular
 			'configurations',
 			'allocations',
 			'products',
-			'utility'
+			'utility',
+      'eha-drag-n-drop'
 		])
 		.run(function ($rootScope, $state, log, AuthService) {
 			$rootScope.$on('$stateChangeStart', function (event, toState, toParams) {

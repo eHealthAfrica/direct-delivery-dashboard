@@ -1,3 +1,18 @@
+<div class="clearfix">
+  <span class="dropdown" dropdown on-toggle="toggled(open)">
+     <a href class="dropdown-toggle btn btn-lg fa-2x" dropdown-toggle>
+        <b>
+          <i class="fa fa-check-circle text-success"></i>
+          {{calculationsController.selectedTemplate.name}}
+        <span class="caret"></span></b>
+     </a>
+     <ul class="dropdown-menu">
+       <li ng-repeat="template in calculationsController.assumptionList track by $index">
+         <a href ng-click="calculationsController.switchTemplate(template)">{{template._id}}</a>
+       </li>
+     </ul>
+  </span>
+</div>
 <hr/>
    <form class="form-inline" role="form">
       <div class="form-group">
