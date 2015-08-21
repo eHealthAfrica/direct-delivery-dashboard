@@ -1,9 +1,27 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">Round Reports</h3>
+    <h3 class="panel-title">Delivery Status Report | By Drivers, Zone</h3>
   </div>
-  <div class="panel-body">
-    Delivery Round Report Here
-  </div>
+
+  <table class="table table-bordered">
+    <tr>
+      <td></td>
+      <td ng-repeat="(header, headerData) in deliveryReportCtrl.header" colspan="{{ deliveryReportCtrl.header[header].length }}">
+        <span ng-bind=":: header"></span>
+      </td>
+    </tr>
+    <tr>
+      <td>Driver</td>
+      <td ng-repeat="status in deliveryReportCtrl.subHeader">
+        <span ng-bind="::deliveryReportCtrl.getSubHeader(status)"></span>
+      </td>
+    </tr>
+    <tr ng-repeat="(key, report) in deliveryReportCtrl.reportStatus">
+      <td><span ng-bind="::key"></span></td>
+      <td ng-repeat="statusValue in deliveryReportCtrl.getStatus(report) track by $index">
+        <span ng-bind="statusValue"></span>
+      </td>
+    </tr>
+  </table>
 
 </div>
