@@ -76,6 +76,10 @@ angular.module('log')
       title: 'Saving failed',
       message: 'An unknown error occurred while saving assumption',
       remedy: 'Please, try again and contact support if it persists'
-    }
-
+    },
+      cumulativeReportErr: {
+        title: 'Report error',
+        message: 'An error occurred while generating report',
+        remedy: 'Please, try again and contact support if it persists'
+      }
   });

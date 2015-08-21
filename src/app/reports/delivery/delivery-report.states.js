@@ -6,15 +6,7 @@ angular.module('reports')
 				parent: 'reports.layout',
 				url: '/delivery',
 				templateUrl: 'app/reports/delivery/delivery-report.html',
-        controller: 'DeliveryReportCtrl',
-        controllerAs: 'deliveryReportCtrl',
-        resolve: {
-          dailyDeliveries: function (reportsService){
-            return reportsService.getDailyDeliveries();
-          },
-          deliveryStatusReport: function (deliveryReportService) {
-            return deliveryReportService.reportStatus();
-          }
-        }
+				controller: 'DeliveryReportCtrl',
+				controllerAs: 'devRepCtrl'
 			});
 		});
