@@ -3,7 +3,7 @@
  */
 
 angular.module('allocations')
-  .controller('CalculationsController', function (products, locations, locationService, calculationService, pouchUtil, log) {
+  .controller('CalculationsController', function (products, locations, locationService, calculationService, pouchUtil, assumptionList, log) {
     var vm = this;
     var viewMap = {
       targetpopulation: "getTargetPop",
@@ -26,6 +26,17 @@ angular.module('allocations')
     vm.selectedLga = '';
     vm.lgas = [];
     vm.wards = [];
+
+    vm.assumptionList = assumptionList;
+    vm.selectedTemplate = assumptionList[0];
+    calculationService.setTemplate(vm.selectedTemplate);
+
+    vm.switchTemplate = function(template){
+      vm.selectedTemplate = template;
+
+      calculationService.setTemplate(vm.selectedTemplate);
+      vm.switchLocationLga();
+    };
 
     findLga = function (state) {
       var keys = [];
@@ -88,8 +99,10 @@ angular.module('allocations')
     };
     //TODO: accomodate more than one lga at a time; input to single lga or array of lgas
     vm.switchLocationLga = function (lgas) {
-     vm.selectedLga = lgas;
-     return getFacilities(lgas)
+     if(lgas){
+      vm.selectedLga = lgas;
+     }
+     return getFacilities(vm.selectedLga)
       .then(resetView)
       .catch(function (err) {
         log.error('', '', 'switching LGA failed please reload page and try again')
