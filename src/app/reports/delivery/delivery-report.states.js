@@ -5,6 +5,8 @@ angular.module('reports')
 			$stateProvider.state('reports.layout.delivery', {
 				parent: 'reports.layout',
 				url: '/delivery',
-				templateUrl: 'app/reports/delivery/delivery-report.html'
+				templateUrl: 'app/reports/delivery/delivery-report.html',
+				controller: 'DeliveryReportCtrl',
+				controllerAs: 'devRepCtrl'
 			});
 		});

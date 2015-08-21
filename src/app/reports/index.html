@@ -3,7 +3,9 @@
   <span>Reports</span>
 </h1>
 
-<div ui-view="menu" class="col-md-2 col-sm-4"></div>
-<div class="col-md-9 col-sm-9" ui-view="reports.content">
-  <ui-view></ui-view>
+<div class="row">
+  <div ui-view="menu" class="col-md-2"></div>
+  <div class="col-md-10" ui-view="reports.content">
+    <ui-view></ui-view>
+  </div>
 </div>
