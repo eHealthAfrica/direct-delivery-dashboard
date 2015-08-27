@@ -2,6 +2,8 @@
 
 angular
 		.module('directDeliveryDashboard', [
+			'ngSanitize',
+			'ngCsv',
 			'nvd3ChartDirectives',
 			'gantt',
 			'gantt.tooltips',
