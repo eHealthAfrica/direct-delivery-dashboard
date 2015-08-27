@@ -5,9 +5,7 @@ angular.module('planning')
 
 			var vm = this;
 			vm.deliveryRound = deliveryRound;
-
 			vm.dailyDeliveries = scheduleService.flatten(dailyDeliveries);
-			vm.drivers = [];
 
 			vm.completePlanning = function () {
 				planningService.completePlanning(vm.deliveryRound)
