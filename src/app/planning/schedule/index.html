@@ -23,7 +23,10 @@
             <span>Upload Schedule Info</span>
           </button>
 
-          <button class="btn btn-default btn-lg">
+          <button class="btn btn-default btn-lg"
+                  ng-csv="srCtrl.exportForRouting"
+                  csv-header="srCtrl.exportHeader"
+                  filename="delivery-round-{{ srCtrl.deliveryRound._id }}.csv">
             <i class="fa fa-cloud-download"></i>
             <span>Export for Routing</span>
           </button>
@@ -38,12 +41,13 @@
     </div>
   </div>
 
-  <div class="panel-body">
-    <div class="panel-body alert alert-info" ng-show="srCtrl.dailyDeliveries.length === 0">
+  <div class="panel-body" ng-show="srCtrl.dailyDeliveries.length === 0">
+    <div class="panel-body alert alert-info">
       <i class="fa fa-lg fa-info-circle"></i>
       <span> No daily deliveries found, please import facilities to create new delivery schedules.</span>
     </div>
-
+  </div>
+  <div>
     <table ng-show="srCtrl.dailyDeliveries.length > 0"
            class="table table-condensed table-striped table-bordered">
       <thead>
