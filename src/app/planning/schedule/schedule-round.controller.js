@@ -1,21 +1,27 @@
 'use strict';
 
 angular.module('planning')
-		.controller('ScheduleRoundCtrl', function (deliveryRound, $state, dailyDeliveries, scheduleService, planningService, log) {
+		.controller('ScheduleRoundCtrl', function ($scope, deliveryRound, $state, dailyDeliveries, scheduleService, planningService, log) {
 
 			var vm = this;
 			vm.deliveryRound = deliveryRound;
-			vm.dailyDeliveries = scheduleService.flatten(dailyDeliveries);
-      vm.drivers = [];
 
-			vm.completePlanning = function() {
+			vm.dailyDeliveries = scheduleService.flatten(dailyDeliveries);
+			vm.drivers = [];
+
+			vm.completePlanning = function () {
 				planningService.completePlanning(vm.deliveryRound)
-						.then(function(){
+						.then(function () {
 							log.success('completePlanningSuccess');
 							$state.go('planning.deliveryRound');
 						})
 						.catch(planningService.onSaveError);
-			}
+			};
 
+
+			var exportData = scheduleService.prepareExport(vm.deliveryRound._id, vm.dailyDeliveries);
+
+			vm.exportForRouting = exportData.rows;
+			vm.exportHeader = exportData.headers;
 
 		});
