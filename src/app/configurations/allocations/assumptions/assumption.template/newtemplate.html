@@ -1,38 +1,68 @@
 <div class="panel panel-info">
-  <div class="panel-heading">editing assumptions for {{assumptionsEditController.data.product.code}}</div>
+   <div class="panel-heading clearfix">
+    editing assumptions for {{assumptionsEditController.data.product.code}}
+    <span class="pull-right">
+      <button class="btn-danger btn btn-lg">
+        <i class="fa fa-warning"></i> delete template
+      </button>
+    </span>
+  </div>
   <div class="panel-body">
     <div class="row">
       <div class="col-md-8">
         <form>
           <div class="form-group">
             <label>template name</label>
-            <input type="text" class="form-control">
+            <input type="text" class="form-control" ng-model="tempAddCtrl.template.name">
           </div>
            <div class="form-group">
             <label>description</label>
-            <input type="text" class="form-control">
+            <input type="text" class="form-control" ng-model="tempAddCtrl.template.description">
           </div>
            <div class="form-group">
             <label>State of primary use</label>
-            <select>
-              <option></option>
+            <select data-ng-model="tempAddCtrl.template.primary.state">
+              <option>{{tempAddCtrl.template.primary.state}}</option>
             </select>
           </div>
           <div class="form-group">
             <label>Year of primary use</label>
-           <input type="year">
+           <input type="year" ng-model="tempAddCtrl.template.primary.year">
           </div>
         </form>
+        <label>Products</label>
+        <div
+            class="dropzone thumbnail"
+            ondrop="return tempAddCtrl.dragDrop(event)">
+          <div
+              class="btn btn-success"
+              ng-repeat="(product, value) in tempAddCtrl.template.products track by $index">
+            {{product}}
+          </div>
+        </div>
       </div>
-      <div class="col-md-4">
-        <h4 class="page-heading">Product List</h4>
-        <p ng-repeat="product in tempAddCtrl.template.products track by $index">
-          <a   class="btn btn-info">{{product.code}} <i class="fa fa-remove"></i></a>
-        </p>
+      <div class="col-md-4" >
+        <h4 class="page-heading" draggable="true">Product List</h4>
+        <ul ng-hide="tempAddCtrl.productList.length == 0" class="nav nav-list small draglist" >
+            <li ng-repeat="product in tempAddCtrl.productList track by $index">
+              <a
+                class="btn btn-info"
+                ng-click="tempAddCtrl.updateTemplateProducts(product)"
+                ng-bind="product.code"
+                ng-disabled="tempAddCtrl.template.products[product.code]">
+
+              </a>
+            </li>
+        </ul>
       </div>
+
+
     </div>
   </div>
   <div class="panel-footer clearfix">
-    <button class="btn btn-success pull-right">Submit</button>
+    <span class="pull-right">
+      <button class="btn btn-default " ng-click="tempAddCtrl.cancel()">Cancel</button>
+      <button class="btn btn-success " ng-click="tempAddCtrl.close()">Submit</button>
+    </span>
   </div>
 </div>

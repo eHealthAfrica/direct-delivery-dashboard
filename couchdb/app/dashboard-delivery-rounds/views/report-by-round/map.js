@@ -3,6 +3,7 @@ function(doc) {
 	var successTag = 'success';
 	var cceTag = 'cce';
 	var failedTag = 'failed';
+	var cancelTag = 'cancel';
 
 	var DELIVERY_STATUSES = {
 		UPCOMING_FIRST: 'Upcoming: 1st Attempt',
@@ -51,8 +52,11 @@ function(doc) {
 		return (status.toLowerCase().indexOf(successTag) !== -1 || status.toLowerCase().indexOf(failedTag) !== -1);
 	}
 
-	function hasWorkingCCE(status) {
-		return (status.toLowerCase().indexOf(cceTag) === -1);
+	function hasFaultyCCE(status) {
+		status = status.toLowerCase().trim();
+		var isCancelled = status.indexOf(cancelTag) !== -1;
+		var isFailed = status.indexOf(failedTag) !== -1;
+		return ((isCancelled || isFailed) && status.indexOf(cceTag) !== -1);
 	}
 
 	function isDelivered(status) {
@@ -71,7 +75,7 @@ function(doc) {
 		};
 		facRndReport.onTime = isOnTime(targetDate, deliveryDate, status) ? 1 : 0;
 		facRndReport.billable = isBillable(status) ? 1 : 0;
-		facRndReport.workingCCE = hasWorkingCCE(status) ? 1 : 0;
+		facRndReport.workingCCE = hasFaultyCCE(status) ? 0 : 1;
 		facRndReport.delivered = isDelivered(status) ? 1 : 0;
 		return facRndReport;
 	}

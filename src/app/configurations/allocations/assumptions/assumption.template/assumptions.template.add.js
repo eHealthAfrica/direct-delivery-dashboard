@@ -3,33 +3,37 @@
  */
 
 angular.module('allocations')
-  .controller('AssumptionsTemplateAddCtrl', function(data, products){
+  .controller('AssumptionsTemplateAddCtrl', function($scope, data, products,  $modalInstance){
 
     var vm = this;
     vm.template = {
-      _id: '',
+      name: '',
       description: '',
       primary: {
         state: '',
         year: ''
       },
-      products: products
+      products: {},
+      doc_type: 'allocation_template'
     };
-    if(data){
-      vm.template._id = data._id || '';
-      vm.template.description = data.description || '';
-      vm.template.primary.year = data.primary.year || '';
-      vm.template.primary.state = data.primary.state || '';
 
-      if(angular.isArray(data.products)){
-       vm.template.products = data.products;
-      }
-      if(data.products.length ===0){
-       vm.template.products = products;
-      }
+    vm.productList = products;
+    vm.dragging = false;
+
+
+
+    if(data){
+      vm.template = data;
+
     }
 
-
-
-
+    vm.updateTemplateProducts = function(product){
+      vm.template.products[product.code] = product;
+    };
+    vm.close = function(){
+      $modalInstance.close(vm.template);
+    };
+    vm.cancel = function(){
+      $modalInstance.dismiss();
+    }
   });

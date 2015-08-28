@@ -55,9 +55,13 @@
       <td ng-bind="template.primary.state"></td>
       <td ng-bind="template.primary.year"></td>
       <td>
+        <a class="btn btn-info" ui-sref="allocationView({id: template._id})">
+          <i class="fa fa-eye"></i>
+          <em>view</em>
+        </a>
         <a class="btn btn-primary" ng-click="assumptionsCtrl.addAssumption(template)">
           <i class="fa fa-wrench"></i>
-          <em>view / edit</em>
+          <em>edit</em>
         </a>
       </td>
     </tr>

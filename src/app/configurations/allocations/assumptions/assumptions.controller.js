@@ -4,8 +4,7 @@
 angular.module('allocations')
   .controller('AssumptionsCtrl', function(assumptionList, $modal, log, assumptionService){
     var vm = this;
-    vm.assumptionList = assumptionList[0];
-
+    vm.assumptionList = assumptionList;
     vm.addAssumption = function(data){
       var modalInstance = $modal.open({
         animation: true,
@@ -21,9 +20,9 @@ angular.module('allocations')
           }
         }
       });
-      modalInstance.result.then(function (data) {
+      modalInstance.result.then(function (formData) {
 
-        assumptionService.save(data)
+        assumptionService.save(formData)
           .then(function(data){
             return log.success('assumptionEdited', data);
           })

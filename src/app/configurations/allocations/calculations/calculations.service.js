@@ -3,53 +3,21 @@
  */
 
 angular.module('allocations')
-  .service('calculationService', function (locationService, dbService, pouchUtil, assumptionService) {
+  .service('calculationService', function ($q, locationService, dbService, pouchUtil, assumptionService) {
 
     var service = this;
 
-    function prepareTemplate (facilities){
-      var temp = {
-        coverage : {},
-        schedule : {},
-        wastage  : {},
-        buffer   : {}
-      };
-      return assumptionService.getAll()
-        .then(function(response){
-          for(var i in response){
-            temp.coverage[response[i].product.code] = response[i].coverage;
-            temp.schedule[response[i].product.code] = response[i].schedule;
-            temp.wastage[response[i].product.code] = response[i].wastage;
-            temp.buffer[response[i].product.code] = response[i].buffer;
-          }
-          return temp;
-        })
-        .then(function(data){
-          var hay = {};
-          var res = [];
-          for(var i in facilities){
-            hay.facility = facilities[i].name;
-            for(var c in data){
-              hay[c] = data[c];
-            }
-            res.push(angular.copy(hay));
-          }
-          return res;
-        });
-    }
+    service.template = {};
 
-    //TODO: change all static level reference to dynamic types
-    service.getCurrentTemplate = function () {
-
+    service.setTemplate = function(template){
+      service.template = template;
     };
+
     service.getLocation = function () {
       return locationService.get
     };
     service.getfacility = function () {
       return locationService.getLocationByLevel("6");
-    };
-    service.saveCustomAllocation = function () {
-
     };
 
     /**
@@ -77,23 +45,9 @@ angular.module('allocations')
         .then(pouchUtil.pluckDocs);
     };
 
-    service.computeCoverage = function(facilities){
-      return prepareTemplate(facilities);
-    };
-    service.computeSchedule = function(facilities){
-      return prepareTemplate(facilities);
-    };
-    service.computeWastage = function(facilities){
-      return prepareTemplate(facilities);
-    };
-    service.computeBuffer = function(facilities){
-      return prepareTemplate(facilities);
-    };
-    service.getTemplate = function (templateID) {
-      return assumptionService.get(templateID);
-    };
-    service.getAllocations = function (facilities) {
 
+    service.getAllocations = function (facilities) {
+      var deferred = $q.defer();
       function fillwithTemplate(facility, template) {
         for (var i in template.products) { //Todo: adjust this to suit the new template structure
           facility['coverage'][i] = parseInt(template.products[i].coverage);
@@ -104,19 +58,21 @@ angular.module('allocations')
         return facility;
       }
 
-      function setAllocations(templateObj) {
+      function setAllocations(template) {
+
         facilities.forEach(function (facility) {
           facility.coverage = {};
           facility.wastage = {};
           facility.schedule = {};
           facility.buffer = {};
-          fillwithTemplate(facility, templateObj);
+          fillwithTemplate(facility, template);
         });
+
         return facilities;
       }
-
-      return service.getTemplate()
-        .then(setAllocations)
+      deferred.resolve(setAllocations(service.template));
+      deferred.reject('Could not set allocations, please try again');
+      return deferred.promise;
     };
     /***
      *  calculates monthly requirements using allocation
