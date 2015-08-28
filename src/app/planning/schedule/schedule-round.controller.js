@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('planning')
-		.controller('ScheduleRoundCtrl', function ($scope, deliveryRound, $state, dailyDeliveries, scheduleService, planningService, log) {
+		.controller('ScheduleRoundCtrl', function (deliveryRound, $state, dailyDeliveries, scheduleService, planningService, log) {
 
 			var vm = this;
 			vm.deliveryRound = deliveryRound;
@@ -15,7 +15,6 @@ angular.module('planning')
 						})
 						.catch(planningService.onSaveError);
 			};
-
 
 			var exportData = scheduleService.prepareExport(vm.deliveryRound._id, vm.dailyDeliveries);
 
