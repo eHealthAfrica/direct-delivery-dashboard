@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('planning')
-		.controller('ScheduleRoundCtrl', function (deliveryRound, $state, dailyDeliveries, scheduleService, planningService, log) {
+		.controller('ScheduleRoundCtrl', function (deliveryRound, $state, dailyDeliveries, scheduleService, planningService, log, $modal) {
 
 			var vm = this;
 			vm.deliveryRound = deliveryRound;
@@ -20,5 +20,17 @@ angular.module('planning')
 
 			vm.exportForRouting = exportData.rows;
 			vm.exportHeader = exportData.headers;
+
+			vm.openImportDialog = function () {
+				$modal.open({
+					animation: true,
+					templateUrl: 'app/planning/schedule/import/schedule-import-dialog.html',
+					controller: 'ScheduleDataImportDialogCtrl',
+					controllerAs: 'sdidCtrl',
+					size: 'lg',
+					keyboard: false,
+					backdrop: 'static'
+				});
+			};
 
 		});

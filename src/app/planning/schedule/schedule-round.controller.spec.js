@@ -12,15 +12,17 @@ describe('ScheduleRoundController', function () {
 	var log;
 	var ScheduleRoundCtrl;
 	var deliveryRound;
+	var $modal;
 
 
-	beforeEach(inject(function (_$controller_, _$state_, _scheduleService_, _planningService_, _log_, _deliveryRoundMock_, _dailyDeliveriesMock_) {
+	beforeEach(inject(function (_$controller_, _$state_, _scheduleService_, _planningService_, _log_, _deliveryRoundMock_, _dailyDeliveriesMock_, _$modal_) {
 		$controller = _$controller_;
 		$state = _$state_;
 		scheduleService = _scheduleService_;
 		planningService = _planningService_;
 		log = _log_;
 		deliveryRound = _deliveryRoundMock_;
+		$modal = _$modal_;
 		dailyDeliveries = _dailyDeliveriesMock_;
 
 		ScheduleRoundCtrl = $controller('ScheduleRoundCtrl', {
@@ -29,10 +31,12 @@ describe('ScheduleRoundController', function () {
 			dailyDeliveries: dailyDeliveries,
 			scheduleService: scheduleService,
 			planningService: planningService,
-			log: log
+			log: log,
+			$modal: $modal
 		});
 
 		spyOn(planningService, 'completePlanning').and.callThrough();
+		spyOn($modal, 'open').and.callThrough();
 
 	}));
 
@@ -91,6 +95,29 @@ describe('ScheduleRoundController', function () {
 			expect(planningService.completePlanning).not.toHaveBeenCalled();
 			ScheduleRoundCtrl.completePlanning(deliveryRound);
 			expect(planningService.completePlanning).toHaveBeenCalledWith(deliveryRound);
+		});
+	});
+
+	describe('ScheduleRoundCtrl.openImportDialog', function() {
+		it('Should call $modal.open()', function() {
+			expect($modal.open).not.toHaveBeenCalled();
+			ScheduleRoundCtrl.openImportDialog();
+			expect($modal.open).toHaveBeenCalled();
+		});
+
+		it('Should call $modal.open() with expected parameters', function(){
+			var expected = {
+				animation: true,
+				templateUrl: 'app/planning/schedule/import/schedule-import-dialog.html',
+				controller: 'ScheduleDataImportDialogCtrl',
+				controllerAs: 'sdidCtrl',
+				size: 'lg',
+				keyboard: false,
+				backdrop: 'static'
+			};
+			expect($modal.open).not.toHaveBeenCalled();
+			ScheduleRoundCtrl.openImportDialog();
+			expect($modal.open).toHaveBeenCalledWith(expected);
 		});
 	});
 
