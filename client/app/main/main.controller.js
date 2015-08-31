@@ -341,8 +341,7 @@ angular.module('lmisApp')
 
     $scope.roundYAxis = function () {
       return function (d) {
-
-        return d+'%';
+        return Math.round(d)+'%';
       };
     };
 
