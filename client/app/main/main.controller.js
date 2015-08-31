@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('lmisApp')
-		.controller('MainCtrl', function ($scope, Auth, SETTINGS, Report, utility) {
+		.controller('MainCtrl', function ($scope, Auth, SETTINGS, Report, utility, $rootScope) {
 			$scope.currentUser = Auth.getCurrentUser();
 			$scope.mediumDateFormat = SETTINGS.mediumDate;
 			$scope.isLoadingGraphData = true;
@@ -33,6 +33,10 @@ angular.module('lmisApp')
 
 			$scope.updateGraph = function(){
 				$scope.isLoadingGraphData = true;
+        $rootScope.$broadcast('updateView', {
+          from: $scope.from.date,
+          to: $scope.to.date
+        });
 				Report.getWithin(utility.getFullDate($scope.from.date), utility.getFullDate($scope.to.date))
 						.then(function (res) {
 							$scope.weeklySituationReport = res;
@@ -122,7 +126,8 @@ angular.module('lmisApp')
           console.log(err);
         });
 		})
-  .controller('CCEBreakdownReportCtrl', function ($scope, $q, ccuBreakdown, AppConfig) {
+  .controller('CCEBreakdownReportCtrl', function ($scope, $q, ccuBreakdown, AppConfig, utility, $rootScope) {
+    var serverResponse = {};
     $scope.isLoadingCCEChart = true;
 
     function sortStatus(a, b) {
@@ -146,8 +151,12 @@ angular.module('lmisApp')
     }
 
     function setChartData(response) {
-      var byFacilities = groupCCEBreakdown(response.ccuBreakdown);
-      var appConfig = response.appConfig;
+
+      if (response) {
+        serverResponse = response;
+      }
+      var byFacilities = groupCCEBreakdown(serverResponse.ccuBreakdown);
+      var appConfig = serverResponse.appConfig;
       var chartData = {
         broken: 0,
         fixed: 0
@@ -157,10 +166,13 @@ angular.module('lmisApp')
         var key = appConfig[i].facility._id;
         if (byFacilities.hasOwnProperty(key)) {
           byFacilities[key].sort(sortStatus);
+          var dateFrom = utility.getFullDate($scope.from.date);
+          var dateTo = utility.getFullDate($scope.to.date);
+          var created = byFacilities[key][0] ? utility.getFullDate(byFacilities[key][0].created) : utility.getFullDate(new Date());
           var status = byFacilities[key][0] ? byFacilities[key][0].status : 1;
-          if (status === 0) {
+          if (status === 0 && (created >= dateFrom && created <= dateTo)) {
             chartData.broken ++;
-          } else {
+          } else if (created <= dateTo){
             chartData.fixed ++;
           }
         } else {
@@ -199,11 +211,22 @@ angular.module('lmisApp')
       return function(key, x) {
         return key + ': ' + parseInt(x, 10);
       }
-    }
+    };
+
+    $rootScope.$on('updateView', function (event, data) {
+      console.log(data);
+      $scope.to.date = data.to;
+      $scope.from.date = data.from;
+      setChartData();
+
+    });
+
 
   })
-  .controller('MainStockOutReportCtrl', function ($scope, $q, ProductType, stockOut, $window) {
+  .controller('MainStockOutReportCtrl', function ($scope, $q, ProductType, stockOut, $window, utility, $rootScope) {
+    var serverResponse = {};
     $scope.isLoadingStockOutData = true;
+
     function productTypeToObject(list) {
       var productTypes = {};
       for (var i = 0; i < list.length; i++) {
@@ -213,12 +236,16 @@ angular.module('lmisApp')
       return productTypes;
     }
 
-    function toChart(object) {
-      function formatObjectToChatValues(object) {
+    function toChart(object, groupedByProducts) {
+      function formatObjectToChatValues(object, groupedByProducts) {
         var chartValues = [];
         for (var key in object) {
           if (object.hasOwnProperty(key)) {
-            chartValues.push([key, object[key]]);
+            var value = 0;
+            if (groupedByProducts.hasOwnProperty(key)) {
+              value = (object[key]/groupedByProducts[key])*100;
+            }
+            chartValues.push([key, value]);
           }
         }
         return chartValues;
@@ -229,7 +256,7 @@ angular.module('lmisApp')
         if (object.hasOwnProperty(key)) {
           chartData.push( {
             key: key,
-            values: formatObjectToChatValues(object[key])
+            values: formatObjectToChatValues(object[key], groupedByProducts)
           });
         }
 
@@ -238,21 +265,21 @@ angular.module('lmisApp')
       return chartData
     }
 
+    function groupByProduct(group, row) {
+      if (!group.hasOwnProperty(row.productType)) {
+        group[row.productType] = 0;
+      }
+
+      group[row.productType] ++;
+
+      return group;
+    }
+
     function groupStockOut(rows, productTypes) {
       function setType(groups, row, type) {
-        //TODO: remove hard coded zone object when facilities clean up is complete
-        var altZones = {
-          '9875dca640bb11e4b3c53ca9f44c7824': 'Bichi',
-          'b3e25c1240bb11e4b3c53ca9f44c7824': 'Dawakin Tofa',
-          'cc3015ac40bb11e4b3c53ca9f44c7824': 'Gwale',
-          'e1837db840bb11e4b3c53ca9f44c7824': 'Nassarawa',
-          '07f03e8c40bc11e4b3c53ca9f44c7824': 'Wudil'
-        };
+
         var altName = type === 'facility' ? 'name' : type;
         var typeName = row.facility[altName];
-        if (type === 'zone') {
-          typeName = typeName === '' || typeName === undefined ? altZones[row.facility.zoneUUID] : typeName;
-        }
         if (!groups[type][typeName]) {
           var productCount = angular.copy(productTypes);
           productCount[row.productType] ++;
@@ -270,23 +297,34 @@ angular.module('lmisApp')
         facility: {},
         ward: {},
         lga: {},
-        zone: {}
+        zone: {},
+        products: {}
       };
 
       for (var i = 0; i < rows.length; i++) {
-        groups.facility = setType(groups, rows[i], 'facility');
-        groups.ward = setType(groups, rows[i], 'ward');
-        groups.lga = setType(groups, rows[i], 'lga');
-        groups.zone = setType(groups, rows[i], 'zone');
+        var dateFrom = utility.getFullDate($scope.from.date);
+        var dateTo = utility.getFullDate($scope.to.date);
+        var created =  utility.getFullDate(rows[i].created);
+        if (created >= dateFrom && created <= dateTo) {
+          groups.facility = setType(groups, rows[i], 'facility');
+          groups.ward = setType(groups, rows[i], 'ward');
+          groups.lga = setType(groups, rows[i], 'lga');
+          groups.zone = setType(groups, rows[i], 'zone');
+          groups.products = groupByProduct(groups.products, rows[i]);
+        }
+
       }
 
       return groups;
     }
 
     function setChart(response) {
-      var productTypesObject = productTypeToObject(response.productTypes);
-      var groupedStockOut = groupStockOut(response.stockOuts, productTypesObject);
-      $scope.stoutOutChartData = toChart(groupedStockOut.zone);
+      if (response) {
+        serverResponse = response;
+      }
+      var productTypesObject = productTypeToObject(serverResponse.productTypes);
+      var groupedStockOut = groupStockOut(serverResponse.stockOuts, productTypesObject);
+      $scope.stoutOutChartData = toChart(groupedStockOut.zone, groupedStockOut.products);
       $scope.isLoadingStockOutData = false;
     }
 
@@ -301,9 +339,16 @@ angular.module('lmisApp')
         $scope.isLoadingStockOutData = false;
       });
 
-    $scope.roundY = function () {
+    $scope.roundYAxis = function () {
       return function (d) {
-        return $window.d3.round(d);
+        return Math.round(d)+'%';
       };
     };
+
+    $rootScope.$on('updateView', function (event, data) {
+      $scope.to.date = data.to;
+      $scope.from.date = data.from;
+      setChart();
+    });
+
   });

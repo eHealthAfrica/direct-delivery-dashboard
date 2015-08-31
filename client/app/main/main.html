@@ -103,7 +103,8 @@
             showYAxis="true"
             showLabels="true"
             stacked="true"
-            yAxisTickFormat="roundY()"
+            labelType="percent"
+            yAxisTickFormat="roundYAxis()"
             showLegend="true">
             <svg></svg>
           </nvd3-multi-bar-chart>
@@ -122,6 +123,7 @@
           <i class="fa fa-spin fa-spinner fa-3x"></i>
         </div>
         <div ng-hide="isLoadingCCEChart" style="max-height: 450px;">
+
           <nvd3-pie-chart
             data="breakdownChartData"
             id="breakdownPie"
