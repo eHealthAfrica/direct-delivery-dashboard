@@ -61,9 +61,10 @@ describe('ScheduleDataImportDialogCtrl', function () {
 		});
 
 
-
 		ScheduleDataImportDialogCtrl = $controller('ScheduleDataImportDialogCtrl', {
-			$modalInstance: modalInstance
+			$modalInstance: modalInstance,
+			deliveryRound: deliveryRound,
+			dailyDeliveries: dailyDeliveries
 		});
 
 	}));
@@ -75,7 +76,7 @@ describe('ScheduleDataImportDialogCtrl', function () {
 	});
 
 	describe('ScheduleDataImportDialogCtrl.close', function () {
-		it('should call $modalInstance.dismiss()', function() {
+		it('should call $modalInstance.dismiss()', function () {
 			expect(modalInstance.dismiss).not.toHaveBeenCalled();
 			ScheduleDataImportDialogCtrl.close();
 			expect(modalInstance.dismiss).toHaveBeenCalled();
