@@ -29,7 +29,15 @@ angular.module('planning')
 					controllerAs: 'sdidCtrl',
 					size: 'lg',
 					keyboard: false,
-					backdrop: 'static'
+					backdrop: 'static',
+					resolve: {
+						dailyDeliveries: function(){
+							return dailyDeliveries
+						},
+						deliveryRound: function(){
+							return vm.deliveryRound;
+						}
+					}
 				});
 			};
 
