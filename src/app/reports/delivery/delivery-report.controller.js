@@ -14,7 +14,7 @@ angular.module('reports')
 			function openDatePicker($event) {
 				$event.preventDefault();
 				$event.stopPropagation();
-				this.opened = true;
+				this.opened = !this.opened;
 			}
 
 			vm.start = {
@@ -80,4 +80,59 @@ angular.module('reports')
 				return graphData;
 			};
 
-		});
+		})
+  .controller('DeliveryReportByZonesCtrl', function (config, reportsService, log, deliveryReportService) {
+    var vm = this;//viewModel
+
+    function openDatePicker($event) {
+      $event.preventDefault();
+      $event.stopPropagation();
+      this.opened = !this.opened;
+    }
+
+    vm.filteredReport = {
+      start: {
+        opened: false,
+        open: openDatePicker
+      },
+      stop: {
+        opened: false,
+        open: openDatePicker
+      }
+    };
+
+    vm.dateFormat = config.dateFormat;
+    var ONE_MONTH = 2.62974e9;//milli secs
+    vm.stopDateOn = new Date();
+    var TWO_MONTHS_BEFORE = vm.stopDateOn.getTime() - (ONE_MONTH * 2);
+    vm.startDate = new Date(TWO_MONTHS_BEFORE);
+
+    vm.loadReport = function () {
+      deliveryReportService.getDailyDeliveryReport(vm.startDate, vm.stopDateOn)
+        .then(function (deliveryStatusReport) {
+          vm.byZoneByLGA = deliveryStatusReport.byZoneByLGA;
+          vm.byZoneByDriver = deliveryStatusReport.byZoneByDriver;
+          vm.byZoneByDriver2 = deliveryStatusReport.byZoneByDriver2;
+          vm.byZoneByDriver2Keys = Object.keys(deliveryStatusReport.byZoneByDriver2).sort();
+          vm.capturedZones = Object.keys(deliveryStatusReport.byZoneByLGA).sort();
+          vm.selectedZone = vm.capturedZones[0] || '';
+        })
+        .catch(function (reason) {
+          console.log(reason);
+        });
+    };
+
+    vm.splitResult = function(string, type) {
+      var stringArr = string.split('-');
+      return type === 'zone' ? stringArr[1] : stringArr[0];
+    };
+
+    vm.sum = function(row) {
+      var success = row.success || 0;
+      var failed = row.failed || 0;
+      var cancelled = row.canceled || 0;
+      return success + failed + cancelled;
+    };
+
+    vm.loadReport();
+  });
