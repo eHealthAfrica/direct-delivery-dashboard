@@ -1,69 +1,69 @@
 'use strict';
 
 angular.module('reports')
-  .service('deliveryReportService', function(reportsService) {
+  .service('deliveryReportService', function(reportsService, dbService) {
+    var _this = this;
 
-    function groupByDriver(driverObject, row) {
-      if (!driverObject.hasOwnProperty(row.driverID)) {
-        driverObject[row.driverID] = {};
+    function defaultStatus() {
+      return {
+        success: 0,
+        failed: 0,
+        canceled: 0
       }
-
-      var key = [row.facility.zone, row.status].join('-');
-      if (!driverObject[row.driverID].hasOwnProperty(key)) {
-        driverObject[row.driverID][key] = 0;
-      }
-
-      driverObject[row.driverID][key] ++;
-
-      return driverObject;
     }
 
-    function sortByZone(obj, row) {
-      if (!obj.hasOwnProperty(row.facility.zone)) {
-        obj[row.facility.zone] = [];
-      }
 
-      if (obj[row.facility.zone].indexOf(row.status) === -1) {
-        obj[row.facility.zone].push(row.status);
+    function groupByZoneByDriver(grouped, row) {
+      var key = [row.driverID, row.zone].join('-');
+      if (!grouped.hasOwnProperty(key)) {
+        grouped[key] = defaultStatus();
       }
+      grouped[key][row.status]++;
 
-      return obj;
+      return grouped;
     }
 
-    function setSubHeader(arr, row) {
-      var key = [row.facility.zone, row.status].join('-');
-      if (arr.indexOf(key) === -1) {
-        arr.push(key);
+    function groupByZoneByLGA(grouped, row) {
+      if (!grouped.hasOwnProperty(row.zone)) {
+        grouped[row.zone] = {};
       }
-      return arr;
+      if (!grouped[row.zone].hasOwnProperty(row.lga)) {
+        grouped[row.zone][row.lga] = defaultStatus();
+      }
+      grouped[row.zone][row.lga][row.status]++;
+
+      return grouped;
     }
 
-    this.reportStatus = function () {
-      return reportsService.getDailyDeliveries()
-        .then(function (response) {
-          var driverObject = {};
-          var byZone = {};
-          var subHeader = [];
-          for (var i = 0; i < response.length; i++) {
-            byZone = sortByZone(byZone, response[i]);
-            driverObject = groupByDriver(driverObject, response[i]);
-            subHeader = setSubHeader(subHeader, response[i]);
-          }
+    function collateReport(response) {
+      response = response.rows;
+      var index = response.length;
+      var groupedByZoneByDriver = {};
+      var groupedByZoneByLGA = {};
 
-          return {
-            data: driverObject,
-            header: byZone,
-            subHeader: subHeader
-          };
-        });
-    };
-
-    this.getStatus = function (report, subHeader) {
-      var values = [];
-      for (var i = 0; i < subHeader.length; i++) {
-        values.push(report[subHeader[i]] || 0);
+      while (index --) {
+        var row = response[index].value;
+        groupedByZoneByDriver = groupByZoneByDriver(groupedByZoneByDriver, row);
+        groupedByZoneByLGA = groupByZoneByLGA(groupedByZoneByLGA, row);
       }
-      return values;
+
+      return {
+        byZoneByDriver: groupedByZoneByDriver,
+        byZoneByLGA: groupedByZoneByLGA
+      };
+
+    }
+
+    this.getDailyDeliveryReport = function (startDate, endDate) {
+      var view = 'dashboard-delivery-rounds/report-by-date';
+      startDate = new Date(startDate).toJSON();
+      endDate = new Date(endDate).toJSON();
+      var options = {
+        startkey: [startDate],
+        endkey: [endDate, {}, {}]
+      };
+      return dbService.getView(view, options)
+        .then(collateReport);
     };
 
   });
