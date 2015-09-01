@@ -126,75 +126,7 @@ angular.module('lmisApp')
           console.log(err);
         });
 		})
-  .controller('CCEBreakdownReportCtrl', function ($scope, $q, ccuBreakdown, AppConfig, utility, $rootScope) {
-    var serverResponse = {};
-    $scope.isLoadingCCEChart = true;
-
-    function sortStatus(a, b) {
-      return new Date(b.created).getTime() - new Date(a.created).getTime();
-    }
-
-    function groupCCEBreakdown(rows) {
-      var facilities = {};
-
-      for (var i = 0; i < rows.length; i++) {
-        if (rows[i].facility) {
-          if (!facilities[rows[i].facility._id]) {
-            facilities[rows[i].facility._id] = rows[i].ccuStatus;
-          } else {
-            facilities[rows[i].facility._id].concat(rows[i].ccuStatus);
-          }
-        }
-      }
-
-      return facilities;
-    }
-
-    function setChartData(response) {
-
-      if (response) {
-        serverResponse = response;
-      }
-      var byFacilities = groupCCEBreakdown(serverResponse.ccuBreakdown);
-      var appConfig = serverResponse.appConfig;
-      var chartData = {
-        broken: 0,
-        fixed: 0
-      };
-
-      for (var i = 0; i < appConfig.length; i++) {
-        var key = appConfig[i].facility._id;
-        if (byFacilities.hasOwnProperty(key)) {
-          byFacilities[key].sort(sortStatus);
-          var dateFrom = utility.getFullDate($scope.from.date);
-          var dateTo = utility.getFullDate($scope.to.date);
-          var created = byFacilities[key][0] ? utility.getFullDate(byFacilities[key][0].created) : utility.getFullDate(new Date());
-          var status = byFacilities[key][0] ? byFacilities[key][0].status : 1;
-          if (status === 0 && (created >= dateFrom && created <= dateTo)) {
-            chartData.broken ++;
-          } else if (created <= dateTo){
-            chartData.fixed ++;
-          }
-        } else {
-          chartData.fixed ++;
-        }
-      }
-
-      $scope.breakdownChartData = [
-        {key: 'Broken', y: chartData.broken},
-        {key: 'Working', y: chartData.fixed}
-      ];
-
-      $scope.isLoadingCCEChart = false;
-    }
-
-    $q.all({ccuBreakdown: ccuBreakdown.byDate(), appConfig: AppConfig.all()})
-      .then(setChartData)
-      .catch(function (reason) {
-        $scope.isLoadingCCEChart = false;
-        console.log(reason);
-      });
-
+  .controller('CCEBreakdownReportCtrl', function ($scope, utility, $rootScope, Report) {
     $scope.xFunction = function() {
       return function(d) {
         return d.key;
@@ -213,12 +145,28 @@ angular.module('lmisApp')
       }
     };
 
+    function setChartData(response) {
+      $scope.breakdownChartData = [
+        {key: 'Broken', y: response.broken},
+        {key: 'Working', y: response.fixed}
+      ];
+      $scope.isLoadingCCEChart = false;
+    }
+
+    function getCCEReportWithin() {
+      $scope.isLoadingCCEChart = true;
+      Report.getCCEReportWithin(utility.getFullDate($scope.from.date), utility.getFullDate($scope.to.date))
+        .then(setChartData)
+        .catch(function (reason) {
+          $scope.isLoadingCCEChart = false;
+          console.log(reason);
+        })
+    }
+    getCCEReportWithin();
     $rootScope.$on('updateView', function (event, data) {
-      console.log(data);
       $scope.to.date = data.to;
       $scope.from.date = data.from;
-      setChartData();
-
+      getCCEReportWithin();
     });
 
 
