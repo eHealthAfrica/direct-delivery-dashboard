@@ -8,5 +8,6 @@ var router = express.Router();
 
 router.get('/by_date', auth.isAuthenticated(), controller.byDate);
 router.get('/all', auth.isAuthenticated(), controller.all);
+router.get('/within', auth.isAuthenticated(), controller.within);
 
 module.exports = router;
