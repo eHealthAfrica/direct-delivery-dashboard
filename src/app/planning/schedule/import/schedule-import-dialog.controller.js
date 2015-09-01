@@ -3,6 +3,7 @@ angular.module('planning')
 
 			var vm = this;
 			vm.headers = scheduleService.getHeaders();
+			vm.roundCode = deliveryRound._id;
 
 			vm.csv = {
 				content: null,
@@ -15,17 +16,21 @@ angular.module('planning')
 				return (vm.csv.result === null) ? 0 : vm.csv.result.length;
 			};
 
-			vm.getResult = function () {
+			vm.getProcessedCSVRows = function () {
 				if (!angular.isArray(vm.csv.result)) {
 					return {};
 				}
 				return scheduleService.parseCSV(vm.csv.result);
 			};
 
+			vm.isValid = function(row){
+				return (vm.roundCode === row[vm.headers.roundCode.text]);
+			};
+
 			vm.applyImport = function () {
-				var scheduleRowsHash = vm.getResult();
-				var result = scheduleService.mergeRows(dailyDeliveries, scheduleRowsHash);
-				console.log(result);
+				var scheduleRowsHash = vm.getProcessedCSVRows();
+				dailyDeliveries = scheduleService.applyChanges(dailyDeliveries, scheduleRowsHash);
+				$modalInstance.close(dailyDeliveries);
 			};
 
 			vm.close = function () {
