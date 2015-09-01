@@ -1,5 +1,5 @@
 <div class="modal-header alert-info">
-  <h3>Import Delivery Scheduling Data</h3>
+  <h3>Import Delivery Scheduling Data for - {{ sdidCtrl.roundCode }}</h3>
 </div>
 
 <!-- Modal body section -->
@@ -18,9 +18,13 @@
       <div class="col-sm-6" align="left">
         <button class="btn btn-primary btn-lg"
                 ng-disabled="sdidCtrl.getSize() <= 0"
-                ng-click="sdidCtrl.process()">
+                ng-click="sdidCtrl.applyImport()">
           <i class="fa fa-cog"></i>
           <span>Apply Changes</span>
+        </button>
+        <button class="btn btn-default btn-lg" ng-click="sdidCtrl.close()">
+          <i class="fa fa-times"></i>
+          <span>Close</span>
         </button>
       </div>
     </div>
@@ -31,34 +35,35 @@
     </div>
     <br/><br/>
 
-
     <!-- processed result  -->
     <div class="row container-fluid">
       <table class="table table-condensed table-striped table-bordered">
         <thead>
         <tr>
           <th>#</th>
-          <th class="col-sm-2">Facility</th>
-          <th class="col-sm-2">Code</th>
-          <th class="col-sm-1">Delivery Date</th>
-          <th class="col-sm-2">Driver</th>
-          <th class="col-sm-1">Drop</th>
-          <th class="col-sm-1">Window</th>
-          <th class="col-sm-1">Distance (KM)</th>
+          <th class="col-sm-2" ng-bind="sdidCtrl.headers.roundCode.text"></th>
+          <th class="col-sm-2" ng-bind="sdidCtrl.headers.facilityName.text"></th>
+          <th class="col-sm-2" ng-bind="sdidCtrl.headers.facilityCode.text"></th>
+          <th class="col-sm-1" ng-bind="sdidCtrl.headers.deliveryDate.text"></th>
+          <th class="col-sm-2" ng-bind="sdidCtrl.headers.driverID.text"></th>
+          <th class="col-sm-1" ng-bind="sdidCtrl.headers.drop.text"></th>
+          <th class="col-sm-1" ng-bind="sdidCtrl.headers.window.text"></th>
+          <th class="col-sm-1" ng-bind="sdidCtrl.headers.distance.text">Distance (KM)</th>
           <th class="col-sm-1">Action</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="row in sdidCtrl.csv.result"
-            ng-class="{'danger': row.incomplete }">
+            ng-class="{'danger': !sdidCtrl.isValid(row) }">
           <td ng-bind="($index + 1)"></td>
-          <td ng-bind="row[sdidCtrl.headers[1]]"></td>
-          <td ng-bind="row[sdidCtrl.headers[2]]"></td>
-          <td ng-bind="row[sdidCtrl.headers[3]]"></td>
-          <td ng-bind="row[sdidCtrl.headers[4]]"></td>
-          <td ng-bind="row[sdidCtrl.headers[5]]"></td>
-          <td ng-bind="row[sdidCtrl.headers[7]]"></td>
-          <td ng-bind="row[sdidCtrl.headers[6]]"></td>
+          <td ng-bind="row[sdidCtrl.headers.roundCode.text]"></td>
+          <td ng-bind="row[sdidCtrl.headers.facilityName.text]"></td>
+          <td ng-bind="row[sdidCtrl.headers.facilityCode.text]"></td>
+          <td ng-bind="row[sdidCtrl.headers.deliveryDate.text]"></td>
+          <td ng-bind="row[sdidCtrl.headers.driverID.text]"></td>
+          <td ng-bind="row[sdidCtrl.headers.drop.text]"></td>
+          <td ng-bind="row[sdidCtrl.headers.window.text]"></td>
+          <td ng-bind="row[sdidCtrl.headers.distance.text]"></td>
           <td>
             <button class="btn btn-primary">Save</button>
           </td>
@@ -72,11 +77,6 @@
 
 <!-- modal footer section-->
 <div class="modal-footer">
-  <button type="submit" class="btn btn-success" ng-click="">
-    <span>Apply import</span>
-    <i class="fa fa-chevron-circle-right"></i>
-  </button>
-
   <button class="btn btn-default" ng-click="sdidCtrl.close()">
     <i class="fa fa-times"></i>
     <span>Close</span>
