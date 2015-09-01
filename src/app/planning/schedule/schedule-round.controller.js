@@ -31,14 +31,17 @@ angular.module('planning')
 					keyboard: false,
 					backdrop: 'static',
 					resolve: {
-						dailyDeliveries: function(){
+						dailyDeliveries: function () {
 							return dailyDeliveries
 						},
-						deliveryRound: function(){
+						deliveryRound: function () {
 							return vm.deliveryRound;
 						}
 					}
-				});
+				}).result
+						.then(function (updatedDailyDeliveries) {
+							vm.dailyDeliveries = scheduleService.flatten(updatedDailyDeliveries);
+						});
 			};
 
 		});
