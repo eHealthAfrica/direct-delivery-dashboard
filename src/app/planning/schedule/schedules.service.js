@@ -4,20 +4,54 @@ angular.module('planning')
 			var _this = this;
 
 			_this.getHeaders = function () {
-				return [
-					'Round Id', 'Facility Name', 'Facility Code', 'Delivery Date', 'Driver', 'Drop',
-					'Distance', 'Window'
-				];
+				return _this.headerIndex;
 			};
 			
 			_this.headerIndex = {
-				roundId: 0,
-				facilityName: 1,
-				facilityCode: 2,
-				deliveryDate: 3,
-				driver: 4,
-				drop: 6,
-				distance: 7
+				uuid: {
+					text: 'UUID',
+					index: 0
+				}
+				,
+				roundCode: {
+					text: 'Round Code',
+					index: 1
+				}
+				,
+				facilityName: {
+					text: 'Facility Name',
+					index: 2
+				}
+				,
+				facilityCode: {
+					text: 'Facility Code',
+					index: 3
+				}
+				,
+				deliveryDate: {
+					text: 'Delivery Date',
+					index: 4
+				}
+				,
+				driverID: {
+					text: 'Driver ID',
+					index: 5
+				}
+				,
+				drop: {
+					text: 'Drop',
+					index: 6
+				}
+				,
+				distance: {
+					text: 'Distance (KM)',
+					index: 7
+				}
+				,
+				window: {
+					text: 'Window',
+					index: 8
+				}
 			};
 
 			_this.saveSchedules = function (schedules) {
@@ -32,6 +66,7 @@ angular.module('planning')
 						dailySchedule.facilityRounds
 								.forEach(function (facRnd) {
 									var schedule = {
+										_id: dailySchedule._id,
 										facility: facRnd.facility,
 										date: dailySchedule.date,
 										driverID: dailySchedule.driverID,
@@ -50,9 +85,20 @@ angular.module('planning')
 				return schedules;
 			};
 
+			function getHeaderTexts() {
+				var headers = [];
+				for (var i in _this.headerIndex) {
+					if (_this.headerIndex.hasOwnProperty(i)) {
+						headers.push(_this.headerIndex[i].text);
+					}
+				}
+				return headers;
+			}
+
 			_this.prepareExport = function (roundId, dailyDeliveries) {
 				var rows = dailyDeliveries.map(function (row) {
 					return {
+						uuid: row._id,
 						roundId: roundId,
 						facilityName: row.facility.name,
 						facilityCode: row.facility.id,
@@ -64,43 +110,78 @@ angular.module('planning')
 					};
 				});
 
+				var headers = getHeaderTexts()
+						.sort(function (a, b) {
+							return a.index - b.index;
+						});
+
 				return {
 					rows: rows,
-					headers: _this.getHeaders()
+					headers: headers
 				};
 			};
 
 			_this.parseCSV = function (csvJSON) {
 				var result = {};
 				var headers = _this.getHeaders();
-				csvJSON.forEach(function(csvRow){
+				csvJSON.forEach(function (csvRow) {
 					var row = {
-						roundId: csvRow[headers[0]],
-						facilityName: csvRow[headers[1]],
-						facilityCode: csvRow[headers[2]],
-						deliveryDate: csvRow[headers[3]],
-						driver: csvRow[headers[4]],
-						drop: csvRow[headers[5]],
-						distance: csvRow[headers[6]],
-						window: csvRow[headers[7]]
+						id: csvRow[headers.uuid.text],
+						roundId: csvRow[headers.roundCode.text],
+						facilityName: csvRow[headers.facilityName.text],
+						facilityCode: csvRow[headers.facilityCode.text],
+						deliveryDate: csvRow[headers.deliveryDate.text],
+						driver: csvRow[headers.driverID.text],
+						drop: csvRow[headers.drop.text],
+						distance: csvRow[headers.distance.text],
+						window: csvRow[headers.window.text]
 					};
-					var rowHash = hashRow(row.roundId, row.facilityCode, row.driver, row.deliveryDate, row.drop);
+					var rowHash = hashRow(row.roundId, row.facilityCode, row.id);
 					result[rowHash] = row;
 				});
 				return result;
 			};
 
-			function hashRow(roundId, facilityCode, driver, date, drop){
-				return [ roundId, facilityCode, driver, date, drop ].join('-');
+			function hashRow(roundId, facilityCode, dailyDeliveryId) {
+				return [roundId, facilityCode, dailyDeliveryId].join('-');
 			}
 
-			_this.mergeRows = function(dailyDeliveries, schedulesInfo){
-				var dailyDelivery;
-				for(var i in dailyDeliveries){
-					dailyDelivery = dailyDeliveries[i];
-					//TODO: complete implementation
+			_this.applyChanges = function (dailyDeliveries, schedulesInfo) {
+
+				function applyUpdate(dailyDelivery) {
+					var rowHash;
+					var scheduleInfo;
+					if (angular.isArray(dailyDelivery.facilityRounds)) {
+						dailyDelivery.facilityRounds
+								.forEach(function (facRnd) {
+									rowHash = hashRow(dailyDelivery.deliveryRoundID, facRnd.facility.id, dailyDelivery._id);
+									scheduleInfo = schedulesInfo[rowHash];
+									if (scheduleInfo) {
+										facRnd.drop = scheduleInfo.drop;
+										facRnd.window = scheduleInfo.window;
+										facRnd.distance = scheduleInfo.distance;
+									}
+								});
+					} else {
+						rowHash = hashRow(dailyDelivery.deliveryRoundID, dailyDelivery.facility.id, dailyDelivery._id);
+						scheduleInfo = schedulesInfo[rowHash];
+						if (scheduleInfo) {
+							dailyDelivery.drop = scheduleInfo.drop;
+							dailyDelivery.window = scheduleInfo.window;
+							dailyDelivery.distance = scheduleInfo.distance;
+						}
+					}
+
+					if (scheduleInfo) {
+						dailyDelivery.driverID = scheduleInfo.driver;
+						dailyDelivery.date = scheduleInfo.deliveryDate;
+					}
+
+					return dailyDelivery;
 				}
-				return dailyDeliveries;
+
+				return dailyDeliveries.map(applyUpdate);
 			};
 
-		});
+		})
+;
