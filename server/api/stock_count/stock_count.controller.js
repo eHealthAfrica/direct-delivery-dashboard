@@ -25,7 +25,6 @@ exports.unopened = function(req, res, next) {
 
 // get list of stock counts
 exports.inDateRange = function(req, res, next) {
-  console.log(req.query);
   StockCount.getWithin(req.query.start, req.query.end, function(err, stockCounts) {
     if (err) return next(err);
 
