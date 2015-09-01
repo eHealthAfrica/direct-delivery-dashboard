@@ -107,7 +107,7 @@ angular.module('lmisApp')
 			};
 			$scope.lateGridOption.data = [];
 
-      facilityReports.load()
+      facilityReports.load($scope.from.date, $scope.to.date)
         .then(function (response){
           var stockCountSummaries = response.summaries;
           $scope.stockReports.total = stockCountSummaries.length;

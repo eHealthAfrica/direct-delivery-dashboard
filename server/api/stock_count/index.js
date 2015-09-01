@@ -8,5 +8,6 @@ var router = express.Router();
 
 router.get('/', auth.isAuthenticated(), controller.index);
 router.get('/unopened', auth.isAuthenticated(), controller.unopened);
+router.get('/in_range', auth.isAuthenticated(), controller.inDateRange);
 
 module.exports = router;
