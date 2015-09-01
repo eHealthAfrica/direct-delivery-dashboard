@@ -15,3 +15,14 @@ exports.index = function (req, res, next) {
 			})
 			.catch(next);
 };
+
+exports.cceReport = function (req, res, next) {
+  var startDate = req.query.startDate;
+  var endDate = req.query.endDate;
+
+  Report.getCCEReportWithin(startDate, endDate)
+    .then(function (result) {
+      res.json(result);
+    })
+    .catch(next);
+};
