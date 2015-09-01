@@ -18,6 +18,8 @@ angular.module('deliveryMock', [])
 		})
 		.constant('dailyDeliveriesMock', [
 			{
+				"_id": "d3a16874da59f7b40cab3eadd41ac085",
+				"deliveryRoundID": "KN-21-2015",
 				"facility": {
 					"zone": "Bichi",
 					"lga": "Gwarzo",
@@ -34,6 +36,8 @@ angular.module('deliveryMock', [])
 				"status": "Success: 1st attempt"
 			},
 			{
+				"_id": "d3a16874da59f7b40cab3eadd41672892",
+				"deliveryRoundID": "KN-21-2015",
 				"facility": {
 					"zone": "Bichi",
 					"lga": "Gwarzo",
@@ -48,5 +52,29 @@ angular.module('deliveryMock', [])
 				"drop": 1,
 				"window": "9AM-11AM",
 				"status": "Success: 1st attempt"
+			}
+		])
+		.constant('csvResultMock', [
+			{
+				"UUID": "d3a16874da59f7b40cab3eadd41ac085",
+				"Round Code": "KN-21-2015",
+				"Facility Name": "Test Fac 1",
+				"Facility Code": "KNS THF - JIK",
+				"Delivery Date": "2015-04-27",
+				"Driver ID": "bashir@example.com",
+				"Drop": "1",
+				"Distance (KM)": "203",
+				"Window": "9am - 11am"
+			},
+			{
+				"UUID": "d3a16874da59f7b40cab3eadd41ac085",
+				"Round Code": "KN-21-2015",
+				"Facility Name": "Test Fac 2",
+				"Facility Code": "KNS THF - FAC",
+				"Delivery Date": "2015-09-08",
+				"Driver ID": "bashir@example.com",
+				"Drop": "",
+				"Distance (KM)": "",
+				"Window": ""
 			}
 		]);
