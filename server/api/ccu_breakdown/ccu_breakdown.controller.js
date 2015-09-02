@@ -27,3 +27,13 @@ exports.all = function(req, res, next) {
     res.json(auth.filterByFacilities(req, ccu_breakdown, 'facility._id'));
   });
 };
+
+exports.within = function(req, res, next) {
+  var startDate = req.query.startDate;
+  var endDate = req.query.endDate;
+  CCUBreakdown.getWithin(startDate, endDate, function(err, ccu_breakdown) {
+    if (err) return next(err);
+
+    res.json(ccu_breakdown);
+  });
+};

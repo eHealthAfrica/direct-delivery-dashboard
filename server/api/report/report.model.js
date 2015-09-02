@@ -16,6 +16,7 @@ var Presentation = require('../../api/product_presentation/product_presentation.
 //Expose public methods
 exports.getReportWithin = getReportWithin;
 
+exports.getCCEReportWithin = getCCEReportWithin;
 
 function getProfiles() {
 	var deferred = q.defer();
@@ -427,4 +428,48 @@ function generateReport(appConfigs, cceBrks, stockCounts, presentations, profile
 		activeZones: activeZones,
 		stockToPlan: stpByZone
 	};
+}
+
+function getAppConfigByID() {
+  var deferred = q.defer();
+  AppConfig.get(function (err, rows) {
+    if (err) {
+      deferred.reject(err);
+    } else {
+      deferred.resolve(rows);
+    }
+  });
+
+  return deferred.promise;
+}
+
+function getCCEReportWithin(startDate, endDate) {
+  var promises = [
+    getActiveFacilityAppConfigs(),
+    getCCEBreakdown(startDate, endDate)
+  ];
+  return q.all(promises)
+    .then(function (response) {
+      var cceBreakdown = collateCCE( response[1]);
+      var appConfig = response[0];
+      var i = appConfig.length;
+      var report = {
+        broken: 0,
+        fixed: 0
+      };
+      while (i--) {
+        var key = appConfig[i].facility._id;
+        if (cceBreakdown[key]) {
+          if (cceBreakdown[key].statusCount === 0) {
+            report.broken++;
+          } else {
+            report.fixed++;
+          }
+        } else {
+          report.fixed++;
+        }
+      }
+
+      return report;
+    });
 }

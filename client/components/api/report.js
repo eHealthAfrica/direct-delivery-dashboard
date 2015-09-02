@@ -60,4 +60,8 @@ angular.module('lmisApp')
 						});
 			};
 
+    this.getCCEReportWithin = function(startDate, endDate) {
+      return utility.request(URL + '/cce-status', {startDate: startDate, endDate: endDate});
+    }
+
 		});
