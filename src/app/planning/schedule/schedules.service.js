@@ -1,5 +1,5 @@
 angular.module('planning')
-		.service('scheduleService', function (dbService) {
+		.service('scheduleService', function (dbService, log) {
 
 			var _this = this;
 
@@ -54,8 +54,8 @@ angular.module('planning')
 				}
 			};
 
-			_this.saveSchedules = function (schedules) {
-				return dbService.saveDocs(schedules);
+			_this.saveSchedules = function (dailyDeliveries) {
+				return dbService.saveDocs(dailyDeliveries);
 			};
 
 			_this.flatten = function (dailyDeliveries) {
@@ -173,6 +173,7 @@ angular.module('planning')
 					}
 
 					if (scheduleInfo) {
+						dailyDelivery.targetDate = dailyDelivery.date;
 						dailyDelivery.driverID = scheduleInfo.driver;
 						dailyDelivery.date = scheduleInfo.deliveryDate;
 					}
@@ -182,6 +183,17 @@ angular.module('planning')
 
 				return dailyDeliveries.map(applyUpdate);
 			};
+
+			_this.onSaveError = function (err) {
+				if (err.status === 401) {
+					return log.error('unauthorizedAccess', err);
+				}
+				if (err.status === 409) {
+					return log.error('updateConflict', err);
+				}
+				log.error('saveBatchScheduleFailed', err);
+			};
+
 
 		})
 ;
