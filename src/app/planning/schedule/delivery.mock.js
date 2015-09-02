@@ -77,4 +77,28 @@ angular.module('deliveryMock', [])
 				"Distance (KM)": "",
 				"Window": ""
 			}
-		]);
+		])
+		.constant('parsedCSVMock', {
+			"KKK 245 908-KNS THF - JIK-d3a16874da59f7b40cab3eadd41ac085": {
+				"id": "d3a16874da59f7b40cab3eadd41ac085",
+				"roundId": "KKK 245 908",
+				"facilityName": "Test Fac 1",
+				"facilityCode": "KNS THF - JIK",
+				"deliveryDate": "2015-04-27",
+				"driver": "bashir@example.com",
+				"drop": "1",
+				"distance": "203",
+				"window": "9am - 11am"
+			},
+			"KN-21-2015-KNS THF - FAC-d3a16874da59f7b40cab3eadd41ac085": {
+				"id": "d3a16874da59f7b40cab3eadd41ac085",
+				"roundId": "KN-21-2015",
+				"facilityName": "Test Fac 2",
+				"facilityCode": "KNS THF - FAC",
+				"deliveryDate": "2015-09-08",
+				"driver": "bashir@example.com",
+				"drop": "",
+				"distance": "",
+				"window": ""
+			}
+		});
