@@ -114,17 +114,26 @@ angular.module('lmisApp')
 
       function loadReports(){
 
+        $scope.stockReports.noReports = [];
+        $scope.stockReports.lateReports = [];
+
         return facilityReports.load($scope.from.date, $scope.to.date)
           .then(function (response){
             var stockCountSummaries = response.summaries;
+            console.log(stockCountSummaries.length);
             $scope.stockReports.total = stockCountSummaries.length;
             for(var i in stockCountSummaries){
               if(stockCountSummaries[i].reportingStatus === reports.NON_REPORTING){
-                $scope.stockReports.noReports.push(stockCountSummaries[i])
+                $scope.stockReports.noReports.push(stockCountSummaries[i]);
+                console.log(stockCountSummaries[i]);
               }else if (stockCountSummaries[i].reportingStatus === reports.DELAYING_REPORT){
                 $scope.stockReports.lateReports.push(stockCountSummaries[i]);
+              }else{
+                console.log(stockCountSummaries[i]);
               }
             }
+            console.log( $scope.stockReports.noReports.length);
+
             $scope.lateGridOption.data = $scope.stockReports.lateReports;
             $scope.gridOptions.data = $scope.stockReports.noReports;
             $scope.working = false;
@@ -133,6 +142,7 @@ angular.module('lmisApp')
             console.log(err);
           });
       }
+
       loadReports();
 
 		})
