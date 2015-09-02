@@ -30,12 +30,12 @@
         <td ng-bind="::round.endDate | date:'d-MMM-yyyy'"></td>
         <td ng-bind="::round.createdOn | date: 'yyyy-MM-dd HH:mm:ss'"></td>
         <td>
-          <button class="btn btn-primary" ng-click="crCtrl.open(round._id)">
+          <button class="btn btn-primary btn-lg" ng-click="crCtrl.open(round._id)">
             <i class="fa fa-pencil-square-o"></i>
             <span>Edit</span>
           </button>
 
-          <a class="btn btn-success" ui-sref="planning.schedule({ roundId: round._id})">
+          <a class="btn btn-success btn-lg" ui-sref="planning.schedule({ roundId: round._id})">
             <i class="fa fa-calendar"></i>
             <span>Schedule</span>
           </a>
