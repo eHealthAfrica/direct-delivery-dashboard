@@ -3,7 +3,7 @@
  */
 
 angular.module('allocations')
-  .controller('TargetPopulationsController', function(locations, locationService, calculationService){
+  .controller('TargetPopulationsController', function(locations, locationService, calculationService, $modal, log, targetPopulationService){
     var vm = this;
 
     vm.locationStates = ['KN', 'BA'];
@@ -11,6 +11,12 @@ angular.module('allocations')
     vm.selectedLga = '';
     vm.lgas = [];
     vm.wards = [];
+    vm.csv = {
+      content: '',
+      header: '',
+      separator: '',
+      result: ''
+    };
 
     findLga = function (state) {
       var keys = [];
@@ -70,4 +76,34 @@ angular.module('allocations')
         vm.renderedData = response;
         return response;
       });
+
+    vm.showRawDoc = function(){
+      console.log(vm.csv.result);
+    };
+
+    vm.csvUpload = function(data){
+      var modalInstance = $modal.open({
+        animation: true,
+        templateUrl: 'app/configurations/allocations/targetpop/upload/upload-csv-form.html',
+        controller: 'TargetPopCSVUploadCtrl',
+        controllerAs: 'uploadCSVCtrl',
+        size: 'lg',
+        resolve: {
+
+        }
+      });
+      modalInstance.result.then(function (formData) {
+
+        targetPopulationService.saveMany(formData)
+          .then(function(data){
+            return log.success('assumptionEdited', data);
+          })
+          .catch(function(err){
+            return log.error('assumptionSaveFailed', err)
+          })
+      })
+      .catch(function (err) {
+        log.info('canceledAssumptionEdit', err);
+      });
+    }
   });

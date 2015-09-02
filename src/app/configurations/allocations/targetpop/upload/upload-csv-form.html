@@ -1,0 +1,60 @@
+<div class="panel panel-info">
+  <h2 class="panel-heading">Upload target population</h2>
+  <div class="panel-body">
+    <hr/>
+    <div class="clearfix">
+      <button class="btn btn-lg btn-success pull-right" ng-click="uploadCSVCtrl.close()">Save records</button>
+    </div>
+    <hr/>
+     <form role="form">
+        <div class="import">
+          <div class="form-group">
+            <label>Header</label>
+            <input type="checkbox" ng-model="uploadCSVCtrl.csv.header" class="ng-pristine ng-valid" />
+          </div>
+          <div class="form-group">
+            <label>Seperator</label>
+            <!--<input type="text" ng-change="changeSeparator" ng-model="uploadCSVCtrl.csv.separator" class="ng-pristine ng-valid" size="3">-->
+          </div>
+          <div class="form-group">
+            <ng-csv-import
+              content="uploadCSVCtrl.csv.content"
+              header="uploadCSVCtrl.csv.header"
+              separator="uploadCSVCtrl.csv.separator"
+              finished="uploadCSVCtrl.finished(uploadCSVCtrl.csv.result)"
+              result="uploadCSVCtrl.csv.result">
+            </ng-csv-import>
+         </div>
+        </div>
+     </form>
+  </div>
+  <div ng-if="uploadCSVCtrl.csv.result.length > 0">
+    <table class="table table-striped table-bordered">
+      <tr>
+        <th>State</th>
+        <th>LGA</th>
+        <th>Facility</th>
+        <th>Annual TP U1</th>
+        <th>Bi-weekly TP U1</th>
+        <th>Annual TP WCBA</th>
+        <th>Bi-weekly TP WCBA</th>
+      </tr>
+      <tr ng-repeat="record in uploadCSVCtrl.csv.result track by $index">
+        <td ng-bind="record.state"></td>
+        <td ng-bind="record.lga"></td>
+        <td ng-bind="record.facility"></td>
+        <td ng-bind="record.annualU1"></td>
+        <td ng-bind="record['bi-weeklyU1']"></td>
+        <td ng-bind="record['annualWCBA']"></td>
+        <td ng-bind="record['bi-weeklyWCBA']"></td>
+      </tr>
+    </table>
+  </div>
+  <div class="panel-footer">
+
+  </div>
+
+</div>
+
+
+

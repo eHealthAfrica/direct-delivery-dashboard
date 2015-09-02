@@ -1,7 +1,10 @@
 <div class="clearfix">
-  <div class="btn-group pull-right">
-    <button class="btn btn-lg btn-default">
-      <span class="fa-1.5x text-success"><i class="fa fa-file "></i> <i>upload csv file</i></span>
+  <div class="pull-right">
+    <button
+        type="button"
+        ng-click="targetPopCtrl.csvUpload()"
+        class="btn btn-default btn-lg">
+      <span class="fa-1.5x text-success"><i class="fa fa-file"></i> <i>upload csv file</i></span>
     </button>
   </div>
 </div>
@@ -44,3 +47,5 @@
     <td ng-bind="row['bi-weeklyWCBA']"></td>
   </tr>
 </table>
+
+{{targetPopCtrl.csv.result}}
