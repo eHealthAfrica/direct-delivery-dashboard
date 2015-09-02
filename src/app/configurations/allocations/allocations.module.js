@@ -9,5 +9,6 @@ angular.module('allocations',[
   'products',
   'location',
   'log',
-  'ngDragDrop'
+  'ngDragDrop',
+  'ngCsvImport'
 ]);
