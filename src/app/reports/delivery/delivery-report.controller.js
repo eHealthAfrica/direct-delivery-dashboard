@@ -112,8 +112,7 @@ angular.module('reports')
         .then(function (deliveryStatusReport) {
           vm.byZoneByLGA = deliveryStatusReport.byZoneByLGA;
           vm.byZoneByDriver = deliveryStatusReport.byZoneByDriver;
-          vm.byZoneByDriver2 = deliveryStatusReport.byZoneByDriver2;
-          vm.byZoneByDriver2Keys = Object.keys(deliveryStatusReport.byZoneByDriver2).sort();
+          vm.byZoneByDriverKeys = Object.keys(deliveryStatusReport.byZoneByDriver).sort();
           vm.capturedZones = Object.keys(deliveryStatusReport.byZoneByLGA).sort();
           vm.selectedZone = vm.capturedZones[0] || '';
         })

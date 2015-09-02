@@ -69,14 +69,14 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="key in devRepCtrl.byZoneByDriver2Keys">
+            <tr ng-repeat="key in devRepCtrl.byZoneByDriverKeys">
               <td ng-bind="$index + 1"></td>
               <td ng-bind="devRepCtrl.splitResult(key)"></td>
               <td ng-bind="devRepCtrl.splitResult(key, 'zone')"></td>
-              <td ng-bind="devRepCtrl.byZoneByDriver2[key].success"></td>
-              <td ng-bind="devRepCtrl.byZoneByDriver2[key].failed"></td>
-              <td ng-bind="devRepCtrl.byZoneByDriver2[key].canceled"></td>
-              <td ng-bind="devRepCtrl.sum(devRepCtrl.byZoneByDriver2[key])"></td>
+              <td ng-bind="devRepCtrl.byZoneByDriver[key].success"></td>
+              <td ng-bind="devRepCtrl.byZoneByDriver[key].failed"></td>
+              <td ng-bind="devRepCtrl.byZoneByDriver[key].canceled"></td>
+              <td ng-bind="devRepCtrl.sum(devRepCtrl.byZoneByDriver[key])"></td>
             </tr>
             </tbody>
           </table>
