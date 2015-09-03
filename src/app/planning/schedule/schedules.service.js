@@ -173,7 +173,9 @@ angular.module('planning')
 					}
 
 					if (scheduleInfo) {
-						dailyDelivery.targetDate = dailyDelivery.date;
+						if (dailyDelivery.date !== scheduleInfo.deliveryDate) {
+							dailyDelivery.targetDate = dailyDelivery.date;
+						}
 						dailyDelivery.driverID = scheduleInfo.driver;
 						dailyDelivery.date = scheduleInfo.deliveryDate;
 					}
