@@ -5,7 +5,17 @@ angular.module('planning')
 
 			var vm = this;
 			vm.deliveryRound = deliveryRound;
-			vm.dailyDeliveries = scheduleService.flatten(dailyDeliveries);
+
+			function updateDeliveries (deliveries) {
+				vm.dailyDeliveries = deliveries;
+				vm.facilityDeliveries = scheduleService.flatten(vm.dailyDeliveries);
+			}
+
+			updateDeliveries(dailyDeliveries);
+
+			var exportData = scheduleService.prepareExport(vm.deliveryRound._id, vm.facilityDeliveries);
+			vm.exportForRouting = exportData.rows;
+			vm.exportHeader = exportData.headers;
 
 			vm.completePlanning = function () {
 				planningService.completePlanning(vm.deliveryRound)
@@ -16,10 +26,16 @@ angular.module('planning')
 						.catch(planningService.onSaveError);
 			};
 
-			var exportData = scheduleService.prepareExport(vm.deliveryRound._id, vm.dailyDeliveries);
+			function onSuccess(res) {
+				log.success('schedulesSaved', res);
+				$state.go('planning.deliveryRound');
+			}
 
-			vm.exportForRouting = exportData.rows;
-			vm.exportHeader = exportData.headers;
+			vm.saveAll = function () {
+				scheduleService.saveSchedules(vm.dailyDeliveries)
+						.then(onSuccess)
+						.catch(scheduleService.onSaveError);
+			};
 
 			vm.openImportDialog = function () {
 				$modal.open({
@@ -32,7 +48,7 @@ angular.module('planning')
 					backdrop: 'static',
 					resolve: {
 						dailyDeliveries: function () {
-							return dailyDeliveries
+							return vm.dailyDeliveries;
 						},
 						deliveryRound: function () {
 							return vm.deliveryRound;
@@ -40,7 +56,7 @@ angular.module('planning')
 					}
 				}).result
 						.then(function (updatedDailyDeliveries) {
-							vm.dailyDeliveries = scheduleService.flatten(updatedDailyDeliveries);
+							updateDeliveries(updatedDailyDeliveries);
 						});
 			};
 
