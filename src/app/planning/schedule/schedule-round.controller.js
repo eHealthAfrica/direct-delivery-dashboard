@@ -4,7 +4,14 @@ angular.module('planning')
 		.controller('ScheduleRoundCtrl', function (deliveryRound, $state, dailyDeliveries, scheduleService, planningService, log, $modal) {
 
 			var vm = this;
+
 			vm.deliveryRound = deliveryRound;
+			vm.deliveriesHash = {};
+			scheduleService.flatten(dailyDeliveries)
+					.forEach(function (row) {
+						var hashId = scheduleService.hashRow(row.deliveryRoundID, row.facility.id, row._id);
+						vm.deliveriesHash[hashId] = row;
+					});
 
 			function updateDeliveries (deliveries) {
 				vm.dailyDeliveries = deliveries;
@@ -35,6 +42,15 @@ angular.module('planning')
 				scheduleService.saveSchedules(vm.dailyDeliveries)
 						.then(onSuccess)
 						.catch(scheduleService.onSaveError);
+			};
+
+			vm.isUpdated = function(row){
+				var hashId = scheduleService.hashRow(row.deliveryRoundID, row.facility.id, row._id);
+        var before  = vm.deliveriesHash[hashId];
+				if(before){
+					return !angular.equals(before, row);
+				}
+				return false;
 			};
 
 			vm.openImportDialog = function () {

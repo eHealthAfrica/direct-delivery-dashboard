@@ -112,4 +112,30 @@ describe('ScheduleRoundController', function () {
 		});
 	});
 
+	describe('isUpdated', function () {
+		it('should return True if both are not the same', function () {
+			var row = {
+				"_id": "d3a16874da59f7b40cab3eadd41ac085",
+				"deliveryRoundID": "KN-21-2015",
+				"facility": {
+					"zone": "Bichi",
+					"lga": "Gwarzo",
+					"ward": "Kutama",
+					"name": "Test Fac 1",
+					"id": "KNS THF - JIK",
+					"contact": "Test Driver Name",
+					"phoneNo": "0801234567"
+				},
+				"date": "2015-04-27",
+				"driverID": "bashir@example.com",
+				"drop": 1,
+				"window": "9AM-11AM",
+				"status": "Success: 1st attempt"
+			};
+			expect(ScheduleRoundCtrl.isUpdated(row)).toBeFalsy();
+			row.drop = 5;//change row
+			expect(ScheduleRoundCtrl.isUpdated(row)).toBeTruthy();
+		});
+	});
+
 });
