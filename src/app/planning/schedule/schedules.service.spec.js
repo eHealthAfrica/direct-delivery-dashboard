@@ -2,7 +2,7 @@
 
 describe('ScheduleRoundController', function () {
 
-	beforeEach(module('planning', 'deliveryMock', 'db', 'scheduleMock'));
+	beforeEach(module('planning', 'deliveryMock', 'db', 'scheduleMock', 'log'));
 
 	var scheduleService;
 	var dbService;
@@ -16,11 +16,12 @@ describe('ScheduleRoundController', function () {
 	var csvResult;
 	var parsedCSV;
 	var updatedDailyDeliveriesMock;
+	var log;
 
 	beforeEach(inject(function (_scheduleService_, _deliveryRoundMock_, _dailyDeliveriesMock_,
 	                            _dbService_, _headerMock_, _csvExportMock_, _nestedDeliveryMock_,
 	                            _flatDeliveries_, _csvResultMock_, _parsedCSVMock_,
-	                            _updatedDailyDeliveryMock_) {
+	                            _updatedDailyDeliveryMock_, _log_) {
 
 		scheduleService = _scheduleService_;
 		dbService = _dbService_;
@@ -34,8 +35,10 @@ describe('ScheduleRoundController', function () {
 		csvResult = _csvResultMock_;
 		parsedCSV = _parsedCSVMock_;
 		updatedDailyDeliveriesMock = _updatedDailyDeliveryMock_;
+		log = _log_;
 
 		spyOn(dbService, 'saveDocs').and.callThrough();
+		spyOn(log, 'error').and.callThrough();
 
 	}));
 
@@ -99,9 +102,35 @@ describe('ScheduleRoundController', function () {
 		it('Should apply csv update to daily deliveries', function () {
 			var schedulesInfo = scheduleService.parseCSV(csvResult);
 			var flatDeliveries = scheduleService.flatten(nestedDeliveries);
-			var result  = scheduleService.applyChanges(flatDeliveries, schedulesInfo);
+			var result = scheduleService.applyChanges(flatDeliveries, schedulesInfo);
 			var isSame = angular.equals(updatedDailyDeliveriesMock, result);
 			expect(isSame).toBeTruthy();
+		});
+	});
+
+	describe('onSaveError', function () {
+		it('Should call log.error() with expected parameters if err.status === 401', function () {
+			var err = { status: 401 };
+			expect(log.error).not.toHaveBeenCalled();
+			scheduleService.onSaveError(err);
+			expect(log.error.calls.mostRecent().args[0]).toEqual('unauthorizedAccess');
+			expect(log.error.calls.mostRecent().args[1]).toEqual(err);
+		});
+
+		it('Should call log.error() with expected parameters if err.status === 409', function () {
+			var err = { status: 409 };
+			expect(log.error).not.toHaveBeenCalled();
+			scheduleService.onSaveError(err);
+			expect(log.error.calls.mostRecent().args[0]).toEqual('updateConflict');
+			expect(log.error.calls.mostRecent().args[1]).toEqual(err);
+		});
+
+		it('Should call log.error() with expected params if err.status is NOT 401 or 409', function () {
+			var err = { msg: 'Unknown Error' };
+			expect(log.error).not.toHaveBeenCalled();
+			scheduleService.onSaveError(err);
+			expect(log.error.calls.mostRecent().args[0]).toEqual('saveBatchScheduleFailed');
+			expect(log.error.calls.mostRecent().args[1]).toEqual(err);
 		});
 	});
 

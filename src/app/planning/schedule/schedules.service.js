@@ -72,7 +72,8 @@ angular.module('planning')
 										driverID: dailySchedule.driverID,
 										drop: facRnd.drop,
 										window: facRnd.window,
-										status: facRnd.status
+										status: facRnd.status,
+										distance: facRnd.distance
 									};
 									schedules.push(schedule);
 								});
@@ -136,15 +137,15 @@ angular.module('planning')
 						distance: csvRow[headers.distance.text],
 						window: csvRow[headers.window.text]
 					};
-					var rowHash = hashRow(row.roundId, row.facilityCode, row.id);
+					var rowHash = _this.hashRow(row.roundId, row.facilityCode, row.id);
 					result[rowHash] = row;
 				});
 				return result;
 			};
 
-			function hashRow(roundId, facilityCode, dailyDeliveryId) {
-				return [roundId, facilityCode, dailyDeliveryId].join('-');
-			}
+			_this.hashRow = function (roundId, facilityCode, dailyDeliveryId) {
+				return [ roundId, facilityCode, dailyDeliveryId ].join('-');
+			};
 
 			_this.applyChanges = function (dailyDeliveries, schedulesInfo) {
 
@@ -154,7 +155,7 @@ angular.module('planning')
 					if (angular.isArray(dailyDelivery.facilityRounds)) {
 						dailyDelivery.facilityRounds
 								.forEach(function (facRnd) {
-									rowHash = hashRow(dailyDelivery.deliveryRoundID, facRnd.facility.id, dailyDelivery._id);
+									rowHash = _this.hashRow(dailyDelivery.deliveryRoundID, facRnd.facility.id, dailyDelivery._id);
 									scheduleInfo = schedulesInfo[rowHash];
 									if (scheduleInfo) {
 										facRnd.drop = scheduleInfo.drop;
@@ -163,7 +164,7 @@ angular.module('planning')
 									}
 								});
 					} else {
-						rowHash = hashRow(dailyDelivery.deliveryRoundID, dailyDelivery.facility.id, dailyDelivery._id);
+						rowHash = _this.hashRow(dailyDelivery.deliveryRoundID, dailyDelivery.facility.id, dailyDelivery._id);
 						scheduleInfo = schedulesInfo[rowHash];
 						if (scheduleInfo) {
 							dailyDelivery.drop = scheduleInfo.drop;
