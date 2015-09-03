@@ -17,6 +17,7 @@ notifications:
   flowdock: 232485f7661e644ae5878944c2597042
 env:
   global:
+    - SESSION_SECRET=secret
     - secure: "c6KPtRQnLW+uhp89zH1poVkX3Ttv5eFeTkvuQZZ8c5eClcT1sIFNbmojOf0CxzqiroYD816VhrAN/Q8Ugd/RdvDpHFUy1f130+0d8VeI/+pTn2ORJsvkoRCxNTFQAw7f4YEgu7sU8RLiGJE0CswD0zsWfO+a+8kIy85XDO6+wRE="
     - secure: "cW/qds2dynbIjqr/PEHMOiCiYvcyF85mlApZ/myllkh4zKmQUMLli3BuvPrHC+YRuuBox9FsHrk4i+yGHNmrQYY1HDB+OVe4/rTfWZdsiwi4BKhv4aAmw4GkXAQvuF6XpXm+6hwnA0LHYQ9mpdo6Uo4K5OW0clih+B/2CZY5alE="
     - secure: "KUhgqOt+Vgo38vYAkD053as+1AcBTO+Za02iENHIcaTQd/shsCKs8iNlwC7RA61BY/6NySZc6aMjBMfKDxZ2ebHUCx8T01CDCHhNy3kxPyQggf+WmH1JAgMelLK63hl0dwBnaG5OMhtZIiqsRSgvmHGiZc/4jSCJTuBx5t/m28M="

@@ -6,6 +6,7 @@
 // You will need to set these on the server you deploy to.
 
 module.exports = {
+  SESSION_SECRET: 'lmis-dashboard-secret',
   COUCH_USER: '',
   COUCH_PASS: ''
 };
