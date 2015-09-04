@@ -1,10 +1,18 @@
 <div class="clearfix">
   <div class="pull-right">
+     <button
+        type="button"
+        ng-csv="targetPopCtrl.csvTemplateDownload()"
+        csv-header="targetPopCtrl.csvHeader"
+        filename="target-population-template.csv"
+        class="btn btn-default btn-lg">
+      <span class="fa-1.5x text-info"><i class="fa fa-download"></i> <i>download csv template</i></span>
+    </button>
     <button
         type="button"
         ng-click="targetPopCtrl.csvUpload()"
         class="btn btn-default btn-lg">
-      <span class="fa-1.5x text-success"><i class="fa fa-file"></i> <i>upload csv file</i></span>
+      <span class="fa-1.5x text-success"><i class="fa fa-upload"></i> <i>upload csv file</i></span>
     </button>
   </div>
 </div>
@@ -31,7 +39,7 @@
 
 <hr/>
 
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
   <tr>
     <th>Facility</th>
       <th tooltip="Annual target population of children under the age of 1 year for 2015">Annual TP U1 (2015)</th>
