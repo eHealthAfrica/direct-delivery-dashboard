@@ -1,0 +1,98 @@
+<div class="panel panel-default" ng-controller="DeliveryReportByZonesCtrl as devRepCtrl">
+  <div class="panel-heading">
+
+    <div class="row">
+      <div class="col-md-3">
+        <label for="selectedZone">Selected Zone</label>
+        <select
+          id="selectedZone"
+          ng-model="devRepCtrl.selectedZone"
+          class="form-control input-lg">
+          <option
+            ng-repeat="zone in devRepCtrl.capturedZones"
+            ng-selected="zone === devRepCtrl.selectedZone"
+            value="{{ zone }}"
+            ng-bind="zone"></option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label for="fromDate">Start</label>
+
+        <div class="input-group">
+          <input id="fromDate" type="text" class="form-control input-lg"
+                 ng-model="devRepCtrl.startDate"
+                 datepicker-popup="{{devRepCtrl.dateFormat}}"
+                 max-date="devRepCtrl.stopDateOn"
+                 is-open="devRepCtrl.filteredReport.start.opened"/>
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-default btn-lg"
+                              ng-click="devRepCtrl.filteredReport.start.open($event)">
+                        <i class="fa fa-calendar"></i>
+                      </button>
+                    </span>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <label for="fromDate">End</label>
+        <div class="input-group">
+          <input type="text" class="form-control input-lg"
+                 ng-model="devRepCtrl.stopDateOn"
+                 min-date="devRepCtrl.startDate"
+                 datepicker-popup="{{devRepCtrl.dateFormat}}"
+                 is-open="devRepCtrl.filteredReport.stop.opened"/>
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-default btn-lg"
+                              ng-click="devRepCtrl.filteredReport.stop.open($event)">
+                        <i class="fa fa-calendar"></i>
+                      </button>
+                    </span>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <label></label>
+        <div class="input-group">
+          <button class="btn btn-primary btn-lg" type="button"
+                  ng-click="devRepCtrl.loadReport()">
+            <i class="fa fa-search"></i>
+            <span>Search</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-body alert alert-info"
+         ng-show="devRepCtrl.capturedZones.length === 0">
+      <i class="fa fa-lg fa-info-circle"></i>
+      <span> No delivery was made within selected period.</span>
+    </div>
+
+    <div class="panel-body" ng-hide="devRepCtrl.capturedZones.length === 0">
+      <div class="row" >
+        <div class="col-sm-12">
+          <table class="table table-bordered table-condensed table-striped">
+            <thead>
+            <tr>
+              <th>#</th>
+              <th>LGA</th>
+              <th>Success</th>
+              <th>Failure</th>
+              <th>Cancelled</th>
+              <th>Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="(key, lgaReport) in devRepCtrl.byZoneByLGA[devRepCtrl.selectedZone]">
+              <td ng-bind="$index + 1"></td>
+              <td ng-bind="key"></td>
+              <td ng-bind="lgaReport.success"></td>
+              <td ng-bind="lgaReport.failed"></td>
+              <td ng-bind="lgaReport.canceled"></td>
+              <td ng-bind="devRepCtrl.sum(lgaReport)"></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
