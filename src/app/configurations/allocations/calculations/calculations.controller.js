@@ -6,7 +6,6 @@ angular.module('allocations')
   .controller('CalculationsController', function (products, locations, locationService, calculationService, pouchUtil, assumptionList, log) {
     var vm = this;
     var viewMap = {
-      targetpopulation: "getTargetPop",
       coverage: "getAllocations",
       wastage: "getAllocations",
       schedule: "getAllocations",
@@ -18,8 +17,8 @@ angular.module('allocations')
     };
     vm.productList = products || [];
     vm.renderedPartial = 'tp';
-    vm.renderedViewLabel = 'target populations';
-    vm.activeView = 'targetpopulation';
+    vm.renderedViewLabel = 'coverage';
+    vm.activeView = 'coverage';
     vm.renderedData = [];
     vm.locationStates = ['KN', 'BA'];
     vm.selectedState = 'KN';
@@ -54,6 +53,7 @@ angular.module('allocations')
     function resetView (facilities) {
       return calculationService[viewMap[vm.activeView]](facilities)
         .then(function (response) {
+          console.log(response);
           vm.renderedData = response;
           return response;
         });
