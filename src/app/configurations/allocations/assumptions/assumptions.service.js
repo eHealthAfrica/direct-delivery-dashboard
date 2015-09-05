@@ -30,7 +30,6 @@ angular.module('allocations')
         });
     };
     service.save = function(data){
-      console.log(data);
       if(angular.isArray(data)){
         return dbService.saveDocs(data);
       }
