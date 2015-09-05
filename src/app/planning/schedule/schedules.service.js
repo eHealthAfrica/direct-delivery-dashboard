@@ -1,5 +1,5 @@
 angular.module('planning')
-		.service('scheduleService', function (dbService, log) {
+		.service('scheduleService', function (dbService, log, utility) {
 
 			var _this = this;
 
@@ -68,7 +68,7 @@ angular.module('planning')
 									var schedule = {
 										_id: dailySchedule._id,
 										facility: facRnd.facility,
-										date: dailySchedule.date,
+										date: new Date(dailySchedule.date),
 										driverID: dailySchedule.driverID,
 										drop: facRnd.drop,
 										window: facRnd.window,
@@ -78,6 +78,7 @@ angular.module('planning')
 									schedules.push(schedule);
 								});
 					} else {
+						dailySchedule.date = new Date(dailySchedule.date);
 						schedules.push(dailySchedule);
 					}
 				}
@@ -173,7 +174,7 @@ angular.module('planning')
 						}
 					}
 
-					if (scheduleInfo) {
+					if (scheduleInfo && utility.isValidDate(dailyDelivery.date)) {
 						if (dailyDelivery.date !== scheduleInfo.deliveryDate) {
 							dailyDelivery.targetDate = dailyDelivery.date;
 						}
