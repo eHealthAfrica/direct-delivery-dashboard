@@ -103,13 +103,7 @@ angular.module('planning')
 			};
 
 			function OnError(err){
-				if(err.status === 401){
-					return log.error('unauthorizedAccess', err);
-				}
-				if(err.status === 409){
-					return log.error('updateConflict', err);
-				}
-				log.error('saveBatchScheduleFailed', err);
+				scheduleService.onSaveError(err);
 			}
 
 			function generateMsgBody(roundId) {
