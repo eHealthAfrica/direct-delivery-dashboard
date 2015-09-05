@@ -1,9 +1,13 @@
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">Round Reports</h3>
-  </div>
-  <div class="panel-body">
-    Delivery Round Report Here
-  </div>
-
+<div class="tab">
+  <tabset justified="true">
+    <tab heading="Cumulative Report">
+      <div ng-include="'app/reports/delivery/partials/cumulative.html'"></div>
+    </tab>
+    <tab heading="By LGA">
+      <div ng-include="'app/reports/delivery/partials/byLGA.html'"></div>
+    </tab>
+    <tab heading="By Drivers">
+      <div ng-include="'app/reports/delivery/partials/byDrivers.html'"></div>
+    </tab>
+  </tabset>
 </div>

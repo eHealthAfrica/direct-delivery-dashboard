@@ -219,14 +219,15 @@ angular.module('planning')
 				}
 
 				if(angular.isNumber(roundReport.workingCCE)){
-					roundReport.workingCCE = roundReport.workingCCE.toFixed(0);
+					var decimalPlaces = 2;
+					roundReport.workingCCE = roundReport.workingCCE.toFixed(decimalPlaces);
 				}
 				var today = new Date(utility.formatDate(new Date()));
-				var markDate = (today > endDate)? today : endDate;
+				var markDate = (today < endDate)? today : endDate;
 				roundReport.timeline = {
 					startDate: startDate,
-					endDate: markDate,
-					markDate: new Date()
+					endDate: endDate,
+					markDate: markDate
 				};
 				return roundReport;
 			}
@@ -256,18 +257,22 @@ angular.module('planning')
 						.then(pouchUtil.pluckIDs);
 			};
 
+			_this.getBy = function(key){
+				var view = 'dashboard-delivery-rounds/by-state-and-end-date';
+				return dbService.getView(view, key)
+			};
+
 			/**
 			 * This sorts rows by delivery round date.
 			 * @param state
 			 * @returns {*}
 			 */
 			this.getLatestBy = function(state){
-				var view = 'dashboard-delivery-rounds/by-state-and-end-date';
 				var params = {
 					startkey: [ state ],
 					endkey: [ state, {} ]
 				};
-				return dbService.getView(view, params)
+				return _this.getBy(params)
 						.then(pouchUtil.pluckIDs)
 						.then(pouchUtil.rejectIfEmpty)
 						.then(function(rounds){

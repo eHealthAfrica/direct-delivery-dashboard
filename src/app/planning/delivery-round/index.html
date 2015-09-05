@@ -1,6 +1,6 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-    <button class="btn btn-success" ng-click="crCtrl.open()">
+    <button class="btn btn-success btn-lg" ng-click="crCtrl.open()">
       <i class="fa fa-plus"></i>
       <span>Add Delivery Round</span>
     </button>
@@ -22,7 +22,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="round in crCtrl.deliveryRounds">
+      <tr ng-repeat="round in crCtrl.deliveryRounds track by $index">
         <td ng-bind="::round.state"></td>
         <td ng-bind="::round.roundCode"></td>
         <td ng-bind="::round.status"></td>
@@ -30,12 +30,12 @@
         <td ng-bind="::round.endDate | date:'d-MMM-yyyy'"></td>
         <td ng-bind="::round.createdOn | date: 'yyyy-MM-dd HH:mm:ss'"></td>
         <td>
-          <button class="btn btn-primary" ng-click="crCtrl.open(round._id)">
+          <button class="btn btn-primary btn-lg" ng-click="crCtrl.open(round._id)">
             <i class="fa fa-pencil-square-o"></i>
             <span>Edit</span>
           </button>
 
-          <a class="btn btn-success" ui-sref="planning.schedule({ roundId: round._id})">
+          <a class="btn btn-success btn-lg" ui-sref="planning.schedule({ roundId: round._id})">
             <i class="fa fa-calendar"></i>
             <span>Schedule</span>
           </a>
