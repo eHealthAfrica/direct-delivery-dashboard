@@ -3,7 +3,19 @@
 angular.module('reports')
   .controller('ParkingReportCtrl', function ($window, config, log, parkingReportService) {
     var vm = this;//viewModel
-    vm.administrativeLevels = ['zone', 'lga', 'ward'];
+    vm.selectedLocation = {};
+    vm.list = {
+      zone: [],
+      lga: [],
+      ward: []
+    };
+    vm.selected = {
+      zone: '',
+      lga: '',
+      ward: '',
+      name: '',
+      type: ''
+    };
 
     vm.dateFormat = config.dateFormat;
     vm.stopOn = new Date();
@@ -17,7 +29,7 @@ angular.module('reports')
     function openDatePicker($event) {
       $event.preventDefault();
       $event.stopPropagation();
-      this.opened = true;
+      this.opened = !this.opened;
     }
 
     vm.start = {
@@ -30,64 +42,72 @@ angular.module('reports')
       open: openDatePicker
     };
 
-    vm.getName = function (str, type, index) {
-      str = str.split('#');
-      var value;
+    vm.updateLocation = function (name, type) {
+      vm.selected[type] = name;
+      vm.selected.name = name;
+      resetLocations(type);
+      getSelectedLocation();
+    };
 
+    function resetLocations(type) {
       if (type === 'zone') {
-        value = str[0];
-        vm.currentRow = value;
-        vm.rowList[index.toString()] = value;
-        vm.previousRow = index === 0 ? '' : vm.rowList[(index - 1).toString()];
+        vm.selected.lga = '';
       }
 
-      if (type === 'product') {
-        value = str[2];
+      if (type === 'zone' || type === 'lga') {
+        vm.selected.ward = '';
       }
 
-      if (type === 'qty') {
-        value = str[1];
+      if (!type) {
+        vm.selected.zone = '';
+        vm.selected.lga = '';
+        vm.selected.ward = '';
+        vm.list.zone = [];
+        vm.list.lga = [];
+        vm.list.ward = [];
+        vm.selectedLocation = {};
       }
+    }
 
-      return value;
-    };
+    function getSelectedLocation() {
 
-    vm.getName2 = function (str, type) {
-      str = str.split('#');
-      var value;
-
-      if (type === 'zone') {
-        value = str[0];
+      if (vm.selected.ward) {
+        vm.selectedLocation = vm.reports.ward[vm.selected.zone][vm.selected.lga][vm.selected.ward];
+        vm.selected.type = 'Ward';
+        buildLocationList();
+      } else if (vm.selected.lga) {
+        vm.selectedLocation = vm.reports.lga[vm.selected.zone][vm.selected.lga];
+        vm.selected.type = 'LGA';
+        buildLocationList();
+      } else if (vm.selected.zone) {
+        vm.selectedLocation = vm.reports.zone[vm.selected.zone];
+        vm.selected.type = 'Zone';
+        buildLocationList();
+      } else {
+        buildLocationList();
+        vm.selectedLocation = vm.reports.zone[vm.selected.zone];
+        vm.selected.type = 'Zone';
+        vm.selected.name = vm.selected.zone;
       }
+    }
 
-      if (type === 'product') {
-        value = str[1];
-      }
-
-      if (type === 'qty') {
-        value = str[2];
-      }
-
-      return value;
-    };
-
-    vm.getTotal = function (location) {
-
-    };
-
-
+    function buildLocationList() {
+      vm.list.zone = Object.keys(vm.reports.zone).sort();
+      vm.selected.zone = vm.selected.zone || vm.list.zone[0];
+      vm.list.lga = Object.keys(vm.reports.lga[vm.selected.zone] || {}).sort();
+      vm.list.ward = vm.selected.lga ? Object.keys(vm.reports.ward[vm.selected.zone][vm.selected.lga]).sort() : [];
+    }
 
     vm.getReport = function () {
       parkingReportService.getParkingReport(vm.startFrom, vm.stopOn)
         .then(function (response) {
-          vm.antigenReports = response.group;
-          vm.report = response.report;
-          vm.reportList = Object.keys(response.report || {});
-          vm.selectedLevel = 'zone';
-          vm.locationNames = Object.keys(vm.antigenReports[vm.selectedLevel] || {}).sort();
+          vm.reports = response.group;
           vm.products = response.products.sort();
+          resetLocations();
+          getSelectedLocation();
         });
     };
 
     vm.getReport();
+
 	});

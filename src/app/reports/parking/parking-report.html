@@ -1,11 +1,7 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="row">
-      <div class="col-sm-2 pull-left">
-        <h4>Delivery Round Reports</h4>
-      </div>
-      <!-- date range selector -->
-      <div class="col-sm-10 pull-right">
+      <div class="col-sm-12">
         <div class="form-group">
 
 
@@ -59,13 +55,7 @@
         <!-- end of date range selector -->
       </div>
     </div>
-    <div class="row">
-      <div class="col-sm-3">
-        <select>
-          <option ng-repeat="zone in parkingRepCtrl.locationNames" ng-bind="zone"></option>
-        </select>
-      </div>
-    </div>
+
     <div class="panel-body">
       <div ng-include="'app/reports/parking/partials/table/table.html'"></div>
     </div>

@@ -13,159 +13,52 @@ angular.module('reports')
       };
     }
 
-    function singleCollate(object, row) {
-      var expectedQty = [
-        row.zone,
-        'Expected'
-
-      ].join('#');
-      var returnedQty = [
-        row.zone,
-        'Returned'
-      ].join('#');
-      var onHandQty = [
-        row.zone,
-        'On Hand'
-      ].join('#');
-      var deliveredQty = [
-        row.zone,
-        'Delivered'
-      ].join('#');
-
-      if (!object.hasOwnProperty(expectedQty)) {
-        object[expectedQty] = {
-          type: 'expectedQty',
-          zone: row.zone,
-          title: 'Expected'
-        };
+    function getGrouped(group, type, row) {
+      if (!group.hasOwnProperty(type)) {
+        group[type] = {};
       }
+      group = groupByZone(group, row, type);
+      group = groupByLGA(group, row, type);
+      group = groupByWard(group, row, type);
 
-      if (!object.hasOwnProperty(returnedQty)) {
-        object[returnedQty] = {
-          type: 'returnedQty',
-          zone: row.zone,
-          title: 'Returned'
-        };
-      }
-
-      if (!object.hasOwnProperty(onHandQty)) {
-        object[onHandQty] = {
-          type: 'onHandQty',
-          zone: row.zone,
-          title: 'On Hand'
-        };
-      }
-
-      if (!object.hasOwnProperty(deliveredQty)) {
-        object[deliveredQty] = {
-          type: 'deliveredQty',
-          zone: row.zone,
-          title: 'Delivered'
-        };
-      }
-
-      if (!object[expectedQty].hasOwnProperty(row.productID)) {
-        object[expectedQty][row.productID] = 0;
-      }
-
-      if (!object[returnedQty].hasOwnProperty(row.productID)) {
-        object[returnedQty][row.productID] = 0;
-      }
-
-      if (!object[onHandQty].hasOwnProperty(row.productID)) {
-        object[onHandQty][row.productID] = 0;
-      }
-
-      if (!object[deliveredQty].hasOwnProperty(row.productID)) {
-        object[deliveredQty][row.productID] = 0;
-      }
-
-      object[expectedQty][row.productID] += row.expectedQty || 0;
-      object[returnedQty][row.productID] += row.returnedQty || 0;
-      object[onHandQty][row.productID] += row.onHandQty || 0;
-      object[deliveredQty][row.productID] += row.deliveredQty || 0;
-
-      return object;
+      return group;
     }
 
-    function byZone(group, row) {
-      var zone = row['zone'];
-
-      if (!group.hasOwnProperty('zone')) {
-        group['zone'] = {};
+    function groupByWard(group, row, type) {
+      if (!group[type][row.zone][row.lga].hasOwnProperty(row.ward)) {
+        group[type][row.zone][row.lga][row.ward] = {};
       }
 
-      if (!group['zone'].hasOwnProperty(zone)) {
-        group['zone'][zone] = {};
+      if (type === 'ward' &&  !group[type][row.zone][row.lga][row.ward].hasOwnProperty(row.productID)) {
+        group[type][row.zone][row.lga][row.ward][row.productID] = defaultFields();
+        group[type][row.zone][row.lga][row.ward][row.productID] = updateProductCount(group[type][row.zone][row.lga][row.ward][row.productID], row);
       }
 
-      if (!group['zone'][zone].hasOwnProperty(row.productID)) {
-        group['zone'][zone][row.productID] = defaultFields();
-      }
-      group['zone'][zone][row.productID] = updateProductCount(group['zone'][zone][row.productID], row);
-      return group['zone'];
+      return group;
     }
 
-    function byLGA(group, row) {
-      var zone = row['zone'];
-      var lga = row['lga'];
-
-      if (!group.hasOwnProperty('lga')) {
-        group['lga'] = {};
+    function groupByLGA(group, row, type) {
+      if (!group[type][row.zone].hasOwnProperty(row.lga)) {
+        group[type][row.zone][row.lga] = {};
       }
 
-      if (!group['lga'].hasOwnProperty(zone)) {
-        group['lga'][zone] = {};
+      if (type === 'lga' &&  !group[type][row.zone][row.lga].hasOwnProperty(row.productID)) {
+        group[type][row.zone][row.lga][row.productID] = defaultFields();
+        group[type][row.zone][row.lga][row.productID] = updateProductCount(group[type][row.zone][row.lga][row.productID], row);
       }
-
-      if (!group['lga'][zone].hasOwnProperty(lga)) {
-        group['lga'][zone][lga] = {};
-      }
-
-      if (!group['lga'][zone][lga].hasOwnProperty(row.productID)) {
-        group['lga'][zone][lga][row.productID] = defaultFields();
-      }
-      group['lga'][zone][lga][row.productID] = updateProductCount(group['lga'][zone][lga][row.productID], row);
-      return group['lga'];
+      return group;
     }
 
-    function byWard(group, row) {
-      var zone = row['zone'];
-      var lga = row['zone'];
-      var ward = row['zone'];
-
-      if (!group.hasOwnProperty('ward')) {
-        group['ward'] = {};
+    function groupByZone(group, row, type) {
+      if (!group[type].hasOwnProperty(row.zone)) {
+        group[type][row.zone] = {};
       }
 
-      if (!group['ward'].hasOwnProperty(zone)) {
-        group['ward'][zone] = {};
+      if (type === 'zone' &&  !group[type][row.zone].hasOwnProperty(row.productID)) {
+        group[type][row.zone][row.productID] = defaultFields();
+        group[type][row.zone][row.productID] = updateProductCount(group[type][row.zone][row.productID], row);
       }
-
-      if (!group['ward'][zone].hasOwnProperty(lga)) {
-        group['ward'][zone][lga] = {};
-      }
-
-      if (!group['ward'][zone][lga].hasOwnProperty(ward)) {
-        group['ward'][zone][lga][ward] = {};
-      }
-
-      if (!group['ward'][zone][lga][ward].hasOwnProperty(row.productID)) {
-        group['ward'][zone][lga][ward][row.productID] = defaultFields();
-      }
-      group['ward'][zone][lga][ward][row.productID] = updateProductCount(group['ward'][zone][lga][ward][row.productID], row);
-      return group['ward'];
-    }
-
-    var groupingFunction = {
-      zone: byZone,
-      lga: byLGA,
-      ward: byWard
-    };
-
-
-    function groupBy(group, type, row) {
-      return groupingFunction[type](group, row);
+      return group;
     }
 
     function getProducts(list, row) {
@@ -188,21 +81,23 @@ angular.module('reports')
     function collatePackingReport(response) {
       var rows = response.rows;
       var i = rows.length;
-      var grouped = {};
+      var grouped = {
+        zone: {},
+        lga: {},
+        ward: {}
+      };
       var products = [];
-      var newGroup = {};
 
       while (i--) {
         var row = rows[i].value;
-        grouped.zone = groupBy(grouped, 'zone', row);
-        grouped.lga = groupBy(grouped, 'lga', row);
-        grouped.ward = groupBy(grouped, 'ward', row);
+        grouped = getGrouped(grouped, 'zone', row);
+        grouped = getGrouped(grouped, 'lga', row);
+        grouped = getGrouped(grouped, 'ward', row);
         products = getProducts(products, row);
-        newGroup = singleCollate(newGroup, row);
       }
+
       return {
         group: grouped,
-        report: newGroup,
         products: products
       };
     }

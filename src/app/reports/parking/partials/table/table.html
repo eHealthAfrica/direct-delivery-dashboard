@@ -14,7 +14,7 @@
       <ul class="dropdown-menu" role="menu" aria-labelledby="btn-append-to-body">
         <li role="menuitem"></li>
         <li
-          ng-repeat="zone in parkingRepCtrl.zoneList"
+          ng-repeat="zone in parkingRepCtrl.list.zone"
           ng-click="parkingRepCtrl.updateLocation(zone, 'zone')"
           role="menuitem"
           ng-bind="zone"></li>
@@ -29,7 +29,7 @@
       <ul class="dropdown-menu" role="menu" aria-labelledby="btn-append-to-body">
         <li role="menuitem"></li>
         <li
-          ng-repeat="lga in parkingRepCtrl.lgaList"
+          ng-repeat="lga in parkingRepCtrl.list.lga"
           ng-click="parkingRepCtrl.updateLocation(lga, 'lga')"
           role="menuitem"
           ng-bind="lga"></li>
@@ -44,7 +44,7 @@
       <ul class="dropdown-menu" role="menu" aria-labelledby="btn-append-to-body">
         <li role="menuitem"></li>
         <li
-          ng-repeat="ward in parkingRepCtrl.wardList"
+          ng-repeat="ward in parkingRepCtrl.list.ward"
           ng-click="parkingRepCtrl.updateLocation(ward, 'ward')"
           role="menuitem"
           ng-bind="ward"></li>
