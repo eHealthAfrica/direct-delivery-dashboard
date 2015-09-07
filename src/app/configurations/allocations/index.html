@@ -11,6 +11,11 @@
           <i class="fa fa-calculator"></i> Calculations
         </a>
       </li>
+      <li ng-class="{active: selectedTab == 3}">
+        <a ui-sref="configurations.allocations.targetpop" ng-click="selectedTab = 3;">
+          <i class="fa fa-group"></i> Target Populations
+        </a>
+      </li>
     </ul>
   </div>
   <div class="panel-body">

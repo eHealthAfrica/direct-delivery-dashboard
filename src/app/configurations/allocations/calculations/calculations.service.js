@@ -48,6 +48,8 @@ angular.module('allocations')
 
     service.getAllocations = function (facilities) {
       var deferred = $q.defer();
+      var promises = {};
+
       function fillwithTemplate(facility, template) {
         for (var i in template.products) { //Todo: adjust this to suit the new template structure
           facility['coverage'][i] = parseInt(template.products[i].coverage);
@@ -58,21 +60,55 @@ angular.module('allocations')
         return facility;
       }
 
-      function setAllocations(template) {
+      function setAllocations() {
+        var view = 'allocations/custom-templates';
 
+        var opts = {
+          include_docs: true
+        };
         facilities.forEach(function (facility) {
+
           facility.coverage = {};
           facility.wastage = {};
           facility.schedule = {};
           facility.buffer = {};
-          fillwithTemplate(facility, template);
-        });
 
+          //get custom template
+          opts.key = facility._id;
+          return promises[facility._id] = dbService.getView(view, opts);
+
+        });
         return facilities;
       }
-      deferred.resolve(setAllocations(service.template));
-      deferred.reject('Could not set allocations, please try again');
-      return deferred.promise;
+      setAllocations();
+
+      return $q.all(promises)
+        .then(function(response){
+          var r = {};
+          for(i in response){
+            if(response[i].rows.length > 0){
+              r[i] = response[i].rows[0].doc;
+            }
+          }
+          return r;
+        })
+        .then(function(r){
+          var keys = Object.keys(r);
+          var index;
+          for(v in facilities){
+            index = keys.indexOf(r);
+
+            if(index !== -1){
+              console.log(r);
+              fillwithTemplate(facilities[v], r[facilities[v]._id])
+            }else{
+               fillwithTemplate(facilities[v], service.template)
+            }
+          }
+          console.log(facilities);
+          return facilities;
+        });
+
     };
     /***
      *  calculates monthly requirements using allocation
