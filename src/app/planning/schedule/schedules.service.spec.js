@@ -155,7 +155,7 @@ describe('ScheduleService', function () {
 			var testDate = 'invalid-date';
 			var result = scheduleService.presetDate(testDate);
 			var expected = '';
-			expect(result).toEqual(expected)
+			expect(result).toEqual(expected);
 		});
 	});
 
