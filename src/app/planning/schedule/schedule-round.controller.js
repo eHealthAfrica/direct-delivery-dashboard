@@ -47,7 +47,11 @@ angular.module('planning')
 
 			function onSuccess(res) {
 				log.success('schedulesSaved', res);
-				$state.go('planning.deliveryRound');
+				$state.go('planning.schedule', {roundId: vm.deliveryRound._id}, {
+					reload: true,
+					inherit: false,
+					notify: true
+				});
 			}
 
 			vm.saveAll = function () {
@@ -77,8 +81,9 @@ angular.module('planning')
 			};
 
 			vm.saveRow = function (data, row) {
+				//TODO: simplify once old data model has been deprecated in favor of one doc per facility per driver delivery.
 				var updatedRow = {
-					deliveryDate: new Date(row.date).toJSON(),
+					deliveryDate: new Date(data.deliveryDate).toJSON(),
 					distance: data.distance,
 					driver: data.driverID,
 					drop: data.drop,
@@ -95,8 +100,11 @@ angular.module('planning')
 				var updatedDailyDelivery = result.filter(function (dailyDelivery) {
 					return dailyDelivery._id === updatedRow.id;
 				});
+
 				if (updatedDailyDelivery.length > 0) {
 					var doc = utility.takeFirst(updatedDailyDelivery);
+					doc.date = utility.formatDate(updatedRow.deliveryDate);
+					doc.driverID = data.driverID;
 					if (angular.isObject(doc)) {
 						return scheduleService.save(doc)
 								.then(function (res) {
