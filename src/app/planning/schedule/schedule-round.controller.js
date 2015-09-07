@@ -1,9 +1,12 @@
 'use strict';
 
 angular.module('planning')
-		.controller('ScheduleRoundCtrl', function ($scope, deliveryRound, $state, dailyDeliveries, scheduleService, planningService, log, $modal, utility) {
+		.controller('ScheduleRoundCtrl', function (deliveryRound, $state, dailyDeliveries,
+                                               scheduleService, planningService, log,
+                                               $modal, utility, $q) {
 
 			var vm = this;
+			vm.isSavingList = {};
 
 			//TODO: set to drivers list pulled from database
 			vm.drivers = [
@@ -66,8 +69,8 @@ angular.module('planning')
 				return false;
 			};
 
-			vm.getDate = function(date){
-				if(utility.isValidDate(date)){
+			vm.getDate = function (date) {
+				if (utility.isValidDate(date)) {
 					return utility.formatDate(date);
 				}
 				return ''
@@ -88,12 +91,30 @@ angular.module('planning')
 				var hashId = scheduleService.hashRow(vm.deliveryRound._id, row.facility.id, row._id);
 				var hashUpdate = {};
 				hashUpdate[hashId] = updatedRow;
-				updateDeliveries(scheduleService.applyChanges(dailyDeliveries, hashUpdate));
-			};
-
-			vm.cancel = function (index) {
-				//TODO: imeplement cancel workflow if necessary
-				console.info('Clicked on cancel', index);
+				var result = scheduleService.applyChanges(dailyDeliveries, hashUpdate);
+				var updatedDailyDelivery = result.filter(function (dailyDelivery) {
+					return dailyDelivery._id === updatedRow.id;
+				});
+				if (updatedDailyDelivery.length > 0) {
+					var doc = utility.takeFirst(updatedDailyDelivery);
+					if (angular.isObject(doc)) {
+						return scheduleService.save(doc)
+								.then(function (res) {
+									log.success('schedulesSaved', res);
+									//TODO: think of better way to refresh all data after changes though this
+									//seems like the easiest and the best chance of having latest server copy while editing
+									// but might be have performance issues.
+									$state.go('planning.schedule', {roundId: vm.deliveryRound._id}, {
+										reload: true,
+										inherit: false,
+										notify: true
+									});
+								})
+								.catch(scheduleService.onSaveError);
+					}
+				} else {
+					return $q.when(false);
+				}
 			};
 
 			vm.openImportDialog = function () {
