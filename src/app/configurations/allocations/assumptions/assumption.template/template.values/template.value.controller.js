@@ -12,5 +12,12 @@ angular.module('allocations')
         .then(function(data){
           return log.success('assumptionEdited', data);
         })
+         .catch(function(err){
+           if(err.status ==='409'){
+             log.error('updateConflict', err);
+           }else{
+              log.error('unknownError', err);
+           }
+         });
     }
   });

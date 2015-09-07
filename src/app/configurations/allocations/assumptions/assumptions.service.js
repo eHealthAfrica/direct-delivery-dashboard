@@ -30,12 +30,11 @@ angular.module('allocations')
         });
     };
     service.save = function(data){
-      console.log(data);
       if(angular.isArray(data)){
         return dbService.saveDocs(data);
       }
       if(data.name){
-        return dbService.insertWithId(data, data.name.trim());
+        return dbService.insertWithId(data, data.name.trim().split(' ').join('-'));
       }
       return dbService.save(data);
     };

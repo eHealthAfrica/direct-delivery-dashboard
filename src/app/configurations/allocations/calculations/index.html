@@ -41,7 +41,7 @@
               <span class="caret"></span></b>
            </a>
            <ul class="dropdown-menu">
-             <li><a href ng-click="calculationsController.changeDataView('tp', 'targetpopulation')">target populations</a></li>
+             <!--<li><a href ng-click="calculationsController.changeDataView('tp', 'targetpopulation')">target populations</a></li>-->
              <li class="divider"></li>
              <li><a href ng-click="calculationsController.changeDataView('pv', 'coverage', '%')">coverage</a></li>
              <li><a href ng-click="calculationsController.changeDataView('pv', 'schedule', '')">schedule</a></li>
@@ -57,5 +57,4 @@
      </div>
    </form>
 <hr/>
- <div ng-include="'app/configurations/allocations/calculations/partials/tp.html'" ng-if="calculationsController.renderedPartial ==='tp'"></div>
- <div ng-include="'app/configurations/allocations/calculations/partials/pv.html'" ng-if="calculationsController.renderedPartial ==='pv'"></div>
+ <div ng-include="'app/configurations/allocations/calculations/partials/pv.html'"></div>
