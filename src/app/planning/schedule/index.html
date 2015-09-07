@@ -110,17 +110,18 @@
           <form editable-form name="rowform" onbeforesave="srCtrl.saveRow($data, facRnd)"
                 ng-show="rowform.$visible" class="form-buttons form-inline"
                 shown="inserted === facRnd">
-            <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+            <button type="submit" ng-disabled="rowform.$waiting"
+                    class="btn btn-primary">
               <span>Save</span>
             </button>
             <button type="button" ng-disabled="rowform.$waiting"
-                    ng-click="rowform.$cancel()" class="btn btn-default">
+                    ng-click="rowform.$cancel()"
+                    class="btn btn-default">
               <span>Cancel</span>
             </button>
           </form>
           <div class="buttons" ng-show="!rowform.$visible">
-            <button class="btn btn-primary" ng-click="rowform.$show()">Edit</button>
-            <button class="btn btn-danger" ng-click="srCtrl.cancel($index)">Delete
+            <button class="btn btn-primary btn-block" ng-click="rowform.$show()">Edit</button>
             </button>
           </div>
         </td>
