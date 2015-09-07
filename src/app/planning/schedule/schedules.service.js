@@ -57,7 +57,7 @@ angular.module('planning')
 			_this.saveSchedules = function (dailyDeliveries) {
 				var result = dailyDeliveries.map(function(row){
 					if(utility.isValidDate(row.date)){
-						row.date = utility.format(row.date);
+						row.date = utility.formatDate(row.date);
 					}else{
 						row.date = '';
 					}
@@ -131,7 +131,7 @@ angular.module('planning')
 						driver: row.driverID,
 						drop: row.drop,
 						distance: row.distance,
-						window: row.distance
+						window: row.window
 					};
 				});
 
