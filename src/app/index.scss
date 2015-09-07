@@ -46,6 +46,14 @@ ul.draglist {
 ul.draglist li {
   padding: 4px;
 }
+.link {
+  color: #1A0DAB;
+  cursor: pointer;
+}
+ul.dropdown-menu li {
+  padding: 0 5px;
+  cursor: pointer;
+}
 // injector
 @import 'reports/invoice/round/round.scss';
 // endinjector
