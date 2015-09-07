@@ -3,7 +3,7 @@
  */
 
 function(doc){
-  if(doc.doc_type === 'product'){
-
+  if(doc.doc_type === 'allocation_template'){
+	  emit(doc._id)
   }
 }
