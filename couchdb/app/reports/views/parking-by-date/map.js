@@ -21,7 +21,7 @@ function(doc) {
       var row = doc.facilityRounds[i];
       var j = row.packedProduct.length;
       while (j--) {
-        emit([doc.date, row.facility.state, doc.deliveryRoundID], extendObject(row.facility, row.packedProduct[j]));
+        emit([doc.date, doc.deliveryRoundID], extendObject(row.facility, row.packedProduct[j]));
       }
     }
   }
