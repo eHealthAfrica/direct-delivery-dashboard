@@ -1,0 +1,68 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-sm-4 pull-left">
+        <h4>
+          <i class="fa fa-pie-chart"></i>
+          Allocations for Delivery Round: {{ daCtrl.deliveryRound._id }}
+        </h4>
+      </div>
+      <div class=" clearfix pull-right">
+        <span class="dropdown" dropdown on-toggle="toggled(open)">
+           <a href class="dropdown-toggle btn btn-lg btn-primary" dropdown-toggle>
+             <b>
+               <i class="fa fa-check"></i>
+               {{ daCtrl.selectedView }}
+               <span class="caret"></span>
+             </b>
+           </a>
+           <ul class="dropdown-menu">
+             <li class="divider"></li>
+             <li>
+               <a href="#" ng-repeat="key in daCtrl.views"
+                  ng-click="daCtrl.switchView(key)">{{ key }}
+               </a>
+             </li>
+           </ul>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-body" ng-show="daCtrl.productList.length === 0">
+
+    <div class="panel-body alert alert-info">
+      <i class="fa fa-lg fa-info-circle"></i>
+      <span> No allocation found, please set allocation template.</span>
+    </div>
+  </div>
+
+  <div>
+    <table
+        class="table table-condensed table-striped table-bordered">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th width="10%">Facility</th>
+        <th  width="5%" ng-repeat="pCode in daCtrl.productList" ng-bind="pCode"></th>
+        <th width="10%">Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="facRnd in daCtrl.facilityRounds">
+        <td ng-bind="($index + 1)"></td>
+        <td ng-bind="facRnd.facility.name"></td>
+        <td ng-repeat="pCode in daCtrl.productList"
+            ng-bind="facRnd.packedProduct[pCode].expectedQty">
+        </td>
+        <td>
+          <button class="btn btn-primary">Edit</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+
