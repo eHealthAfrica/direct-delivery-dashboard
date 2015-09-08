@@ -9,8 +9,8 @@ angular.module('products')
         parent: 'configurations.layout',
         url: '/products',
         templateUrl: 'app/configurations/products/product.html',
-        controller: 'ProductsController',
-        controllerAs: 'productsController',
+        controller: 'ProductsCtrl',
+        controllerAs: 'productsCtrl',
         resolve: {
           products : function(productService){
             return productService.getAll()
