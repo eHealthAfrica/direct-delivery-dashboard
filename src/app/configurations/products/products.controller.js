@@ -1,9 +1,7 @@
-/**
- * Created by ehealthafrica on 7/7/15.
- */
+'sue strict';
 
 angular.module('products')
-  .controller('ProductsController', function(products){
+  .controller('ProductsCtrl', function(products){
     var vm = this;
 
     vm.products = angular.isArray(products) ? products : [];

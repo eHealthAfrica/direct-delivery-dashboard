@@ -9,7 +9,9 @@ angular.module('configurations')
       url: '/configurations',
       templateUrl: 'app/configurations/index.html',
       controller: function($state){
-        $state.go('configurations.layout')
+        if($state.current.name ==='configurations'){
+          $state.go('configurations.allocations.assumptions')
+        }
       },
       data: {
         label: 'Configurations'
