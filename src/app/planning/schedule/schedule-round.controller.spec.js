@@ -2,7 +2,7 @@
 
 describe('ScheduleRoundController', function () {
 
-	beforeEach(module('planning', 'deliveryMock'));
+	beforeEach(module('planning', 'deliveryMock', 'utility'));
 
 	var $controller;
 	var $state;
@@ -13,9 +13,14 @@ describe('ScheduleRoundController', function () {
 	var ScheduleRoundCtrl;
 	var deliveryRound;
 	var $modal;
+	var utility;
+	var row;
 
 
-	beforeEach(inject(function (_$controller_, _$state_, _scheduleService_, _planningService_, _log_, _deliveryRoundMock_, _dailyDeliveriesMock_, _$modal_) {
+	beforeEach(inject(function (_$controller_, _$state_, _scheduleService_,
+	                            _planningService_, _log_, _deliveryRoundMock_,
+	                            _dailyDeliveriesMock_, _$modal_, _utility_) {
+
 		$controller = _$controller_;
 		$state = _$state_;
 		scheduleService = _scheduleService_;
@@ -24,6 +29,8 @@ describe('ScheduleRoundController', function () {
 		deliveryRound = _deliveryRoundMock_;
 		$modal = _$modal_;
 		dailyDeliveries = _dailyDeliveriesMock_;
+		utility = _utility_;
+
 
 		ScheduleRoundCtrl = $controller('ScheduleRoundCtrl', {
 			deliveryRound: deliveryRound,
@@ -32,11 +39,33 @@ describe('ScheduleRoundController', function () {
 			scheduleService: scheduleService,
 			planningService: planningService,
 			log: log,
-			$modal: $modal
+			$modal: $modal,
+			utility: utility
 		});
+
+		row = {
+			"_id": "d3a16874da59f7b40cab3eadd41ac085",
+			"deliveryRoundID": "KN-21-2015",
+			"facility": {
+				"zone": "Bichi",
+				"lga": "Gwarzo",
+				"ward": "Kutama",
+				"name": "Test Fac 1",
+				"id": "KNS THF - JIK",
+				"contact": "Test Driver Name",
+				"phoneNo": "0801234567"
+			},
+			"date": new Date("2015-04-27"),
+			"driverID": "bashir@example.com",
+			"drop": 1,
+			"window": "9AM-11AM",
+			"status": "Success: 1st attempt"
+		};
 
 		spyOn(planningService, 'completePlanning').and.callThrough();
 		spyOn($modal, 'open').and.callThrough();
+		spyOn(scheduleService, 'hashRow').and.callThrough();
+		spyOn(scheduleService, 'applyChanges').and.callThrough();
 
 	}));
 
@@ -114,27 +143,28 @@ describe('ScheduleRoundController', function () {
 
 	describe('isUpdated', function () {
 		it('should return True if both are not the same', function () {
-			var row = {
-				"_id": "d3a16874da59f7b40cab3eadd41ac085",
-				"deliveryRoundID": "KN-21-2015",
-				"facility": {
-					"zone": "Bichi",
-					"lga": "Gwarzo",
-					"ward": "Kutama",
-					"name": "Test Fac 1",
-					"id": "KNS THF - JIK",
-					"contact": "Test Driver Name",
-					"phoneNo": "0801234567"
-				},
-				"date": "2015-04-27",
-				"driverID": "bashir@example.com",
-				"drop": 1,
-				"window": "9AM-11AM",
-				"status": "Success: 1st attempt"
-			};
 			expect(ScheduleRoundCtrl.isUpdated(row)).toBeFalsy();
 			row.drop = 5;//change row
 			expect(ScheduleRoundCtrl.isUpdated(row)).toBeTruthy();
+		});
+	});
+
+	describe('saveRow', function(){
+		it('Should call scheduleService.hashRow() with expected parameters', function () {
+			expect(scheduleService.hashRow).not.toHaveBeenCalled();
+			var $data = {};
+			var facRnd = dailyDeliveries[1];
+			ScheduleRoundCtrl.saveRow($data, facRnd);
+			expect(scheduleService.hashRow.calls.mostRecent().args[0]).toEqual(deliveryRound._id);
+			expect(scheduleService.hashRow.calls.mostRecent().args[1]).toEqual(facRnd.facility.id);
+			expect(scheduleService.hashRow.calls.mostRecent().args[2]).toEqual(facRnd._id);
+		});
+
+		it('Should call scheduleService.applyChanges()', function(){
+			expect(scheduleService.applyChanges).not.toHaveBeenCalled();
+			var data = {};
+			ScheduleRoundCtrl.saveRow(data, row);
+			expect(scheduleService.applyChanges).toHaveBeenCalled();
 		});
 	});
 

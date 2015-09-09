@@ -1,5 +1,5 @@
 angular.module('planning')
-		.service('scheduleService', function (dbService, log) {
+		.service('scheduleService', function (dbService, log, utility) {
 
 			var _this = this;
 
@@ -55,7 +55,26 @@ angular.module('planning')
 			};
 
 			_this.saveSchedules = function (dailyDeliveries) {
-				return dbService.saveDocs(dailyDeliveries);
+				var result = dailyDeliveries.map(function(row){
+					if(utility.isValidDate(row.date)){
+						row.date = utility.formatDate(row.date);
+					}else{
+						row.date = '';
+					}
+					return row;
+				});
+				return dbService.saveDocs(result);
+			};
+
+			_this.save = function(doc){
+				return dbService.save(doc);
+			};
+
+			_this.presetDate = function(date){
+				if(utility.isValidDate(date)){
+					return new Date(date);
+				}
+				return '';
 			};
 
 			_this.flatten = function (dailyDeliveries) {
@@ -68,7 +87,7 @@ angular.module('planning')
 									var schedule = {
 										_id: dailySchedule._id,
 										facility: facRnd.facility,
-										date: dailySchedule.date,
+										date: _this.presetDate(dailySchedule.date),
 										driverID: dailySchedule.driverID,
 										drop: facRnd.drop,
 										window: facRnd.window,
@@ -78,6 +97,7 @@ angular.module('planning')
 									schedules.push(schedule);
 								});
 					} else {
+						dailySchedule.date = _this.presetDate(dailySchedule.date);
 						schedules.push(dailySchedule);
 					}
 				}
@@ -98,16 +118,20 @@ angular.module('planning')
 
 			_this.prepareExport = function (roundId, dailyDeliveries) {
 				var rows = dailyDeliveries.map(function (row) {
+					var deliveryDate = '';
+					if(utility.isValidDate(row.date)){
+						deliveryDate = utility.formatDate(row.date);
+					}
 					return {
 						uuid: row._id,
 						roundId: roundId,
 						facilityName: row.facility.name,
 						facilityCode: row.facility.id,
-						deliveryDate: row.date,
+						deliveryDate: deliveryDate,
 						driver: row.driverID,
 						drop: row.drop,
 						distance: row.distance,
-						window: row.distance
+						window: row.window
 					};
 				});
 
@@ -173,7 +197,7 @@ angular.module('planning')
 						}
 					}
 
-					if (scheduleInfo) {
+					if (scheduleInfo && utility.isValidDate(dailyDelivery.date)) {
 						if (dailyDelivery.date !== scheduleInfo.deliveryDate) {
 							dailyDelivery.targetDate = dailyDelivery.date;
 						}

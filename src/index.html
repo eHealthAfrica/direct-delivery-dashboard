@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="../bower_components/nvd3/src/nv.d3.css" />
     <link rel="stylesheet" href="../bower_components/angular-gantt/assets/angular-gantt.css" />
     <link rel="stylesheet" href="../bower_components/angular-gantt/assets/angular-gantt-plugins.css" />
+    <link rel="stylesheet" href="../bower_components/angular-xeditable/dist/css/xeditable.css" />
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -55,6 +56,7 @@
     <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="../bower_components/ng-csv/build/ng-csv.min.js"></script>
     <script src="../bower_components/angular-csv-import/dist/angular-csv-import.js"></script>
+    <script src="../bower_components/angular-xeditable/dist/js/xeditable.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -67,6 +69,7 @@
     <script src="app/planning/facilities/dialogs/copy-round/copy-round-dialog.controller.js"></script>
     <script src="app/planning/facilities/dialogs/add/add-facility.service.js"></script>
     <script src="app/planning/facilities/dialogs/add/add-facility-dialog.controller.js"></script>
+    <script src="app/configurations/allocations/targetpop/upload/target-population-upload.js"></script>
     <script src="app/configurations/allocations/assumptions/assumption.template/assumptions.template.add.js"></script>
     <script src="app/configurations/allocations/assumptions/assumption.template/assumption.add.service.js"></script>
     <script src="app/reports/reports.module.js"></script>
@@ -75,6 +78,9 @@
     <script src="app/reports/invoice/round/round.constants.js"></script>
     <script src="app/planning/schedule/import/schedule-import-dialog.controller.js"></script>
     <script src="app/planning/delivery-round/dialog/round-dialog.controller.js"></script>
+    <script src="app/configurations/allocations/targetpop/targetpop.states.js"></script>
+    <script src="app/configurations/allocations/targetpop/targetpop.controller.js"></script>
+    <script src="app/configurations/allocations/targetpop/targetPop.service.js"></script>
     <script src="app/configurations/allocations/calculations/calculations.states.js"></script>
     <script src="app/configurations/allocations/calculations/calculations.service.js"></script>
     <script src="app/configurations/allocations/calculations/calculations.controller.js"></script>
@@ -128,6 +134,7 @@
     <script src="components/log/log.service.js"></script>
     <script src="components/location/location.module.js"></script>
     <script src="components/location/location.service.js"></script>
+    <script src="components/location/location.cascade.service.js"></script>
     <script src="components/footer/footer.module.js"></script>
     <script src="components/footer/footer.controller.js"></script>
     <script src="components/drivers/drivers.module.js"></script>
@@ -144,9 +151,6 @@
     <script src="components/auth/auth.module.js"></script>
     <script src="components/auth/auth.service.js"></script>
     <script src="components/auth/auth.config.js"></script>
-    <script src="app/login/login.module.js"></script>
-    <script src="app/login/login.states.js"></script>
-    <script src="app/login/login.controller.js"></script>
     <script src="app/users/users.states.js"></script>
     <script src="app/users/users.service.js"></script>
     <script src="app/users/users.controller.js"></script>
@@ -155,6 +159,9 @@
     <script src="app/reports/reports.service.js"></script>
     <script src="app/planning/planning.states.js"></script>
     <script src="app/planning/planning.service.js"></script>
+    <script src="app/login/login.module.js"></script>
+    <script src="app/login/login.states.js"></script>
+    <script src="app/login/login.controller.js"></script>
     <script src="app/home/home.module.js"></script>
     <script src="app/home/home.states.js"></script>
     <script src="app/index.module.js"></script>

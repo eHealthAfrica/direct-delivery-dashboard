@@ -3,6 +3,7 @@
 angular
 		.module('directDeliveryDashboard', [
 			'ngSanitize',
+			'xeditable',
 			'ngCsv',
 			'ngCsvImport',
 			'nvd3ChartDirectives',
@@ -17,7 +18,7 @@ angular
 			'login',
 			'reports',
 			'planning',
-      'finance',
+			'finance',
 			'users',
 			'db',
 			'location',
@@ -25,9 +26,13 @@ angular
 			'allocations',
 			'products',
 			'utility',
-      'eha-drag-n-drop'
+			'eha-drag-n-drop'
 		])
-		.run(function ($rootScope, $state, log, AuthService) {
+		.run(function ($rootScope, $state, log, AuthService, editableOptions) {
+
+			//set xeditable bootstrap theme
+			editableOptions.theme = 'bs3';
+
 			$rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
 				if (!AuthService.initialized) {
 					AuthService.init()
