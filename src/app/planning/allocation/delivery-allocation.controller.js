@@ -6,6 +6,7 @@ angular.module('planning')
 				packedProduct: 'Packed Product',
 				productPresentation: 'Product Presentation'
 			};
+			vm.productPresentation = {};
 
 			vm.deliveryRound = deliveryRound;
 			vm.selectedView = vm.views.packedProduct;
@@ -15,6 +16,10 @@ angular.module('planning')
 
 			vm.switchView = function (view) {
 				vm.selectedView = view;
+			};
+
+			vm.saveRow = function ($data, $index) {
+
 			};
 
 
