@@ -38,14 +38,40 @@
       <th tooltip="Bi-weekly target population of children under the age of 1 year for 2015">Bi-weekly TP U1 (2015)</th>
       <th tooltip="Annual target population of women in child bearing age">Annual TP WCBA (2015)</th>
       <th tooltip="Bi-weekly target population of women in child bearing age">Bi-weekly TP WCBA (2015)</th>
+      <th></th>
   </tr>
   <tr ng-repeat="row in targetPopCtrl.renderedData track by $index">
     <td><a href ng-bind="row.facility.name"></a> </td>
-    <td ng-bind="row.annualU1"></td>
-    <td ng-bind="row['bi-weeklyU1']"></td>
-    <td ng-bind="row['annualWCBA']"></td>
-    <td ng-bind="row['bi-weeklyWCBA']"></td>
+    <td>
+      <span ng-bind="row.annualU1" ng-show="targetPopCtrl.editing !== row._id"></span>
+      <input ng-model="row.annualU1" ng-show="targetPopCtrl.editing === row._id" class="input-sm form-control">
+    </td>
+    <td>
+      <span ng-bind="row['bi-weeklyU1']" ng-show="targetPopCtrl.editing !== row._id"></span>
+      <input ng-model="row['bi-weeklyU1']" ng-show="targetPopCtrl.editing === row._id" class="input-sm form-control">
+    </td>
+    <td>
+      <span ng-bind="row['annualWCBA']" ng-show="targetPopCtrl.editing !== row._id"></span>
+      <input ng-model="row['annualWCBA']" ng-show="targetPopCtrl.editing === row._id" class="input-sm form-control">
+    </td>
+    <td>
+      <span ng-bind="row['bi-weeklyWCBA']" ng-show="targetPopCtrl.editing !== row._id"></span>
+      <input ng-model="row['bi-weeklyWCBA']" ng-show="targetPopCtrl.editing === row._id" class="input-sm form-control">
+    </td>
+    <td>
+      <button
+          class="btn btn-primary btn-sm"
+          ng-show="targetPopCtrl.editing !== row._id"
+          ng-click="targetPopCtrl.editing = row._id">
+        <i class="fa fa-edit"></i> edit</button>
+      <button
+          class="btn btn-success btn-sm"
+          ng-show="targetPopCtrl.editing === row._id"
+          ng-click="targetPopCtrl.saveUpdate(row)"
+          >
+          <i class="fa fa-save"></i> save
+      </button>
+    </td>
   </tr>
 </table>
 
-{{targetPopCtrl.csv.result}}
