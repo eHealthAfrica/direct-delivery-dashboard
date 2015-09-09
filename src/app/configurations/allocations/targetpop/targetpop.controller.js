@@ -87,7 +87,28 @@ angular.module('allocations')
           return log.error('targetPopSave', err)
         })
     };
+    vm.csvHeader = ['_id', 'state', 'facility_id', 'facility_name', 'year', 'annualU1', 'bi-weeklyU1', 'annualWCBA', 'bi-weeklyWCBA'];
+    vm.csvTemplateDownload = function(){
+      var csvArr = [];
 
+      if(vm.renderedData.length == 0){
+        return log.error('','', 'could not retrieve data please try again');
+      }
+      for(var i in vm.renderedData){
+        csvArr.push({
+          '_id': vm.renderedData[i]._id,
+          'state': vm.selectedState,
+          'facility_id': vm.renderedData[i].facility._id,
+          'facility_name': vm.renderedData[i].facility.name,
+          'year': vm.renderedData[i].year,
+          'annualU1': vm.renderedData[i].annualU1,
+          'bi-weeklyU1': vm.renderedData[i]['bi-weeklyU1'],
+          'annualWCBA': vm.renderedData[i].annualWCBA,
+          'bi-weeklyWCBA': vm.renderedData[i]['bi-weeklyWCBA']
+        });
+      }
+      return csvArr;
+    };
     vm.csvUpload = function(data){
       var modalInstance = $modal.open({
         animation: true,
@@ -101,7 +122,12 @@ angular.module('allocations')
       });
       modalInstance.result.then(function (formData) {
 
-        targetPopulationService.saveMany(formData)
+        for(i in vm.renderedData){
+          if(formData[vm.renderedData[i]._id]){
+            angular.extend(vm.renderedData[i], formData[vm.renderedData[i]._id] )
+          }
+        }
+        targetPopulationService.saveMany(vm.renderedData)
           .then(function(data){
             return log.success('targetPopulationEdited', data);
           })
