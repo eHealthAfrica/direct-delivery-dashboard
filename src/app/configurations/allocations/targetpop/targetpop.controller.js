@@ -72,13 +72,20 @@ angular.module('allocations')
       .then(getFacilities)
       .then(calculationService.getTargetPop)
       .then(function (response) {
-        console.log(response);
         vm.renderedData = response;
         return response;
       });
 
-    vm.showRawDoc = function(){
-      console.log(vm.csv.result);
+    vm.saveUpdate = function(doc){
+      targetPopulationService.update(doc)
+        .then(function(data){
+          vm.editing = '';
+          return log.success('targetPopulationEdited', data);
+        })
+        .catch(function(err){
+          vm.editing = '';
+          return log.error('targetPopSave', err)
+        })
     };
 
     vm.csvUpload = function(data){
@@ -96,14 +103,14 @@ angular.module('allocations')
 
         targetPopulationService.saveMany(formData)
           .then(function(data){
-            return log.success('assumptionEdited', data);
+            return log.success('targetPopulationEdited', data);
           })
           .catch(function(err){
-            return log.error('assumptionSaveFailed', err)
+            return log.error('targetPopulationEdited', err)
           })
       })
       .catch(function (err) {
-        log.info('canceledAssumptionEdit', err);
+        log.info('targetPopSave', err);
       });
     }
   });

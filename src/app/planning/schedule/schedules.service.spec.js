@@ -1,6 +1,6 @@
 'use strict';
 
-describe('ScheduleRoundController', function () {
+describe('ScheduleService', function () {
 
 	beforeEach(module('planning', 'deliveryMock', 'db', 'scheduleMock', 'log'));
 
@@ -39,6 +39,7 @@ describe('ScheduleRoundController', function () {
 
 		spyOn(dbService, 'saveDocs').and.callThrough();
 		spyOn(log, 'error').and.callThrough();
+		spyOn(dbService, 'save').and.callThrough();
 
 	}));
 
@@ -51,7 +52,7 @@ describe('ScheduleRoundController', function () {
 	describe('saveSchedules', function () {
 		it('Should call dbService.saveDocs with expected parameter', function () {
 			expect(dbService.saveDocs).not.toHaveBeenCalled();
-			var expectedParams = {};
+			var expectedParams = [];
 			scheduleService.saveSchedules(expectedParams);
 			expect(dbService.saveDocs).toHaveBeenCalledWith(expectedParams);
 		});
@@ -131,6 +132,30 @@ describe('ScheduleRoundController', function () {
 			scheduleService.onSaveError(err);
 			expect(log.error.calls.mostRecent().args[0]).toEqual('saveBatchScheduleFailed');
 			expect(log.error.calls.mostRecent().args[1]).toEqual(err);
+		});
+	});
+
+	describe('save', function () {
+		it('should call dbService.save with expected parameter', function(){
+			expect(dbService.save).not.toHaveBeenCalled();
+			var doc = angular.copy(dailyDeliveries[0]);
+			scheduleService.save(doc);
+			expect(dbService.save).toHaveBeenCalledWith(doc);
+		});
+	});
+
+	describe('preset', function () {
+		it('Should return date object if param is a valid date', function(){
+			var testDate = '2015-01-13';
+			var result = scheduleService.presetDate(testDate);
+			expect(angular.isObject(result)).toBeTruthy();
+		});
+
+		it('Should return EMPTY STRING if date is invalid', function(){
+			var testDate = 'invalid-date';
+			var result = scheduleService.presetDate(testDate);
+			var expected = '';
+			expect(result).toEqual(expected);
 		});
 	});
 
