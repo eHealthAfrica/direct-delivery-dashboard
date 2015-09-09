@@ -8,6 +8,10 @@
         </h4>
       </div>
       <div class=" clearfix pull-right">
+        <button class="btn btn-lg btn-success">
+          Select Allocation Template
+        </button>
+
         <span class="dropdown" dropdown on-toggle="toggled(open)">
            <a href class="dropdown-toggle btn btn-lg btn-primary" dropdown-toggle>
              <b>
@@ -17,7 +21,6 @@
              </b>
            </a>
            <ul class="dropdown-menu">
-             <li class="divider"></li>
              <li>
                <a href="#" ng-repeat="key in daCtrl.views"
                   ng-click="daCtrl.switchView(key)">{{ key }}
@@ -29,39 +32,14 @@
     </div>
   </div>
 
-  <div class="panel-body" ng-show="daCtrl.productList.length === 0">
-
-    <div class="panel-body alert alert-info">
-      <i class="fa fa-lg fa-info-circle"></i>
-      <span> No allocation found, please set allocation template.</span>
-    </div>
+  <div ng-include="'app/planning/allocation/partials/packing-list.html'"
+      ng-show="daCtrl.views.packedProduct === daCtrl.selectedView">
   </div>
 
-  <div>
-    <table
-        class="table table-condensed table-striped table-bordered">
-      <thead>
-      <tr>
-        <th>#</th>
-        <th width="10%">Facility</th>
-        <th  width="5%" ng-repeat="pCode in daCtrl.productList" ng-bind="pCode"></th>
-        <th width="10%">Action</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr ng-repeat="facRnd in daCtrl.facilityRounds">
-        <td ng-bind="($index + 1)"></td>
-        <td ng-bind="facRnd.facility.name"></td>
-        <td ng-repeat="pCode in daCtrl.productList"
-            ng-bind="facRnd.packedProduct[pCode].expectedQty">
-        </td>
-        <td>
-          <button class="btn btn-primary">Edit</button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+  <div ng-include="'app/planning/allocation/partials/product-presentation.html'"
+       ng-show="daCtrl.views.productPresentation === daCtrl.selectedView">
   </div>
+
 </div>
 
 
