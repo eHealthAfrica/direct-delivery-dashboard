@@ -76,6 +76,17 @@ angular.module('allocations')
         return response;
       });
 
+    vm.saveUpdate = function(doc){
+      targetPopulationService.update(doc)
+        .then(function(data){
+          vm.editing = '';
+          return log.success('targetPopulationEdited', data);
+        })
+        .catch(function(err){
+          vm.editing = '';
+          return log.error('targetPopSave', err)
+        })
+    };
     vm.csvHeader = ['_id', 'state', 'facility_id', 'facility_name', 'year', 'annualU1', 'bi-weeklyU1', 'annualWCBA', 'bi-weeklyWCBA'];
     vm.csvTemplateDownload = function(){
       var csvArr = [];
@@ -118,14 +129,14 @@ angular.module('allocations')
         }
         targetPopulationService.saveMany(vm.renderedData)
           .then(function(data){
-            return log.success('assumptionEdited', data);
+            return log.success('targetPopulationEdited', data);
           })
           .catch(function(err){
-            return log.error('assumptionSaveFailed', err)
+            return log.error('targetPopulationEdited', err)
           })
       })
       .catch(function (err) {
-        log.info('canceledAssumptionEdit', err);
+        log.info('targetPopSave', err);
       });
     }
   });

@@ -2,25 +2,26 @@
   <div class="panel-heading">
     <div class="row">
       <div class="col-sm-4 pull-left">
-        <h4><i class="fa fa-truck"></i> Schedules for Delivery Round: {{ srCtrl.deliveryRound._id }}</h4>
+        <h4><i class="fa fa-truck"></i> Schedules for Delivery Round: {{
+          srCtrl.deliveryRound._id }}</h4>
       </div>
 
       <div class="col-sm-8">
         <div class="btn-group pull-right">
           <button class="btn btn-success btn-lg"
-              ng-click="srCtrl.completePlanning()">
+                  ng-click="srCtrl.completePlanning()">
             <i class="fa fa-thumbs-up"></i>
             <span>Complete Planning</span>
           </button>
 
           <button class="btn btn-primary btn-lg"
-              ng-click="srCtrl.saveAll()">
+                  ng-click="srCtrl.saveAll()">
             <i class="fa fa-floppy-o"></i>
             <span>Save All</span>
           </button>
 
           <button class="btn btn-default btn-lg"
-              ng-click="srCtrl.openImportDialog()">
+                  ng-click="srCtrl.openImportDialog()">
             <i class="fa fa-cloud-upload"></i>
             <span>Upload Schedule Info</span>
           </button>
@@ -50,6 +51,8 @@
     </div>
   </div>
   <div>
+
+
     <table ng-show="srCtrl.facilityDeliveries.length > 0"
            class="table table-condensed table-striped table-bordered">
       <thead>
@@ -63,6 +66,7 @@
         <th class="col-sm-1">Window</th>
         <th class="col-sm-1">Distance (KM)</th>
         <th class="col-sm-1">Status</th>
+        <th class="col-sm-1">Action</th>
       </tr>
       </thead>
       <tbody>
@@ -71,14 +75,61 @@
         <td ng-bind="($index + 1)"></td>
         <td ng-bind="::facRnd.facility.name"></td>
         <td ng-bind="::facRnd.facility.id"></td>
-        <td ng-bind="facRnd.date"></td>
-        <td ng-bind="facRnd.driverID"></td>
-        <td ng-bind="facRnd.drop"></td>
-        <td ng-bind="facRnd.window"></td>
-        <td ng-bind="facRnd.distance"></td>
+        <td>
+          <a href="#" editable-date="facRnd.date" e-name="deliveryDate" e-form="rowform">
+            {{ srCtrl.getDate(facRnd.date) }}
+          </a>
+        </td>
+        <td>
+          <span editable-select="facRnd.driverID"
+                e-name="driverID"
+                e-form="rowform"
+                e-ng-options="s.value as s.text for s in srCtrl.drivers">
+            {{ facRnd.driverID || '' }}
+          </span>
+        </td>
+        <td>
+          <span editable-text="srCtrl.facilityDeliveries[$index].drop" e-name="drop" e-form="rowform"
+                e-required></span>
+          {{ facRnd.drop || '' }}
+        </td>
+        <td>
+          <span editable-text="srCtrl.facilityDeliveries[$index].window" e-name="window" e-form="rowform"
+                e-required></span>
+          {{ facRnd.window || '' }}
+          </span>
+        </td>
+        <td>
+          <span editable-text="srCtrl.facilityDeliveries[$index].distance" e-name="distance" e-form="rowform"
+                e-required></span>
+          {{ facRnd.distance || '' }}
+        </td>
         <td ng-bind="facRnd.status"></td>
+        <td>
+          <!-- form -->
+          <form editable-form name="rowform" onbeforesave="srCtrl.saveRow($data, srCtrl.facilityDeliveries[$index])"
+                ng-show="rowform.$visible" class="form-buttons form-inline"
+                shown="inserted === facRnd">
+            <button type="submit" ng-disabled="rowform.$waiting"
+                    class="btn btn-primary">
+              <span>Save</span>
+            </button>
+            <button type="button" ng-disabled="rowform.$waiting"
+                    ng-click="rowform.$cancel()"
+                    class="btn btn-default">
+              <span>Cancel</span>
+            </button>
+          </form>
+          <div class="buttons" ng-show="!rowform.$visible">
+            <button class="btn btn-primary btn-block" ng-click="rowform.$show()">Edit</button>
+            </button>
+          </div>
+        </td>
       </tr>
       </tbody>
     </table>
   </div>
 </div>
+
+
+

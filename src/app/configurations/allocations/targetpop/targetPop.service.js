@@ -8,6 +8,10 @@ angular.module('allocations')
     var service = this;
 
     service.saveMany = function(docs){
-      return dbService.saveDocs(docs)
+      return dbService.saveDocs(docs);
+    };
+
+    service.update = function(doc){
+      return  dbService.update(doc);
     }
   });

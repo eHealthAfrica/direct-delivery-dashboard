@@ -54,7 +54,8 @@ angular.module('scheduleMock', [])
 					"facilityCode": "KNS THF - JIK",
 					"deliveryDate": "2015-04-27",
 					"driver": "bashir@example.com",
-					"drop": 1
+					"drop": 1,
+					"window": "9AM-11AM"
 				},
 				{
 					"uuid": "d3a16874da59f7b40cab3eadd41672892",
@@ -63,7 +64,8 @@ angular.module('scheduleMock', [])
 					"facilityCode": "KNS THF - FAC",
 					"deliveryDate": "2015-04-27",
 					"driver": "bashir@example.com",
-					"drop": 1
+					"drop": 1,
+					"window": "9AM-11AM"
 				}
 			],
 			"headers": [

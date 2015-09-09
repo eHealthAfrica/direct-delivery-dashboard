@@ -3,7 +3,7 @@
  */
 
 angular.module('allocations')
-  .controller('CalculationsController', function (products, locations, locationService, calculationService, pouchUtil, assumptionList, log) {
+  .controller('CalculationsController', function (products, locations, locationService, calculationService, pouchUtil, assumptionList, log, assumptionAddService) {
     var vm = this;
     var viewMap = {
       coverage: "getAllocations",
@@ -119,4 +119,52 @@ angular.module('allocations')
       vm.suffix = suffix || '';
       switchRenderedPartial(partial);
     };
+    vm.addCustomAssumption = function(data){
+      var emptyTemplate = {
+        name: data.name,
+        products: {},
+        primary: {
+          facility: data._id
+        },
+        description: '',
+        custom: true,
+        doc_type: 'allocation_template'
+      };
+      if(data.customTemplateRev){
+        emptyTemplate._rev = data.customTemplateRev;
+      }
+      for(product in data.buffer){
+
+        if(! emptyTemplate.products[product]){
+          emptyTemplate.products[product]= {};
+        }
+
+        emptyTemplate.products[product]['buffer'] = data.buffer[product];
+      }
+      for(product in data.coverage){
+
+        if(! emptyTemplate.products[product]){
+          emptyTemplate.products[product]= {};
+        }
+
+        emptyTemplate.products[product]['coverage'] = data.coverage[product];
+      }
+      for(product in data.schedule){
+
+        if(! emptyTemplate.products[product]){
+          emptyTemplate.products[product]= {};
+        }
+
+        emptyTemplate.products[product]['schedule'] = data.schedule[product];
+      }
+      for(product in data.wastage){
+
+        if(! emptyTemplate.products[product]){
+          emptyTemplate.products[product]= {};
+        }
+
+        emptyTemplate.products[product]['wastage'] = data.wastage[product];
+      }
+      assumptionAddService.openForm(emptyTemplate);
+    }
   });

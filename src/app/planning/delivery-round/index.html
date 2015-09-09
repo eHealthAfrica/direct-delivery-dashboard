@@ -16,21 +16,22 @@
         <th>State</th>
         <th>Code</th>
         <th>Status</th>
+        <th>Start</th>
         <th>End</th>
-        <th>Created</th>
+        <th>Created On</th>
         <th>Action</th>
       </tr>
       </thead>
       <tbody>
       <tr ng-repeat="round in crCtrl.deliveryRounds track by $index">
-        <td ng-bind="::round.state"></td>
-        <td ng-bind="::round.roundCode"></td>
-        <td ng-bind="::round.status"></td>
-        <td ng-bind="::round.startDate | date:'d-MMM-yyyy'"></td>
-        <td ng-bind="::round.endDate | date:'d-MMM-yyyy'"></td>
-        <td ng-bind="::round.createdOn | date: 'yyyy-MM-dd HH:mm:ss'"></td>
+        <td class="col-sm-1" ng-bind="::round.state"></td>
+        <td class="col-sm-2" ng-bind="::round.roundCode"></td>
+        <td clas="col-sm-4" ng-bind="::round.status"></td>
+        <td clas="col-sm-2" ng-bind="::round.startDate | date:'d-MMM-yyyy'"></td>
+        <td clas="col-sm-2" ng-bind="::round.endDate | date:'d-MMM-yyyy'"></td>
+        <td clas="col-sm-3" ng-bind="::round.createdOn | date: 'yyyy-MM-dd HH:mm:ss'"></td>
         <td>
-          <button class="btn btn-primary btn-lg" ng-click="crCtrl.open(round._id)">
+          <button class="btn btn-default btn-lg" ng-click="crCtrl.open(round._id)">
             <i class="fa fa-pencil-square-o"></i>
             <span>Edit</span>
           </button>
@@ -39,6 +40,16 @@
             <i class="fa fa-calendar"></i>
             <span>Schedule</span>
           </a>
+
+          <a class="btn btn-primary btn-lg">
+            <i class="fa fa-pie-chart"></i>
+            <span>Allocation</span>
+          </a>
+
+          <button class="btn btn-danger btn-lg">
+            <i class="fa fa-trash"></i>
+            <span>Delete</span>
+          </button>
         </td>
       </tr>
       </tbody>
