@@ -1,0 +1,31 @@
+<div classs="row">
+  <div class="panel-body alert alert-info"
+       ng-if="packingRepCtrl.locationNames.length === 0">
+    <i class="fa fa-lg fa-info-circle"></i>
+    <span> No delivery was made within selected period.</span>
+  </div>
+
+  <table class="table table-condensed table-striped table-bordered"
+         ng-if="packingRepCtrl.locationNames.length > 0">
+    <thead>
+    <tr>
+      <th class="col-sm-2">Administrative Level</th>
+      <th></th>
+      <th ng-repeat="product in packingRepCtrl.products | orderBy: 'packingRepCtrl.report[key].zone'" ng-bind="product"></th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="key in packingRepCtrl.reportList">
+      <td
+        class="link"
+        ng-click="packingRepCtrl.selectLevel(packingRepCtrl.report[key])"
+        ng-bind="packingRepCtrl.report[key].name"
+        ng-if="packingRepCtrl.report[key].type === 'expectedQty'"
+        rowspan="4"></td>
+      <td ng-bind="packingRepCtrl.report[key].title"></td>
+      <td ng-repeat="product in packingRepCtrl.products" ng-bind="packingRepCtrl.report[key][product]"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('reports')
-  .controller('ParkingReportCtrl', function ($window, config, log, parkingReportService) {
+  .controller('PackingReportCtrl', function ($window, config, log, packingReportService) {
     var vm = this;//viewModel
     vm.selectedLocation = {};
     vm.list = {
@@ -99,7 +99,7 @@ angular.module('reports')
     }
 
     vm.getReport = function () {
-      parkingReportService.getParkingReport(vm.startFrom, vm.stopOn)
+      packingReportService.getPackingReport(vm.startFrom, vm.stopOn)
         .then(function (response) {
           vm.reports = response.group;
           vm.products = response.products.sort();

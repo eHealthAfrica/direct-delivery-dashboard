@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('reports')
-  .service('parkingReportService', function(dbService) {
+  .service('packingReportService', function(dbService) {
     var _this = this;
 
     function defaultFields() {
@@ -102,9 +102,9 @@ angular.module('reports')
       };
     }
 
-    _this.getParkingReport = function (startDate, endDate) {
+    _this.getPackingReport = function (startDate, endDate) {
 
-      var view = 'reports/parking-by-date';
+      var view = 'reports/packing-by-date';
       startDate = new Date(startDate).toJSON();
       endDate = new Date(endDate).toJSON();
       var options = {
