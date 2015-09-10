@@ -10,5 +10,6 @@ angular.module('allocations',[
   'location',
   'log',
   'ngDragDrop',
-  'ngCsvImport'
+  'ngCsvImport',
+  'ngCsv'
 ]);

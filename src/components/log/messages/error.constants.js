@@ -82,6 +82,10 @@ angular.module('log')
       message: 'An error occurred while generating report',
       remedy: 'Please, try again and contact support if it persists'
     },
+    targetPopSave: {
+      title: 'saving failed',
+      message: 'error occurred while saving target population record'
+    },
     productRetrievalErr: {
       title: 'Error fetching product',
       message: 'Error occurred while trying to retrieve product record from database',

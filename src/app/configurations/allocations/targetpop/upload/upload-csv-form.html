@@ -32,7 +32,6 @@
     <table class="table table-striped table-bordered">
       <tr>
         <th>State</th>
-        <th>LGA</th>
         <th>Facility</th>
         <th>Annual TP U1</th>
         <th>Bi-weekly TP U1</th>
@@ -41,8 +40,7 @@
       </tr>
       <tr ng-repeat="record in uploadCSVCtrl.csv.result track by $index">
         <td ng-bind="record.state"></td>
-        <td ng-bind="record.lga"></td>
-        <td ng-bind="record.facility"></td>
+        <td ng-bind="record.facility_name"></td>
         <td ng-bind="record.annualU1"></td>
         <td ng-bind="record['bi-weeklyU1']"></td>
         <td ng-bind="record['annualWCBA']"></td>
