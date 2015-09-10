@@ -46,6 +46,16 @@ angular.module('products')
 
     };
     this.save = function(doc){
-      return dbService.save(doc)
+
+      var saveMethods = ['insertWithId', ''];
+      var use = 'update';
+
+      if(!doc._id){
+        doc._id = doc.code; //new product
+      }
+      if(!doc._rev){
+        use = 'insertWithId';
+      }
+      return dbService[use](doc);
     }
   });
