@@ -33,5 +33,9 @@ angular.module('log')
     assumptionEdited: {
       title: 'Update successfully',
       message: 'Assumption edited successfully!'
+    },
+    productSave: {
+      title: 'Product saved successfully',
+      message: 'Product has been saved successfully'
     }
   });
