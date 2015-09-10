@@ -35,8 +35,8 @@ angular.module('allocations')
           }
         }
       })
-      .state('allocationView',  {
-        url: '/allocations/:id',
+      .state('configurations.allocations.allocationView',  {
+        url: '/view/:id',
         parent: 'configurations.allocations',
         templateUrl: 'app/configurations/allocations/assumptions/assumption.template/template.values/values.html',
         controller: 'AllocationValuesController',

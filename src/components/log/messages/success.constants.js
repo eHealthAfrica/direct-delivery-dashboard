@@ -37,5 +37,9 @@ angular.module('log')
     targetPopulationEdited: {
       title: 'Target population edited',
       message: 'Target has been edited successfully'
+    },
+    productSave: {
+      title: 'Product saved successfully',
+      message: 'Product has been saved successfully'
     }
   });

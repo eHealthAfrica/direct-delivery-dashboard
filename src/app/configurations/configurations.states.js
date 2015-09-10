@@ -1,15 +1,17 @@
 'use strict';
 
 angular.module('configurations')
-  .config(function($stateProvider){
+  .config(function ($stateProvider) {
 
     $stateProvider.state('configurations', {
       parent: 'index',
       //abstract: true,
       url: '/configurations',
       templateUrl: 'app/configurations/index.html',
-      controller: function($state){
-        $state.go('configurations.layout')
+      controller: function ($state) {
+        if ($state.current.name === 'configurations') {
+          $state.go('configurations.allocations.assumptions');
+        }
       },
       data: {
         label: 'Configurations'
