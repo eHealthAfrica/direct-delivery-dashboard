@@ -85,5 +85,20 @@ angular.module('log')
     targetPopSave: {
       title: 'saving failed',
       message: 'error occurred while saving target population record'
+    },
+    productRetrievalErr: {
+      title: 'Error fetching product',
+      message: 'Error occurred while trying to retrieve product record from database',
+      remedy: 'Please, try again and contact support if it persists'
+    },
+    productSaveErr: {
+      title: 'Error saving product',
+      message: 'Error occurred while trying to save product to database',
+      remedy: 'Please, try again and contact support if it persists'
+    },
+    productStorageFetchErr: {
+      title: 'Error fetching product storage types',
+      message: 'Error occurred while fetching product storage types',
+      remedy: 'Please, try again and contact support if it persists'
     }
   });

@@ -3,9 +3,13 @@
  */
 
 angular.module('products')
-  .service('productService', function(config,pouchDB, pouchUtil){
+  .service('productService', function(pouchUtil, dbService){
 
-    var db = pouchDB(config.db);
+    this.baseUOMs = ['Units', 'Viles', 'Doses'];
+
+    this.get = function(id){
+      return dbService.get(id);
+    };
 
     this.getAll = function(){
       var conf = {
@@ -13,10 +17,17 @@ angular.module('products')
         };
       var view = "products/products";
 
-      return db.query(view, conf)
+      return dbService.getView(view, conf)
         .then(function(res){
           return pouchUtil.pluckDocs(res);
         });
+    };
+
+    this.getProductStorageType = function(){
+      return dbService.getView('product-storages/product-storages', {
+        include_docs: true
+      })
+        .then(pouchUtil.pluckDocs);
     };
 
     this.CategoriseByStorageType = function(){
@@ -34,5 +45,17 @@ angular.module('products')
     this.getFrozenProducts = function(){
 
     };
+    this.save = function(doc){
 
+      var saveMethods = ['insertWithId', ''];
+      var use = 'update';
+
+      if(!doc._id){
+        doc._id = doc.code; //new product
+      }
+      if(!doc._rev){
+        use = 'insertWithId';
+      }
+      return dbService[use](doc);
+    }
   });

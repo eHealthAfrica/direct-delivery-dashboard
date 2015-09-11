@@ -1,6 +1,4 @@
-/**
- * Created by ehealthafrica on 7/7/15.
- */
+'use strict';
 
 angular.module('products')
   .config(function($stateProvider){
@@ -9,8 +7,8 @@ angular.module('products')
         parent: 'configurations.layout',
         url: '/products',
         templateUrl: 'app/configurations/products/product.html',
-        controller: 'ProductsController',
-        controllerAs: 'productsController',
+        controller: 'ProductsCtrl',
+        controllerAs: 'productsCtrl',
         resolve: {
           products : function(productService){
             return productService.getAll()

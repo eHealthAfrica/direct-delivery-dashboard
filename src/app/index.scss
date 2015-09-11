@@ -12,14 +12,7 @@ td.actions {
   width: 1px;
   white-space: nowrap;
 }
-.link {
-  color: #1A0DAB;
-  cursor: pointer;
-}
-ul.dropdown-menu li {
-  padding: 0 5px;
-  cursor: pointer;
-}
+
 // injector
 @import 'reports/invoice/round/round.scss';
 // endinjector
