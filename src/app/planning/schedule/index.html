@@ -84,13 +84,17 @@
           <span editable-select="facRnd.driverID"
                 e-name="driverID"
                 e-form="rowform"
-                e-ng-options="s.value as s.text for s in srCtrl.drivers">
+                e-ng-options="driver.value as driver.text for driver in srCtrl.drivers">
             {{ facRnd.driverID || '' }}
           </span>
         </td>
         <td>
-          <span editable-text="srCtrl.facilityDeliveries[$index].drop" e-name="drop" e-form="rowform"
-                e-required></span>
+          <span editable-select="srCtrl.facilityDeliveries[$index].drop"
+                e-name="drop"
+                e-form="rowform"
+                e-ng-options="drop.value as drop.text for drop in srCtrl.dropList">
+
+          </span>
           {{ facRnd.drop || '' }}
         </td>
         <td>

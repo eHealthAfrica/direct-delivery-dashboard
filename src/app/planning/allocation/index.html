@@ -1,0 +1,46 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-sm-4 pull-left">
+        <h4>
+          <i class="fa fa-pie-chart"></i>
+          Allocations for Delivery Round: {{ daCtrl.deliveryRound._id }}
+        </h4>
+      </div>
+      <div class=" clearfix pull-right">
+        <button class="btn btn-lg btn-success">
+          Select Allocation Template
+        </button>
+
+        <span class="dropdown" dropdown on-toggle="toggled(open)">
+           <a href class="dropdown-toggle btn btn-lg btn-primary" dropdown-toggle>
+             <b>
+               <i class="fa fa-check"></i>
+               {{ daCtrl.selectedView }}
+               <span class="caret"></span>
+             </b>
+           </a>
+           <ul class="dropdown-menu">
+             <li>
+               <a href="#" ng-repeat="key in daCtrl.views"
+                  ng-click="daCtrl.switchView(key)">{{ key }}
+               </a>
+             </li>
+           </ul>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div ng-include="'app/planning/allocation/partials/packing-list.html'"
+      ng-show="daCtrl.views.packedProduct === daCtrl.selectedView">
+  </div>
+
+  <div ng-include="'app/planning/allocation/partials/product-presentation.html'"
+       ng-show="daCtrl.views.productPresentation === daCtrl.selectedView">
+  </div>
+
+</div>
+
+
+
