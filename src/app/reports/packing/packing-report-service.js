@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('reports')
-  .service('packingReportService', function(dbService) {
+  .service('packingReportService', function(dbService, PRODUCT_ORDER) {
     var _this = this;
 
     function defaultFields() {
@@ -62,8 +62,9 @@ angular.module('reports')
     }
 
     function getProducts(list, row) {
-      if (list.indexOf(row.productID) === -1) {
-        list.push(row.productID);
+      var productID = row.productID.trim();
+      if (list.indexOf(productID) === -1) {
+        list.push(productID);
       }
 
       return list;
@@ -96,10 +97,22 @@ angular.module('reports')
         products = getProducts(products, row);
       }
 
+      products = orderProducts(products);
       return {
         group: grouped,
         products: products
       };
+    }
+
+    function orderProducts(productList) {
+      return productList.sort(function (a, b) {
+
+        var aVal = PRODUCT_ORDER[a.toLowerCase()];
+        var bVal = PRODUCT_ORDER[b.toLowerCase()];
+
+        var diff = aVal - bVal;
+        return !isNaN(diff) ? diff : productList.length;
+      });
     }
 
     _this.getPackingReport = function (startDate, endDate) {

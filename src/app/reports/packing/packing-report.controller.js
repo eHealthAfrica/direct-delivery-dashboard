@@ -102,7 +102,7 @@ angular.module('reports')
       packingReportService.getPackingReport(vm.startFrom, vm.stopOn)
         .then(function (response) {
           vm.reports = response.group;
-          vm.products = response.products.sort();
+          vm.products = response.products;
           resetLocations();
           getSelectedLocation();
         });
