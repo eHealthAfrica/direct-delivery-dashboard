@@ -33,5 +33,13 @@ angular.module('log')
     assumptionEdited: {
       title: 'Update successfully',
       message: 'Assumption edited successfully!'
+    },
+    targetPopulationEdited: {
+      title: 'Target population edited',
+      message: 'Target has been edited successfully'
+    },
+    productSave: {
+      title: 'Product saved successfully',
+      message: 'Product has been saved successfully'
     }
   });
