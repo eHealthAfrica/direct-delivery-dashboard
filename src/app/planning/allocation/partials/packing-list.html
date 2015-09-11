@@ -6,7 +6,7 @@
   </div>
 </div>
 
-<div class="panel-body" ng-show="daCtrl.facilityRounds.length === 0">
+<div class="panel-body" ng-show="daCtrl.facAllocInfo.rows.length === 0">
   <div class="panel-body alert alert-info">
     <i class="fa fa-lg fa-info-circle"></i>
       <span>
@@ -18,44 +18,48 @@
   </div>
 </div>
 
-<div ng-show="daCtrl.productList.length > 0">
+<div ng-show="daCtrl.facAllocInfo.productList.length > 0">
   <table
       class="table table-condensed table-striped table-bordered">
     <thead>
     <tr>
       <th>#</th>
       <th width="10%">Facility</th>
-      <th width="5%" ng-repeat="pCode in daCtrl.productList track by $index" ng-bind="pCode"></th>
+      <th width="5%" ng-repeat="pCode in daCtrl.facAllocInfo.productList track by $index"
+          ng-bind="pCode">
+      </th>
       <th width="10%">Action</th>
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="facRnd in daCtrl.facilityRounds track by $index">
+    <tr ng-repeat="facRnd in daCtrl.facAllocInfo.rows track by $index">
       <td ng-bind="($index + 1)"></td>
       <td ng-bind="facRnd.facility.name"></td>
-      <td ng-repeat="pCode in daCtrl.productList track by $index">
+      <td ng-repeat="pCode in daCtrl.facAllocInfo.productList track by $index">
            <span editable-number="facRnd.packedProduct[pCode].expectedQty" e-min="0"
-                 e-name="expectedQty" e-form="rowform" e-required>
+                 e-name="{{pCode}}" e-form="packedProductForm" e-required>
           {{ facRnd.packedProduct[pCode].expectedQty  || '-' }}
         </span>
       </td>
       <td>
         <!-- form -->
-        <form editable-form name="rowform" onbeforesave="daCtrl.saveRow($data, $index)"
-              ng-show="rowform.$visible" class="form-buttons form-inline"
+        <form editable-form name="packedProductForm"
+              onbeforesave="daCtrl.saveRow($data, facRnd)"
+              ng-show="packedProductForm.$visible" class="form-buttons form-inline"
               shown="inserted === facRnd">
-          <button type="submit" ng-disabled="rowform.$waiting"
+          <button type="submit" ng-disabled="packedProductForm.$waiting"
                   class="btn btn-primary">
             <span>Save</span>
           </button>
-          <button type="button" ng-disabled="rowform.$waiting"
-                  ng-click="rowform.$cancel()"
+          <button type="button" ng-disabled="packedProductForm.$waiting"
+                  ng-click="packedProductForm.$cancel()"
                   class="btn btn-default">
             <span>Cancel</span>
           </button>
         </form>
-        <div class="buttons" ng-show="!rowform.$visible">
-          <button class="btn btn-primary btn-block" ng-click="rowform.$show()">Edit
+        <div class="buttons" ng-show="!packedProductForm.$visible">
+          <button class="btn btn-primary btn-block" ng-click="packedProductForm.$show()">
+            Edit
           </button>
         </div>
       </td>
