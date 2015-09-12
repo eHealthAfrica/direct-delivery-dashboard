@@ -1,49 +1,50 @@
 angular.module('planning')
-		.service('deliveryAllocationService', function (dbService, utility, pouchUtil) {
+		.service('deliveryAllocationService', function (dbService, $q, utility, pouchUtil) {
 
 			var _this = this;
 
-			_this.update = function(docId, facilityId, packedProductHash){
+			function updateProductAllocs(facRnd, qtyByProductHash) {
+				if (!facRnd.packedProduct) {
+					facRnd.packedProduct = [];
+				}
+				var ppHash = utility.hashBy(facRnd.packedProduct, 'productID');
+				var expectedQty;
+				var updatedPackedProducts = [];
+				for (var k in qtyByProductHash) {
+					expectedQty = qtyByProductHash[k];
+					var packedProduct = ppHash[k];
+					if (packedProduct) {
+						packedProduct.expectedQty = expectedQty;
+						updatedPackedProducts.push(packedProduct);
+					}
+				}
+				facRnd.packedProduct = updatedPackedProducts;
+				return facRnd;
+			}
+
+			_this.update = function (docId, facilityId, packedProductHash) {
 				return dbService.get(docId)
 						.then(function (doc) {
+							var updatedDoc;
 							var facRnd = doc;
-							if(angular.isArray(doc.facilityRounds)){
+							if (angular.isArray(doc.facilityRounds)) {
 								facRnd = null;
-								for(var i in doc.facilityRounds){
+								for (var i in doc.facilityRounds) {
 									var temp = doc.facilityRounds[i];
-									if(temp.facility && temp.facility.id === facilityId){
+									if (temp.facility && temp.facility.id === facilityId) {
 										facRnd = temp;
+										doc.facilityRounds[i] = updateProductAllocs(facRnd, packedProductHash);
+										updatedDoc = doc;
 										break;
 									}
 								}
+							} else {
+								updatedDoc = updateProductAllocs(facRnd, packedProductHash);
 							}
-							if(!facRnd.packedProduct){
-								facRnd.packedProduct = [];
+							if (angular.isObject(updatedDoc)) {
+								return dbService.update(updatedDoc);
 							}
-							var ppHash = utility.hashBy(facRnd.packedProduct, 'productID');
-							var expectedQty;
-							var updatedPackedProducts = [];
-							for (var k in packedProductHash) {
-								expectedQty = packedProductHash[k];
-								var packedProduct = ppHash[k];
-								if(packedProduct){
-									packedProduct.expectedQty = expectedQty;
-									updatedPackedProducts.push(packedProduct);
-								}
-							}
-
-							//else{
-							//	facRnd.packedProduct = facRnd.packedProduct
-							//			.map(function(pp) {
-							//				var expectedQty = packedProductHash[pp.productID];
-							//				if(angular.isNumber(expectedQty)){
-							//					pp.expectedQty = expectedQty;
-							//				}
-							//				return pp;
-							//			});
-							//}
-							//TODO: recalculate packing list quantity
-
+							return $q.reject('updated document is not an object');
 						});
 			};
 
@@ -70,12 +71,12 @@ angular.module('planning')
 										}
 									});
 								}
-								if(row.facility && row.facility.lga && lgaList.indexOf(row.facility.lga) === -1){
+								if (row.facility && row.facility.lga && lgaList.indexOf(row.facility.lga) === -1) {
 									lgaList.push(row.facility.lga);
 								}
 								row.packedProduct = packedProductHash;
 								return row;
-							}).filter(function(row){
+							}).filter(function (row) {
 								return row.facility && row.facility.lga === lga;
 							});
 							return {
