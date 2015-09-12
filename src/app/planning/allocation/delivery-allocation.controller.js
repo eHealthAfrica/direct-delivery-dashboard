@@ -17,6 +17,10 @@ angular.module('planning')
 				vm.selectedView = view;
 			};
 
+			vm.isUpdated = function () {
+				//TODO: highlight rows that has been updated.
+			};
+
 			vm.updateList = function() {
 				deliveryAllocationService.getAllocationBy(vm.deliveryRound._id, vm.selectedLGA)
 						.then(function(result) {
@@ -30,9 +34,11 @@ angular.module('planning')
 			};
 
 			vm.saveRow = function ($data, facRnd) {
-				//TODO: complete implementation
-				console.log(facRnd._id, facRnd.facility.id);
-				console.log('Data : ', $data, 'Facility Round : ', facRnd);
+				deliveryAllocationService.update(facRnd._id, facRnd.facility.id, $data)
+						.then(function () {
+							log.success('updateFacilityPackedQty');
+						})
+						.catch(deliveryAllocationService.onUpdateError);
 			};
 
 
