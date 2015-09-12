@@ -86,5 +86,10 @@ angular.module('log')
 				title: 'Allocation error',
 				message: 'An error occurred while retrieving lga allocation',
 				remedy: 'Please, refresh and try again and contact support if it persists'
+			},
+			updatePackedQtyErr: {
+				title: 'An Unknown error occurred',
+				message: 'An error occurred while saving updated packed quantities',
+				remedy: 'Please, refresh and try again and contact support if it persists'
 			}
 		});
