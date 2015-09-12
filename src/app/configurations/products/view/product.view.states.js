@@ -30,7 +30,17 @@ angular.module('products')
             }
           },
           productPresentation: {
-            templateUrl: 'app/configurations/products/presentations/presentation.html'
+            templateUrl: 'app/configurations/products/presentations/presentation.html',
+            controller: 'ProductPresentationCtrl',
+            controllerAs: 'productPresentationCtrl',
+            resolve: {
+              presentations: function($stateParams, productPresentationService, log){
+                return productPresentationService.getByProduct($stateParams['code'])
+                  .catch(function(err){
+                    return [];
+                  });
+              }
+            }
           }
         }
 

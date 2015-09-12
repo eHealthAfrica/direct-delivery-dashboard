@@ -14,6 +14,7 @@ td.actions {
 }
 dl > dt, dl > dd {
   margin: 0.7em;
+  text-transform: capitalize;
 }
 // injector
 @import 'reports/invoice/round/round.scss';
