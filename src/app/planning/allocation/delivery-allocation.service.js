@@ -1,5 +1,5 @@
 angular.module('planning')
-		.service('deliveryAllocationService', function (dbService, $q, utility, pouchUtil) {
+		.service('deliveryAllocationService', function (dbService, $q, utility, pouchUtil, log) {
 
 			var _this = this;
 
@@ -16,11 +16,30 @@ angular.module('planning')
 					if (packedProduct) {
 						packedProduct.expectedQty = expectedQty;
 						updatedPackedProducts.push(packedProduct);
+					}else{
+						//TODO: new item add to list
+						//TODO: add presentation if available and also unit of measurement, along with category,
+						//use product list
+						var newPackedProd = {
+							productID: k,
+							expectedQty: expectedQty
+						};
+						updatedPackedProducts.push(newPackedProd);
 					}
 				}
 				facRnd.packedProduct = updatedPackedProducts;
 				return facRnd;
 			}
+
+      _this.onUpdateError = function(err){
+	      if (err.status === 401) {
+		      return log.error('unauthorizedAccess', err);
+	      }
+	      if (err.status === 409) {
+		      return log.error('updateConflict', err);
+	      }
+	      log.error('updatePackedQtyErr', err);
+      };
 
 			_this.update = function (docId, facilityId, packedProductHash) {
 				return dbService.get(docId)
