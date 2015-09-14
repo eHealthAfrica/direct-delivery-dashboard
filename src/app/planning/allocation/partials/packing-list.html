@@ -1,16 +1,16 @@
 <div class="panel-body"
-     ng-show="daCtrl.facilityRounds.length !== 0 && daCtrl.productList.length === 0">
+     ng-show="daCtrl.hasNoAllocation()">
   <div class="panel-body alert alert-info">
     <i class="fa fa-lg fa-info-circle"></i>
     <span> No allocation found, please set allocation template.</span>
   </div>
 </div>
 
-<div class="panel-body" ng-show="daCtrl.facAllocInfo.rows.length === 0">
+<div class="panel-body" ng-show="daCtrl.hasNoSchedule()">
   <div class="panel-body alert alert-info">
     <i class="fa fa-lg fa-info-circle"></i>
       <span>
-        No allocation found, please
+        No facility scheduled for this round, please
         <a ui-sref="planning.manageFacilities({ roundId: daCtrl.deliveryRound._id })">
           <b>Add Facilities</b>
         </a>
