@@ -1,5 +1,5 @@
 angular.module('planning')
-		.controller('DeliveryAllocationCtrl', function (deliveryRound, facilityAllocationInfo, deliveryAllocationService, log) {
+		.controller('DeliveryAllocationCtrl', function (deliveryRound, facilityAllocationInfo, deliveryAllocationService, log, utility) {
 
 			var vm = this;
 			vm.views = {
@@ -8,10 +8,73 @@ angular.module('planning')
 			};
 			vm.selectedLGA = '';
 			vm.productPresentation = {};
+			vm.presentations = [
+				{
+					"_id": "10-DPV",
+					"_rev": "1-c0efb4b87d91694895ba26ba8b705ed0",
+					"is_deleted": false,
+					"code": "10-DPV",
+					"name": "10 Doses per Vial",
+					"value": 10,
+					"uom": "Vial",
+					"doc_type": "product_presentation",
+					"description": "vaccine product presentation"
+				} ,
+				{
+					"_id": "20-DPV",
+					"_rev": "1-c0efb4b87d91694895ba26ba8b70520",
+					"is_deleted": false,
+					"code": "20-DPV",
+					"name": "20 Doses per Vial",
+					"value": 20,
+					"uom": "Vial",
+					"doc_type": "product_presentation",
+					"description": "vaccine product presentation"
+				},
+				{
+					"_id": "5-DPV",
+					"_rev": "1-c0efb4b87d91694895ba26ba8b7055",
+					"is_deleted": false,
+					"code": "5-DPV",
+					"name": "5 Doses per Vial",
+					"value": 5,
+					"uom": "Vial",
+					"doc_type": "product_presentation",
+					"description": "vaccine product presentation"
+				},
+				{
+					"_id": "1-Unit",
+					"_rev": "1-c0efb4b87d91694895ba26ba8b7051",
+					"is_deleted": false,
+					"code": "1-Unit",
+					"name": "1 Unit",
+					"value": 1,
+					"uom": "Unit",
+					"doc_type": "product_presentation",
+					"description": "dry good product presentation"
+				}
+			];
+
+			function initPresentations (){
+				for(var ppId in vm.facAllocInfo.presentationsByProduct) {
+					if(vm.facAllocInfo.presentationsByProduct.hasOwnProperty(ppId)){
+            var presentation = vm.facAllocInfo.presentationsByProduct[ppId];
+						if(angular.isNumber(presentation)){
+							vm.productPresentation[ppId] = presentation;
+						}
+					}
+				}
+			}
 
 			vm.deliveryRound = deliveryRound;
 			vm.selectedView = vm.views.packedProduct;
 			vm.facAllocInfo = facilityAllocationInfo;
+
+			initPresentations();
+
+			vm.isDisabled = function() {
+				return vm.selectedView === vm.views.productPresentation;
+			};
 
 			vm.switchView = function (view) {
 				vm.selectedView = view;
@@ -49,6 +112,11 @@ angular.module('planning')
 							log.success('updateFacilityPackedQty');
 						})
 						.catch(deliveryAllocationService.onUpdateError);
+			};
+
+			vm.updatePresentation = function($data) {
+				//TODO: implement this!
+        console.log('Update presentation value',$data);
 			};
 
 
