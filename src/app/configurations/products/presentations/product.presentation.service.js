@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('products')
-  .service('productPresentationService', function(dbService){
+  .service('productPresentationService', function(dbService, pouchUtil){
 
     var _this = this;
 
@@ -15,7 +15,9 @@ angular.module('products')
         include_docs: true
       };
 
-      return dbService.getView(view, opts);
+      return dbService.getView(view, opts)
+        .then(pouchUtil.pluckDocs);
+
     };
 
     _this.getByBaseUOM = function(){};  // will there ever be a use case for this?
@@ -32,6 +34,7 @@ angular.module('products')
       }
 
       return dbService[use](doc);
+
     }
 
 

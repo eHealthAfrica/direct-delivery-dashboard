@@ -7,4 +7,6 @@ angular.module('products')
 
     vm.presentations = presentations;
 
+    console.log(vm.presentations);
+
   });

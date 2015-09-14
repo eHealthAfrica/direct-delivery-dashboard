@@ -10,5 +10,19 @@
         <i class="fa fa-warning"></i> No presentation registered for this product
       </div>
     </div>
+    <table role="table" class="table table-bordered table-striped">
+      <tr>
+        <th>Code</th>
+        <th>Name</th>
+        <th>Unit of Measurement</th>
+        <th>Volumn</th>
+      </tr>
+      <tr ng-repeat="presentation in productPresentationCtrl.presentations track by index">
+        <td ng-bind="presentation.code"></td>
+        <td ng-bind="presentation.name"></td>
+        <td ng-bind="presentation.uom"></td>
+        <td ng-bind="presentation.value"></td>
+      </tr>
+    </table>
   </div>
 </div>
