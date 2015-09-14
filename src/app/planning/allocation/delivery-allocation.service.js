@@ -74,6 +74,8 @@ angular.module('planning')
 				};
 				var uniqueProductList = [];
 				var lgaList = [];
+        var presentationsByProduct = {};
+
 				return dbService.getView(view, params)
 						.then(function (res) {
 							if (res.rows.length === 0) {
@@ -85,8 +87,12 @@ angular.module('planning')
 								if (angular.isArray(row.packedProduct)) {
 									row.packedProduct.forEach(function (pp) {
 										packedProductHash[pp.productID] = pp;
+										//TODO: replace collating product id with delivery round packing list when completed
 										if (uniqueProductList.indexOf(pp.productID) === -1) {
 											uniqueProductList.push(pp.productID);
+										}
+										if(!presentationsByProduct[pp.productID] && angular.isNumber(pp.presentation)){
+											presentationsByProduct[pp.productID] = pp.presentation;
 										}
 									});
 								}
@@ -101,7 +107,8 @@ angular.module('planning')
 							return {
 								rows: resultSet,
 								productList: uniqueProductList,
-								lgaList: lgaList.sort()
+								lgaList: lgaList.sort(),
+								presentationsByProduct: presentationsByProduct
 							}
 						});
 			};
