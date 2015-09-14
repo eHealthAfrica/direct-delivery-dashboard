@@ -17,20 +17,29 @@ angular.module('planning')
 				vm.selectedView = view;
 			};
 
-			vm.isUpdated = function () {
-				//TODO: highlight rows that has been updated.
+			vm.hasNoAllocation = function () {
+				return (vm.facAllocInfo.rows.length !== 0 &&
+				vm.facAllocInfo.productList.length === 0);
 			};
 
-			vm.updateList = function() {
+			vm.hasNoSchedule = function () {
+				return vm.facAllocInfo.rows.length === 0;
+			};
+
+			vm.hasProducts = function () {
+				return vm.facAllocInfo.productList.length > 0;
+			};
+
+			vm.updateList = function () {
 				deliveryAllocationService.getAllocationBy(vm.deliveryRound._id, vm.selectedLGA)
-						.then(function(result) {
+						.then(function (result) {
 							console.log(result);
 							vm.facAllocInfo = result;
 						})
 						.catch(vm.handleError);
 			};
 
-			vm.handleError = function(err){
+			vm.handleError = function (err) {
 				log.error('getAllocationError', err);
 			};
 

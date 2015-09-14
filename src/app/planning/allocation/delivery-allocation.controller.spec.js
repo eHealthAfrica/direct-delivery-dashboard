@@ -18,9 +18,10 @@ describe('DeliveryAllocationCtrl', function () {
 		facilityAllocationInfo = _facilityAllocationInfoMock_;
 		deliveryAllocationService = _deliveryAllocationService_;
 
+
 		DeliveryAllocationCtrl = $controller('DeliveryAllocationCtrl', {
 			deliveryRound: deliveryRound,
-			facilityAllocationInfo: facilityAllocationInfo,
+			facilityAllocationInfo: angular.copy(facilityAllocationInfo),//avoid shallow copying
 			deliveryAllocationService: deliveryAllocationService,
 			log: log
 		});
@@ -110,6 +111,52 @@ describe('DeliveryAllocationCtrl', function () {
 			DeliveryAllocationCtrl.saveRow($data, facRnd);
 			expect(deliveryAllocationService.update).toHaveBeenCalledWith(expectedId, expectedFacilityId, $data);
 		});
-	})
+	});
+
+	describe('hasNoAllocation', function () {
+		it('Should return TRUE if facility list is not Empty and product list is Empty Object', function() {
+			DeliveryAllocationCtrl.facAllocInfo.productList = [];
+			expect(DeliveryAllocationCtrl.facAllocInfo.rows.length).toBeGreaterThan(0);
+			expect(DeliveryAllocationCtrl.facAllocInfo.productList.length).toBe(0);
+			expect(DeliveryAllocationCtrl.hasNoAllocation()).toBeTruthy();
+		});
+
+		it('Should return FALSE if facility list is EMPTY and product list is NOT EMPTY Object', function () {
+			DeliveryAllocationCtrl.facAllocInfo.rows = [];
+			expect(DeliveryAllocationCtrl.facAllocInfo.rows.length).toBe(0);
+			expect(DeliveryAllocationCtrl.facAllocInfo.productList.length).toBeGreaterThan(0);
+			expect(DeliveryAllocationCtrl.hasNoAllocation()).toBeFalsy();
+		});
+
+		it('Should return FALSE if both facility and product list are EMPTY', function () {
+			DeliveryAllocationCtrl.facAllocInfo.productList = [];
+			DeliveryAllocationCtrl.facAllocInfo.rows = [];
+			expect(DeliveryAllocationCtrl.facAllocInfo.rows.length).toBe(0);
+			expect(DeliveryAllocationCtrl.facAllocInfo.productList.length).toBe(0);
+			expect(DeliveryAllocationCtrl.hasNoAllocation()).toBeFalsy();
+		});
+	});
+
+	describe('hasNoSchedule', function () {
+		it('Should return TRUE only if, facility list is EMPTY', function() {
+			DeliveryAllocationCtrl.facAllocInfo.rows = [];
+			expect(DeliveryAllocationCtrl.facAllocInfo.rows.length).toBe(0);
+			expect(DeliveryAllocationCtrl.hasNoSchedule()).toBeTruthy();
+		});
+	});
+
+	describe('hasProducts', function() {
+		it('Should return TRUE if product list is NOT EMPTY', function () {
+			expect(DeliveryAllocationCtrl.facAllocInfo.productList.length).toBeGreaterThan(0);
+			expect(DeliveryAllocationCtrl.hasProducts()).toBeTruthy();
+		});
+
+		it('Should return FALSE if product list is EMPTY', function () {
+			DeliveryAllocationCtrl.facAllocInfo.productList = [];
+			expect(DeliveryAllocationCtrl.facAllocInfo.productList.length).toBe(0);
+			expect(DeliveryAllocationCtrl.hasProducts()).toBeFalsy();
+		});
+
+	});
 
 });
