@@ -24,8 +24,9 @@
         </div>
       </div>
       <div class="col-sm-4 clearfix pull-right">
-        <button class="btn btn-lg btn-success">
-          Select Allocation Template
+        <button class="btn btn-lg btn-success"
+                ng-disabled="daCtrl.isDisabled()">
+          <span>Select Allocation Template</span>
         </button>
 
         <span class="dropdown" dropdown on-toggle="toggled(open)">
