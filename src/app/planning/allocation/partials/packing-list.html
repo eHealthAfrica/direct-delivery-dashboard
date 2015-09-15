@@ -10,15 +10,15 @@
   <div class="panel-body alert alert-info">
     <i class="fa fa-lg fa-info-circle"></i>
       <span>
-        No facility scheduled for this round, please
+        No facility scheduled for this round under the selected LGA, please
         <a ui-sref="planning.manageFacilities({ roundId: daCtrl.deliveryRound._id })">
-          <b>Add Facilities</b>
+          <b>Add Facilities</b> or select another LGA!
         </a>
       </span>
   </div>
 </div>
 
-<div ng-show="daCtrl.hasProducts()">
+<div ng-show="daCtrl.hasProducts() && !daCtrl.hasNoSchedule()">
   <table
       class="table table-condensed table-striped table-bordered">
     <thead>
