@@ -21,7 +21,8 @@ angular.module('planning')
 							return {
 								rows: [],
 								productList: [],
-								lgaList: []
+								lgaList: [],
+								presentationsByProduct: {}
 							}; //default value
 						}
 						//TODO: replace with first element in lga list
