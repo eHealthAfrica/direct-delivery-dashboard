@@ -1,5 +1,5 @@
 angular.module('planning')
-		.controller('DeliveryAllocationCtrl', function (deliveryRound, facilityAllocationInfo, deliveryAllocationService, log, utility) {
+		.controller('DeliveryAllocationCtrl', function (deliveryRound, facilityAllocationInfo, deliveryAllocationService, log) {
 
 			var vm = this;
 			vm.views = {
@@ -114,9 +114,26 @@ angular.module('planning')
 						.catch(deliveryAllocationService.onUpdateError);
 			};
 
-			vm.updatePresentation = function($data) {
-				//TODO: implement this!
-        console.log('Update presentation value',$data);
+
+			vm.updatePresentation = function($data, pCode) {
+				if(vm.productPresentation[pCode] === $data[pCode]){
+					var msg = 'Same value, please select different value';
+					log.info('', null, msg);
+					return msg;
+				}
+				return deliveryAllocationService.updatePackedPresentation(vm.deliveryRound._id, $data)
+						.then(function (res) {
+							var msg = [ pCode,
+								'presentation updated to',
+								$data[pCode],
+								'successfully!'].join(' ');
+							log.success('', res, msg);
+							return true;
+						})
+						.catch(function(err) {
+							deliveryAllocationService.onUpdateError(err);
+							return false;
+						});
 			};
 
 
