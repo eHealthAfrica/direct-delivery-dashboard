@@ -125,7 +125,6 @@ angular.module('planning')
 					var presentation = presentationByProduct[pp.productID];
 					if(angular.isNumber(presentation)){
 						pp.presentation = presentation;
-						console.log(pp.productID, pp.presentation);
 					}
 					return pp;
 				});
