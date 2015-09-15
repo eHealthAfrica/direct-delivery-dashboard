@@ -16,7 +16,7 @@ angular.module('planning')
 					if (packedProduct) {
 						packedProduct.expectedQty = expectedQty;
 						updatedPackedProducts.push(packedProduct);
-					}else{
+					} else {
 						//TODO: new item add to list
 						//TODO: add presentation if available and also unit of measurement, along with category,
 						//use product list
@@ -31,15 +31,15 @@ angular.module('planning')
 				return facRnd;
 			}
 
-      _this.onUpdateError = function(err){
-	      if (err.status === 401) {
-		      return log.error('unauthorizedAccess', err);
-	      }
-	      if (err.status === 409) {
-		      return log.error('updateConflict', err);
-	      }
-	      log.error('updatePackedQtyErr', err);
-      };
+			_this.onUpdateError = function (err) {
+				if (err.status === 401) {
+					return log.error('unauthorizedAccess', err);
+				}
+				if (err.status === 409) {
+					return log.error('updateConflict', err);
+				}
+				log.error('updatePackedQtyErr', err);
+			};
 
 			_this.update = function (docId, facilityId, packedProductHash) {
 				return dbService.get(docId)
@@ -67,16 +67,20 @@ angular.module('planning')
 						});
 			};
 
-			_this.getAllocationBy = function (roundId, lga) {
-				var view = 'dashboard-delivery-rounds/facility-allocation-by-round';
+			function getByRound(roundId, view, include_docs) {
 				var params = {
-					key: roundId
+					key: roundId,
+					include_docs: include_docs || false
 				};
+				return dbService.getView(view, params);
+			}
+
+			_this.getAllocationBy = function (roundId, lga) {
 				var uniqueProductList = [];
 				var lgaList = [];
-        var presentationsByProduct = {};
-
-				return dbService.getView(view, params)
+				var presentationsByProduct = {};
+				var view = 'dashboard-delivery-rounds/facility-allocation-by-round';
+				return getByRound(roundId, view)
 						.then(function (res) {
 							if (res.rows.length === 0) {
 								return pouchUtil.rejectIfEmpty(res.rows)
@@ -91,7 +95,7 @@ angular.module('planning')
 										if (uniqueProductList.indexOf(pp.productID) === -1) {
 											uniqueProductList.push(pp.productID);
 										}
-										if(!presentationsByProduct[pp.productID] && angular.isNumber(pp.presentation)){
+										if (!presentationsByProduct[pp.productID] && angular.isNumber(pp.presentation)) {
 											presentationsByProduct[pp.productID] = pp.presentation;
 										}
 									});
@@ -110,6 +114,46 @@ angular.module('planning')
 								lgaList: lgaList.sort(),
 								presentationsByProduct: presentationsByProduct
 							}
+						});
+			};
+
+			_this.updatePresentation = function (packedProducts, presentationByProduct) {
+				if(!angular.isArray(packedProducts)){
+					return packedProducts;
+				}
+				return packedProducts.map(function(pp){
+					var presentation = presentationByProduct[pp.productID];
+					if(angular.isNumber(presentation)){
+						pp.presentation = presentation;
+						console.log(pp.productID, pp.presentation);
+					}
+					return pp;
+				});
+			};
+
+			_this.updatePackedPresentation = function (roundId, presentationByProduct) {
+				//get all daily delivery within the given roundId
+				function updateDailyDoc (row) {
+          var doc = row.doc;
+          if(angular.isArray(doc.facilityRounds)){
+	          doc.facilityRounds = doc.facilityRounds
+		            .map(function(facRnd) {
+				          facRnd.packedProduct = _this.updatePresentation(facRnd.packedProduct, presentationByProduct);
+				          return facRnd;
+			          });
+          }else{
+            doc.packedProduct = _this.updatePresentation(doc.packedProduct, presentationByProduct);
+          }
+					return doc;
+				}
+
+				var includeDocs = true;
+				var view = 'dashboard-delivery-rounds/by-round-id';
+				return getByRound(roundId, view, includeDocs)
+						.then(function (res) {
+              var updatedDocs = res.rows
+		              .map(updateDailyDoc);
+							return dbService.saveDocs(updatedDocs);
 						});
 			};
 
