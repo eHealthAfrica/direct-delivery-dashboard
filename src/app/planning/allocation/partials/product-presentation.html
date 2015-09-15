@@ -37,17 +37,18 @@
         <span editable-select="daCtrl.productPresentation[pCode]" e-min="0"
               e-class="form-control"
               e-ng-options="presentation.value as presentation.name for presentation in daCtrl.presentations"
-              e-name="pCode" e-form="presentationForm" e-required>
+              e-name="{{ pCode }}" e-form="presentationForm" e-required>
           {{ daCtrl.productPresentation[pCode]  || '-' }}
         </span>
       </td>
       <td class="col-sm-1">
         <!-- form -->
         <form editable-form name="presentationForm"
-              ng-show="presentationForm.$visible" class="form-buttons form-inline"
+              onbeforesave="daCtrl.updatePresentation($data, pCode)"
+              ng-show="presentationForm.$visible"
+              class="form-buttons form-inline"
               shown="inserted === pCode">
           <button type="submit" ng-disabled="presentationForm.$waiting"
-                  onbeforesave="daCtrl.updatePresentation($data)"
                   class="btn btn-primary">
             <span>Save</span>
           </button>
