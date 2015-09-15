@@ -96,7 +96,6 @@ angular.module('planning')
 			vm.updateList = function () {
 				deliveryAllocationService.getAllocationBy(vm.deliveryRound._id, vm.selectedLGA)
 						.then(function (result) {
-							console.log(result);
 							vm.facAllocInfo = result;
 						})
 						.catch(vm.handleError);
