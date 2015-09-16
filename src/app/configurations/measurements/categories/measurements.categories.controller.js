@@ -5,7 +5,6 @@ angular.module('Measurements')
     var vm = this;
 
     vm.categories = categories;
-    console.log(categories);
     vm.openedDoc = {};
 
     vm.save = function(){

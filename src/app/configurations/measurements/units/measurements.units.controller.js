@@ -9,8 +9,6 @@ angular.module('Measurements')
 
     vm.openedDoc = {};
 
-    console.log(vm.categories);
-
     vm.save = function(){
       return measurementsUnitService.save(vm.openedDoc)
         .then(function(response){
