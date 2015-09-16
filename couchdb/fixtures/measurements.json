@@ -1,0 +1,13 @@
+{
+  "docs": [
+    {
+       "_id": "weight",
+       "_rev": "1-c7cead2025f2419b80cbfe811d57ccfd",
+       "name": "weight",
+       "doc_type": "measurement_category",
+       "is_deleted": false,
+       "createdOn": "2015-09-15T08:45:55.751Z",
+       "modifiedOn": "2015-09-15T08:45:55.751Z"
+    }
+  ]
+}
