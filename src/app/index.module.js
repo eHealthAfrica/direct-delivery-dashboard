@@ -25,7 +25,8 @@ angular
 			'allocations',
 			'products',
 			'utility',
-			'eha-drag-n-drop'
+			'eha-drag-n-drop',
+      'Measurements'
 		])
 		.run(function ($rootScope, $state, log, AuthService, editableOptions) {
 
