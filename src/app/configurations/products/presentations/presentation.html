@@ -1,7 +1,6 @@
 <div class="panel panel-default">
   <div class="panel-heading clearfix">
     <b><i><i class="fa fa-file-powerpoint-o"></i> Product Presentations </i></b>
-    <button class="btn btn-info pull-right"><i class="fa fa-arrow-circle-down"></i> add presentation</button>
   </div>
   <div class="panel-body">
     <ng-include src="'app/configurations/products/presentations/add.html'"></ng-include>
@@ -13,15 +12,13 @@
     <table role="table" class="table table-bordered table-striped">
       <tr>
         <th>Code</th>
-        <th>Name</th>
         <th>Unit of Measurement</th>
         <th>Volumn</th>
       </tr>
-      <tr ng-repeat="presentation in productPresentationCtrl.presentations track by index">
+      <tr ng-repeat="presentation in productPresentationCtrl.presentations track by $index">
         <td ng-bind="presentation.code"></td>
-        <td ng-bind="presentation.name"></td>
         <td ng-bind="presentation.uom"></td>
-        <td ng-bind="presentation.value"></td>
+        <td ng-bind="presentation.volume"></td>
       </tr>
     </table>
   </div>
