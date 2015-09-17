@@ -12,6 +12,7 @@
           <label class="col-sm-2 control-label">LGA</label>
           <div class="col-sm-10">
             <select class="form-control"
+                    ng-disabled="daCtrl.isDisabled()"
                     ng-model="daCtrl.selectedLGA"
                     ng-change="daCtrl.updateList()">
               <option ng-repeat="lga in daCtrl.facAllocInfo.lgaList track by $index"
@@ -24,8 +25,9 @@
         </div>
       </div>
       <div class="col-sm-4 clearfix pull-right">
-        <button class="btn btn-lg btn-success">
-          Select Allocation Template
+        <button class="btn btn-lg btn-success"
+                ng-disabled="daCtrl.isDisabled()">
+          <span>Select Allocation Template</span>
         </button>
 
         <span class="dropdown" dropdown on-toggle="toggled(open)">
