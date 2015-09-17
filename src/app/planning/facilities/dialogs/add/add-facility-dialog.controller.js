@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('planning')
 		.controller('AddFacilityDialogCtrl', function($modalInstance, deliveryService, deliveryRound, locationService,
                                                   locationLevels, utility, log) {
