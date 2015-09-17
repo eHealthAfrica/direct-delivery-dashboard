@@ -1,0 +1,71 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-sm-4 pull-left">
+        <h4>
+          <i class="fa fa-truck"></i>
+          <span>Return Route for Delivery Round: {{ rrCtrl.deliveryRound._id }} </span>
+        </h4>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label class="col-sm-2 control-label">LGA</label>
+          <div class="col-sm-10">
+            <select class="form-control"
+                    ng-disabled="daCtrl.isDisabled()"
+                    ng-model="daCtrl.selectedLGA"
+                    ng-change="daCtrl.updateList()">
+              <option ng-repeat="lga in daCtrl.facAllocInfo.lgaList track by $index"
+                      ng-value="lga"
+                      ng-selected="$index === 0"
+                      ng-bind="lga">
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <table class="table table-condensed table-bordered table-striped">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Driver</th>
+        <th>Delivery Date</th>
+        <th>Store</th>
+        <th>Estimated Distance (KM)</th>
+        <th>Actual Distance (KM)</th>
+        <th>Last Modified</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="i in [1, 3, 4] track by $index">
+        <td class="col-sm-1" ng-bind="($index + 1 )"></td>
+        <td class="col-sm-2">
+          <span ng-show="$index === 0">abdullahi@example.com</span>
+          <span ng-show="$index === 1">basheer@example.com</span>
+          <span ng-show="$index === 2">sani@example.com</span>
+        </td>
+        <td class="col-sm-2">2015-09-13</td>
+        <td clas="col-sm-4">Bebeji LGA Store</td>
+        <td clas="col-sm-2"> 70 </td>
+        <td clas="col-sm-2"> 85 </td>
+        <td clas="col-sm-1"></td>
+        <td clas="col-sm-1">
+          <button class="btn btn-primary">
+            <i class="fa fa-pencil-square-o"></i>
+            <span>Edit</span>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+
+
