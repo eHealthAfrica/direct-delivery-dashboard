@@ -4,10 +4,26 @@
       <div class="col-sm-4 pull-left">
         <h4>
           <i class="fa fa-pie-chart"></i>
-          Allocations for Delivery Round: {{ daCtrl.deliveryRound._id }}
+          {{ daCtrl.selectedView }} for Delivery Round: {{ daCtrl.deliveryRound._id }}
         </h4>
       </div>
-      <div class=" clearfix pull-right">
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label class="col-sm-2 control-label">LGA</label>
+          <div class="col-sm-10">
+            <select class="form-control"
+                    ng-model="daCtrl.selectedLGA"
+                    ng-change="daCtrl.updateList()">
+              <option ng-repeat="lga in daCtrl.facAllocInfo.lgaList track by $index"
+                      ng-value="lga"
+                      ng-selected="$index === 0"
+                      ng-bind="lga">
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4 clearfix pull-right">
         <button class="btn btn-lg btn-success">
           Select Allocation Template
         </button>
@@ -33,7 +49,7 @@
   </div>
 
   <div ng-include="'app/planning/allocation/partials/packing-list.html'"
-      ng-show="daCtrl.views.packedProduct === daCtrl.selectedView">
+       ng-show="daCtrl.views.packedProduct === daCtrl.selectedView">
   </div>
 
   <div ng-include="'app/planning/allocation/partials/product-presentation.html'"

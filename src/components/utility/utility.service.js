@@ -52,4 +52,13 @@ angular.module('utility')
 				});
 			};
 
+			this.hashBy = function (list, key) {
+				var hash = {};
+				list.forEach(function (elem) {
+					var id = elem[key];
+					hash[id] = elem;
+				});
+				return hash;
+			};
+
 		});

@@ -20,10 +20,12 @@ angular.module('planning')
 						function handleError(){
 							return {
 								rows: [],
-								productList: []
+								productList: [],
+								lgaList: []
 							}; //default value
 						}
-						return deliveryAllocationService.getAllocationBy($stateParams.roundId)
+						//TODO: replace with first element in lga list
+						return deliveryAllocationService.getAllocationBy($stateParams.roundId, 'Ajingi')
 								.catch(handleError);
 					}
 				}

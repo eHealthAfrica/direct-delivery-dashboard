@@ -89,6 +89,7 @@ angular.module('db')
       doc = _this.addTimeInfo(doc);
       return remoteDB.get(doc._id)
         .then(function (res) {
+            //TODO: investigate this this wont cause an overwrite i.e assigning doc._rev to res._rev;
           doc._rev = res._rev;
           return remoteDB.put(doc, doc._id)
             .then(function (res) {
