@@ -1,5 +1,7 @@
+'use strict';
+
 angular.module('planning')
-		.controller('DeliveryAllocationCtrl', function (deliveryRound, facilityAllocationInfo, deliveryAllocationService, log, assumptionService) {
+		.controller('DeliveryAllocationCtrl', function (deliveryRound, facilityAllocationInfo, deliveryAllocationService, log, assumptionService, calculationService) {
 
 			var vm = this;
 			vm.views = {
@@ -149,7 +151,15 @@ angular.module('planning')
 
 			vm.setAllocationTemplate = function (template) {
 				vm.selectedAllocTemp = template;
-				console.warn(template);
+				calculationService.setTemplate(vm.selectedAllocTemp);
+				//TODO: complete implementation
+				//calculationService.getBiWeekly(facilities)
+				//		.then(function (res) {
+				//			console.info(res);
+				//		})
+				//		.catch(function (err) {
+				//			console.warn(err);
+				//		});
 			};
 
 
