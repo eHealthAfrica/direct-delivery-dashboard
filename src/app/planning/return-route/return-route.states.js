@@ -15,6 +15,20 @@ angular.module('planning')
 						}
 						return planningService.getByRoundId($stateParams.roundId)
 								.catch(handleError);
+					},
+					deliveryReturnRoutes: function (returnRouteService, $stateParams) {
+						return returnRouteService.getBy($stateParams.roundId)
+								.catch(function (err) {
+									log.error('getReturnRoutesErr', err);
+									return [];
+								});
+					},
+					packingStores: function (deliveryRound, returnRouteService) {
+						return returnRouteService.getPackingStoreBy(deliveryRound.state)
+								.catch(function (err) {
+									log.error('getPackingStoresErr', err);
+									return [];
+								});
 					}
 				}
 			});
