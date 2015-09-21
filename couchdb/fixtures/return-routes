@@ -6,8 +6,8 @@
       "driverID": "abdullahi@example.com",
       "deliveryDate": "2015-05-21",
       "store": {
-        "_id": "store-id",
-        "name": "Nassarawa State Store"
+        "_id": "NASSARAWA-ZONAL-STORE",
+        "name": "Nassarawa Zonal Store"
       },
       "estimatedDistance": 90,
       "actualDistance": 85,
@@ -19,8 +19,8 @@
       "driverID": "abdullahi@example.com",
       "deliveryDate": "2015-05-08",
       "store": {
-        "_id": "store-id",
-        "name": "Nassarawa State Store"
+        "_id": "NASSARAWA-ZONAL-STORE",
+        "name": "Nassarawa Zonal Store"
       },
       "estimatedDistance": 115,
       "actualDistance": 120,
@@ -32,8 +32,8 @@
       "driverID": "bashir@example.com",
       "deliveryDate": "2015-05-21",
       "store": {
-        "_id": "store-id",
-        "name": "Nassarawa State Store"
+        "_id": "NASSARAWA-ZONAL-STORE",
+        "name": "Nassarawa Zonal Store"
       },
       "estimatedDistance": 120,
       "actualDistance": 150,
