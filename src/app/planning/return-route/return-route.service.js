@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('planning')
-		.service('returnRouteService', function (dbService, pouchUtil, $q, $filter, utility) {
+		.service('returnRouteService', function (dbService, pouchUtil, $q, $filter, utility, log) {
 			var _this = this;
 
 			function shouldAdd(doc, collatedList) {
@@ -66,7 +66,7 @@ angular.module('planning')
 				if (err.status === 409) {
 					return log.error('updateConflict', err);
 				}
-				log.error('saveReturnRouteErr', err);
+				return log.error('saveReturnRouteErr', err);
 			};
 
 			_this.getPackingStoreBy = function (state) {
