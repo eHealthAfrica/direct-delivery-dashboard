@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('planning')
-		.controller('ReturnRouteCtrl', function (deliveryRound, packingStores, deliveryReturnRoutes, utility, returnRouteService, log) {
+		.controller('ReturnRouteCtrl', function (deliveryRound, packingStores,
+                                             deliveryReturnRoutes, utility,
+                                             returnRouteService, log) {
 
 			var vm = this;
 
