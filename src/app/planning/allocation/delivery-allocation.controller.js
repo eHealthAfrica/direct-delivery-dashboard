@@ -11,6 +11,7 @@ angular.module('planning')
 			};
 			vm.selectedLGA = '';
 			vm.productPresentation = {};
+
 			vm.allocationTemplates = allocationTemplates;
 			vm.selectedAllocTemp = '';
 
