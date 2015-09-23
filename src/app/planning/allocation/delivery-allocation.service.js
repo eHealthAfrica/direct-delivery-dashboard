@@ -3,6 +3,16 @@ angular.module('planning')
 
 			var _this = this;
 
+			function getDefaultPacked(pType, expectedQty) {
+				//TODO: new item add to list
+				//TODO: add presentation if available and also unit of measurement, along with category,
+				//use product list
+				return {
+					productID: pType,
+					expectedQty: expectedQty
+				};
+			}
+
 			function updateProductAllocs(facRnd, qtyByProductHash) {
 				if (!facRnd.packedProduct) {
 					facRnd.packedProduct = [];
@@ -17,14 +27,7 @@ angular.module('planning')
 						packedProduct.expectedQty = expectedQty;
 						updatedPackedProducts.push(packedProduct);
 					} else {
-						//TODO: new item add to list
-						//TODO: add presentation if available and also unit of measurement, along with category,
-						//use product list
-						var newPackedProd = {
-							productID: k,
-							expectedQty: expectedQty
-						};
-						updatedPackedProducts.push(newPackedProd);
+						updatedPackedProducts.push(getDefaultPacked(k, expectedQty));
 					}
 				}
 				facRnd.packedProduct = updatedPackedProducts;
@@ -75,6 +78,13 @@ angular.module('planning')
 				return dbService.getView(view, params);
 			}
 
+			/**
+			 * Uses first lga from lga list if an lga is not given.
+			 *
+			 * @param roundId
+			 * @param lga
+			 * @returns {*}
+			 */
 			_this.getAllocationBy = function (roundId, lga) {
 				var uniqueProductList = [];
 				var lgaList = [];
@@ -83,7 +93,7 @@ angular.module('planning')
 				return getByRound(roundId, view)
 						.then(function (res) {
 							if (res.rows.length === 0) {
-								return pouchUtil.rejectIfEmpty(res.rows)
+								return pouchUtil.rejectIfEmpty(res.rows);
 							}
 							var resultSet = res.rows.map(function (row) {
 								row = row.value;
@@ -106,7 +116,11 @@ angular.module('planning')
 								row.packedProduct = packedProductHash;
 								return row;
 							}).filter(function (row) {
-								return row.facility && row.facility.lga === lga;
+								var selectedLGA = lga;
+								if (!lga && lgaList.length > 0) {
+									selectedLGA = utility.takeFirst(lgaList);
+								}
+								return row.facility && row.facility.lga === selectedLGA;
 							});
 							return {
 								rows: resultSet,
@@ -118,12 +132,12 @@ angular.module('planning')
 			};
 
 			_this.updatePresentation = function (packedProducts, presentationByProduct) {
-				if(!angular.isArray(packedProducts)){
+				if (!angular.isArray(packedProducts)) {
 					return packedProducts;
 				}
-				return packedProducts.map(function(pp){
+				return packedProducts.map(function (pp) {
 					var presentation = presentationByProduct[pp.productID];
-					if(angular.isNumber(presentation)){
+					if (angular.isNumber(presentation)) {
 						pp.presentation = presentation;
 					}
 					return pp;
@@ -132,17 +146,17 @@ angular.module('planning')
 
 			_this.updatePackedPresentation = function (roundId, presentationByProduct) {
 				//get all daily delivery within the given roundId
-				function updateDailyDoc (row) {
-          var doc = row.doc;
-          if(angular.isArray(doc.facilityRounds)){
-	          doc.facilityRounds = doc.facilityRounds
-		            .map(function(facRnd) {
-				          facRnd.packedProduct = _this.updatePresentation(facRnd.packedProduct, presentationByProduct);
-				          return facRnd;
-			          });
-          }else{
-            doc.packedProduct = _this.updatePresentation(doc.packedProduct, presentationByProduct);
-          }
+				function updateDailyDoc(row) {
+					var doc = row.doc;
+					if (angular.isArray(doc.facilityRounds)) {
+						doc.facilityRounds = doc.facilityRounds
+								.map(function (facRnd) {
+									facRnd.packedProduct = _this.updatePresentation(facRnd.packedProduct, presentationByProduct);
+									return facRnd;
+								});
+					} else {
+						doc.packedProduct = _this.updatePresentation(doc.packedProduct, presentationByProduct);
+					}
 					return doc;
 				}
 
@@ -150,10 +164,43 @@ angular.module('planning')
 				var view = 'dashboard-delivery-rounds/by-round-id';
 				return getByRound(roundId, view, includeDocs)
 						.then(function (res) {
-              var updatedDocs = res.rows
-		              .map(updateDailyDoc);
+							var updatedDocs = res.rows
+									.map(updateDailyDoc);
 							return dbService.saveDocs(updatedDocs);
 						});
+			};
+
+			_this.updateFromTemplate = function (rows, templateAllocs) {
+				var allocByFacilityId = {};
+				templateAllocs.forEach(function (alloc) {
+					if(alloc && alloc.MR && alloc._id){
+						allocByFacilityId[alloc._id] = alloc.MR;
+					}
+				});
+
+				return rows.map(function(row){
+					if(!row.facility || !angular.isString(row.facility.id)){
+						return row;
+					}
+					var facId = row.facility.id.split(' ').join('');
+					if(!angular.isObject(row.packedProduct)){
+						row.packedProduct = {};
+					}
+
+					var alloc = allocByFacilityId[facId];
+					if(angular.isObject(alloc)){
+						for(var k in alloc){
+							if(!row.packedProduct[k]){
+								var defaultQty = 0;
+								row.packedProduct[k] = getDefaultPacked(k, defaultQty)
+							}
+							if(!angular.isNumber(row.packedProduct[k])){
+								row.packedProduct[k].expectedQty = alloc[k];
+							}
+						}
+					}
+					return row;
+				});
 			};
 
 		});
