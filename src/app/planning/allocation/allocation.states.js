@@ -25,9 +25,14 @@ angular.module('planning')
 								presentationsByProduct: {}
 							}; //default value
 						}
-						//TODO: replace with first element in lga list
-						return deliveryAllocationService.getAllocationBy($stateParams.roundId, 'Ajingi')
+						return deliveryAllocationService.getAllocationBy($stateParams.roundId)
 								.catch(handleError);
+					},
+					allocationTemplates: function (assumptionService) {
+						return assumptionService.getAll()
+								.catch(function() {
+									return [];
+								});
 					}
 				}
 			});
