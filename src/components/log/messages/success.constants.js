@@ -45,5 +45,9 @@ angular.module('log')
 			updateFacilityPackedQty: {
 				title: 'Facility packed quantities updated successfully',
 				message: 'Product packing quantities was saved successfully!'
+			},
+			returnRouteSaved: {
+				title: 'Return route updated',
+				message: 'Return route update was saved successfully!'
 			}
 		});

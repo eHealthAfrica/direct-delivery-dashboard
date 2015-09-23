@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('planning')
 		.constant('ROUND_STATUS', {
 			PLANNING: 'Planning',

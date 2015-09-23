@@ -3,5 +3,5 @@
  */
 
 angular.module('configurations', [
-  'core'
+  'core',
 ]);

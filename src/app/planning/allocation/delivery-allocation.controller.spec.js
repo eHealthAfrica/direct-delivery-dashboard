@@ -2,7 +2,7 @@
 
 describe('DeliveryAllocationCtrl', function () {
 
-	beforeEach(module('planning', 'deliveryMock', 'utility', 'log', 'deliveryAllocationMock'));
+	beforeEach(module('planning', 'deliveryMock', 'utility', 'log', 'deliveryAllocationMock', 'allocations'));
 
 	var log;
 	var $controller;
@@ -11,7 +11,8 @@ describe('DeliveryAllocationCtrl', function () {
 	var deliveryAllocationService;
 	var DeliveryAllocationCtrl;
 
-	beforeEach(inject(function (_$controller_, _log_, _deliveryAllocationService_, _deliveryRoundMock_, _facilityAllocationInfoMock_) {
+	beforeEach(inject(function (_$controller_, _log_, _deliveryAllocationService_, _calculationService_,
+	                            _deliveryRoundMock_, _facilityAllocationInfoMock_, _assumptionService_) {
 		$controller = _$controller_;
 		log = _log_;
 		deliveryRound = _deliveryRoundMock_;
@@ -23,6 +24,8 @@ describe('DeliveryAllocationCtrl', function () {
 			deliveryRound: deliveryRound,
 			facilityAllocationInfo: angular.copy(facilityAllocationInfo),//avoid shallow copying
 			deliveryAllocationService: deliveryAllocationService,
+			assumptionService: _assumptionService_,
+			calculationService: _calculationService_,
 			log: log
 		});
 

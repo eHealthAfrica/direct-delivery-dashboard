@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('scheduleMock', [])
 		.constant('headerMock', {
 			uuid: {

@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('planning')
 		.service('scheduleService', function (dbService, log, utility) {
 

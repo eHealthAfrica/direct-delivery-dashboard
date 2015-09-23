@@ -91,5 +91,20 @@ angular.module('log')
 				title: 'An Unknown error occurred',
 				message: 'An error occurred while saving updated packed quantities',
 				remedy: 'Please, refresh and try again and contact support if it persists'
+			},
+			getReturnRoutesErr: {
+				title: 'Failed to retrieve return routes',
+				message: 'An unknown error occurred while retrieving return routes',
+				remedy: 'Please, try again and contact support if it persists'
+			},
+			saveReturnRouteErr: {
+				title: 'Failed to save return routes',
+				message: 'An unknown error occurred while saving return route',
+				remedy: 'Please, try again and contact support if it persists'
+			},
+			getPackingStoresErr: {
+				title: 'Failed to retrieve packing store list',
+				message: 'An unknown error occurred while retrieving packing store list',
+				remedy: 'Please, try again and contact support if it persists affects your work'
 			}
 		});

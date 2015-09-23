@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('planning')
 		.service('deliveryAllocationService', function (dbService, $q, utility, pouchUtil, log) {
 

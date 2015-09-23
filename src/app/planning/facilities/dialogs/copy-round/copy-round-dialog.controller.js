@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('planning')
 		.controller('CopyRoundTemplateDialogCtrl', function($modalInstance, deliveryService, deliveryRound,
                                                         deliveryRounds, log, copyRoundService) {
