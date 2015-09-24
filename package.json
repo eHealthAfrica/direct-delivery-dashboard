@@ -51,6 +51,7 @@
     "wiredep": "~2.2.0"
   },
   "engines": {
+    "npm": ">=2 <3",
     "node": ">=0.10.0 <4"
   },
   "main": "gulpfile.js",
