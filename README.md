@@ -12,7 +12,7 @@
 
 ## Usage
 
-0. Install [Node.js][], [Git][] and [CouchDB][]
+0. Install [Node.js][] (>=0.10 <4), [Git][] and [CouchDB][]
 1. `npm install -g gulp`
 2. `git clone https://github.com/eHealthAfrica/direct-delivery-dashboard.git`
 3. `cd direct-delivery-dashboard && npm install`
