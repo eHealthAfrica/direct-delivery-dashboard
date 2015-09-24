@@ -16,7 +16,7 @@
 1. `npm install -g gulp bower`
 2. `git clone https://github.com/eHealthAfrica/direct-delivery-dashboard.git`
 3. `cd direct-delivery-dashboard && npm install && bower install`
-4. `gulp views fixtures-local`
+4. `gulp views fixtures`
 5. `gulp serve`
 
 [Node.js]: http://nodejs.org
