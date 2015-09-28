@@ -7,15 +7,17 @@ describe('DeliveryAllocationCtrl', function () {
 	var log;
 	var $controller;
 	var deliveryRound;
+	var allocationTemplates;
 	var facilityAllocationInfo;
 	var deliveryAllocationService;
 	var DeliveryAllocationCtrl;
 
 	beforeEach(inject(function (_$controller_, _log_, _deliveryAllocationService_, _calculationService_,
-	                            _deliveryRoundMock_, _facilityAllocationInfoMock_, _assumptionService_) {
+	                            _deliveryRoundMock_, _facilityAllocationInfoMock_, _allocationTemplatesMock_) {
 		$controller = _$controller_;
 		log = _log_;
 		deliveryRound = _deliveryRoundMock_;
+		allocationTemplates = _allocationTemplatesMock_;
 		facilityAllocationInfo = _facilityAllocationInfoMock_;
 		deliveryAllocationService = _deliveryAllocationService_;
 
@@ -24,7 +26,7 @@ describe('DeliveryAllocationCtrl', function () {
 			deliveryRound: deliveryRound,
 			facilityAllocationInfo: angular.copy(facilityAllocationInfo),//avoid shallow copying
 			deliveryAllocationService: deliveryAllocationService,
-			assumptionService: _assumptionService_,
+			allocationTemplates: allocationTemplates,
 			calculationService: _calculationService_,
 			log: log
 		});
@@ -38,6 +40,10 @@ describe('DeliveryAllocationCtrl', function () {
 	describe('DeliveryAllocationCtrl', function () {
 		it('Should be defined or instantiated', function () {
 			expect(DeliveryAllocationCtrl).toBeDefined();
+		});
+
+		it('Should have DeliveryAllocationCtrl.allocationTemplates set to expected value', function () {
+			expect(DeliveryAllocationCtrl.allocationTemplates).toEqual(allocationTemplates);
 		});
 	});
 

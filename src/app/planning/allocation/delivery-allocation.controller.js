@@ -1,7 +1,8 @@
-'use strict';
-
 angular.module('planning')
-		.controller('DeliveryAllocationCtrl', function (deliveryRound, facilityAllocationInfo, deliveryAllocationService, log, assumptionService, calculationService) {
+		.controller('DeliveryAllocationCtrl', function (deliveryRound, allocationTemplates,
+                                                    facilityAllocationInfo,
+                                                    deliveryAllocationService, log,
+                                                    calculationService) {
 
 			var vm = this;
 			vm.views = {
@@ -10,15 +11,9 @@ angular.module('planning')
 			};
 			vm.selectedLGA = '';
 			vm.productPresentation = {};
-			vm.allocationTemplates = [];
-			vm.selectedAllocTemp = '';
 
-			//TODO: refactor
-			assumptionService.getAll()
-					.then(function(res){
-						vm.allocationTemplates = res;
-						console.log(res);
-					});
+			vm.allocationTemplates = allocationTemplates;
+			vm.selectedAllocTemp = '';
 
 			//TODO: replace with list pulled from DB after Presentation config UI has been completed.
 			vm.presentations = [
@@ -148,18 +143,24 @@ angular.module('planning')
 						});
 			};
 
-
 			vm.setAllocationTemplate = function (template) {
 				vm.selectedAllocTemp = template;
+				Object.keys(vm.selectedAllocTemp.products)
+						.forEach(function (pType) {
+							if(vm.facAllocInfo.productList.indexOf(pType) === -1){
+								vm.facAllocInfo.productList.push(pType);
+							}
+						});
 				calculationService.setTemplate(vm.selectedAllocTemp);
-				//TODO: complete implementation
-				//calculationService.getBiWeekly(facilities)
-				//		.then(function (res) {
-				//			console.info(res);
-				//		})
-				//		.catch(function (err) {
-				//			console.warn(err);
-				//		});
+				var facilities = vm.facAllocInfo.rows
+						.map(function (row) {
+							return { _id: row.facility.id }
+						});
+
+        calculationService.getMonthlyRequirement(facilities)
+		        .then(function (templates) {
+			        vm.facAllocInfo.rows = deliveryAllocationService.updateFromTemplate(vm.facAllocInfo.rows, templates);
+		        });
 			};
 
 

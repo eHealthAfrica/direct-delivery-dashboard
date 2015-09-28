@@ -143,5 +143,115 @@ angular.module('deliveryAllocationMock', [])
 				}
 			}],
 			lgaList: ['Test LGA'],
-			productList: [ "BCG", "MV", "YF", "OPV", "IPV", "TT", "Penta", "HBV", "YF Dil", "MV Dil", "BCG Dil", "0.05ml", "0.5ml", "RC 2ml", "RC 5ml", "Safety Boxes", "Droppers", "Cards"]
-		});
+			productList: ["BCG", "MV", "YF", "OPV", "IPV", "TT", "Penta", "HBV", "YF Dil", "MV Dil", "BCG Dil", "0.05ml", "0.5ml", "RC 2ml", "RC 5ml", "Safety Boxes", "Droppers", "Cards"]
+		})
+		.constant('allocationTemplatesMock', [{
+			"_id": "KN-2015-1",
+			"_rev": "1-4bbd5453f21c9d9c635ec89c8baf277c",
+			"description": "Allocation template for Kano state, 2015",
+			"createdOn": "2015-08-13T11:02:28.723Z",
+			"modifiedOn": "2015-09-03T11:04:10.761Z",
+			"doc_type": "allocation_template",
+			"name": "KN-2015-1",
+			"products": {
+				"ADS-0.05ml": {
+					"presentation": 0,
+					"coverage": "83",
+					"schedule": 0,
+					"wastage": 0,
+					"buffer": "25"
+				},
+				"BCG": {
+					"presentation": 20,
+					"coverage": 83,
+					"schedule": 1,
+					"wastage": 2,
+					"buffer": 25
+				},
+				"DT": {
+					"presentation": 0,
+					"coverage": "83",
+					"schedule": 0,
+					"wastage": 0,
+					"buffer": "25"
+				},
+				"HepA": {
+					"presentation": 0,
+					"coverage": "83",
+					"schedule": 0,
+					"wastage": 0,
+					"buffer": "25"
+				},
+				"HepB": {
+					"presentation": 0,
+					"coverage": "83",
+					"schedule": 0,
+					"wastage": 0,
+					"buffer": "25"
+				},
+				"HPV": {
+					"presentation": 10,
+					"coverage": 83,
+					"schedule": 1,
+					"wastage": 1.33,
+					"buffer": 25
+				},
+				"Measles": {
+					"presentation": 10,
+					"coverage": 83,
+					"schedule": 1,
+					"wastage": 1.43,
+					"buffer": 25
+				},
+				"Men-A": {
+					"presentation": 10,
+					"coverage": 83,
+					"schedule": 1,
+					"wastage": 1.43,
+					"buffer": 25
+				},
+				"OPV": {
+					"presentation": 20,
+					"coverage": 83,
+					"schedule": 4,
+					"wastage": 1.33,
+					"buffer": 25
+				},
+				"Penta": {
+					"presentation": 10,
+					"coverage": 83,
+					"schedule": 3,
+					"wastage": 1.33,
+					"buffer": 25
+				},
+				"SB-2.5L": {
+					"presentation": 0,
+					"coverage": "83",
+					"schedule": 0,
+					"wastage": 0,
+					"buffer": "25"
+				},
+				"Syr-Dil-2ml": {
+					"presentation": 0,
+					"coverage": "83",
+					"schedule": 0,
+					"wastage": 1.1,
+					"buffer": "25"
+				},
+				"TT": {
+					"presentation": 10,
+					"coverage": 83,
+					"schedule": 2,
+					"wastage": 1.33,
+					"buffer": 25
+				},
+				"YF": {
+					"presentation": 10,
+					"coverage": 83,
+					"schedule": 1,
+					"wastage": 1.43,
+					"buffer": 25
+				}
+			},
+			"primary": {"state": "KN", "year": "2015"}
+		}]);
