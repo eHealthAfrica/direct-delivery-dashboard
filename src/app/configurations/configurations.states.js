@@ -17,7 +17,8 @@ angular.module('configurations')
         label: 'Configurations'
       },
       resolve: {
-        authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser
+        authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser,
+        authorization: ehaCouchDbAuthServiceProvider.requireAdminUser
       }
     })
       .state('configurations.layout', {

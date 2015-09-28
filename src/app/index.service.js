@@ -3,10 +3,13 @@
 angular.module('directDeliveryDashboard')
   .service('indexService', function($rootScope, $state, editableOptions, log) {
     /*eslint-disable no-unused-vars */
-    function stateChangeError(event, toState, toParams, fromState, fromParams, authErr) {
+    function stateChangeError(event, toState, toParams, fromState, fromParams, err) {
     /*eslint-enable no-unused-vars */
-      if (authErr === 'unauthenticated') {
+      if (err === 'unauthenticated') {
         return $state.go('login');
+      }
+      if (err === 'unauthorized') {
+        return log.error('unauthorizedAccess', event);
       }
       log.error('stateChangeError', event);
     }

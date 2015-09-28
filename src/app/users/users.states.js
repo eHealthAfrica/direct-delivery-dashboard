@@ -11,6 +11,7 @@ angular.module('users')
       controllerAs: 'usersCtrl',
       resolve: {
         authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser,
+        authorization: ehaCouchDbAuthServiceProvider.requireAdminUser,
         users: function(usersService) {
           return usersService.all()
             .then(function(usersObj) {

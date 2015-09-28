@@ -8,7 +8,8 @@ angular.module('planning')
 				url: '/planning',
 				templateUrl: 'app/planning/planning.html',
         resolve: {
-          authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser
+          authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser,
+          authorization: ehaCouchDbAuthServiceProvider.requireDirectDeliveryDashboardGisUser
         }
 			});
 		});

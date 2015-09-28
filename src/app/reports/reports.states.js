@@ -14,7 +14,13 @@ angular.module('configurations')
               label: 'Reports'
             },
             resolve: {
-              authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser
+              authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser,
+              authorization: function(authService) {
+                return authService.requireRoles([
+                  'direct_delivery_dashboard_accounting',
+                  'direct_delivery_dashboard_stakeholder'
+                ]);
+              }
             }
           })
           .state('reports.layout', {
