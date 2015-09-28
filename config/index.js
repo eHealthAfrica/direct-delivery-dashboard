@@ -20,7 +20,7 @@ var defaults = {
     },
     user: {
       roles: [
-        'direct_delivery_dashboard_accouting',
+        'direct_delivery_dashboard_accounting',
         'direct_delivery_dashboard_stakeholder',
         'direct_delivery_dashboard_gis'
       ]
