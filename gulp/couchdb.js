@@ -98,7 +98,10 @@ gulp.task('users', function() {
     return userFactory(name, [role]);
   }
 
-  var users = config.config.user.roles.map(create);
+  var roles = config.config.admin.roles.concat(
+    config.config.user.roles
+  );
+  var users = roles.map(create);
 
   // TODO: de-duplicate this with deliveries DB URL parsing
   var usersUrl = url.parse(config.config.baseUrl + '/_users/_bulk_docs');
