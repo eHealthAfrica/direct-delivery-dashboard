@@ -8,7 +8,7 @@ angular.module('configurations')
             url: '/reports',
             templateUrl: 'app/reports/index.html',
             controller: function ($state) {
-              $state.go('reports.layout.delivery')
+              $state.go('reports.layout.delivery');
             },
             data: {
               label: 'Reports'
@@ -26,10 +26,10 @@ angular.module('configurations')
           .state('reports.layout', {
             parent: 'reports',
             views: {
-              "menu": {
+              menu: {
                 templateUrl: 'app/reports/menu/menu.html'
               },
-              "reports.content": {}
+              'reports.content': {}
             }
           });
     });
