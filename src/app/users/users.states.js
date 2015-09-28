@@ -10,6 +10,7 @@ angular.module('users')
       controller: 'UsersCtrl',
       controllerAs: 'usersCtrl',
       resolve: {
+        authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser,
         users: function(usersService) {
           return usersService.all()
             .then(function(usersObj) {
@@ -21,8 +22,7 @@ angular.module('users')
 
               return users;
             });
-        },
-        authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser
+        }
       }
     });
   });
