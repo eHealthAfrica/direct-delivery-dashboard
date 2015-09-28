@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('configurations')
-    .config(function ($stateProvider) {
+    .config(function ($stateProvider, ehaCouchDbAuthServiceProvider) {
       $stateProvider
           .state('reports', {
             parent: 'index',
@@ -12,6 +12,9 @@ angular.module('configurations')
             },
             data: {
               label: 'Reports'
+            },
+            resolve: {
+              authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser
             }
           })
           .state('reports.layout', {

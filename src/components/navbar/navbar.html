@@ -7,7 +7,7 @@
       </a>
     </div>
 
-    <div ng-if="navbarCtrl.auth.isLoggedIn" class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
+    <div eha-show-authenticated>
       <ul class="nav navbar-nav">
         <li ng-repeat="item in navbarCtrl.items track by item.name" ui-sref-active="active">
           <a ui-sref="{{item.name}}" ng-bind="::item.label"></a>

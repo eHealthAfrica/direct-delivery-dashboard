@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('users')
-  .config(function($stateProvider) {
+  .config(function($stateProvider, ehaCouchDbAuthServiceProvider) {
     $stateProvider.state('users', {
       abstract: true,
       parent: 'index',
@@ -21,7 +21,8 @@ angular.module('users')
 
               return users;
             });
-        }
+        },
+        authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser
       }
     });
   });

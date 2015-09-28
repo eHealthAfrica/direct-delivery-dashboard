@@ -38,7 +38,6 @@
     <script src="../bower_components/angular-resource/angular-resource.js"></script>
     <script src="../bower_components/ngstorage/ngStorage.js"></script>
     <script src="../bower_components/pouchdb/dist/pouchdb.js"></script>
-    <script src="../bower_components/pouchdb-authentication/dist/pouchdb.authentication.js"></script>
     <script src="../bower_components/lodash/dist/lodash.js"></script>
     <script src="../bower_components/angular-pouchdb/dist/angular-pouchdb.js"></script>
     <script src="../bower_components/jQuery.print/jQuery.print.js"></script>
@@ -57,6 +56,10 @@
     <script src="../bower_components/ng-csv/build/ng-csv.min.js"></script>
     <script src="../bower_components/angular-csv-import/dist/angular-csv-import.js"></script>
     <script src="../bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+    <script src="../bower_components/restangular/dist/restangular.js"></script>
+    <script src="../bower_components/localforage/dist/localforage.js"></script>
+    <script src="../bower_components/angular-localForage/dist/angular-localForage.js"></script>
+    <script src="../bower_components/angular-eha.couchdb-auth/dist/couchdb-auth.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -93,12 +96,12 @@
     <script src="app/configurations/allocations/targetpop/targetpop.states.js"></script>
     <script src="app/configurations/allocations/targetpop/targetpop.controller.js"></script>
     <script src="app/configurations/allocations/targetpop/targetPop.service.js"></script>
-    <script src="app/configurations/allocations/calculations/calculations.states.js"></script>
-    <script src="app/configurations/allocations/calculations/calculations.service.js"></script>
-    <script src="app/configurations/allocations/calculations/calculations.controller.js"></script>
     <script src="app/configurations/allocations/assumptions/assumptions.states.js"></script>
     <script src="app/configurations/allocations/assumptions/assumptions.service.js"></script>
     <script src="app/configurations/allocations/assumptions/assumptions.controller.js"></script>
+    <script src="app/configurations/allocations/calculations/calculations.states.js"></script>
+    <script src="app/configurations/allocations/calculations/calculations.service.js"></script>
+    <script src="app/configurations/allocations/calculations/calculations.controller.js"></script>
     <script src="components/log/log.module.js"></script>
     <script src="components/log/messages/warning.constants.js"></script>
     <script src="components/log/messages/success.constants.js"></script>
@@ -172,7 +175,6 @@
     <script src="components/db/db.service.js"></script>
     <script src="components/core/core.module.js"></script>
     <script src="components/auth/auth.module.js"></script>
-    <script src="components/auth/auth.service.js"></script>
     <script src="components/auth/auth.config.js"></script>
     <script src="app/users/users.states.js"></script>
     <script src="app/users/users.service.js"></script>
@@ -193,7 +195,7 @@
     <script src="app/finance/finance.service.js"></script>
     <script src="app/configurations/configurations.states.js"></script>
     <script src="app/index.states.js"></script>
-    <script src="app/index.controller.js"></script>
+    <script src="app/index.service.js"></script>
     <script src="app/config.js"></script>
     <!-- endinject -->
 

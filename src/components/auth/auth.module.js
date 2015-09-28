@@ -1,6 +1,6 @@
 'use strict';
 
 angular.module('auth', [
-  'pouchdb',
+  'eha.couchdb-auth',
   'config'
 ]);
