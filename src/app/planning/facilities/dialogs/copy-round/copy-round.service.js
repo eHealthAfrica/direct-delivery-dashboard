@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('planning')
 		.service('copyRoundService', function (DELIVERY_STATUS) {
 

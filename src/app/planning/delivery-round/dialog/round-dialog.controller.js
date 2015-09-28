@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('planning')
 		.controller('RoundDialogCtrl', function ($scope, log, $modalInstance, config, deliveryRound,
                                              $state, planningService, stateAdminLevels, ROUND_STATUS) {

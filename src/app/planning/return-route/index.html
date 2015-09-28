@@ -1,0 +1,93 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-sm-4 pull-left">
+        <h4>
+          <i class="fa fa-truck"></i>
+          <span>Return Route for Delivery Round: {{ rrCtrl.deliveryRound._id }} </span>
+        </h4>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Search</label>
+          <div class="col-sm-10">
+            <input class="form-control" ng-model="rrCtrl.query"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <table class="table table-condensed table-bordered table-striped">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Driver</th>
+        <th>Delivery Date</th>
+        <th>Packing Store</th>
+        <th>Estimated Distance (KM)</th>
+        <th>Actual Distance (KM)</th>
+        <th>Last Modified</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="returnRoute in rrCtrl.deliveryReturnRoutes | filter:rrCtrl.query track by $index ">
+        <td class="col-sm-1" ng-bind="($index + 1 )"></td>
+        <td class="col-sm-2" ng-bind="returnRoute.driverID"></td>
+        <td class="col-sm-2" ng-bind="returnRoute.deliveryDate"></td>
+        <td clas="col-sm-4">
+          <span editable-select="returnRoute.store"
+                e-name="store"
+                e-form="returnRouteForm"
+                e-ng-selected="returnRoute.store._id === store._id"
+                e-ng-options="store as store.name for store in rrCtrl.packingStores">
+            {{ returnRoute.store.name ||  '-' }}
+          </span>
+        </td>
+        <td clas="col-sm-2">
+          <span editable-number="returnRoute.estimatedDistance"  e-min="0"
+                e-name="estimatedDistance" e-form="returnRouteForm" e-required>
+            {{ returnRoute.estimatedDistance || '-' }}
+          </span>
+        </td>
+        <td class="col-sm-2">
+          <span editable-number="returnRoute.actualDistance" e-min="0"
+                e-name="actualDistance" e-form="returnRouteForm" e-required>
+            {{ returnRoute.actualDistance || '-' }}
+          </span>
+        </td>
+        <td clas="col-sm-1" ng-bind="returnRoute.modifiedOn"></td>
+        <td clas="col-sm-1">
+          <!-- form -->
+          <form editable-form name="returnRouteForm"
+                onbeforesave="rrCtrl.saveRow($data, returnRoute.driverID, returnRoute.deliveryDate)"
+                ng-show="returnRouteForm.$visible" class="form-buttons form-inline"
+                shown="inserted == returnRoute">
+            <button type="submit" ng-disabled="returnRouteForm.$waiting" class="btn btn-primary">
+              <span>Save</span>
+            </button>
+            <button type="button btn-default" ng-disabled="returnRouteForm.$waiting"
+                    ng-click="returnRouteForm.$cancel()" class="btn btn-default">
+              <span>Cancel</span>
+            </button>
+          </form>
+          <div class="buttons" ng-show="!returnRouteForm.$visible">
+            <button class="btn btn-primary"
+                    ng-click="returnRouteForm.$show()">
+              <i class="fa fa-pencil-square-o"></i>
+              <span>Edit</span>
+            </button>
+          </div>
+
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+
+

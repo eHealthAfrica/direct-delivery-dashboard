@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('planning')
 		.controller('DeliveryRoundCtrl', function ($modal, deliveryRounds, planningService, log) {
 

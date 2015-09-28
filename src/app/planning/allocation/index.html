@@ -25,11 +25,6 @@
         </div>
       </div>
       <div class="col-sm-4 clearfix pull-right">
-        <button class="btn btn-lg btn-success"
-                ng-disabled="daCtrl.isDisabled()">
-          <span>Select Allocation Template</span>
-        </button>
-
         <span class="dropdown" dropdown on-toggle="toggled(open)">
            <a href class="dropdown-toggle btn btn-lg btn-primary" dropdown-toggle>
              <b>
@@ -42,6 +37,27 @@
              <li>
                <a href="#" ng-repeat="key in daCtrl.views"
                   ng-click="daCtrl.switchView(key)">{{ key }}
+               </a>
+             </li>
+           </ul>
+        </span>
+        <!-- set allocation template !-->
+        <span class="dropdown" dropdown on-toggle="toggled(open)" ng-disabled="daCtrl.isDisabled()">
+           <a href class="dropdown-toggle btn btn-lg btn-default" dropdown-toggle>
+             <b>
+               <i class="fa fa-check"></i>
+               {{ daCtrl.selectedAllocTemp.name || 'Select Allocation Template' }}
+               <span class="caret"></span>
+             </b>
+           </a>
+           <ul class="dropdown-menu">
+             <li>
+               <a href="#" ng-repeat="allocTemp in daCtrl.allocationTemplates"
+                  ng-click="daCtrl.setAllocationTemplate(allocTemp)">
+                 {{ allocTemp.name }}
+               </a>
+               <a href="#" ng-click="daCtrl.setAllocationTemplate('')">
+                 None
                </a>
              </li>
            </ul>

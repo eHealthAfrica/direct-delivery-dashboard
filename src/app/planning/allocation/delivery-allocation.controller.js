@@ -1,5 +1,7 @@
+'use strict';
+
 angular.module('planning')
-		.controller('DeliveryAllocationCtrl', function (deliveryRound, facilityAllocationInfo, deliveryAllocationService, log) {
+		.controller('DeliveryAllocationCtrl', function (deliveryRound, facilityAllocationInfo, deliveryAllocationService, log, assumptionService, calculationService) {
 
 			var vm = this;
 			vm.views = {
@@ -8,6 +10,17 @@ angular.module('planning')
 			};
 			vm.selectedLGA = '';
 			vm.productPresentation = {};
+			vm.allocationTemplates = [];
+			vm.selectedAllocTemp = '';
+
+			//TODO: refactor
+			assumptionService.getAll()
+					.then(function(res){
+						vm.allocationTemplates = res;
+						console.log(res);
+					});
+
+			//TODO: replace with list pulled from DB after Presentation config UI has been completed.
 			vm.presentations = [
 				{
 					"_id": "10-DPV",
@@ -133,6 +146,20 @@ angular.module('planning')
 							deliveryAllocationService.onUpdateError(err);
 							return false;
 						});
+			};
+
+
+			vm.setAllocationTemplate = function (template) {
+				vm.selectedAllocTemp = template;
+				calculationService.setTemplate(vm.selectedAllocTemp);
+				//TODO: complete implementation
+				//calculationService.getBiWeekly(facilities)
+				//		.then(function (res) {
+				//			console.info(res);
+				//		})
+				//		.catch(function (err) {
+				//			console.warn(err);
+				//		});
 			};
 
 

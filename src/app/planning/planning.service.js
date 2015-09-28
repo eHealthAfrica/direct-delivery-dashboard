@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('planning')
 		.service('planningService', function (dbService, pouchUtil, log, utility, ROUND_STATUS) {
 
