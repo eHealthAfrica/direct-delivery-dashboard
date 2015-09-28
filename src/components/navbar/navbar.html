@@ -9,7 +9,11 @@
 
     <div eha-show-authenticated>
       <ul class="nav navbar-nav">
-        <li ng-repeat="item in navbarCtrl.items track by item.name" ui-sref-active="active">
+        <li
+          ng-repeat="item in navbarCtrl.items track by item.name"
+          ui-sref-active="active"
+          eha-show-for-role="item.roles"
+        >
           <a ui-sref="{{item.name}}" ng-bind="::item.label"></a>
         </li>
       </ul>

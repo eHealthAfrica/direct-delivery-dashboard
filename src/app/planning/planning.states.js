@@ -10,6 +10,11 @@ angular.module('planning')
         resolve: {
           authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser,
           authorization: ehaCouchDbAuthServiceProvider.requireDirectDeliveryDashboardGisUser
-        }
+        },
+        data: {
+          roles: [
+            'direct_delivery_dashboard_gis'
+          ]
+				}
 			});
 		});

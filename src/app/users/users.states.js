@@ -24,6 +24,11 @@ angular.module('users')
               return users;
             });
         }
+      },
+      data: {
+        roles: [
+          'direct_delivery_dashboard_super'
+        ]
       }
     });
   });

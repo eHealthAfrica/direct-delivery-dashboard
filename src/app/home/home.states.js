@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('home')
-		.config(function ($stateProvider, ehaCouchDbAuthServiceProvider) {
+		.config(function ($stateProvider, config, ehaCouchDbAuthServiceProvider) {
 			$stateProvider.state('home', {
 				parent: 'index',
 				url: '/',
@@ -35,7 +35,8 @@ angular.module('home')
 					}
 				},
 				data: {
-					label: 'Home'
+					label: 'Home',
+          roles: config.admin.roles.concat(config.user.roles)
 				}
 			});
 		});

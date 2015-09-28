@@ -11,11 +11,16 @@ angular.module('configurations')
               $state.go('reports.layout.delivery');
             },
             data: {
-              label: 'Reports'
+              label: 'Reports',
+              roles: [
+                'direct_delivery_dashboard_accounting',
+                'direct_delivery_dashboard_stakeholder'
+              ]
             },
             resolve: {
               authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser,
               authorization: function(authService) {
+                // TODO: de-dupe with data.roles
                 return authService.requireRoles([
                   'direct_delivery_dashboard_accounting',
                   'direct_delivery_dashboard_stakeholder'

@@ -14,7 +14,10 @@ angular.module('configurations')
         }
       },
       data: {
-        label: 'Configurations'
+        label: 'Configurations',
+        roles: [
+          'direct_delivery_dashboard_super'
+        ]
       },
       resolve: {
         authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser,
