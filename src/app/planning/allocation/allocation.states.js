@@ -20,11 +20,19 @@ angular.module('planning')
 						function handleError(){
 							return {
 								rows: [],
-								productList: []
+								productList: [],
+								lgaList: [],
+								presentationsByProduct: {}
 							}; //default value
 						}
 						return deliveryAllocationService.getAllocationBy($stateParams.roundId)
 								.catch(handleError);
+					},
+					allocationTemplates: function (assumptionService) {
+						return assumptionService.getAll()
+								.catch(function() {
+									return [];
+								});
 					}
 				}
 			});

@@ -4,20 +4,23 @@ var url = require('url');
 var got = require('got');
 var glob = require('glob');
 var gulp = require('gulp');
-var compile = require('couch-compile');
 var argv = require('optimist').argv;
+var ensure = require('couchdb-ensure');
+var compile = require('couch-compile');
 
 var config = require('../config');
 var fixtures = require('../couchdb/fixtures');
 
 // prepare db url and add auth to it if specified as arguments
 // arguments: -u <user name> -p <password>
-//
-var dbUrl = url.parse(config.config.db + '/_bulk_docs');
+var db = url.parse(config.config.db);
+
 if (argv.u && argv.p) {
-  dbUrl.auth = argv.u + ':' + argv.p;
+  db.auth = argv.u + ':' + argv.p;
 }
-dbUrl = url.format(dbUrl);
+
+var dbUrl = url.format(db);
+var bulkDocsUrl = dbUrl + '/_bulk_docs';
 
 function push(docs) {
   docs = JSON.stringify({
@@ -31,7 +34,7 @@ function push(docs) {
     }
   };
 
-  return got.post(dbUrl, options, function(err, data) {
+  return got.post(bulkDocsUrl, options, function(err, data) {
     if (err) {
       console.error(data);
       throw err;
@@ -41,10 +44,15 @@ function push(docs) {
 }
 
 gulp.task('fixtures', function() {
-  for (var model in fixtures) {
-    var docs = fixtures[model].docs;
-    push(docs);
-  }
+  ensure(dbUrl, function(err) {
+    if (err) {
+      throw err;
+    }
+    for (var model in fixtures) {
+      var docs = fixtures[model].docs;
+      push(docs);
+    }
+  });
 });
 
 gulp.task('views', function() {
@@ -59,10 +67,16 @@ gulp.task('views', function() {
     });
   }
 
-  glob('couchdb/app/*', function(err, matches) {
+  ensure(dbUrl, function(err) {
     if (err) {
       throw err;
     }
-    matches.forEach(couchCompile);
+    glob('couchdb/app/*', function(err, matches) {
+      if (err) {
+        throw err;
+      }
+      matches.forEach(couchCompile);
+    });
   });
+
 });

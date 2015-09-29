@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('deliveryMock', [])
 		.constant('deliveryRoundMock', {
 			"_id": "KN-21-2015",

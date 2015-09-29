@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('planning')
 		.controller('ScheduleDataImportDialogCtrl', function ($modalInstance, dailyDeliveries, deliveryRound, scheduleService) {
 

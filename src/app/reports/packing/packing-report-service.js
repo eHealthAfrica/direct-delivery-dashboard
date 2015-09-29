@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('reports')
-  .service('packingReportService', function(dbService) {
+  .service('packingReportService', function($q, dbService, productService) {
     var _this = this;
 
     function defaultFields() {
@@ -62,8 +62,9 @@ angular.module('reports')
     }
 
     function getProducts(list, row) {
-      if (list.indexOf(row.productID) === -1) {
-        list.push(row.productID);
+      var productID = row.productID.trim();
+      if (list.indexOf(productID) === -1) {
+        list.push(productID);
       }
 
       return list;
@@ -79,7 +80,9 @@ angular.module('reports')
     }
 
     function collatePackingReport(response) {
-      var rows = response.rows;
+      var rows = response[0].rows;
+      var orderedObject = productOrder(response[1]);
+
       var i = rows.length;
       var grouped = {
         zone: {},
@@ -96,10 +99,31 @@ angular.module('reports')
         products = getProducts(products, row);
       }
 
+      products = orderProducts(products, orderedObject);
       return {
         group: grouped,
         products: products
       };
+    }
+
+    function orderProducts(productList, orderedObject) {
+      return productList.sort(function (a, b) {
+
+        var aVal = orderedObject[a.toLowerCase()];
+        var bVal = orderedObject[b.toLowerCase()];
+
+        var diff = aVal - bVal;
+        return !isNaN(diff) ? diff : productList.length;
+      });
+    }
+
+    function productOrder(productList) {
+      var orderedObject = {};
+      var i = productList.length;
+      while (i--) {
+        orderedObject[productList[i].altName] = productList[i].order;
+      }
+      return orderedObject;
     }
 
     _this.getPackingReport = function (startDate, endDate) {
@@ -111,7 +135,11 @@ angular.module('reports')
         startkey: [startDate],
         endkey: [endDate, {}, {}]
       };
-      return dbService.getView(view, options)
+      var promises = [
+        dbService.getView(view, options),
+        productService.getAll()
+      ];
+      return $q.all(promises)
         .then(collatePackingReport);
     };
 

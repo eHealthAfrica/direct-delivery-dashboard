@@ -12,11 +12,11 @@
 
 ## Usage
 
-0. Install [Node.js][], [Git][] and [CouchDB][]
-1. `npm install -g gulp bower`
+0. Install [Node.js][] (>=0.10 <4, npm >=2 <3), [Git][] and [CouchDB][]
+1. `npm install -g gulp`
 2. `git clone https://github.com/eHealthAfrica/direct-delivery-dashboard.git`
-3. `cd direct-delivery-dashboard && npm install && bower install`
-4. `gulp views fixtures-local`
+3. `cd direct-delivery-dashboard && npm install`
+4. `gulp views fixtures`
 5. `gulp serve`
 
 [Node.js]: http://nodejs.org

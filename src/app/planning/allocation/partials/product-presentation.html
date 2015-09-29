@@ -1,12 +1,12 @@
 <div class="panel-body"
-     ng-show="daCtrl.facilityRounds.length !== 0 && daCtrl.productList.length === 0">
+     ng-show="daCtrl.hasNoAllocation()">
   <div class="panel-body alert alert-info">
     <i class="fa fa-lg fa-info-circle"></i>
     <span> No allocation found, please set allocation template.</span>
   </div>
 </div>
 
-<div class="panel-body" ng-show="daCtrl.facilityRounds.length === 0">
+<div class="panel-body" ng-show="daCtrl.hasNoSchedule()">
   <div class="panel-body alert alert-info">
     <i class="fa fa-lg fa-info-circle"></i>
       <span>
@@ -18,32 +18,36 @@
   </div>
 </div>
 
-<div ng-show="daCtrl.productList.length > 0">
+<div ng-show="daCtrl.hasProducts()">
   <table
       class="table table-condensed table-striped table-bordered">
     <thead>
     <tr>
       <th>#</th>
-      <th width="10%">Facility</th>
-      <th width="5%" ng-repeat="pCode in daCtrl.productList track by $index" ng-bind="pCode"></th>
-      <th width="10%">Action</th>
+      <th>Product Type</th>
+      <th>Presentation</th>
+      <th>Action</th>
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="facRnd in daCtrl.facilityRounds track by $index">
-      <td ng-bind="($index + 1)"></td>
-      <td ng-bind="facRnd.facility.name"></td>
-      <td ng-repeat="pCode in daCtrl.productList track by $index">
-           <span editable-number="facRnd.packedProduct[pCode].presentation" e-min="0"
-                 e-name="presentation" e-form="rowform" e-required>
-          {{ facRnd.packedProduct[pCode].presentation  || '-' }}
+    <tr ng-repeat="pCode in daCtrl.facAllocInfo.productList track by $index">
+      <td class="col-sm-1" ng-bind="($index + 1)"></td>
+      <td class="col-sm-3" ng-bind="pCode"></td>
+      <td class="col-sm-3">
+        <span editable-select="daCtrl.productPresentation[pCode]" e-min="0"
+              e-class="form-control"
+              e-ng-options="presentation.value as presentation.name for presentation in daCtrl.presentations"
+              e-name="{{ pCode }}" e-form="presentationForm" e-required>
+          {{ daCtrl.productPresentation[pCode]  || '-' }}
         </span>
       </td>
-      <td>
+      <td class="col-sm-1">
         <!-- form -->
         <form editable-form name="presentationForm"
-              ng-show="presentationForm.$visible" class="form-buttons form-inline"
-              shown="inserted === facRnd">
+              onbeforesave="daCtrl.updatePresentation($data, pCode)"
+              ng-show="presentationForm.$visible"
+              class="form-buttons form-inline"
+              shown="inserted === pCode">
           <button type="submit" ng-disabled="presentationForm.$waiting"
                   class="btn btn-primary">
             <span>Save</span>
@@ -55,7 +59,8 @@
           </button>
         </form>
         <div class="buttons" ng-show="!presentationForm.$visible">
-          <button class="btn btn-primary btn-block" ng-click="presentationForm.$show()">Edit
+          <button class="btn btn-primary" ng-click="presentationForm.$show()">
+            <span>Edit</span>
           </button>
         </div>
       </td>
