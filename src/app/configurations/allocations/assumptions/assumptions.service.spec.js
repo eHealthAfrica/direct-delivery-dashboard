@@ -1,0 +1,47 @@
+'use strict';
+
+
+describe('AssumptionsService', function(){
+
+  var dbService,
+    assumptionService,
+    pouchUtil;
+
+  beforeEach(module('db', 'allocations'));
+
+  beforeEach(inject(function(_dbService_, _assumptionService_, _pouchUtil_){
+    dbService = _dbService_;
+    assumptionService = _assumptionService_;
+    pouchUtil  = _pouchUtil_;
+
+    spyOn(dbService, 'get');
+    spyOn(dbService, 'getView').and.callThrough();
+    spyOn(dbService, 'saveDocs');
+    spyOn(dbService, 'insertWithId');
+    spyOn(pouchUtil, 'pluckDocs');
+  }));
+
+  it('should be the defined',function(){
+    expect(assumptionService).toBeDefined();
+  });
+
+  it('should have a get, getAll and save methods', function(){
+    expect(assumptionService.get).toEqual(jasmine.any(Function));
+    expect(assumptionService.getAll).toEqual(jasmine.any(Function));
+    expect(assumptionService.save).toEqual(jasmine.any(Function));
+  });
+
+  it('expects assumption service get method to call dbservice.get method', function(){
+    var id = 'jdkshs';
+    assumptionService.get(id);
+
+    expect(dbService.get).toHaveBeenCalledWith(id);
+  });
+  it('expects assumptionService.getAll to call dbService.getAll', function(){
+    var options = {}, view = '/fake_address';
+    assumptionService.getAll(options);
+
+    expect(dbService.getView).toHaveBeenCalledWith(options)
+  });
+
+});
