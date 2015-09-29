@@ -6,7 +6,7 @@
   "devDependencies": {
     "bower": "^1.3.12",
     "browser-sync": "~1.7.1",
-    "chalk": "~0.5.1",
+    "chalk": "1.1.1",
     "couch-compile": "^1.2.0",
     "couchdb-ensure": "^1.2.1",
     "coveralls": "^2.11.2",
