@@ -31,17 +31,24 @@ describe('AssumptionsService', function(){
     expect(assumptionService.save).toEqual(jasmine.any(Function));
   });
 
-  it('expects assumption service get method to call dbservice.get method', function(){
+  it('eassumptionService.get should call dbservice.get method', function(){
     var id = 'jdkshs';
     assumptionService.get(id);
 
     expect(dbService.get).toHaveBeenCalledWith(id);
   });
-  it('expects assumptionService.getAll to call dbService.getAll', function(){
-    var options = {}, view = '/fake_address';
-    assumptionService.getAll(options);
+  it('assumptionService.getAll should call dbService.getAll', function(){
+    var options = {
+      include_docs: true
+    },
+    view = 'allocations/assumptions';
+    assumptionService.getAll(view, options);
 
-    expect(dbService.getView).toHaveBeenCalledWith(options)
+    expect(dbService.getView).toHaveBeenCalledWith(view, options)
+  });
+
+  it('assumptionsService.save should call dbService.saveDocs or dbService.insertWithId', function(){
+
   });
 
 });
