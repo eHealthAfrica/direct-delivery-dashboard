@@ -5,7 +5,7 @@
 angular.module('products')
   .service('productService', function(pouchUtil, dbService){
 
-    this.baseUOMs = ['Units', 'Viles', 'Doses'];
+    this.baseUOMs = ['Units', 'Vials', 'Doses'];
 
     this.get = function(id){
       return dbService.get(id);
@@ -47,7 +47,6 @@ angular.module('products')
     };
     this.save = function(doc){
 
-      var saveMethods = ['insertWithId', ''];
       var use = 'update';
 
       if(!doc._id){

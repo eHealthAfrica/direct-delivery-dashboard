@@ -12,7 +12,10 @@ td.actions {
   width: 1px;
   white-space: nowrap;
 }
-
+dl > dt, dl > dd {
+  margin: 0.7em;
+  text-transform: capitalize;
+}
 // injector
 @import 'reports/invoice/round/round.scss';
 // endinjector
