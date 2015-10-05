@@ -13,7 +13,6 @@ angular
 			'navbar',
 			'footer',
 			'home',
-			'auth',
 			'planning',
 			'log',
 			'login',

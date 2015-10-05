@@ -7,5 +7,6 @@ angular.module('finance', [
 	'log',
 	'delivery',
 	'users',
-	'mailer'
+	'mailer',
+  'auth'
 ]);

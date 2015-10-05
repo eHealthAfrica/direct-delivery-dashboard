@@ -6,5 +6,6 @@ angular.module('users', [
   'pouchdb',
   'config',
   'drivers',
-  'ngMessages'
+  'ngMessages',
+  'auth'
 ]);
