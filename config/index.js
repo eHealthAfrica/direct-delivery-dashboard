@@ -2,6 +2,7 @@
 /*eslint-env node */
 
 var pkg = require('../package.json');
+var url = require('url');
 var extend = require('extend');
 
 var env = process.env.NODE_ENV || 'development';
@@ -19,6 +20,7 @@ var config = {
   config: require('./' + env + '.json')
 };
 
-config.config.baseUrl = config.config.db.replace(/\/[^\/]+\/?$/, '');
+var parsedUrl = url.parse(config.config.db);
+config.config.baseUrl = parsedUrl.href.split(parsedUrl.path)[0];
 
 module.exports = extend(true, {}, defaults, config);
