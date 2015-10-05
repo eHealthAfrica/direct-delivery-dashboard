@@ -33,7 +33,8 @@
     "angular": "~1.4.3",
     "d3": "~3.4.1",
     "angular-mocks": "~1.4.3",
-    "font-awesome": "4.3"
+    "font-awesome": "4.3",
+    "lodash": "~2.4.1"
   },
   "overrides": {
     "bootstrap-sass-official": {
