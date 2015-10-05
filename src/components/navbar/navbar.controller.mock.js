@@ -2,19 +2,11 @@
 
 angular.module('navbarCtrlMock', [])
   .constant('config', {
-    name: 'test',
-    admin: {
-      roles: [
-        'boss'
-      ]
-    }
+    name: 'test'
   })
   .constant('navbarItemsMock', [
     {
       name: 'parent',
-      label: 'Parent',
-      roles: [
-        'boss'
-      ]
+      label: 'Parent'
     }
   ]);
