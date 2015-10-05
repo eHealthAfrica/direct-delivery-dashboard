@@ -3,5 +3,6 @@
 angular.module('navbar', [
   'core',
   'config',
-  'auth'
+  'auth',
+  'log'
 ]);
