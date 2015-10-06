@@ -4,7 +4,7 @@
       "angularVersion": "~1.4.0",
       "angularModules": [],
       "jQuery": {
-        "key": "none"
+        "key": "jquery2"
       },
       "resource": {
         "key": "angular-resource",
