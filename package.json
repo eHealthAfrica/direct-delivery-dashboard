@@ -71,8 +71,14 @@
     "logistics",
     "ehealth"
   ],
-  "author": "eHealth Africa",
-  "license": "All rights reserved",
+  "contributors": [
+    "Haykel Ben Jemia <hbj@allmas.tn>",
+    "Jideobi Ofomah <jideobi.ofomah@ehealthnigeria.org>",
+    "Tom Vincent <tom.vincent@ehealthnigeria.org> (https://tlvince.com)",
+    "Femi Oni <oluwafemi.oni@ehealthnigeria.org>",
+    "Musa Musa <musa.musa@ehealthnigeria.org>"
+  ],
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/eHealthAfrica/direct-delivery-dashboard/issues"
   },

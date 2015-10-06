@@ -45,16 +45,19 @@
     }
   },
   "authors": [
-    "eHealth Africa"
+    "Haykel Ben Jemia <hbj@allmas.tn>",
+    "Jideobi Ofomah <jideobi.ofomah@ehealthnigeria.org>",
+    "Tom Vincent <tom.vincent@ehealthnigeria.org> (https://tlvince.com)",
+    "Femi Oni <oluwafemi.oni@ehealthnigeria.org>",
+    "Musa Musa <musa.musa@ehealthnigeria.org>"
   ],
   "keywords": [
     "delivery",
     "logistics",
     "ehealth"
   ],
-  "license": "All rights reserved",
+  "license": "Apache-2.0",
   "homepage": "http://ehealthafrica.org",
-  "private": true,
   "ignore": [
     "**/.*",
     "node_modules",
