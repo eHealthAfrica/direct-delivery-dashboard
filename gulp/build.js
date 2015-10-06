@@ -69,6 +69,16 @@ gulp.task('html', ['inject', 'partials'], function () {
     .pipe($.size({title: path.join(conf.paths.dist, '/'), showFiles: true}));
 });
 
+gulp.task('images', function () {
+  return gulp.src(path.join(conf.paths.src, '/assets/images/**/*'))
+    .pipe($.imagemin({
+      optimizationLevel: 3,
+      progressive: true,
+      interlaced: true
+    }))
+    .pipe(gulp.dest(path.join(conf.paths.dist, '/assets/images/')));
+});
+
 // Only applies for fonts from bower dependencies
 // Custom fonts are handled by the "other" task
 gulp.task('fonts', function () {
@@ -112,4 +122,4 @@ gulp.task('config', function () {
   return fs.writeFileSync('src/app/config.js', ngconf);
 });
 
-gulp.task('build', ['config', 'html', 'fonts', 'favicons', 'other']);
+gulp.task('build', ['config', 'html', 'images', 'fonts', 'favicons', 'other']);
