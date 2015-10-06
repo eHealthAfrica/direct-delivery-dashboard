@@ -112,4 +112,4 @@ gulp.task('favicons', function () {
   });
 });
 
-gulp.task('build', ['ngConfig', 'html', 'images', 'fonts', 'favicons', 'other']);
+gulp.task('build', ['html', 'images', 'fonts', 'favicons', 'other']);
