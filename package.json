@@ -65,7 +65,7 @@
   "main": "gulpfile.js",
   "scripts": {
     "build": "gulp build",
-    "coveralls": "cat coverage/*/lcov.info | coveralls",
+    "coveralls": "coveralls < coverage/lcov/lcov.info",
     "postinstall": "bower install",
     "test": "gulp test"
   },
