@@ -1,0 +1,83 @@
+<div class="row" ng-if="packingRepCtrl.products.length !== 0">
+  <div class="col-sm-3">
+    <h4>
+      <span ng-bind="packingRepCtrl.selected.name"></span>
+      <span ng-bind="packingRepCtrl.selected.type"></span>
+      Report
+    </h4>
+  </div>
+  <div class="col-sm-9">
+    <div class="btn-group" dropdown dropdown-append-to-body>
+      <button id="btn-for-zone" type="button" class="btn btn-default" dropdown-toggle>
+        <span ng-bind="packingRepCtrl.selected.zone || 'Select Zone to Display'"></span> <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="btn-append-to-body">
+        <li role="menuitem"></li>
+        <li
+          ng-repeat="zone in packingRepCtrl.list.zone"
+          ng-click="packingRepCtrl.updateLocation(zone, 'zone')"
+          role="menuitem"
+          ng-bind="zone"></li>
+
+      </ul>
+    </div>
+
+    <div class="btn-group" dropdown dropdown-append-to-body>
+      <button id="btn-for-lga" type="button" class="btn btn-default" dropdown-toggle>
+        <span ng-bind="packingRepCtrl.selected.lga || 'Select LGA to Display'"></span> <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="btn-append-to-body">
+        <li role="menuitem"></li>
+        <li
+          ng-repeat="lga in packingRepCtrl.list.lga"
+          ng-click="packingRepCtrl.updateLocation(lga, 'lga')"
+          role="menuitem"
+          ng-bind="lga"></li>
+
+      </ul>
+    </div>
+
+    <div class="btn-group" dropdown dropdown-append-to-body>
+      <button id="btn-for-ward" type="button" class="btn btn-default" dropdown-toggle>
+        <span ng-bind="packingRepCtrl.selected.ward || 'Select Ward to Display'"></span> <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="btn-append-to-body">
+        <li role="menuitem"></li>
+        <li
+          ng-repeat="ward in packingRepCtrl.list.ward"
+          ng-click="packingRepCtrl.updateLocation(ward, 'ward')"
+          role="menuitem"
+          ng-bind="ward"></li>
+
+      </ul>
+    </div>
+  </div>
+</div>
+<div classs="row">
+  <div class="panel-body alert alert-info"
+       ng-if="packingRepCtrl.products.length === 0">
+    <i class="fa fa-lg fa-info-circle"></i>
+    <span> No delivery was made within selected period.</span>
+  </div>
+
+  <table class="table table-condensed table-striped table-bordered" ng-if="packingRepCtrl.products.length !== 0">
+    <thead>
+    <tr>
+      <th>Products</th>
+      <th>Packed Qty</th>
+      <th>Stock at hand</th>
+      <th>Delivered Qty</th>
+      <th>Returned Qty</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="product in packingRepCtrl.products">
+      <td ng-bind="product"></td>
+      <td ng-bind="packingRepCtrl.selectedLocation[product].expectedQty || 0"></td>
+      <td ng-bind="packingRepCtrl.selectedLocation[product].onHandQty || 0"></td>
+      <td ng-bind="packingRepCtrl.selectedLocation[product].deliveredQty || 0"></td>
+      <td ng-bind="packingRepCtrl.selectedLocation[product].returnedQty || 0"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>

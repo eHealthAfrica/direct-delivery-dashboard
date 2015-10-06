@@ -11,6 +11,10 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="../bower_components/angular-toastr/dist/angular-toastr.css" />
     <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="../bower_components/nvd3/src/nv.d3.css" />
+    <link rel="stylesheet" href="../bower_components/angular-gantt/assets/angular-gantt.css" />
+    <link rel="stylesheet" href="../bower_components/angular-gantt/assets/angular-gantt-plugins.css" />
+    <link rel="stylesheet" href="../bower_components/angular-xeditable/dist/css/xeditable.css" />
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -39,11 +43,62 @@
     <script src="../bower_components/angular-pouchdb/dist/angular-pouchdb.js"></script>
     <script src="../bower_components/jQuery.print/jQuery.print.js"></script>
     <script src="../bower_components/angular-messages/angular-messages.js"></script>
+    <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="../bower_components/d3/d3.js"></script>
+    <script src="../bower_components/nvd3/nv.d3.js"></script>
+    <script src="../bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js"></script>
+    <script src="../bower_components/moment/moment.js"></script>
+    <script src="../bower_components/angular-moment/angular-moment.js"></script>
+    <script src="../bower_components/angular-gantt/assets/angular-gantt.js"></script>
+    <script src="../bower_components/angular-gantt/assets/angular-gantt-plugins.js"></script>
+    <script src="../bower_components/jquery-ui/jquery-ui.js"></script>
+    <script src="../bower_components/angular-dragdrop/src/angular-dragdrop.js"></script>
+    <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="../bower_components/ng-csv/build/ng-csv.min.js"></script>
+    <script src="../bower_components/angular-csv-import/dist/angular-csv-import.js"></script>
+    <script src="../bower_components/angular-xeditable/dist/js/xeditable.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
     <!-- build:js({.tmp,src}) scripts/app.js -->
     <!-- inject:js -->
+    <script src="app/configurations/allocations/allocations.module.js"></script>
+    <script src="app/configurations/allocations/assumptions/assumption.template/template.values/template.value.controller.js"></script>
+    <script src="app/planning/planning.module.js"></script>
+    <script src="app/planning/facilities/dialogs/copy-round/copy-round.service.js"></script>
+    <script src="app/planning/facilities/dialogs/copy-round/copy-round-dialog.controller.js"></script>
+    <script src="app/planning/facilities/dialogs/add/add-facility.service.js"></script>
+    <script src="app/planning/facilities/dialogs/add/add-facility-dialog.controller.js"></script>
+    <script src="app/configurations/allocations/targetpop/upload/target-population-upload.js"></script>
+    <script src="app/configurations/allocations/assumptions/assumption.template/assumptions.template.add.js"></script>
+    <script src="app/configurations/allocations/assumptions/assumption.template/assumption.add.service.js"></script>
+    <script src="app/reports/reports.module.js"></script>
+    <script src="app/reports/invoice/round/round.states.js"></script>
+    <script src="app/reports/invoice/round/round.controller.js"></script>
+    <script src="app/reports/invoice/round/round.constants.js"></script>
+    <script src="app/planning/schedule/import/schedule-import-dialog.controller.js"></script>
+    <script src="app/planning/delivery-round/dialog/round-dialog.controller.js"></script>
+    <script src="components/products/products.module.js"></script>
+    <script src="app/configurations/products/view/products.view.controller.js"></script>
+    <script src="app/configurations/products/view/product.view.states.js"></script>
+    <script src="app/configurations/products/update/products.update.states.js"></script>
+    <script src="app/configurations/products/update/products.update.controller.js"></script>
+    <script src="app/configurations/products/presentations/products.presentations.controller.js"></script>
+    <script src="app/configurations/products/presentations/product.presentation.service.js"></script>
+    <script src="app/configurations/measurements/measurements.module.js"></script>
+    <script src="app/configurations/measurements/units/measurements.units.service.js"></script>
+    <script src="app/configurations/measurements/units/measurements.units.controller.js"></script>
+    <script src="app/configurations/measurements/categories/measurements.categories.service.js"></script>
+    <script src="app/configurations/measurements/categories/measurements.categories.controller.js"></script>
+    <script src="app/configurations/allocations/targetpop/targetpop.states.js"></script>
+    <script src="app/configurations/allocations/targetpop/targetpop.controller.js"></script>
+    <script src="app/configurations/allocations/targetpop/targetPop.service.js"></script>
+    <script src="app/configurations/allocations/calculations/calculations.states.js"></script>
+    <script src="app/configurations/allocations/calculations/calculations.service.js"></script>
+    <script src="app/configurations/allocations/calculations/calculations.controller.js"></script>
+    <script src="app/configurations/allocations/assumptions/assumptions.states.js"></script>
+    <script src="app/configurations/allocations/assumptions/assumptions.service.js"></script>
+    <script src="app/configurations/allocations/assumptions/assumptions.controller.js"></script>
     <script src="components/log/log.module.js"></script>
     <script src="components/log/messages/warning.constants.js"></script>
     <script src="components/log/messages/success.constants.js"></script>
@@ -55,23 +110,66 @@
     <script src="app/users/create/create.states.js"></script>
     <script src="app/users/all/all.states.js"></script>
     <script src="app/users/all/all.controller.js"></script>
-    <script src="app/reports/reports.module.js"></script>
-    <script src="app/reports/round/round.states.js"></script>
-    <script src="app/reports/round/round.controller.js"></script>
-    <script src="app/reports/round/round.constants.js"></script>
-    <script src="app/reports/all/all.states.js"></script>
-    <script src="app/reports/all/all.controller.js"></script>
+    <script src="app/reports/packing/packing-report.states.js"></script>
+    <script src="app/reports/packing/packing-report.controller.js"></script>
+    <script src="app/reports/packing/packing-report-service.js"></script>
+    <script src="app/reports/invoice/invoice.states.js"></script>
+    <script src="app/reports/invoice/invoice.controller.js"></script>
+    <script src="app/reports/facility/facility-report.states.js"></script>
+    <script src="app/reports/facility/facility-report-service.js"></script>
+    <script src="app/reports/facility/facility-report-controller.js"></script>
+    <script src="app/reports/delivery/delivery-report.states.js"></script>
+    <script src="app/reports/delivery/delivery-report.service.js"></script>
+    <script src="app/reports/delivery/delivery-report.controller.js"></script>
+    <script src="app/planning/schedule/schedules.service.js"></script>
+    <script src="app/planning/schedule/schedule.states.js"></script>
+    <script src="app/planning/schedule/schedule-round.controller.js"></script>
+    <script src="app/planning/return-route/return-route.states.js"></script>
+    <script src="app/planning/return-route/return-route.service.js"></script>
+    <script src="app/planning/return-route/return-route.controller.js"></script>
+    <script src="app/planning/facilities/manage-facilities.controller.js"></script>
+    <script src="app/planning/facilities/facilities.states.js"></script>
+    <script src="app/planning/delivery-round/delivery-round.states.js"></script>
+    <script src="app/planning/delivery-round/delivery-round.service.js"></script>
+    <script src="app/planning/delivery-round/delivery-round.controller.js"></script>
+    <script src="app/planning/delivery-round/delivery-round.constants.js"></script>
+    <script src="app/planning/allocation/delivery-allocation.service.js"></script>
+    <script src="app/planning/allocation/delivery-allocation.controller.js"></script>
+    <script src="app/planning/allocation/allocation.states.js"></script>
+    <script src="app/finance/finance.module.js"></script>
+    <script src="app/finance/all/all.states.js"></script>
+    <script src="app/finance/all/all.controller.js"></script>
+    <script src="app/configurations/products/products.states.js"></script>
+    <script src="app/configurations/products/products.controller.js"></script>
+    <script src="app/configurations/configurations.module.js"></script>
+    <script src="app/configurations/menu/configurations.menu.states.js"></script>
+    <script src="app/configurations/measurements/measurements.states.js"></script>
+    <script src="app/configurations/allocations/allocations.states.js"></script>
+    <script src="components/utility/utility.module.js"></script>
+    <script src="components/utility/utility.service.js"></script>
+    <script src="components/products/products.service.js"></script>
     <script src="components/navbar/navbar.module.js"></script>
     <script src="components/navbar/navbar.service.js"></script>
     <script src="components/navbar/navbar.controller.js"></script>
+    <script src="components/mailer/mailer.module.js"></script>
+    <script src="components/mailer/mandrill.service.js"></script>
+    <script src="components/mailer/mailer.service.js"></script>
     <script src="components/log/log.service.js"></script>
+    <script src="components/location/location.module.js"></script>
+    <script src="components/location/location.service.js"></script>
+    <script src="components/location/location.cascade.service.js"></script>
     <script src="components/footer/footer.module.js"></script>
     <script src="components/footer/footer.controller.js"></script>
     <script src="components/drivers/drivers.module.js"></script>
     <script src="components/drivers/drivers.service.js"></script>
+    <script src="components/dragndrop/drag.js"></script>
     <script src="components/delivery/delivery.module.js"></script>
     <script src="components/delivery/delivery.constant.js"></script>
     <script src="components/delivery/delivery-status.filter.js"></script>
+    <script src="components/delivery/daily-delivery.service.js"></script>
+    <script src="components/db/db.module.js"></script>
+    <script src="components/db/pouchdb-util.service.js"></script>
+    <script src="components/db/db.service.js"></script>
     <script src="components/core/core.module.js"></script>
     <script src="components/auth/auth.module.js"></script>
     <script src="components/auth/auth.service.js"></script>
@@ -82,13 +180,18 @@
     <script src="app/users/user-email.directive.js"></script>
     <script src="app/reports/reports.states.js"></script>
     <script src="app/reports/reports.service.js"></script>
-    <script src="app/reports/reports.controller.js"></script>
+    <script src="app/planning/planning.states.js"></script>
+    <script src="app/planning/planning.service.js"></script>
     <script src="app/login/login.module.js"></script>
     <script src="app/login/login.states.js"></script>
     <script src="app/login/login.controller.js"></script>
     <script src="app/home/home.module.js"></script>
     <script src="app/home/home.states.js"></script>
     <script src="app/index.module.js"></script>
+    <script src="app/home/home.controller.js"></script>
+    <script src="app/finance/finance.states.js"></script>
+    <script src="app/finance/finance.service.js"></script>
+    <script src="app/configurations/configurations.states.js"></script>
     <script src="app/index.states.js"></script>
     <script src="app/index.controller.js"></script>
     <script src="app/config.js"></script>

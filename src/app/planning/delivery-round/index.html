@@ -1,0 +1,61 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <button class="btn btn-success btn-lg" ng-click="crCtrl.open()">
+      <i class="fa fa-plus"></i>
+      <span>Add Delivery Round</span>
+    </button>
+  </div>
+  <div class="panel-body">
+    <div class="panel-body alert alert-info" ng-show="crCtrl.deliveryRounds.length === 0">
+      <i class="fa fa-lg fa-info-circle"></i><span> No delivery rounds found.</span>
+    </div>
+
+    <table ng-show="crCtrl.deliveryRounds.length > 0" class="table table-condensed table-striped">
+      <thead>
+      <tr>
+        <th>State</th>
+        <th>Code</th>
+        <th>Status</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Created On</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="round in crCtrl.deliveryRounds track by $index">
+        <td class="col-sm-1" ng-bind="::round.state"></td>
+        <td class="col-sm-2" ng-bind="::round.roundCode"></td>
+        <td clas="col-sm-4" ng-bind="::round.status"></td>
+        <td clas="col-sm-2" ng-bind="::round.startDate | date:'d-MMM-yyyy'"></td>
+        <td clas="col-sm-2" ng-bind="::round.endDate | date:'d-MMM-yyyy'"></td>
+        <td clas="col-sm-3" ng-bind="::round.createdOn | date: 'yyyy-MM-dd HH:mm:ss'"></td>
+        <td>
+          <button class="btn btn-default btn-lg" ng-click="crCtrl.open(round._id)">
+            <i class="fa fa-pencil-square-o"></i>
+            <span>Edit</span>
+          </button>
+
+          <a class="btn btn-success btn-lg" ui-sref="planning.schedule({ roundId: round._id})">
+            <i class="fa fa-calendar"></i>
+            <span>Schedule</span>
+          </a>
+
+          <a class="btn btn-primary btn-lg" ui-sref="planning.allocation({ roundId: round._id})">
+            <i class="fa fa-pie-chart"></i>
+            <span>Allocation</span>
+          </a>
+
+          <a class="btn btn-warning btn-lg"
+             ui-sref="planning.returnRoute({ roundId: round._id})">
+            <i class="fa fa-truck"></i>
+            <span>Return Route</span>
+          </a>
+
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

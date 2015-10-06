@@ -1,0 +1,360 @@
+{
+  "docs": [
+    {
+      "_id": "NG",
+      "doc_type": "location",
+      "level": "0",
+      "name": "Nigeria",
+      "ancestors": []
+    },
+    {
+      "_id": "NW",
+      "doc_type": "location",
+      "level": "1",
+      "name": "North West",
+      "ancestors": [
+        "NG"
+      ]
+    },
+    {
+      "_id": "KN",
+      "doc_type": "location",
+      "level": "2",
+      "name": "Kano",
+      "ancestors": [
+        "NG",
+        "NW"
+      ]
+    },
+    {
+      "_id": "BICHI-KN",
+      "doc_type": "location",
+      "level": "3",
+      "name": "Bichi",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN"
+      ]
+    },
+    {
+      "_id": "DAWAKIN-TOFA-KN",
+      "doc_type": "location",
+      "level": "3",
+      "name": "Dawakin Tofa",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN"
+      ]
+    },
+    {
+      "_id": "GWALE-KN",
+      "doc_type": "location",
+      "level": "3",
+      "name": "Gwale",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN"
+      ]
+    },
+    {
+      "_id": "NASSARAWA-KN",
+      "doc_type": "location",
+      "level": "3",
+      "name": "Nassarawa",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN"
+      ]
+    },
+    {
+      "_id": "RANO-KN",
+      "doc_type": "location",
+      "level": "3",
+      "name": "Rano",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN"
+      ]
+    },
+    {
+      "_id": "WUDIL-KN",
+      "doc_type": "location",
+      "level": "3",
+      "name": "Wudil",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN"
+      ]
+    },
+    {
+      "_id": "BEBEJI-RANO-KN",
+      "doc_type": "location",
+      "level": "4",
+      "name": "Bebeji",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN",
+        "RANO-KN"
+      ]
+    },
+    {
+      "_id": "GEZAWA-NASSARAWA-KN",
+      "doc_type": "location",
+      "level": "4",
+      "name": "Gezawa",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN",
+        "NASSARAWA-KN"
+      ]
+    },
+    {
+      "_id": "MINJIBIR-NASSARAWA-KN",
+      "doc_type": "location",
+      "level": "4",
+      "name": "Minjibir",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN",
+        "NASSARAWA-KN"
+      ]
+    },
+    {
+      "_id": "ROGO-RANO-KN",
+      "doc_type": "location",
+      "level": "4",
+      "name": "Rogo",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN",
+        "RANO-KN"
+      ]
+    },
+    {
+      "_id": "BABAWA-GEZAWA-NASSARAWA-KN",
+      "doc_type": "location",
+      "level": "5",
+      "name": "Babawa",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN",
+        "NASSARAWA-KN",
+        "GEZAWA-NASSARAWA-KN"
+      ]
+    },
+    {
+      "_id": "BELI-ROGO-RANO-KN",
+      "doc_type": "location",
+      "level": "5",
+      "name": "Beli",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN",
+        "RANO-KN",
+        "ROGO-RANO-KN"
+      ]
+    },
+    {
+      "_id": "GARMAI-BEBEJI-RANO-KN",
+      "doc_type": "location",
+      "level": "5",
+      "name": "Garmai",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN",
+        "RANO-KN",
+        "BEBEJI-RANO-KN"
+      ]
+    },
+    {
+      "_id": "GEZEWA-GEZAWA-NASSARAWA-KN",
+      "doc_type": "location",
+      "level": "5",
+      "name": "Gezawa",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN",
+        "NASSARAWA-KN",
+        "GEZAWA-NASSARAWA-KN"
+      ]
+    },
+    {
+      "_id": "GWANGWAN-ROGO-RANO-KN",
+      "doc_type": "location",
+      "level": "5",
+      "name": "Gwangwan",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN",
+        "RANO-KN",
+        "ROGO-RANO-KN"
+      ]
+    },
+    {
+      "_id": "KANTAMA-MINJIBIR-NASSARAWA-KN",
+      "doc_type": "location",
+      "level": "5",
+      "name": "Kantama",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN",
+        "NASSARAWA-KN",
+        "MINJIBIR-NASSARAWA-KN"
+      ]
+    },
+    {
+      "_id": "KUKI-BEBEJI-RANO-KN",
+      "doc_type": "location",
+      "level": "5",
+      "name": "Kuki",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN",
+        "RANO-KN",
+        "BEBEJI-RANO-KN"
+      ]
+    },
+    {
+      "_id": "KUNYA-MINJIBIR-NASSARAWA-KN",
+      "doc_type": "location",
+      "level": "5",
+      "name": "Kunya",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN",
+        "NASSARAWA-KN",
+        "MINJIBIR-NASSARAWA-KN"
+      ]
+    },
+    {
+      "_id": "KNS-BBJ-KKI-101",
+      "doc_type": "location",
+      "level": "6",
+      "name": "Kuki Health Post",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN",
+        "RANO-KN",
+        "BEBEJI-RANO-KN",
+        "KUKI-BEBEJI-RANO-KN"
+      ]
+    },
+    {
+      "_id": "KNS-BBJ-RTN-201",
+      "doc_type": "location",
+      "level": "6",
+      "name": "Tiga General Hospital",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN",
+        "RANO-KN",
+        "BEBEJI-RANO-KN",
+        "GARMAI-BEBEJI-RANO-KN"
+      ]
+    },
+    {
+      "_id": "KNS-GZW-BBW-101",
+      "doc_type": "location",
+      "level": "6",
+      "name": "Babawa Model Primary Health Care",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN",
+        "NASSARAWA-KN",
+        "GEZAWA-NASSARAWA-KN",
+        "BABAWA-GEZAWA-NASSARAWA-KN"
+      ]
+    },
+    {
+      "_id": "KNS-GZW-GZW-101",
+      "doc_type": "location",
+      "level": "6",
+      "name": "Gezawa Health Post",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN",
+        "NASSARAWA-KN",
+        "GEZAWA-NASSARAWA-KN",
+        "GEZEWA-GEZAWA-NASSARAWA-KN"
+      ]
+    },
+    {
+      "_id": "KNS-MJB-KNY-101",
+      "doc_type": "location",
+      "level": "6",
+      "name": "Kunya Primary Health Center",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN",
+        "NASSARAWA-KN",
+        "MINJIBIR-NASSARAWA-KN",
+        "KUNYA-MINJIBIR-NASSARAWA-KN"
+      ]
+    },
+    {
+      "_id": "KNS-MJB-KTM-101",
+      "doc_type": "location",
+      "level": "6",
+      "name": "Geranya Health Post",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN",
+        "NASSARAWA-KN",
+        "MINJIBIR-NASSARAWA-KN",
+        "KANTAMA-MINJIBIR-NASSARAWA-KN"
+      ]
+    },
+    {
+      "_id": "KNS-RGG-BLI-101",
+      "doc_type": "location",
+      "level": "6",
+      "name": "Beli Basic Health Clinic",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN",
+        "RANO-KN",
+        "ROGO-RANO-KN",
+        "BELI-ROGO-RANO-KN"
+      ]
+    },
+    {
+      "_id": "KNS-RGG-GGW-103",
+      "doc_type": "location",
+      "level": "6",
+      "name": "Gwangwan Health Clinic",
+      "ancestors": [
+        "NG",
+        "NW",
+        "KN",
+        "RANO-KN",
+        "ROGO-RANO-KN",
+        "GWANGWAN-ROGO-RANO-KN"
+      ]
+    }
+  ]
+}

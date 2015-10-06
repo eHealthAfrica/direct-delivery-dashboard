@@ -1,0 +1,18 @@
+<div class="panel panel-warning">
+  <div class="panel-heading">Measurement Categories</div>
+  <div class="panel-body">
+    <form role="role" ng-submit="measurementCateCtrl.save()">
+      <div class="form-group">
+        <label>Category Name</label>
+        <input class="form-control" ng-model="measurementCateCtrl.openedDoc.name">
+      </div>
+      <div class="clearfix"><button class="btn btn-success pull-right">Submit</button> </div>
+    </form>
+    <p><br/></p>
+    <table class="table table-bordered table-striped">
+      <tr ng-repeat="cate in measurementCateCtrl.categories track by $index">
+        <td ng-bind="cate.name"></td>
+      </tr>
+    </table>
+  </div>
+</div>

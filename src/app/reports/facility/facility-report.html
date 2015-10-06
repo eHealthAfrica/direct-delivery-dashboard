@@ -1,0 +1,84 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-sm-3">
+        <h3 class="panel-title">Facilities with faulty CCE</h3>
+      </div>
+      <div class="col-md-3">
+        <label for="fromDate">Start</label>
+
+        <div class="input-group">
+          <input id="fromDate" type="text" class="form-control input-lg"
+                 ng-model="facRepCtrl.startFrom"
+                 datepicker-popup="{{facRepCtrl.dateFormat}}"
+                 max-date="facRepCtrl.stopOn"
+                 is-open="facRepCtrl.start.opened"/>
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-default btn-lg"
+                              ng-click="facRepCtrl.start.open($event)">
+                        <i class="fa fa-calendar"></i>
+                      </button>
+                    </span>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <label for="fromDate">End</label>
+        <div class="input-group">
+          <input type="text" class="form-control input-lg"
+                 ng-model="facRepCtrl.stopOn"
+                 min-date="facRepCtrl.startFrom"
+                 datepicker-popup="{{facRepCtrl.dateFormat}}"
+                 is-open="facRepCtrl.stop.opened"/>
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-default btn-lg"
+                              ng-click="facRepCtrl.stop.open($event)">
+                        <i class="fa fa-calendar"></i>
+                      </button>
+                    </span>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <label></label>
+        <div class="input-group">
+          <button class="btn btn-primary btn-lg" type="button"
+                  ng-click="facRepCtrl.getReport()">
+            <i class="fa fa-search"></i>
+            <span>Search</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-body">
+
+      <div class="alert alert-info"
+           ng-if="facRepCtrl.hfWithCCEDown.length === 0">
+        <i class="fa fa-lg fa-info-circle"></i>
+        <span> No delivery was made within selected period.</span>
+      </div>
+
+      <table class="table table-bordered table-striped" ng-if="facRepCtrl.hfWithCCEDown.length > 0">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Zone</th>
+          <th>LGA</th>
+          <th>Ward</th>
+          <th>Facility</th>
+          <th>Report Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="report in facRepCtrl.hfWithCCEDown">
+          <td ng-bind="::$index + 1"></td>
+          <td ng-bind="::report.zone"></td>
+          <td ng-bind="::report.lga"></td>
+          <td ng-bind="::report.ward"></td>
+          <td ng-bind="::report.name"></td>
+          <td ng-bind="::report.date"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
