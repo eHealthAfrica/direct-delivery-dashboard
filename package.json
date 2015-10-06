@@ -23,7 +23,7 @@
     "gulp-csso": "~0.2.9",
     "gulp-filter": "~1.0.2",
     "gulp-flatten": "~0.0.4",
-    "gulp-imagemin": "~2.0.0",
+    "gulp-imagemin": "2.3.0",
     "gulp-inject": "~1.0.2",
     "gulp-karma": "~0.0.4",
     "gulp-load-plugins": "~0.7.1",
