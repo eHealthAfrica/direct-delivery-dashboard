@@ -12,7 +12,19 @@ var defaults = {
     name: pkg.name,
     version: pkg.version,
     author: pkg.author,
-    dateFormat: 'yyyy-MM-dd'
+    dateFormat: 'yyyy-MM-dd',
+    admin: {
+      roles: [
+        'direct_delivery_dashboard_super'
+      ]
+    },
+    user: {
+      roles: [
+        'direct_delivery_dashboard_accounting',
+        'direct_delivery_dashboard_stakeholder',
+        'direct_delivery_dashboard_gis'
+      ]
+    }
   }
 };
 

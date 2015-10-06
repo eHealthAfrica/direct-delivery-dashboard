@@ -1,9 +1,13 @@
 'use strict';
 
 angular.module('login')
-  .controller('LoginCtrl', function($state, log, AuthService) {
+  .controller('LoginCtrl', function($state, log, ehaCouchDbAuthService) {
     this.login = function(username, password) {
-      AuthService.login(username, password)
+      var params = {
+        username: username,
+        password: password
+      };
+      ehaCouchDbAuthService.signIn(params)
         .then(function() {
           log.success('authSuccess');
           $state.transitionTo('home');

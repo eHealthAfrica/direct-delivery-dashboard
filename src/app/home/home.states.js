@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('home')
-		.config(function ($stateProvider) {
+		.config(function ($stateProvider, config, ehaCouchDbAuthServiceProvider) {
 			$stateProvider.state('home', {
 				parent: 'index',
 				url: '/',
@@ -9,6 +9,7 @@ angular.module('home')
 				controllerAs: 'homeCtrl',
 				templateUrl: 'app/home/home.html',
 				resolve: {
+          authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser,
 					roundReport: function (deliveryRoundService) {
 						var userDefaultState = 'Kano';//TODO: pick from user document states they can access.
 						var key = '';
@@ -22,7 +23,7 @@ angular.module('home')
 												rndReport.deliveryRoundID = key;
 												rndReport.roundInfo = roundInfo;
 												return rndReport;
-											})
+											});
 								})
 								.catch(function () {
 									var defaultReport = deliveryRoundService.getDefaultReport();
@@ -34,7 +35,8 @@ angular.module('home')
 					}
 				},
 				data: {
-					label: 'Home'
+					label: 'Home',
+          roles: config.admin.roles.concat(config.user.roles)
 				}
 			});
 		});

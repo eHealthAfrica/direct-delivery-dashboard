@@ -17,10 +17,14 @@ angular.module('navbar')
         return first;
       }
       function transpose(state) {
-        return {
+        var transposed = {
           name: state.name,
           label: state.data.label
         };
+        if (state.data.roles) {
+          transposed.roles = state.data.roles;
+        }
+        return transposed;
       }
       return states
         .filter(hasLabel)

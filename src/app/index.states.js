@@ -8,8 +8,7 @@ angular.module('directDeliveryDashboard')
         abstract: true,
         views: {
           root: {
-            templateUrl: 'app/index.html',
-            controller: 'IndexCtrl'
+            templateUrl: 'app/index.html'
           }
         }
       })

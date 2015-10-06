@@ -22,7 +22,9 @@ if (argv.u && argv.p) {
 var dbUrl = url.format(db);
 var bulkDocsUrl = dbUrl + '/_bulk_docs';
 
-function push(docs) {
+function push(docs, url) {
+  url = url || bulkDocsUrl;
+
   docs = JSON.stringify({
     docs: docs
   });
@@ -34,7 +36,7 @@ function push(docs) {
     }
   };
 
-  return got.post(bulkDocsUrl, options, function(err, data) {
+  return got.post(url, options, function(err, data) {
     if (err) {
       console.error(data);
       throw err;
@@ -78,5 +80,35 @@ gulp.task('views', function() {
       matches.forEach(couchCompile);
     });
   });
+});
 
+gulp.task('users', function() {
+  function userFactory(name, roles) {
+    return {
+      _id: 'org.couchdb.user:' + name,
+      name: name,
+      type: 'user',
+      roles: roles,
+      password: name
+    };
+  }
+
+  function create(role) {
+    var name = role.split('_').pop();
+    return userFactory(name, [role]);
+  }
+
+  var roles = config.config.admin.roles.concat(
+    config.config.user.roles
+  );
+  var users = roles.map(create);
+
+  // TODO: de-duplicate this with deliveries DB URL parsing
+  var usersUrl = url.parse(config.config.baseUrl + '/_users/_bulk_docs');
+  if (argv.u && argv.p) {
+    usersUrl.auth = argv.u + ':' + argv.p;
+  }
+  usersUrl = url.format(usersUrl);
+
+  return push(users, usersUrl);
 });

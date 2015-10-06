@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('users')
-  .config(function($stateProvider) {
+  .config(function($stateProvider, ehaCouchDbAuthServiceProvider) {
     $stateProvider.state('users', {
       abstract: true,
       parent: 'index',
@@ -10,6 +10,8 @@ angular.module('users')
       controller: 'UsersCtrl',
       controllerAs: 'usersCtrl',
       resolve: {
+        authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser,
+        authorization: ehaCouchDbAuthServiceProvider.requireAdminUser,
         users: function(usersService) {
           return usersService.all()
             .then(function(usersObj) {
@@ -22,6 +24,11 @@ angular.module('users')
               return users;
             });
         }
+      },
+      data: {
+        roles: [
+          'direct_delivery_dashboard_super'
+        ]
       }
     });
   });

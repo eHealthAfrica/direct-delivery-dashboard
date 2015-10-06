@@ -38,7 +38,6 @@
     <script src="../bower_components/angular-resource/angular-resource.js"></script>
     <script src="../bower_components/ngstorage/ngStorage.js"></script>
     <script src="../bower_components/pouchdb/dist/pouchdb.js"></script>
-    <script src="../bower_components/pouchdb-authentication/dist/pouchdb.authentication.js"></script>
     <script src="../bower_components/lodash/dist/lodash.js"></script>
     <script src="../bower_components/angular-pouchdb/dist/angular-pouchdb.js"></script>
     <script src="../bower_components/jQuery.print/jQuery.print.js"></script>
@@ -57,6 +56,10 @@
     <script src="../bower_components/ng-csv/build/ng-csv.min.js"></script>
     <script src="../bower_components/angular-csv-import/dist/angular-csv-import.js"></script>
     <script src="../bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+    <script src="../bower_components/restangular/dist/restangular.js"></script>
+    <script src="../bower_components/localforage/dist/localforage.js"></script>
+    <script src="../bower_components/angular-localForage/dist/angular-localForage.js"></script>
+    <script src="../bower_components/angular-eha.couchdb-auth/dist/couchdb-auth.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -69,9 +72,9 @@
     <script src="app/planning/facilities/dialogs/copy-round/copy-round-dialog.controller.js"></script>
     <script src="app/planning/facilities/dialogs/add/add-facility.service.js"></script>
     <script src="app/planning/facilities/dialogs/add/add-facility-dialog.controller.js"></script>
-    <script src="app/configurations/allocations/targetpop/upload/target-population-upload.js"></script>
     <script src="app/configurations/allocations/assumptions/assumption.template/assumptions.template.add.js"></script>
     <script src="app/configurations/allocations/assumptions/assumption.template/assumption.add.service.js"></script>
+    <script src="app/configurations/allocations/targetpop/upload/target-population-upload.js"></script>
     <script src="app/reports/reports.module.js"></script>
     <script src="app/reports/invoice/round/round.states.js"></script>
     <script src="app/reports/invoice/round/round.controller.js"></script>
@@ -85,6 +88,9 @@
     <script src="app/configurations/products/update/products.update.controller.js"></script>
     <script src="app/configurations/products/presentations/products.presentations.controller.js"></script>
     <script src="app/configurations/products/presentations/product.presentation.service.js"></script>
+    <script src="app/configurations/allocations/assumptions/assumptions.states.js"></script>
+    <script src="app/configurations/allocations/assumptions/assumptions.service.js"></script>
+    <script src="app/configurations/allocations/assumptions/assumptions.controller.js"></script>
     <script src="app/configurations/measurements/measurements.module.js"></script>
     <script src="app/configurations/measurements/units/measurements.units.service.js"></script>
     <script src="app/configurations/measurements/units/measurements.units.controller.js"></script>
@@ -96,9 +102,8 @@
     <script src="app/configurations/allocations/calculations/calculations.states.js"></script>
     <script src="app/configurations/allocations/calculations/calculations.service.js"></script>
     <script src="app/configurations/allocations/calculations/calculations.controller.js"></script>
-    <script src="app/configurations/allocations/assumptions/assumptions.states.js"></script>
-    <script src="app/configurations/allocations/assumptions/assumptions.service.js"></script>
-    <script src="app/configurations/allocations/assumptions/assumptions.controller.js"></script>
+    <script src="app/configurations/configurations.module.js"></script>
+    <script src="app/configurations/menu/configurations.menu.states.js"></script>
     <script src="components/log/log.module.js"></script>
     <script src="components/log/messages/warning.constants.js"></script>
     <script src="components/log/messages/success.constants.js"></script>
@@ -141,8 +146,6 @@
     <script src="app/finance/all/all.controller.js"></script>
     <script src="app/configurations/products/products.states.js"></script>
     <script src="app/configurations/products/products.controller.js"></script>
-    <script src="app/configurations/configurations.module.js"></script>
-    <script src="app/configurations/menu/configurations.menu.states.js"></script>
     <script src="app/configurations/measurements/measurements.states.js"></script>
     <script src="app/configurations/allocations/allocations.states.js"></script>
     <script src="components/utility/utility.module.js"></script>
@@ -193,7 +196,7 @@
     <script src="app/finance/finance.service.js"></script>
     <script src="app/configurations/configurations.states.js"></script>
     <script src="app/index.states.js"></script>
-    <script src="app/index.controller.js"></script>
+    <script src="app/index.service.js"></script>
     <script src="app/config.js"></script>
     <!-- endinject -->
 

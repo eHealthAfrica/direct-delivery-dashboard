@@ -106,5 +106,10 @@ angular.module('log')
 				title: 'Failed to retrieve packing store list',
 				message: 'An unknown error occurred while retrieving packing store list',
 				remedy: 'Please, try again and contact support if it persists affects your work'
-			}
+			},
+      logoutFailed: {
+        title: 'Logout failed',
+        message: 'Could not logout',
+				remedy: 'Please, try again and contact support if it persists'
+      }
 		});

@@ -7,5 +7,6 @@ angular.module('planning', [
 	'log',
 	'delivery',
 	'users',
-	'mailer'
+	'mailer',
+  'auth'
 ]);
