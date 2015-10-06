@@ -27,9 +27,9 @@
 
 * © 2015 Haykel Ben Jemia <hbj@allmas.tn>
 * © 2015 Jideobi Ofomah <jideobi.ofomah@ehealthnigeria.org>
-* © 2015 Tom Vincent <tom.vincent@ehealthnigeria.org>
+* © 2015 Tom Vincent <tom.vincent@ehealthnigeria.org> (https://tlvince.com)
 * © 2015 Femi Oni <oluwafemi.oni@ehealthnigeria.org>
-• © 2015 Musa Musa <musa.musa@ehealthnigeria.org>
+* © 2015 Musa Musa <musa.musa@ehealthnigeria.org>
 
 … and [contributors][].
 
