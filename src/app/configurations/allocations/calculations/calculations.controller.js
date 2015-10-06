@@ -22,9 +22,9 @@ angular.module('allocations')
     vm.renderedData = [];
     vm.locationStates = ['KN', 'BA'];
     vm.selectedState = 'KN';
-    vm.selectedLga = '';
+    vm.selectedLga = ''; 
     vm.lgas = [];
-    vm.wards = [];
+    vm.wards = []; 
 
     vm.assumptionList = assumptionList;
     vm.selectedTemplate = assumptionList[0];
@@ -33,7 +33,7 @@ angular.module('allocations')
     vm.switchTemplate = function(template){
       vm.selectedTemplate = template;
 
-      calculationService.setTemplate(vm.selectedTemplate);
+      return calculationService.setTemplate(vm.selectedTemplate);
       vm.switchLocationLga();
     };
 
@@ -48,7 +48,7 @@ angular.module('allocations')
         })
         .catch(function (err) {
           log.error('', err, 'could not fetch lga list, please try again. contact admin if this persists.');
-        });
+        }); 
     };
     function resetView (facilities) {
       return calculationService[viewMap[vm.activeView]](facilities)
