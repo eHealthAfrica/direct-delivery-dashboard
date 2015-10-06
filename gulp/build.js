@@ -1,12 +1,9 @@
 'use strict';
 
-var fs = require('fs');
 var path = require('path');
 var gulp = require('gulp');
 var conf = require('./conf');
-var ngConfig = require('ng-config');
 var favicons = require('favicons');
-var config = require('../config');
 
 var $ = require('gulp-load-plugins')({
   pattern: ['gulp-*', 'main-bower-files', 'uglify-save-license', 'del']
@@ -115,12 +112,4 @@ gulp.task('favicons', function () {
   });
 });
 
-gulp.task('config', function () {
-  var options = {
-    constants: config
-  };
-  var ngconf = ngConfig(options);
-  return fs.writeFileSync('src/app/config.js', ngconf);
-});
-
-gulp.task('build', ['config', 'html', 'images', 'fonts', 'favicons', 'other']);
+gulp.task('build', ['ngConfig', 'html', 'images', 'fonts', 'favicons', 'other']);
