@@ -19,7 +19,14 @@ angular.module('directDeliveryDashboard')
           header: {
             templateUrl: 'app/components/navbar/navbar.html',
             controller: 'NavbarCtrl',
-            controllerAs: 'navbarCtrl'
+            controllerAs: 'navbarCtrl',
+            resolve: {
+              authentication: function ($q, ehaCouchDbAuthService, navbarService) {
+                return ehaCouchDbAuthService.getCurrentUser()
+                  .then(navbarService.updateItems.bind(null))
+                  .catch($q.when.bind($q));
+              }
+            }
           },
           content: {},
           footer: {

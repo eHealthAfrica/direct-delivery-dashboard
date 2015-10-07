@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('navbar')
-  .service('navbarService', function($state, config) {
-    this.get = function() {
+  .service('navbarService', function($state, config, navbarItems) {
+    function get() {
       var seen = {};
       var states = $state.get();
       function hasLabel(state) {
@@ -34,5 +34,13 @@ angular.module('navbar')
         .filter(hasLabel)
         .filter(isFirstOf)
         .map(transpose);
+    }
+
+    this.updateItems = function(authentication) {
+      if (!authentication.ok) {
+        navbarItems.items = [];
+        return;
+      }
+      navbarItems.items = get(authentication);
     };
   });

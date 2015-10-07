@@ -1,24 +1,45 @@
 <nav class="navbar navbar-static-top navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
+      <button
+        type="button"
+        class="navbar-toggle"
+        ng-if="navbarCtrl.navbarItems.items.length"
+        ng-click="navbarCtrl.collapsed = !navbarCtrl.collapsed"
+      >
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
       <a class="navbar-brand" href="#/">
         <span class="fa fa-home"></span>
         <span ng-bind="::navbarCtrl.name"></span>
       </a>
     </div>
 
-    <div eha-show-authenticated>
+    <div
+      ng-if="navbarCtrl.navbarItems.items.length"
+      class="collapse navbar-collapse"
+      collapse="navbarCtrl.collapsed"
+    >
       <ul class="nav navbar-nav">
         <li
-          ng-repeat="item in navbarCtrl.items track by item.name"
+          ng-repeat="item in navbarCtrl.navbarItems.items track by item.name"
           ui-sref-active="active"
           eha-show-for-role="item.roles"
         >
-          <a ui-sref="{{item.name}}" ng-bind="::item.label"></a>
+          <a
+            ng-click="navbarCtrl.collapsed = !navbarCtrl.collapsed"
+            ui-sref="{{item.name}}"
+            ng-bind="::item.label"
+          ></a>
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a ng-click="navbarCtrl.logout()">Logout</a></li>
+        <li>
+          <a ng-click="(navbarCtrl.collapsed = !navbarCtrl.collapsed) && navbarCtrl.logout()">Logout</a>
+        </li>
       </ul>
     </div>
   </div>
