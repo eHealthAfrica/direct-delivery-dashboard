@@ -8,6 +8,6 @@ angular.module('navbar')
     this.logout = function() {
       ehaCouchDbAuthService.signOut()
         .then($state.go.bind($state, 'login'))
-        .catch(log.error('logoutFailed'));
+        .catch(log.error.bind(log, 'logoutFailed'));
     };
   });
