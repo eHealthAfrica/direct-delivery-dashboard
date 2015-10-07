@@ -11,7 +11,6 @@ var defaults = {
   config: {
     name: pkg.name,
     version: pkg.version,
-    author: pkg.author,
     dateFormat: 'yyyy-MM-dd',
     admin: {
       roles: [
