@@ -3,11 +3,12 @@
 angular.module('navbar')
   .controller('NavbarCtrl', function(
     config,
-    navbarItems,
+    navbarState,
+    navbarService,
     authService
   ) {
     this.name = config.name;
-    this.collapsed = true;
-    this.navbarItems = navbarItems;
+    this.navbarState = navbarState;
     this.logout = authService.logout;
+    this.toggleCollapse = navbarService.toggleCollapse;
   });

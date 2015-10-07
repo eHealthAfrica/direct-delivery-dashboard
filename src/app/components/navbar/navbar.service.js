@@ -1,7 +1,12 @@
 'use strict';
 
 angular.module('navbar')
-  .service('navbarService', function($state, config, navbarItems) {
+  .service('navbarService', function(
+    $state,
+    $window,
+    config,
+    navbarState
+  ) {
     function get() {
       var seen = {};
       var states = $state.get();
@@ -38,9 +43,16 @@ angular.module('navbar')
 
     this.updateItems = function(authentication) {
       if (!authentication.ok) {
-        navbarItems.items = [];
+        navbarState.items = [];
         return;
       }
-      navbarItems.items = get(authentication);
+      navbarState.items = get(authentication);
+    };
+
+    this.toggleCollapse = function() {
+      // Bootstrap small screen breakpoint
+      if ($window.innerWidth < 768) {
+        navbarState.collapsed = !navbarState.collapsed;
+      }
     };
   });
