@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('navbar')
-  .service('navbarService', function($state) {
+  .service('navbarService', function($state, config) {
     this.get = function() {
       var seen = {};
       var states = $state.get();
@@ -21,9 +21,13 @@ angular.module('navbar')
           name: state.name,
           label: state.data.label
         };
-        if (state.data.roles) {
-          transposed.roles = state.data.roles;
-        }
+
+        var roles = state.data.roles || [];
+        // Always authorise admins
+        // XXX: this can contain duplicates. Do a union instead
+        roles = roles.concat(config.admin.roles);
+        transposed.roles = roles;
+
         return transposed;
       }
       return states
