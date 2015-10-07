@@ -29,7 +29,7 @@ describe('CalculationsController', function(){
           return $q.when([]);
         });
         this.getMonthlyMax = jasmine.createSpy('getMonthlyMax').and.callFake(function(){
-          $q.when([]);
+          return $q.when([]);
         });
         this.getBiWeekly = jasmine.createSpy('getBiWeekly').and.callFake(function(){
           return $q.when([]); 
