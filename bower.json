@@ -1,7 +1,6 @@
 {
   "name": "direct-delivery-dashboard",
   "description": "Dashboard for the direct delivery management system",
-  "version": "1.0.0",
   "dependencies": {
     "angular-ui-router": "~0.2.13",
     "bootstrap-sass-official": "~3.3.4",
