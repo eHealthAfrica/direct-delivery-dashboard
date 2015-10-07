@@ -1,3 +1,11 @@
+// Override Sass dependency variables
+$icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+$fa-font-path: "../../bower_components/font-awesome/fonts";
+
+// Inject Sass dependencies
+// bower:scss
+// endbower
+
 .content {
   margin-bottom: 20px;
 }

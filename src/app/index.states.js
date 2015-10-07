@@ -17,13 +17,13 @@ angular.module('directDeliveryDashboard')
         abstract: true,
         views: {
           header: {
-            templateUrl: 'components/navbar/navbar.html',
+            templateUrl: 'app/components/navbar/navbar.html',
             controller: 'NavbarCtrl',
             controllerAs: 'navbarCtrl'
           },
           content: {},
           footer: {
-            templateUrl: 'components/footer/footer.html',
+            templateUrl: 'app/components/footer/footer.html',
             controller: 'FooterCtrl',
             controllerAs: 'footerCtrl'
           }
