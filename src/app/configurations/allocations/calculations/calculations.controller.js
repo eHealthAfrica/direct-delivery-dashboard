@@ -33,7 +33,7 @@ angular.module('allocations')
     vm.switchTemplate = function(template){
       vm.selectedTemplate = template;
 
-      return calculationService.setTemplate(vm.selectedTemplate);
+      calculationService.setTemplate(vm.selectedTemplate);
       vm.switchLocationLga();
     };
 
