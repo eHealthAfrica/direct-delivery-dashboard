@@ -42,11 +42,11 @@ angular.module('navbar')
     }
 
     this.updateItems = function(authentication) {
-      if (!authentication.ok) {
-        navbarState.items = [];
+      if (authentication && authentication.ok) {
+        navbarState.items = get(authentication);
         return;
       }
-      navbarState.items = get(authentication);
+      navbarState.items = [];
     };
 
     this.toggleCollapse = function() {
