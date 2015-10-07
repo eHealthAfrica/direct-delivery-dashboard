@@ -1,7 +1,14 @@
 'use strict';
 
 angular.module('auth')
-  .service('authService', function($q, config, ehaCouchDbAuthService) {
+  .service('authService', function(
+    $q,
+    $state,
+    log,
+    config,
+    navbarService,
+    ehaCouchDbAuthService
+  ) {
     this.requireRoles = function(roles) {
       roles = roles || [];
       // Always authorise admins
@@ -15,5 +22,25 @@ angular.module('auth')
 
       return ehaCouchDbAuthService.getCurrentUser()
         .then(hasRoles);
+    };
+
+    this.login = function(username, password) {
+      var params = {
+        username: username,
+        password: password
+      };
+
+      return ehaCouchDbAuthService.signIn(params)
+        .then(navbarService.updateItems.bind(null))
+        .then(log.success.bind(log, 'authSuccess'))
+        .then($state.go.bind($state, 'home'))
+        .catch(log.error.bind(log));
+    };
+
+    this.logout = function() {
+      return ehaCouchDbAuthService.signOut()
+        .then(navbarService.updateItems.bind())
+        .then($state.go.bind($state, 'login'))
+        .catch(log.error.bind(log, 'logoutFailed'));
     };
   });

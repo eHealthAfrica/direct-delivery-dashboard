@@ -2,5 +2,6 @@
 
 angular.module('auth', [
   'eha.couchdb-auth',
-  'config'
+  'config',
+  'navbar'
 ]);
