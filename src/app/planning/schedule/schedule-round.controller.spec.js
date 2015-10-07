@@ -28,7 +28,7 @@ describe('ScheduleRoundController', function () {
 		log = _log_;
 		deliveryRound = _deliveryRoundMock_;
 		$modal = _$modal_;
-		dailyDeliveries = _dailyDeliveriesMock_;
+		dailyDeliveries = angular.copy(_dailyDeliveriesMock_);
 		utility = _utility_;
 
 
