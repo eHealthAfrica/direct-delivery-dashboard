@@ -1,17 +1,16 @@
-'use strict';
-/*eslint-env jasmine */
-/*global module: false, inject: false */
+'use strict'
+/* global describe, beforeEach, it, inject, expect, module */
 
-describe('NavbarCtrl', function() {
-  beforeEach(module('navbar', 'navbarMock', 'navbarCtrlMock'));
+describe('NavbarCtrl', function () {
+  beforeEach(module('navbar', 'navbarMock', 'navbarCtrlMock'))
 
-  var NavbarCtrl;
+  var NavbarCtrl
 
-  beforeEach(inject(function($controller) {
-    NavbarCtrl = $controller('NavbarCtrl');
-  }));
+  beforeEach(inject(function ($controller) {
+    NavbarCtrl = $controller('NavbarCtrl')
+  }))
 
-  it('should expose the application name', function() {
-    expect(NavbarCtrl.name).toBe('test');
-  });
-});
+  it('should expose the application name', function () {
+    expect(NavbarCtrl.name).toBe('test')
+  })
+})

@@ -13,7 +13,6 @@
     "couchdb-ensure": "^1.2.1",
     "coveralls": "^2.11.2",
     "del": "~2.0.1",
-    "eslint": "^0.10.1",
     "extend": "^3.0.0",
     "favicons": "^1.5.3",
     "glob": "^4.3.1",
@@ -42,17 +41,18 @@
     "gulp-useref": "~1.2.0",
     "gulp-util": "~3.0.5",
     "karma": "^0.12.36",
+    "karma-angular-filesort": "~0.1.0",
     "karma-coverage": "^0.2.7",
     "karma-jasmine": "~0.3.5",
-    "karma-phantomjs-launcher": "~0.2.0",
-    "karma-angular-filesort": "~0.1.0",
     "karma-ng-html2js-preprocessor": "~0.1.2",
+    "karma-phantomjs-launcher": "~0.2.0",
     "main-bower-files": "~2.8.0",
     "merge-stream": "^0.1.7",
     "ng-config": "^1.0.0",
     "optimist": "^0.6.1",
     "protractor": "~1.4.0",
     "require-dir": "~0.3.0",
+    "standard": "^5.3.1",
     "uglify-save-license": "~0.4.1",
     "wiredep": "~2.2.2",
     "wrench": "~1.5.8"
@@ -66,6 +66,7 @@
     "build": "gulp build",
     "coveralls": "coveralls < coverage/lcov/lcov.info",
     "postinstall": "bower install",
+    "pretest": "standard",
     "test": "gulp test"
   },
   "repository": {
@@ -88,5 +89,13 @@
   "bugs": {
     "url": "https://github.com/eHealthAfrica/direct-delivery-dashboard/issues"
   },
-  "homepage": "https://github.com/eHealthAfrica/direct-delivery-dashboard"
+  "homepage": "https://github.com/eHealthAfrica/direct-delivery-dashboard",
+  "standard": {
+    "globals": [
+      "angular"
+    ],
+    "ignore": [
+      "couchdb"
+    ]
+  }
 }

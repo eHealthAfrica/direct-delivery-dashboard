@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 angular.module('reports')
   .constant('ZONE_CLASS', {
@@ -8,4 +8,4 @@ angular.module('reports')
       'Rano': 'zone3',
       'Wudil': 'zone4'
     }
-  });
+  })

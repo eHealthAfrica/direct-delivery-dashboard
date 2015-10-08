@@ -1,9 +1,8 @@
-'use strict';
+'use strict'
 
 angular.module('products')
-  .controller('ProductViewCtrl', function(product){
+  .controller('ProductViewCtrl', function (product) {
+    var vm = this
 
-    var vm = this;
-
-    vm.product = product;
-  });
+    vm.product = product
+  })

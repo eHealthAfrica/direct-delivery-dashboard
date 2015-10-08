@@ -1,36 +1,35 @@
-'use strict';
+'use strict'
 
-var path = require('path');
-var gulp = require('gulp');
-var conf = require('./conf');
+var path = require('path')
+var gulp = require('gulp')
+var conf = require('./conf')
 
-var browserSync = require('browser-sync');
+var browserSync = require('browser-sync')
 
-var $ = require('gulp-load-plugins')();
+var $ = require('gulp-load-plugins')()
 
-var wiredep = require('wiredep').stream;
-var extend = require('extend');
+var wiredep = require('wiredep').stream
+var extend = require('extend')
 
 gulp.task('styles', function () {
   var sassOptions = {
     style: 'expanded'
-  };
+  }
 
   var injectFiles = gulp.src([
     path.join(conf.paths.src, '/app/**/*.scss'),
     path.join('!' + conf.paths.src, '/app/index.scss')
-  ], { read: false });
+  ], { read: false })
 
   var injectOptions = {
-    transform: function(filePath) {
-      filePath = filePath.replace(conf.paths.src + '/app/', '');
-      return '@import "' + filePath + '";';
+    transform: function (filePath) {
+      filePath = filePath.replace(conf.paths.src + '/app/', '')
+      return '@import "' + filePath + '";'
     },
     starttag: '// injector',
     endtag: '// endinjector',
     addRootSlash: false
-  };
-
+  }
 
   return gulp.src([
     path.join(conf.paths.src, '/app/index.scss')
@@ -42,5 +41,5 @@ gulp.task('styles', function () {
     .pipe($.autoprefixer()).on('error', conf.errorHandler('Autoprefixer'))
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest(path.join(conf.paths.tmp, '/serve/app/')))
-    .pipe(browserSync.reload({ stream: true }));
-});
+    .pipe(browserSync.reload({stream: true}))
+})

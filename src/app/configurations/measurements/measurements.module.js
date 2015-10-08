@@ -1,4 +1,3 @@
-'use strict';
+'use strict'
 
-
-angular.module('Measurements', []);
+angular.module('Measurements', [])

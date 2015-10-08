@@ -1,16 +1,15 @@
-'use strict';
+'use strict'
 
 angular.module('configurations')
   .config(function ($stateProvider, ehaCouchDbAuthServiceProvider) {
-
     $stateProvider.state('configurations', {
       parent: 'index',
-      //abstract: true,
+      // abstract: true,
       url: '/configurations',
       templateUrl: 'app/configurations/index.html',
       controller: function ($state) {
         if ($state.current.name === 'configurations') {
-          $state.go('configurations.allocations.assumptions');
+          $state.go('configurations.allocations.assumptions')
         }
       },
       data: {
@@ -27,11 +26,10 @@ angular.module('configurations')
       .state('configurations.layout', {
         parent: 'configurations',
         views: {
-          "menu": {
-            templateUrl: "app/configurations/menu/menu.html"
+          'menu': {
+            templateUrl: 'app/configurations/menu/menu.html'
           },
-          "configurations.content": {}
+          'configurations.content': {}
         }
       })
-
-  });
+  })

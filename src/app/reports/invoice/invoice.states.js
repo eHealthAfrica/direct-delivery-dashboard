@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
 angular.module('reports')
-  .config(function($stateProvider) {
+  .config(function ($stateProvider) {
     $stateProvider.state('reports.layout.invoice', {
       parent: 'reports.layout',
       url: '/invoice',
@@ -9,9 +9,9 @@ angular.module('reports')
       controller: 'ReportsAllCtrl',
       controllerAs: 'reportsAllCtrl',
       resolve: {
-        deliveryRounds: function(reportsService){
-	        return reportsService.getDeliveryRounds();
+        deliveryRounds: function (reportsService) {
+          return reportsService.getDeliveryRounds()
         }
       }
-    });
-  });
+    })
+  })

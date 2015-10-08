@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
 angular.module('auth')
-  .service('authService', function(
+  .service('authService', function (
     $q,
     $state,
     log,
@@ -9,38 +9,38 @@ angular.module('auth')
     navbarService,
     ehaCouchDbAuthService
   ) {
-    this.requireRoles = function(roles) {
-      roles = roles || [];
+    this.requireRoles = function (roles) {
+      roles = roles || []
       // Always authorise admins
       // TODO: remove depending on
       //       https://github.com/eHealthAfrica/angular-eha.couchdb-auth/issues/28
-      roles = roles.concat(config.admin.roles);
+      roles = roles.concat(config.admin.roles)
 
-      function hasRoles(user) {
-        return user.hasRole(roles) ? true : $q.reject('unauthorized');
+      function hasRoles (user) {
+        return user.hasRole(roles) ? true : $q.reject('unauthorized')
       }
 
       return ehaCouchDbAuthService.getCurrentUser()
-        .then(hasRoles);
-    };
+        .then(hasRoles)
+    }
 
-    this.login = function(username, password) {
+    this.login = function (username, password) {
       var params = {
         username: username,
         password: password
-      };
+      }
 
       return ehaCouchDbAuthService.signIn(params)
         .then(navbarService.updateItems.bind(null))
         .then(log.success.bind(log, 'authSuccess'))
         .then($state.go.bind($state, 'home'))
-        .catch(log.error.bind(log));
-    };
+        .catch(log.error.bind(log))
+    }
 
-    this.logout = function() {
+    this.logout = function () {
       return ehaCouchDbAuthService.signOut()
         .then(navbarService.updateItems.bind())
         .then($state.go.bind($state, 'login'))
-        .catch(log.error.bind(log, 'logoutFailed'));
-    };
-  });
+        .catch(log.error.bind(log, 'logoutFailed'))
+    }
+  })

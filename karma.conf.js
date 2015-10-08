@@ -1,17 +1,16 @@
-'use strict';
-/*eslint-env node */
+'use strict'
 
-var path = require('path');
-var conf = require('./gulp/conf');
+var path = require('path')
+var conf = require('./gulp/conf')
 
-var extend = require('extend');
-var wiredep = require('wiredep');
+var extend = require('extend')
+var wiredep = require('wiredep')
 
-function listFiles() {
+function listFiles () {
   var wiredepOptions = extend({}, conf.wiredep, {
     dependencies: true,
     devDependencies: true
-  });
+  })
 
   return wiredep(wiredepOptions).js
     .concat([
@@ -20,11 +19,10 @@ function listFiles() {
       path.join(conf.paths.src, '/**/*.spec.js'),
       path.join(conf.paths.src, '/**/*.mock.js'),
       path.join(conf.paths.src, '/**/*.html')
-    ]);
+    ])
 }
 
-module.exports = function(config) {
-
+module.exports = function (config) {
   var configuration = {
     files: listFiles(),
 
@@ -64,7 +62,7 @@ module.exports = function(config) {
         }
       ]
     }
-  };
+  }
 
   // This block is needed to execute Chrome on Travis
   // If you ever plan to use Chrome and Travis, you can keep it
@@ -76,9 +74,9 @@ module.exports = function(config) {
         base: 'Chrome',
         flags: ['--no-sandbox']
       }
-    };
-    configuration.browsers = ['chrome-travis-ci'];
+    }
+    configuration.browsers = ['chrome-travis-ci']
   }
 
-  config.set(configuration);
-};
+  config.set(configuration)
+}

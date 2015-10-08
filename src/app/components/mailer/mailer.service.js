@@ -1,25 +1,23 @@
-'use strict';
+'use strict'
 
 angular.module('mailer')
-		.service('mailerService', function(mandrillService) {
+  .service('mailerService', function (mandrillService) {
+    var config = {}
 
-			var config = {};
+    this.setConfig = function (cfg) {
+      config = cfg
+      mandrillService.setConfig(config)
+    }
 
-			this.setConfig = function(cfg) {
-				config = cfg;
-				mandrillService.setConfig(config);
-			};
+    this.getConfig = function () {
+      return config
+    }
 
-			this.getConfig = function() {
-				return config;
-			};
+    this.Email = function () {
+      return mandrillService.Email()
+    }
 
-			this.Email = function() {
-				return mandrillService.Email();
-			};
-
-			this.send = function(email) {
-				return mandrillService.send(email);
-			};
-
-		});
+    this.send = function (email) {
+      return mandrillService.send(email)
+    }
+  })

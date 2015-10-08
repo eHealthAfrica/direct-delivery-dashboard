@@ -1,9 +1,7 @@
-/**
- * Created by ehealthafrica on 7/6/15.
- */
+'use strict'
 
 angular.module('allocations')
-  .config(function ($stateProvider){
+  .config(function ($stateProvider) {
     $stateProvider
       .state('configurations.allocations.assumptions', {
         parent: 'configurations.allocations',
@@ -12,11 +10,11 @@ angular.module('allocations')
         controller: 'AssumptionsCtrl',
         controllerAs: 'assumptionsCtrl',
         resolve: {
-          assumptionList : function(assumptionService){
+          assumptionList: function (assumptionService) {
             return assumptionService.getAll()
-              .catch(function(err){
+              .catch(function () {
                 return []
-              });
+              })
           }
         }
       })
@@ -24,31 +22,31 @@ angular.module('allocations')
         url: '/preview',
         parent: 'configurations.allocations.assumptions',
         templateUrl: 'app/configurations/allocations/assumptions/preview.html',
-        controller: "AssumptionController",
+        controller: 'AssumptionController',
         controllerAs: 'assumptionController',
         resolve: {
-          assumptionList : function(assumptionService){
+          assumptionList: function (assumptionService) {
             return assumptionService.getAll()
-              .catch(function(err){
+              .catch(function () {
                 return []
-              });
+              })
           }
         }
       })
-      .state('configurations.allocations.allocationView',  {
+      .state('configurations.allocations.allocationView', {
         url: '/view/:id',
         parent: 'configurations.allocations',
         templateUrl: 'app/configurations/allocations/assumptions/assumption.template/template.values/values.html',
         controller: 'AllocationValuesController',
         controllerAs: 'allocationValCtrl',
         resolve: {
-          data : function($stateParams, assumptionService){
+          data: function ($stateParams, assumptionService) {
             return assumptionService.get($stateParams.id)
-              .catch(function(err){
-                console.log(err);
-                return [];
-              });
+              .catch(function (err) {
+                console.log(err)
+                return []
+              })
           }
         }
       })
-  });
+  })

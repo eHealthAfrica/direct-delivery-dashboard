@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
 angular.module('products')
-  .config(function($stateProvider){
+  .config(function ($stateProvider) {
     $stateProvider
       .state('configurations.products.layout', {
         abstract: true,
@@ -21,9 +21,9 @@ angular.module('products')
                 return productService.get($stateParams['code'])
                   .catch(function (err) {
                     if (err.status === '404') {
-                      return null;
+                      return null
                     } else {
-                      return log.error('productRetrievalErr', err);
+                      return log.error('productRetrievalErr', err)
                     }
                   })
               }
@@ -32,4 +32,4 @@ angular.module('products')
         }
 
       })
-  });
+  })

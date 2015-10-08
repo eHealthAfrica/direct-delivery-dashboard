@@ -1,8 +1,8 @@
-'use strict';
+'use strict'
 
 angular.module('directDeliveryDashboard')
-  .config(function($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise('/');
+  .config(function ($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise('/')
     $stateProvider
       .state('root', {
         abstract: true,
@@ -24,7 +24,7 @@ angular.module('directDeliveryDashboard')
               authentication: function ($q, ehaCouchDbAuthService, navbarService) {
                 return ehaCouchDbAuthService.getCurrentUser()
                   .then(navbarService.updateItems.bind(null))
-                  .catch($q.when.bind($q));
+                  .catch($q.when.bind($q))
               }
             }
           },
@@ -35,5 +35,5 @@ angular.module('directDeliveryDashboard')
             controllerAs: 'footerCtrl'
           }
         }
-      });
-  });
+      })
+  })

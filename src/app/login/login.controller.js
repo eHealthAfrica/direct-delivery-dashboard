@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
 angular.module('login')
-  .controller('LoginCtrl', function(authService) {
-    this.login = authService.login;
-  });
+  .controller('LoginCtrl', function (authService) {
+    this.login = authService.login
+  })

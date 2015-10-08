@@ -1,5 +1,5 @@
-'use strict';
+'use strict'
 
 angular.module('delivery', [
-			'db'
-		]);
+  'db'
+])

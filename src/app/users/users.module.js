@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 angular.module('users', [
   'core',
@@ -8,4 +8,4 @@ angular.module('users', [
   'drivers',
   'ngMessages',
   'auth'
-]);
+])
