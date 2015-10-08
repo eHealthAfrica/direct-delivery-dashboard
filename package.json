@@ -48,7 +48,7 @@
     "main-bower-files": "^2.8.0",
     "ng-config": "^1.0.0",
     "optimist": "^0.6.1",
-    "protractor": "^1.4.0",
+    "protractor": "^2.5.0",
     "require-dir": "^0.3.0",
     "standard": "^5.3.1",
     "uglify-save-license": "^0.4.1",
