@@ -13,7 +13,7 @@
     "couchdb-ensure": "^1.2.1",
     "coveralls": "^2.11.2",
     "del": "~1.2.0",
-    "eslint": "^0.10.1",
+    "eslint": "^1.6.0",
     "extend": "^2.0.0",
     "favicons": "^1.5.3",
     "glob": "^4.3.1",
