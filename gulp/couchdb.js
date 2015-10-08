@@ -6,7 +6,7 @@ var glob = require('glob')
 var gulp = require('gulp')
 var argv = require('optimist').argv
 var ensure = require('couchdb-ensure')
-var compile = require('couch-compile')
+var compile = require('couchdb-compile')
 
 var config = require('../config')
 var fixtures = require('../couchdb/fixtures')
