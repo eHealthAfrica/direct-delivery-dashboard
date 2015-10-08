@@ -4,11 +4,11 @@
 var path = require('path');
 var conf = require('./gulp/conf');
 
-var _ = require('lodash');
+var extend = require('extend');
 var wiredep = require('wiredep');
 
 function listFiles() {
-  var wiredepOptions = _.extend({}, conf.wiredep, {
+  var wiredepOptions = extend({}, conf.wiredep, {
     dependencies: true,
     devDependencies: true
   });
