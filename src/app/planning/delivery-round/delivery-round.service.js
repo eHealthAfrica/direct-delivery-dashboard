@@ -218,6 +218,7 @@ angular.module('planning')
 				}
 				if(roundReport.total > 0){
 					roundReport.workingCCE = ((workingCCETotal / roundReport.total) * 100);
+					roundReport.notWorkingCCE = roundReport.total - workingCCETotal;
 				}
 
 				if(angular.isNumber(roundReport.workingCCE)){
