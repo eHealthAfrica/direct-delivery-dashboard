@@ -4,11 +4,11 @@
   "dependencies": {
     "angular-ui-router": "~0.2.13",
     "bootstrap-sass-official": "~3.3.4",
-    "angular": "#1.4.3",
+    "angular": "~1.4.3",
+    "angular-resource": "~1.4.3",
     "angular-toastr": "~0.5.2",
     "font-awesome": "~4.4.0",
     "momentjs": "~2.8.4",
-    "angular-resource": "~1.3.6",
     "ngstorage": "~0.3.0",
     "pouchdb": "~3.2.0",
     "angular-pouchdb": "angular-pouchdb/angular-pouchdb#~1.0.2",
