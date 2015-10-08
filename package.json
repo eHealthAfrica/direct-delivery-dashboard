@@ -12,7 +12,7 @@
     "couch-compile": "^1.2.0",
     "couchdb-ensure": "^1.2.1",
     "coveralls": "^2.11.2",
-    "del": "~1.2.0",
+    "del": "~2.0.2",
     "eslint": "^0.10.1",
     "extend": "^3.0.0",
     "favicons": "^1.5.3",
