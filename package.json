@@ -46,7 +46,6 @@
     "karma-ng-html2js-preprocessor": "^0.2.0",
     "karma-phantomjs-launcher": "^0.2.0",
     "main-bower-files": "^2.8.0",
-    "merge-stream": "^0.1.7",
     "ng-config": "^1.0.0",
     "optimist": "^0.6.1",
     "protractor": "^1.4.0",
