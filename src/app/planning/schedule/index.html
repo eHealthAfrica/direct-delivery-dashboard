@@ -108,8 +108,9 @@
                 e-required></span>
           {{ facRnd.distance || '' }}
         </td>
-        <td>
+        <td ng-class="facRnd | deliveryStatus:true">
           <span editable-select="srCtrl.facilityDeliveries[$index].status"
+                e-ng-class="danger | deliveryStatus"
                 e-ng-options="status as status for status in srCtrl.deliveryStatuses"
                 e-name="status"
                 e-form="rowform">

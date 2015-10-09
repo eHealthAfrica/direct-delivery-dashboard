@@ -94,7 +94,7 @@ angular.module('planning')
     vm.saveRow = function (data, row) {
       // TODO: simplify once old data model has been deprecated in favor of one doc per facility per driver delivery.
       var updatedRow = {
-        deliveryDate: new Date(data.deliveryDate),
+        deliveryDate: new Date(data.deliveryDate).toJSON(),
         distance: data.distance,
         driver: data.driverID,
         drop: data.drop,
