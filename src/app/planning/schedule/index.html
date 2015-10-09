@@ -108,7 +108,14 @@
                 e-required></span>
           {{ facRnd.distance || '' }}
         </td>
-        <td ng-bind="facRnd.status"></td>
+        <td>
+          <span editable-select="srCtrl.facilityDeliveries[$index].status"
+                e-ng-options="status as status for status in srCtrl.deliveryStatuses"
+                e-name="status"
+                e-form="rowform">
+          </span>
+          {{ facRnd.status || 'Please set status' }}
+        </td>
         <td>
           <!-- form -->
           <form editable-form name="rowform" onbeforesave="srCtrl.saveRow($data, srCtrl.facilityDeliveries[$index])"
