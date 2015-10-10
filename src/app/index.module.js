@@ -25,6 +25,7 @@ angular
 			'allocations',
 			'products',
 			'utility',
+			'facility',
 			'eha-drag-n-drop',
       'Measurements'
 		])
