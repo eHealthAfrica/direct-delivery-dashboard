@@ -32,7 +32,7 @@ angular.module('facility')
         log('unknownError', reason)
       });
 
-    function setStatus(facilities) {
+    function setStatus (facilities) {
       var i = facilities.length;
       while (i--) {
         vm.facilityStatus[facilities[i]._id] = facilities[i].status;
