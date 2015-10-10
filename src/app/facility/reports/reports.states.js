@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
 angular.module('facility')
-  .config(function($stateProvider) {
+  .config(function ($stateProvider) {
     $stateProvider.state('facility.layout.reports', {
       url: '',
       templateUrl: 'app/facility/reports/reports.html',
@@ -10,5 +10,5 @@ angular.module('facility')
       data: {
         label: 'Facility'
       }
-    });
-  });
+    })
+  })

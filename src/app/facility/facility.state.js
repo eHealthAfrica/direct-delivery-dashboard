@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
 angular.module('facility')
-  .config(function($stateProvider) {
+  .config(function ($stateProvider) {
     $stateProvider.state('facility', {
       abstract: true,
       parent: 'index',
@@ -17,10 +17,11 @@ angular.module('facility')
     .state('facility.layout', {
       parent: 'facility',
       views: {
-        "menu": {
+        menu: {
           templateUrl: 'app/facility/menu/menu.html'
         },
-        "facility.content": {}
+        'facility.content': {}
       }
-    });
-  });
+    })
+  })
+

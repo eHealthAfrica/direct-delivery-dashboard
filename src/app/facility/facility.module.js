@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 angular.module('facility', [
   'core',
@@ -6,4 +6,4 @@ angular.module('facility', [
   'utility',
   'log',
   'delivery'
-]);
+])
