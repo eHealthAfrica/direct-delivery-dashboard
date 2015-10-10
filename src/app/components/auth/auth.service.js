@@ -7,7 +7,8 @@ angular.module('auth')
     log,
     config,
     navbarService,
-    ehaCouchDbAuthService
+    ehaCouchDbAuthService,
+    dbService
   ) {
     this.requireRoles = function (roles) {
       roles = roles || []
@@ -30,7 +31,8 @@ angular.module('auth')
         password: password
       }
 
-      return ehaCouchDbAuthService.signIn(params)
+      return dbService.login(username, password)
+        .then(ehaCouchDbAuthService.signIn.bind(null, params))
         .then(navbarService.updateItems.bind(null))
         .then(log.success.bind(log, 'authSuccess'))
         .then($state.go.bind($state, 'home'))
