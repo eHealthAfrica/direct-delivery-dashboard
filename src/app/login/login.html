@@ -2,14 +2,34 @@
   <div class="panel panel-default">
     <div class="panel-heading">Login</div>
     <div class="panel-body">
-      <form novalidate>
+      <form
+        name="form"
+        ng-submit="loginCtrl.login(username, password)"
+        novalidate
+      >
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Username" ng-model="username">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Username"
+            ng-model="username"
+            required
+          >
         </div>
         <div class="form-group">
-          <input type="password" class="form-control" placeholder="Password" ng-model="password">
+          <input
+            type="password"
+            class="form-control"
+            placeholder="Password"
+            ng-model="password"
+            required
+          >
         </div>
-        <button class="btn btn-primary btn-block" type="submit" ng-click="loginCtrl.login(username, password)">Login</button>
+        <button
+          class="btn btn-primary btn-block"
+          type="submit"
+          ng-disabled="form.$invalid"
+        >Login</button>
       </form>
     </div>
   </div>

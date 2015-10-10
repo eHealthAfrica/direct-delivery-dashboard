@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
 angular.module('products')
-  .config(function($stateProvider){
+  .config(function ($stateProvider) {
     $stateProvider
       .state('configurations.products.edit', {
         url: '/products/edit/:code',
@@ -10,25 +10,25 @@ angular.module('products')
         controller: 'ProductUpdateCtrl',
         controllerAs: 'productUpdateCtrl',
         resolve: {
-          product: function($stateParams, productService, log){
+          product: function ($stateParams, productService, log) {
             return productService.get($stateParams['code'])
-              .catch(function(err){
-                if(err.status ==='404'){
-                  return null;
-                }else{
-                  return log.error('productRetrievalErr', err);
+              .catch(function (err) {
+                if (err.status === '404') {
+                  return null
+                } else {
+                  return log.error('productRetrievalErr', err)
                 }
               })
           },
-          storageTypes: function(productService, log){
+          storageTypes: function (productService, log) {
             return productService.getProductStorageType()
-              .catch(function(error){
-                log.error('productStorageFetchErr', error);
-                return [];
+              .catch(function (error) {
+                log.error('productStorageFetchErr', error)
+                return []
               })
           },
-          baseUOMs: function(productService){
-            return productService.baseUOMs;
+          baseUOMs: function (productService) {
+            return productService.baseUOMs
           }
         }
       })
@@ -39,19 +39,19 @@ angular.module('products')
         controller: 'ProductUpdateCtrl',
         controllerAs: 'productUpdateCtrl',
         resolve: {
-          product: function($stateParams, productService, log){
-            return {doc_type: 'product'};
+          product: function ($stateParams, productService, log) {
+            return {doc_type: 'product'}
           },
-          storageTypes: function(productService, log){
+          storageTypes: function (productService, log) {
             return productService.getProductStorageType()
-              .catch(function(error){
-                log.error('productStorageFetchErr', error);
-                return [];
+              .catch(function (error) {
+                log.error('productStorageFetchErr', error)
+                return []
               })
           },
-          baseUOMs: function(productService){
-            return productService.baseUOMs;
+          baseUOMs: function (productService) {
+            return productService.baseUOMs
           }
         }
       })
-  });
+  })

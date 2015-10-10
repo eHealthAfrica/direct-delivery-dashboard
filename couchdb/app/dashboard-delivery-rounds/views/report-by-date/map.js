@@ -1,4 +1,4 @@
-function(doc) {
+function (doc) {
 
   var successTag ='success';
   var cancelTag = 'cancel';

@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
 angular.module('reports')
-		.controller('ReportsAllCtrl', function (deliveryRounds) {
-			var vm = this;
-			vm.deliveryRounds = deliveryRounds;
-		});
+  .controller('ReportsAllCtrl', function (deliveryRounds) {
+    var vm = this
+    vm.deliveryRounds = deliveryRounds
+  })

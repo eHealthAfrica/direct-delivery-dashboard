@@ -1,10 +1,8 @@
-'use strict';
+'use strict'
 
 angular.module('reports')
-  .service('deliveryReportService', function(reportsService, dbService) {
-    var _this = this;
-
-    function defaultStatus() {
+  .service('deliveryReportService', function (reportsService, dbService) {
+    function defaultStatus () {
       return {
         success: 0,
         failed: 0,
@@ -12,58 +10,55 @@ angular.module('reports')
       }
     }
 
-
-    function groupByZoneByDriver(grouped, row) {
-      var key = [row.driverID, row.zone].join('-');
+    function groupByZoneByDriver (grouped, row) {
+      var key = [row.driverID, row.zone].join('-')
       if (!grouped.hasOwnProperty(key)) {
-        grouped[key] = defaultStatus();
+        grouped[key] = defaultStatus()
       }
-      grouped[key][row.status]++;
+      grouped[key][row.status]++
 
-      return grouped;
+      return grouped
     }
 
-    function groupByZoneByLGA(grouped, row) {
+    function groupByZoneByLGA (grouped, row) {
       if (!grouped.hasOwnProperty(row.zone)) {
-        grouped[row.zone] = {};
+        grouped[row.zone] = {}
       }
       if (!grouped[row.zone].hasOwnProperty(row.lga)) {
-        grouped[row.zone][row.lga] = defaultStatus();
+        grouped[row.zone][row.lga] = defaultStatus()
       }
-      grouped[row.zone][row.lga][row.status]++;
+      grouped[row.zone][row.lga][row.status]++
 
-      return grouped;
+      return grouped
     }
 
-    function collateReport(response) {
-      response = response.rows;
-      var index = response.length;
-      var groupedByZoneByDriver = {};
-      var groupedByZoneByLGA = {};
+    function collateReport (response) {
+      response = response.rows
+      var index = response.length
+      var groupedByZoneByDriver = {}
+      var groupedByZoneByLGA = {}
 
-      while (index --) {
-        var row = response[index].value;
-        groupedByZoneByDriver = groupByZoneByDriver(groupedByZoneByDriver, row);
-        groupedByZoneByLGA = groupByZoneByLGA(groupedByZoneByLGA, row);
+      while (index--) {
+        var row = response[index].value
+        groupedByZoneByDriver = groupByZoneByDriver(groupedByZoneByDriver, row)
+        groupedByZoneByLGA = groupByZoneByLGA(groupedByZoneByLGA, row)
       }
 
       return {
         byZoneByDriver: groupedByZoneByDriver,
         byZoneByLGA: groupedByZoneByLGA
-      };
-
+      }
     }
 
     this.getDailyDeliveryReport = function (startDate, endDate) {
-      var view = 'dashboard-delivery-rounds/report-by-date';
-      startDate = new Date(startDate).toJSON();
-      endDate = new Date(endDate).toJSON();
+      var view = 'dashboard-delivery-rounds/report-by-date'
+      startDate = new Date(startDate).toJSON()
+      endDate = new Date(endDate).toJSON()
       var options = {
         startkey: [startDate],
         endkey: [endDate, {}, {}]
-      };
+      }
       return dbService.getView(view, options)
-        .then(collateReport);
-    };
-
-  });
+        .then(collateReport)
+    }
+  })

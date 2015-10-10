@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
 angular.module('Measurements')
-  .config(function($stateProvider){
+  .config(function ($stateProvider) {
     $stateProvider
       .state('configurations.measurementsLayout', {
         parent: 'configurations.layout',
@@ -17,11 +17,11 @@ angular.module('Measurements')
             controller: 'MeasurementCategoriesCtrl',
             controllerAs: 'measurementCateCtrl',
             resolve: {
-              categories: function(measurementService){
+              categories: function (measurementService) {
                 return measurementService.getAll()
-                  .catch(function(err){
-                    return [];
-                  });
+                  .catch(function () {
+                    return []
+                  })
               }
             }
           },
@@ -30,21 +30,21 @@ angular.module('Measurements')
             controller: 'MeasurementUnitsCtrl',
             controllerAs: 'measurementUnitsCtrl',
             resolve: {
-              units: function(measurementsUnitService){
+              units: function (measurementsUnitService) {
                 return measurementsUnitService.getAll()
-                  .catch(function(err){
-                    console.log(err);
-                    return [];
-                  });
+                  .catch(function (err) {
+                    console.log(err)
+                    return []
+                  })
               },
-              categories: function(measurementService){
+              categories: function (measurementService) {
                 return measurementService.getAll()
-                  .catch(function(err){
-                    return [];
-                  });
+                  .catch(function () {
+                    return []
+                  })
               }
             }
           }
         }
       })
-  });
+  })

@@ -1,42 +1,29 @@
-/**
- * Created by ehealthafrica on 7/8/15.
- */
+'use strict'
 
 angular.module('allocations')
-  .service('assumptionService', function(pouchDB, config, pouchUtil, log, productService, dbService){
+  .service('assumptionService', function (pouchUtil, dbService) {
+    var service = this
 
-    var db = pouchDB(config.db);
-    var service = this;
+    service.getAll = function () {
+      var view = 'allocations/assumptions'
+      var params = {
+        include_docs: true
+      }
+      return dbService.getView(view, params)
+        .then(pouchUtil.pluckDocs)
+    }
 
-    service.getAll = function(){
-      var view = 'allocations/assumptions';
-      var config = {
-        include_docs : true
-      };
-
-      return db.query(view, config)
-        .then(function(response){
-          return pouchUtil.pluckDocs(response);
-        })
-        .catch(function(err){
-          log.error(err);
-          return err;
-        });
-    };
-    service.get = function(id){
+    service.get = function (id) {
       return dbService.get(id)
-        .then(function(response){
-          return response;
-        });
-    };
-    service.save = function(data){
-      if(angular.isArray(data)){
-        return dbService.saveDocs(data);
-      }
-      if(data.name){
-        return dbService.insertWithId(data, data.name.trim().split(' ').join('-'));
-      }
-      return dbService.save(data);
-    };
+    }
 
-  });
+    service.save = function (data) {
+      if (angular.isArray(data)) {
+        return dbService.saveDocs(data)
+      }
+      if (data.name) {
+        return dbService.insertWithId(data, data.name.trim().split(' ').join('-'))
+      }
+      return dbService.save(data)
+    }
+  })

@@ -1,15 +1,14 @@
-'use strict';
+'use strict'
 
 angular.module('directDeliveryDashboard')
-  .config(function($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise('/');
+  .config(function ($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise('/')
     $stateProvider
       .state('root', {
         abstract: true,
         views: {
           root: {
-            templateUrl: 'app/index.html',
-            controller: 'IndexCtrl'
+            templateUrl: 'app/index.html'
           }
         }
       })
@@ -18,16 +17,23 @@ angular.module('directDeliveryDashboard')
         abstract: true,
         views: {
           header: {
-            templateUrl: 'components/navbar/navbar.html',
+            templateUrl: 'app/components/navbar/navbar.html',
             controller: 'NavbarCtrl',
-            controllerAs: 'navbarCtrl'
+            controllerAs: 'navbarCtrl',
+            resolve: {
+              authentication: function ($q, ehaCouchDbAuthService, navbarService) {
+                return ehaCouchDbAuthService.getCurrentUser()
+                  .then(navbarService.updateItems.bind(null))
+                  .catch($q.when.bind($q))
+              }
+            }
           },
           content: {},
           footer: {
-            templateUrl: 'components/footer/footer.html',
+            templateUrl: 'app/components/footer/footer.html',
             controller: 'FooterCtrl',
             controllerAs: 'footerCtrl'
           }
         }
-      });
-  });
+      })
+  })

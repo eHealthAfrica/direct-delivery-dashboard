@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
 angular.module('users')
-  .config(function($stateProvider) {
+  .config(function ($stateProvider, ehaCouchDbAuthServiceProvider) {
     $stateProvider.state('users', {
       abstract: true,
       parent: 'index',
@@ -10,18 +10,25 @@ angular.module('users')
       controller: 'UsersCtrl',
       controllerAs: 'usersCtrl',
       resolve: {
-        users: function(usersService) {
+        authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser,
+        authorization: ehaCouchDbAuthServiceProvider.requireAdminUser,
+        users: function (usersService) {
           return usersService.all()
-            .then(function(usersObj) {
-              var users = [];
+            .then(function (usersObj) {
+              var users = []
 
-              angular.forEach(usersObj, function(user) {
-                users.push(user);
-              });
+              angular.forEach(usersObj, function (user) {
+                users.push(user)
+              })
 
-              return users;
-            });
+              return users
+            })
         }
+      },
+      data: {
+        roles: [
+          'direct_delivery_dashboard_super'
+        ]
       }
-    });
-  });
+    })
+  })

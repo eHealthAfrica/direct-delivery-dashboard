@@ -3,8 +3,8 @@
  */
 
 angular.module('products')
-  .controller('ProductsCtrl', function(products){
-    var vm = this;
+  .controller('ProductsCtrl', function (products) {
+    var vm = this
 
-    vm.products = angular.isArray(products) ? products : [];
-  });
+    vm.products = angular.isArray(products) ? products : []
+  })
