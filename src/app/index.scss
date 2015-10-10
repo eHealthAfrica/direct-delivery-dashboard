@@ -12,7 +12,9 @@ td.actions {
   width: 1px;
   white-space: nowrap;
 }
-
+.pointer {
+  cursor: pointer;
+}
 // injector
 @import 'reports/invoice/round/round.scss';
 // endinjector
