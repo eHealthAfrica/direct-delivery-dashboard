@@ -111,7 +111,8 @@ angular.module('reports')
         })
     }
 
-    deliveryRoundService.getLatestBy('Kano')//TODO: Get state dynamically from user logged in user profile
+    // TODO: Get state dynamically from user logged in user profile
+    deliveryRoundService.getLatestBy('Kano')
       .then(function (response) {
         vm.roundCodes = response.roundCodes
       })
