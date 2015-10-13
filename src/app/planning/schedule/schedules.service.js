@@ -177,6 +177,7 @@ angular.module('planning')
                 facRnd.drop = scheduleInfo.drop
                 facRnd.window = scheduleInfo.window
                 facRnd.distance = scheduleInfo.distance
+                facRnd.status = scheduleInfo.status
               }
             })
         } else {
@@ -186,6 +187,7 @@ angular.module('planning')
             dailyDelivery.drop = scheduleInfo.drop
             dailyDelivery.window = scheduleInfo.window
             dailyDelivery.distance = scheduleInfo.distance
+            dailyDelivery.status = scheduleInfo.status
           }
         }
 

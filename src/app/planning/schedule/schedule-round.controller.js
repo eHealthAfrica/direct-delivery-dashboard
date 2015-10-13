@@ -3,9 +3,10 @@
 angular.module('planning')
   .controller('ScheduleRoundCtrl', function (deliveryRound, $state, dailyDeliveries,
     scheduleService, planningService, log,
-    $modal, utility, $q) {
+    $modal, utility, $q, DELIVERY_STATUS) {
     var vm = this
     vm.isSavingList = {}
+    vm.deliveryStatuses = DELIVERY_STATUS
     vm.dropList = [
       {value: 1, text: '1'},
       {value: 2, text: '2'},
@@ -101,11 +102,14 @@ angular.module('planning')
         facilityName: row.facility.name,
         id: row._id,
         roundId: vm.deliveryRound._id,
-        window: data.window
+        window: data.window,
+        status: data.status
       }
-      var hashId = scheduleService.hashRow(vm.deliveryRound._id, row.facility.id, row._id)
+      var hashId = scheduleService.hashRow(updatedRow.roundId, updatedRow.facilityCode, updatedRow.id)
+
       var hashUpdate = {}
       hashUpdate[hashId] = updatedRow
+
       var result = scheduleService.applyChanges(dailyDeliveries, hashUpdate)
       var updatedDailyDelivery = result.filter(function (dailyDelivery) {
         return dailyDelivery._id === updatedRow.id
