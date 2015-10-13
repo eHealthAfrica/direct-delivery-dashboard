@@ -61,4 +61,14 @@ angular.module('reports')
       return dbService.getView(view, options)
         .then(collateReport)
     }
+
+    this.getDailyDeliveryReportByRound = function (roundID) {
+      var view = 'reports/by-rounds'
+      var options = {
+        startkey: [roundID],
+        endkey: [roundID, {}, {}]
+      }
+      return dbService.getView(view, options)
+        .then(collateReport)
+    }
   })
