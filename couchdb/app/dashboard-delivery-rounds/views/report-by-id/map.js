@@ -54,9 +54,11 @@ function(doc) {
 
 	function hasWorkingCCE(status) {
 		status = status.toLowerCase();
-		var isFailedOrCanceled = (status.indexOf(cancelTag) !== -1 ||
-		status.indexOf(failedTag) !== -1);
-		return (isFailedOrCanceled && status.indexOf(cceTag) === -1);
+		var isFailedOrCanceled = (status.indexOf(cancelTag) !== -1 || status.indexOf(failedTag) !== -1);
+		if(isFailedOrCanceled){
+			return (status.indexOf(cceTag) === -1)
+		}
+		return true;
 	}
 
 	function isDelivered(status) {
