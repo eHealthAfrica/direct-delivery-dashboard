@@ -102,9 +102,9 @@ angular.module('facility')
       var i = locations.length
       var locationLevel = groupByLevel(locations)
       var facilities = []
-      var zone = {};
-      var lga = {};
-      var ward = {};
+      var zone = {}
+      var lga = {}
+      var ward = {}
       while (i--) {
         if (parseInt(locations[i].level, 10) === 6) {
           var facility = angular.copy(locations[i])
