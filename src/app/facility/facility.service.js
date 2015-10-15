@@ -4,6 +4,58 @@ angular.module('facility')
   .service('facilityService', function ($q, dbService, pouchUtil) {
     var _this = this
 
+    function getGrouped (group, type, row) {
+      if (!group.hasOwnProperty(type)) {
+        group[type] = {}
+      }
+      group = groupByZone(group, row, type)
+      group = groupByLGA(group, row, type)
+      group = groupByWard(group, row, type)
+
+      return group
+    }
+
+    function groupByWard (group, row, type) {
+      if (type === 'ward' && !group[type][row.zone][row.lga].hasOwnProperty(row.ward)) {
+        group[type][row.zone][row.lga][row.ward] = []
+      }
+
+      if (type === 'ward') {
+        group[type][row.zone][row.lga][row.ward] = updateGroup(group[type][row.zone][row.lga][row.ward], row)
+      }
+
+      return group
+    }
+
+    function groupByLGA (group, row, type) {
+      if (type === 'ward' && !group[type][row.zone].hasOwnProperty(row.lga)) {
+        group[type][row.zone][row.lga] = {}
+      }
+
+      if (type === 'lga') {
+        group[type][row.zone][row.lga] = updateGroup(group[type][row.zone][row.lga], row)
+      }
+      return group
+    }
+
+    function groupByZone (group, row, type) {
+      if (!group[type].hasOwnProperty(row.zone) && type !== 'zone') {
+        group[type][row.zone] = {}
+      }
+      if (type === 'zone') {
+        group[type][row.zone] = updateGroup(group[type][row.zone], row)
+      }
+      return group
+    }
+
+    function updateGroup (group, row) {
+      if (!angular.isArray(group)) {
+        group = []
+      }
+      group.push(row)
+      return group
+    }
+
     function groupByLevel (locations) {
       var i = locations.length
       var locationLevel = {
@@ -50,6 +102,9 @@ angular.module('facility')
       var i = locations.length
       var locationLevel = groupByLevel(locations)
       var facilities = []
+      var zone = {};
+      var lga = {};
+      var ward = {};
       while (i--) {
         if (parseInt(locations[i].level, 10) === 6) {
           var facility = angular.copy(locations[i])
@@ -60,11 +115,15 @@ angular.module('facility')
           facility.ward = locationLevel.ward[ancestors[0]] ? locationLevel.ward[ancestors[0]].name : ''
           facility.status = cceStatus
           facilities.push(facility)
+          zone = getGrouped(zone, 'zone', facility)
+          lga = getGrouped(lga, 'lga', facility)
+          ward = getGrouped(ward, 'ward', facility)
         }
       }
       return {
         facilities: facilities,
-        locations: locationLevel
+        locations: locationLevel,
+        nestedFacilities: angular.merge({}, zone, lga, ward)
       }
     }
 
