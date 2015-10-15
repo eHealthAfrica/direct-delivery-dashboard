@@ -6,6 +6,63 @@
 
     <div class="panel-body">
       <div class="row">
+        <div class="col-sm-3">
+          <h4>
+            <span ng-bind="facAllCtrl.selected.name"></span>
+            <span ng-bind="facAllCtrl.selected.type"></span>
+            Report
+          </h4>
+        </div>
+        <div class="col-sm-9">
+          <div class="btn-group" dropdown dropdown-append-to-body>
+            <button id="btn-for-zone" type="button" class="btn btn-default" dropdown-toggle>
+              <span ng-bind="facAllCtrl.selected.zone || 'Select Zone to Display'"></span> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="btn-append-to-body">
+              <li role="menuitem"></li>
+              <li
+                ng-repeat="zone in facAllCtrl.list.zone"
+                ng-click="facAllCtrl.updateLocation(zone, 'zone')"
+                role="menuitem"
+                ng-bind="zone"></li>
+
+            </ul>
+          </div>
+
+          <div class="btn-group" dropdown dropdown-append-to-body>
+            <button id="btn-for-lga" type="button" class="btn btn-default" dropdown-toggle>
+              <span ng-bind="facAllCtrl.selected.lga || 'Select LGA to Display'"></span> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="btn-append-to-body">
+              <li role="menuitem"></li>
+              <li
+                ng-repeat="lga in facAllCtrl.list.lga"
+                ng-click="facAllCtrl.updateLocation(lga, 'lga')"
+                role="menuitem"
+                ng-bind="lga"></li>
+
+            </ul>
+          </div>
+
+          <div class="btn-group" dropdown dropdown-append-to-body>
+            <button id="btn-for-ward" type="button" class="btn btn-default" dropdown-toggle>
+              <span ng-bind="facAllCtrl.selected.ward || 'Select Ward to Display'"></span> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="btn-append-to-body">
+              <li role="menuitem"></li>
+              <li
+                ng-repeat="ward in facAllCtrl.list.ward"
+                ng-click="facAllCtrl.updateLocation(ward, 'ward')"
+                role="menuitem"
+                ng-bind="ward"></li>
+
+            </ul>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row">
         <div class="col-sm-12">
           <table class="table table-striped">
             <thead>
@@ -19,7 +76,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="report in facAllCtrl.facilities">
+            <tr ng-repeat="report in facAllCtrl.selectedLocation">
               <td></td>
               <td ng-bind="report.zone"></td>
               <td ng-bind="report.lga"></td>
