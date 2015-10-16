@@ -35,6 +35,8 @@ angular.module('planning').controller('KPIController', function (deliveryRound, 
         }
         return antigenKPI
       })
+    tempDoc.outreachSessions = $data.outreachSessions
+    tempDoc.notes = $data.notes
     return kpiService.save(tempDoc)
       .then(function () {
         return log.success('saveKPISuccess')
