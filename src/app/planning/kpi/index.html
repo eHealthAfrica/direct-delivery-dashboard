@@ -44,7 +44,7 @@
           <span editable-number="antigenKPI.noImmunized"
                 e-min="0"
                 e-required
-                e-name="antigenKPI.productID"
+                e-name="{{ antigenKPI.productID }}"
                 e-form="kpiForm">
             </span>
           {{  antigenKPI.noImmunized  }}
@@ -54,7 +54,7 @@
         <td class="col-sm-1">
           <!-- form -->
           <form editable-form name="kpiForm"
-                onbeforesave="kpiCtrl.saveRow($data, returnRoute.driverID, returnRoute.deliveryDate)"
+                onbeforesave="kpiCtrl.saveRow($data, kpiCtrl.facilityKPIList, $index)"
                 ng-show="kpiForm.$visible" class="form-buttons form-inline"
                 shown="inserted == facKPI">
             <button type="submit" ng-disabled="kpiForm.$waiting" class="btn btn-primary">
