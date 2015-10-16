@@ -6,6 +6,9 @@ angular.module('auth')
       url: config.baseUrl,
       localStorageNamespace: config.name,
       adminRoles: config.admin.roles,
-      userRoles: config.user.roles
+      userRoles: config.user.roles,
+      defaultHttpFields: {
+        withCredentials: true
+      }
     })
   })
