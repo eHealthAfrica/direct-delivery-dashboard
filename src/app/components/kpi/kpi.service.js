@@ -39,4 +39,8 @@ angular.module('kpi')
         .then(pouchUtil.pluckDocs)
         .then(pouchUtil.rejectIfEmpty)
   }
+
+  _this.save = function (doc) {
+    return dbService.save(doc)
+  }
 })
