@@ -6,6 +6,7 @@ angular.module('reports', [
   'config',
   'drivers',
   'delivery',
+  'location',
   'db',
   'planning',
   'auth'
