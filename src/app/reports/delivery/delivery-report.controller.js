@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('reports')
-  .controller('DeliveryReportCtrl', function ($window, config, reportsService, log) {
+  .controller('DeliveryReportCtrl', function ($window, config, reportsService, log, $timeout) {
     var vm = this // viewModel
 
     vm.dateFormat = config.dateFormat
@@ -28,7 +28,7 @@ angular.module('reports')
 
     vm.formatXAxis = function () {
       return function (d) {
-        return $window.d3.time.format('%d %b %Y')(new Date(d))
+        return d
       }
     }
 
@@ -40,7 +40,9 @@ angular.module('reports')
         .then(function (res) {
           vm.zoneReport = res.zones
           vm.statusReport = res.status
-          vm.exampleData = vm.getGraphData(res.dates)
+          vm.exampleData = vm.getChartData(res.zones)
+
+          //vm.exampleData = vm.getGraphData(res.dates)
         })
         .catch(function (err) {
           log.error('cumulativeReportErr', err)
@@ -49,7 +51,8 @@ angular.module('reports')
 
     vm.getReport() // call on init
 
-    vm.getGraphData = function (dateStatusCounts) {
+    vm.getChartData = function (zoneData) {
+      var min = 4
       var graphData = [
         {
           'key': 'Success',
@@ -67,16 +70,24 @@ angular.module('reports')
           'values': []
         }
       ]
-      var dsc
-      for (var date in dateStatusCounts) {
-        if (dateStatusCounts.hasOwnProperty(date)) {
-          dsc = dateStatusCounts[date]
-          graphData[0].values.push([new Date(date), dsc.success])
-          graphData[1].values.push([new Date(date), dsc.failed])
-          graphData[2].values.push([new Date(date), dsc.canceled])
-        }
+      var length = zoneData.length
+
+      for (var i = 0; i < length; i++) {
+        var row = zoneData[i]
+        var total = row.success + row.failed + row.canceled
+        graphData[0].values.push([row.zone, getPercentile(total, row.success)])
+        graphData[1].values.push([row.zone, getPercentile(total, row.failed)])
+        graphData[2].values.push([row.zone, getPercentile(total, row.canceled)])
       }
       return graphData
+    }
+
+    function getPercentile (total, value) {
+      var percent = 0
+      if (total > 0) {
+        percent = (value/total)*100
+      }
+      return percent
     }
   })
   .controller('DeliveryReportByZonesCtrl', function (config, reportsService, log, deliveryReportService) {
