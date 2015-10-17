@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('Measurements')
-  .controller('MeasurementCategoriesCtrl', function (measurementService, categories, log) {
+  .controller('MeasurementCategoriesCtrl', function (measurementService, categories, log, $rootScope) {
     var vm = this
 
     vm.categories = categories
@@ -11,6 +11,8 @@ angular.module('Measurements')
       measurementService.save(vm.openedDoc)
         .then(function (response) {
           vm.categories.push(angular.extend({}, vm.openedDoc, response))
+          $rootScope.$broadcast('newCategoryAdded', vm.openedDoc)
+          vm.openedDoc = {}
           return log.success('', '', 'measurement category saved successfully')
         })
         .catch(function (err) {
