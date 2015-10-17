@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('reports')
-  .service('reportsService', function (pouchDB, config, dbService, deliveryRoundService) {
+  .service('reportsService', function ($q, pouchDB, config, dbService, deliveryRoundService, locationService) {
     var _this = this
     var db = pouchDB(config.db)
 
@@ -81,7 +81,28 @@ angular.module('reports')
       return cumDayCount
     }
 
-    _this.collateReport = function (res, deliveryRounds) {
+    function formatZones (zones) {
+      var length = zones.length
+      var formatted = {}
+      for (var i = 0; i < length; i++) {
+        var statusType = _this.getStatusTypes()
+        statusType.zone = zones[i].name
+        formatted[zones[i].name.toLowerCase()] = statusType
+      }
+      return formatted
+    }
+
+    function toList (object) {
+      var list = []
+      for (var key in object) {
+        if (object.hasOwnProperty(key)) {
+          list.push(object[key])
+        }
+      }
+      return list
+    }
+
+    _this.collateReport = function (res, deliveryRounds, zones) {
       // TODO: move this collation to reduce view if possible
       var rows = res.rows
 
@@ -109,23 +130,23 @@ angular.module('reports')
         report.status.total += 1
       }
 
-      var zones = []
+      zones = formatZones(zones)
       for (var z in report.zones) {
-        var zoneReport = {
-          zone: z,
-          success: report.zones[z].success,
-          failed: report.zones[z].failed,
-          canceled: report.zones[z].canceled
+        if (report.zones.hasOwnProperty(z) && zones.hasOwnProperty(z)) {
+          zones[z].success = report.zones[z].success
+          zones[z].failed = report.zones[z].failed
+          zones[z].canceled = report.zones[z].canceled
         }
-        zones.push(zoneReport)
       }
-
-      report.zones = zones
+      console.log(zones)
+      report.zones = toList(zones)
       report.dates = collateSortedDate(roundRows)
       return report
     }
 
     _this.getDeliveryReportWithin = function (startDate, endDate, deliveryRounds) {
+      var ZONE_LEVEL = '3'
+      var STATE_CODE = 'KN' // TODO: get this from user profile
       var view = 'dashboard-delivery-rounds/report-by-date'
       startDate = new Date(startDate).toJSON()
       endDate = new Date(endDate).toJSON()
@@ -133,9 +154,15 @@ angular.module('reports')
         startkey: [startDate],
         endkey: [endDate, {}, {}]
       }
-      return dbService.getView(view, options)
+      var locKeys = []
+      locKeys.push([ZONE_LEVEL, STATE_CODE])
+      var promises = [
+        dbService.getView(view, options),
+        locationService.getByLevelAndAncestor(locKeys)
+      ]
+      return $q.all(promises)
         .then(function (res) {
-          return _this.collateReport(res, deliveryRounds)
+          return _this.collateReport(res[0], deliveryRounds, res[1])
         })
     }
 
