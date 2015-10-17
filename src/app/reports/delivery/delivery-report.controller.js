@@ -41,8 +41,6 @@ angular.module('reports')
           vm.zoneReport = res.zones
           vm.statusReport = res.status
           vm.exampleData = vm.getChartData(res.zones)
-
-          //vm.exampleData = vm.getGraphData(res.dates)
         })
         .catch(function (err) {
           log.error('cumulativeReportErr', err)
@@ -52,7 +50,6 @@ angular.module('reports')
     vm.getReport() // call on init
 
     vm.getChartData = function (zoneData) {
-      var min = 4
       var graphData = [
         {
           'key': 'Success',
@@ -85,7 +82,7 @@ angular.module('reports')
     function getPercentile (total, value) {
       var percent = 0
       if (total > 0) {
-        percent = (value/total)*100
+        percent = (value / total) * 100
       }
       return percent
     }
