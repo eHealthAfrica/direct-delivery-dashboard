@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('reports')
-  .controller('DeliveryReportCtrl', function ($window, config, reportsService, log, $timeout) {
+  .controller('DeliveryReportCtrl', function ($window, config, reportsService, log) {
     var vm = this // viewModel
 
     vm.dateFormat = config.dateFormat
