@@ -4,7 +4,7 @@ angular.module('configurations.facilities')
     vm.states = states
     vm.selectedState = vm.states[0]
     vm.lgas = []
-    vm.facilities = [];
+    vm.facilities = []
     vm.csvHeader = [
       'State',
       'Zone',
@@ -14,8 +14,8 @@ angular.module('configurations.facilities')
       'Coord',
       'Type'
     ]
-    vm.csvTemplateDownload = function(){
-      return [];
+    vm.csvTemplateDownload = function () {
+      return []
     }
     vm.getLgas = function (stateId) {
       var keys = []
