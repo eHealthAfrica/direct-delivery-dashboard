@@ -25,6 +25,7 @@ angular
     'configurations',
     'allocations',
     'products',
+    'configurations.facilities',
     'utility',
     'eha-drag-n-drop',
     'Measurements'
