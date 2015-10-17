@@ -1,9 +1,9 @@
 <div class="panel panel-info">
    <div class="panel-heading clearfix">
-    editing assumptions for {{assumptionsEditController.data.product.code}}
+    Editing Template For <b>{{tempAddCtrl.template.name}}</b>
     <span class="pull-right">
       <button class="btn-danger btn btn-lg">
-        <i class="fa fa-warning"></i> delete template
+        <i class="fa fa-warning"></i> Delete Template
       </button>
     </span>
   </div>
@@ -12,21 +12,21 @@
       <div class="col-md-8">
         <form>
           <div class="form-group">
-            <label>template name</label>
+            <label>Template Name</label>
             <input type="text" class="form-control" ng-model="tempAddCtrl.template.name">
           </div>
            <div class="form-group">
-            <label>description</label>
+            <label>Description</label>
             <input type="text" class="form-control" ng-model="tempAddCtrl.template.description">
           </div>
            <div class="form-group">
-            <label>State of primary use</label>
+            <label>State of Primary Use</label>
             <select data-ng-model="tempAddCtrl.template.primary.state">
               <option>{{tempAddCtrl.template.primary.state}}</option>
             </select>
           </div>
           <div class="form-group">
-            <label>Year of primary use</label>
+            <label>Year of Primary Use</label>
            <input type="year" ng-model="tempAddCtrl.template.primary.year">
           </div>
         </form>
