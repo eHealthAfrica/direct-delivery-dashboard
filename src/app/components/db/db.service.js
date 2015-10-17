@@ -110,8 +110,4 @@ angular.module('db')
       }
       return remoteDB.bulkDocs(docs, opt)
     }
-
-    _this.login = function (username, password) {
-      return remoteDB.login(username, password)
-    }
   })
