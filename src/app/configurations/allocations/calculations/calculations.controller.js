@@ -15,7 +15,7 @@ angular.module('allocations')
     }
     vm.productList = products || []
     vm.renderedPartial = 'tp'
-    vm.renderedViewLabel = 'coverage'
+    vm.renderedViewLabel = 'Coverage'
     vm.activeView = 'coverage'
     vm.renderedData = []
     vm.locationStates = ['KN', 'BA']
