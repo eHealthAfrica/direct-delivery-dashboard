@@ -7,6 +7,9 @@ angular.module('allocations')
     $stateProvider.state('configurations.allocations', {
       parent: 'configurations.layout',
       url: '/allocations',
-      templateUrl: 'app/configurations/allocations/index.html'
+      templateUrl: 'app/configurations/allocations/index.html',
+      controller: function ($state) {
+
+      }
     })
   })
