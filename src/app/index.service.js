@@ -3,7 +3,7 @@
 angular.module('directDeliveryDashboard')
   .service('indexService', function ($rootScope, $state, editableOptions, log) {
     function stateChangeError (event, toState, toParams, fromState, fromParams, err) {
-      if (err === 'unauthenticated') {
+      if (err === 'unauthenticated' || err === 'User not found') {
         return $state.go('login')
       }
       if (err === 'unauthorized') {

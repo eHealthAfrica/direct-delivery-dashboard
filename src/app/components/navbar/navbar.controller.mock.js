@@ -18,3 +18,4 @@ angular.module('navbarCtrlMock', [])
       ]
     }
   ])
+  .constant('dbService', {})
