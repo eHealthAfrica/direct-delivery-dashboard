@@ -21,7 +21,7 @@ angular.module('planning').controller('KPIController', function (deliveryRound, 
     if (err.status === 409) {
       return log.error('updateConflict', err)
     }
-    return log.error('saveReturnRouteErr', err)
+    return log.error('saveKPIError', err)
   }
 
   vm.saveRow = function ($data, kpiList, $index) {
