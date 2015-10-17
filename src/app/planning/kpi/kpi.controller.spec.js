@@ -106,7 +106,6 @@ describe('KPIController', function () {
 				outreachSessions: "2"
 			}
 			var $index = 0;
-			var tempDoc = KPIController.facilityKPIList[$index]
 			KPIController.saveRow($data, KPIController.facilityKPIList, $index)
 			expect(kpiService.save).toHaveBeenCalledWith()
 		})
