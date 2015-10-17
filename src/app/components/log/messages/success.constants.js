@@ -49,5 +49,9 @@ angular.module('log')
     returnRouteSaved: {
       title: 'Return route updated',
       message: 'Return route update was saved successfully!'
+    },
+    saveKPISuccess: {
+      title: 'KPI record saved',
+      message: 'KPI record was saved successfully!'
     }
   })

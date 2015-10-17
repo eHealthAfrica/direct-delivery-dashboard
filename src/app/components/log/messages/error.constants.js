@@ -111,5 +111,10 @@ angular.module('log')
       title: 'Logout failed',
       message: 'Could not logout',
       remedy: 'Please, try again and contact support if it persists'
+    },
+    saveKPIError: {
+      title: 'Save KPI failed',
+      message: 'Could not save KPI record',
+      remedy: 'Please, try again and contact support if it persists'
     }
   })
