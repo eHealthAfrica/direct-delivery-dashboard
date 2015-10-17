@@ -18,7 +18,7 @@ angular
     'login',
     'reports',
     'planning',
-    'finance',
+    'facility',
     'users',
     'db',
     'location',

@@ -3,7 +3,7 @@
  */
 
 function(doc){
-  if(doc.doc_type === 'product'){
-
+  if(doc.doc_type === 'assumptions'){
+  	emit(doc._id);
   }
 }
