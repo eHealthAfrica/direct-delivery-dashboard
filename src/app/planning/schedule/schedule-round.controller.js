@@ -2,8 +2,8 @@
 
 angular.module('planning')
   .controller('ScheduleRoundCtrl', function (deliveryRound, $state, dailyDeliveries,
-    scheduleService, planningService, log,
-    $modal, utility, $q, DELIVERY_STATUS) {
+    scheduleService, planningService, log, config,
+    $modal, utility, $q, DELIVERY_STATUS, mailerService) {
     var vm = this
     vm.isSavingList = {}
     vm.deliveryStatuses = DELIVERY_STATUS
@@ -47,9 +47,48 @@ angular.module('planning')
     vm.exportForRouting = exportData.rows
     vm.exportHeader = exportData.headers
 
+    function generateMsgBody (roundId) {
+      // TODO: fetch message from DB, to make it easy to change and config.
+      return [
+        '<p>Hi</p>',
+        '<p>The locations have been chosen for',
+        roundId,
+        ', please route.</p>',
+        '<p>Thanks</p>'
+      ].join(' ')
+    }
+
+    function emailNotification (roundId) {
+      var mailConfig = {
+        apiUrl: config.mailerAPI,
+        apiKey: config.apiKey
+      }
+      mailerService.setConfig(mailConfig)
+      var email = mailerService.Email()
+      var subject = ['[VDD]', roundId, 'is ready to edit'].join(' ')
+      email.setSubject(subject)
+      email.setSender(config.senderEmail, config.senderName)
+      email.setHTML(generateMsgBody(roundId))
+      // TODO: once you confirm list of recipient, move to a central location DB or attach to delivery round.
+      var recipients = {
+        'email': 'jideobi.ofomah@ehealthnigeria.org',
+        'name': 'Jideobi',
+        'type': 'to'
+      }
+      email.addRecipient(recipients)
+      return mailerService.send(email)
+    }
+
     vm.completePlanning = function () {
       planningService.completePlanning(vm.deliveryRound)
         .then(function () {
+          emailNotification(vm.deliveryRound._id)
+            .then(function (res) {
+              log.success('plannerNotificationEmailSuccess')
+            })
+            .catch(function (err) {
+              log.error('plannerNotificationEmailErr', err)
+            })
           log.success('completePlanningSuccess')
           $state.go('planning.deliveryRound')
         })
