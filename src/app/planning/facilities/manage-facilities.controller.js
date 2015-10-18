@@ -2,7 +2,7 @@
 
 angular.module('planning')
   .controller('ManageFacilitiesCtrl', function ($state, $modal, deliveryRound, addFacilityService, mailerService,
-    copyRoundService, scheduleService, log, locationLevels, config, planningService) {
+    copyRoundService, scheduleService, log, locationLevels, config) {
     var vm = this
 
     vm.deliveryRound = deliveryRound
@@ -107,48 +107,10 @@ angular.module('planning')
       scheduleService.onSaveError(err)
     }
 
-    function generateMsgBody (roundId) {
-      return [
-        '<p>Hi</p>',
-        '<p>The locations have been chosen for',
-        roundId,
-        ', please route.</p>',
-        '<p>Thanks</p>'
-      ].join(' ')
-    }
-
-    function emailNotification (roundId) {
-      var mailConfig = {
-        apiUrl: config.mailerAPI,
-        apiKey: config.apiKey
-      }
-
-      mailerService.setConfig(mailConfig)
-      var email = mailerService.Email()
-      var subject = ['[VDD]', roundId, 'is ready to edit'].join(' ')
-      email.setSubject(subject)
-      email.setSender('no-reply@ehealthnigeria.org', 'EHA VDD')
-      email.setHTML(generateMsgBody(roundId))
-      // TODO: once you confirm list of recipient, move to a central location DB or attach to delivery round.
-      var recipients = [
-        {
-          'email': 'jideobi.ofomah@ehealthnigeria.org',
-          'name': 'Jideobi',
-          'type': 'to'
-        }
-      ]
-      email.addRecipient(recipients)
-
-      mailerService.send(email)
-    }
-
     function onSuccess (res) {
       log.success('schedulesSaved')
       var stateParams = { roundId: vm.deliveryRound._id }
       $state.go('planning.schedule', stateParams)
-      if (planningService.isEmailReady(vm.deliveryRound)) {
-        emailNotification(vm.deliveryRound._id)
-      }
     }
 
     vm.save = function () {
