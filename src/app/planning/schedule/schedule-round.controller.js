@@ -83,7 +83,7 @@ angular.module('planning')
       planningService.completePlanning(vm.deliveryRound)
         .then(function () {
           emailNotification(vm.deliveryRound._id)
-            .then(function (res) {
+            .then(function () {
               log.success('plannerNotificationEmailSuccess')
             })
             .catch(function (err) {
@@ -164,7 +164,7 @@ angular.module('planning')
               log.success('schedulesSaved', res)
               // TODO: think of better way to refresh all data after changes though this
               // seems like the easiest and the best chance of having latest server copy while editing
-              // but might be have performance issues.
+              // but might be having performance issues.
               $state.go('planning.schedule', {roundId: vm.deliveryRound._id}, {
                 reload: true,
                 inherit: false,
