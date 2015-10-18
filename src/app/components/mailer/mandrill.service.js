@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('mailer')
-  .service('mandrillService', function ($http) {
+  .service('mandrillService', function ($http, $q) {
     function EMail () {
       var self = this
       self.to = []
@@ -93,5 +93,12 @@ angular.module('mailer')
         data: reqData
       }
       return $http(reqOptions)
+        .then(function (res) {
+          var status = res.data[0].status
+          if (status === 'invalid' || status === 'rejected') {
+            return $q.reject(res.data)
+          }
+          return res.data
+        })
     }
   })
