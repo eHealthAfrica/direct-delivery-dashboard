@@ -24,6 +24,14 @@ dl > dt, dl > dd {
   margin: 0.7em;
   text-transform: capitalize;
 }
+.pointer {
+  cursor: pointer;
+}
 // injector
 @import 'reports/invoice/round/round.scss';
 // endinjector
+
+// injector
+@import 'configurations/allocations/assumptions/assumptions.scss';
+// endinjector
+
