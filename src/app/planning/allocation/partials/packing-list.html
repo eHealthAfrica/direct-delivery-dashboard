@@ -1,0 +1,70 @@
+<div class="panel-body"
+     ng-show="daCtrl.hasNoAllocation()">
+  <div class="panel-body alert alert-info">
+    <i class="fa fa-lg fa-info-circle"></i>
+    <span> No allocation found, please set allocation template.</span>
+  </div>
+</div>
+
+<div class="panel-body" ng-show="daCtrl.hasNoSchedule()">
+  <div class="panel-body alert alert-info">
+    <i class="fa fa-lg fa-info-circle"></i>
+      <span>
+        No facility scheduled for this round under the selected LGA, please
+        <a ui-sref="planning.manageFacilities({ roundId: daCtrl.deliveryRound._id })">
+          <b>Add Facilities</b>
+        </a>
+        or select another LGA!
+      </span>
+  </div>
+</div>
+
+<div ng-show="daCtrl.hasProducts() && !daCtrl.hasNoSchedule()">
+  <table
+      class="table table-condensed table-striped table-bordered">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th width="10%">Facility</th>
+      <th width="5%" ng-repeat="pCode in daCtrl.facAllocInfo.productList track by $index"
+          ng-bind="pCode">
+      </th>
+      <th width="10%">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="facRnd in daCtrl.facAllocInfo.rows track by $index">
+      <td ng-bind="($index + 1)"></td>
+      <td ng-bind="facRnd.facility.name"></td>
+      <td ng-repeat="pCode in daCtrl.facAllocInfo.productList track by $index">
+           <span editable-number="facRnd.packedProduct[pCode].expectedQty" e-min="0"
+                 e-name="{{pCode}}" e-form="packedProductForm" e-required>
+          {{ facRnd.packedProduct[pCode].expectedQty  || '-' }}
+        </span>
+      </td>
+      <td>
+        <!-- form -->
+        <form editable-form name="packedProductForm"
+              onbeforesave="daCtrl.saveRow($data, facRnd)"
+              ng-show="packedProductForm.$visible" class="form-buttons form-inline"
+              shown="inserted === facRnd">
+          <button type="submit" ng-disabled="packedProductForm.$waiting"
+                  class="btn btn-primary">
+            <span>Save</span>
+          </button>
+          <button type="button" ng-disabled="packedProductForm.$waiting"
+                  ng-click="packedProductForm.$cancel()"
+                  class="btn btn-default">
+            <span>Cancel</span>
+          </button>
+        </form>
+        <div class="buttons" ng-show="!packedProductForm.$visible">
+          <button class="btn btn-primary btn-block" ng-click="packedProductForm.$show()">
+            Edit
+          </button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

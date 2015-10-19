@@ -1,5 +1,11 @@
 #!/bin/bash
 
-[[ "$TRAVIS_BRANCH" == "master" ]] && export NODE_ENV="production"
-[[ "$TRAVIS_BRANCH" == "develop" ]] && export NODE_ENV="stage"
+if [[ "$TRAVIS_TAG" ]]; then
+  export NODE_ENV="travis-production"
+elif [[ "$TRAVIS_BRANCH" == "master" ]]; then
+  export NODE_ENV="travis-staging"
+else
+  export NODE_ENV="travis-development"
+fi
+
 npm run build

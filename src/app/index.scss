@@ -1,3 +1,11 @@
+// Override Sass dependency variables
+$icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+$fa-font-path: "../../bower_components/font-awesome/fonts";
+
+// Inject Sass dependencies
+// bower:scss
+// endbower
+
 .content {
   margin-bottom: 20px;
 }
@@ -12,7 +20,18 @@ td.actions {
   width: 1px;
   white-space: nowrap;
 }
+dl > dt, dl > dd {
+  margin: 0.7em;
+  text-transform: capitalize;
+}
+.pointer {
+  cursor: pointer;
+}
+// injector
+@import 'reports/invoice/round/round.scss';
+// endinjector
 
 // injector
-@import 'reports/round/round.scss';
+@import 'configurations/allocations/assumptions/assumptions.scss';
 // endinjector
+

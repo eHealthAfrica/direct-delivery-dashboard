@@ -1,0 +1,53 @@
+{
+  "docs": [
+    {
+      "_id": "0",
+      "doc_type": "location-level",
+      "name": "Country",
+      "level": 0,
+      "parent": null
+    },
+    {
+      "_id": "1",
+      "doc_type": "location-level",
+      "name": "National Zone",
+      "level": 1,
+      "parent": "0"
+    },
+    {
+      "_id": "2",
+      "doc_type": "location-level",
+      "name": "State",
+      "level": 2,
+      "parent": "1"
+    },
+    {
+      "_id": "3",
+      "doc_type": "location-level",
+      "name": "State Zone",
+      "level": 3,
+      "parent": "2"
+    },
+    {
+      "_id": "4",
+      "doc_type": "location-level",
+      "name": "LGA",
+      "level": 4,
+      "parent": "3"
+    },
+    {
+      "_id": "5",
+      "doc_type": "location-level",
+      "name": "Ward",
+      "level": 5,
+      "parent": "4"
+    },
+    {
+      "_id": "6",
+      "doc_type": "location-level",
+      "name": "Facility",
+      "level": 6,
+      "parent": "5"
+    }
+  ]
+}

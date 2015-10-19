@@ -12,17 +12,31 @@
 
 ## Usage
 
-0. Install [Node.js][], [Git][] and [CouchDB][]
-1. `npm install -g gulp bower`
+0. Install [Node.js][] (>=0.10 <4, npm >=2 <3), [Git][] and [CouchDB][]
+1. `npm install -g gulp`
 2. `git clone https://github.com/eHealthAfrica/direct-delivery-dashboard.git`
-3. `cd direct-delivery-dashboard && npm install && bower install`
-4. `gulp views fixtures-local`
+3. `cd direct-delivery-dashboard && npm install`
+4. `gulp views fixtures`
 5. `gulp serve`
 
 [Node.js]: http://nodejs.org
 [Git]: http://git-scm.com
 [CouchDB]: https://couchdb.apache.org
 
-## Author
+## Authors
 
-© 2015 [eHealth Systems Africa](http://ehealthafrica.org)
+* © 2015 Haykel Ben Jemia <hbj@allmas.tn>
+* © 2015 Jideobi Ofomah <jideobi.ofomah@ehealthnigeria.org>
+* © 2015 Tom Vincent <tom.vincent@ehealthnigeria.org> (https://tlvince.com)
+* © 2015 Femi Oni <oluwafemi.oni@ehealthnigeria.org>
+* © 2015 Musa Musa <musa.musa@ehealthnigeria.org>
+
+… and [contributors][].
+
+[contributors]: https://github.com/eHealthAfrica/direct-delivery-dashboard/graphs/contributors
+
+## License
+
+Released under the [Apache 2.0 License][license].
+
+[license]: http://www.apache.org/licenses/LICENSE-2.0.html

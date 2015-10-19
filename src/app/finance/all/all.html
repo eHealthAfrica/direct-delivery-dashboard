@@ -1,0 +1,51 @@
+<div class="panel panel-default">
+  <div class="panel-heading clearfix">
+    <a class="btn btn-primary btn-xs pull-right" >Create</a>
+    <h3 class="panel-title">Financial Records</h3>
+  </div>
+  <div ng-hide="FinanceAllCtrl.all.length" class="panel-body">
+    No record found.
+  </div>
+  <table ng-show="FinanceAllCtrl.all.length" class="table table-condensed table-striped">
+    <thead>
+      <tr>
+        <th>Delivery Date</th>
+        <th>Driver</th>
+        <th>Vehicle</th>
+        <th>Zone</th>
+        <th>LGA</th>
+        <th>Estimated Km</th>
+        <th>km Out</th>
+        <th>Km In</th>
+        <th>Total km</th>
+        <th>Fuel (Litres)</th>
+        <th>Amount Given</th>
+        <th>Fuel Voucher</th>
+        <th>Total AMount Spent</th>
+        <th>km/ Litre</th>
+        <th>km Tolerance</th>
+        <th>Delivery Round</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="record in FinanceAllCtrl.all">
+        <td ng-bind="::record.date"></td>
+        <td ng-bind="::record.driver"></td>
+        <td ng-bind="::record.vehicle"></td>
+        <td ng-bind="::record.zone"></td>
+        <td ng-bind="::record.lga"></td>
+        <td ng-bind="::record.estimatedDistance"></td>
+        <td ng-bind="::record.distanceBefore"></td>
+        <td ng-bind="::record.distanceAfter"></td>
+        <td ng-bind="::record.totalKM"></td>
+        <td ng-bind="::record.fuelConsumption"></td>
+        <td ng-bind="::record.amountGiven"></td>
+        <td ng-bind="::record.fuelVoucher"></td>
+        <td ng-bind="::record.totalAmountSpent"></td>
+        <td ng-bind="::record.averageFuelUsage"></td>
+        <td ng-bind="::record.kmDifference"></td>
+        <td ng-bind="::record.round"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

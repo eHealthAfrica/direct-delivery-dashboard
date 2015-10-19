@@ -3,16 +3,14 @@
  * https://docs.google.com/presentation/d/1B6manhG0zEXkC-H-tPo2vwU06JhL8w9-XCF9oehXzAQ
  */
 
-'use strict';
+'use strict'
+/* global element, by */
 
-var MainPage = function() {
-  this.jumbEl = element(by.css('.jumbotron'));
-  this.h1El = this.jumbEl.element(by.css('h1'));
-  this.imgEl = this.jumbEl.element(by.css('img'));
+var MainPage = function () {
+  this.jumbEl = element(by.css('.jumbotron'))
+  this.h1El = this.jumbEl.element(by.css('h1'))
+  this.imgEl = this.jumbEl.element(by.css('img'))
+  this.thumbnailEls = element(by.css('body')).all(by.repeater('awesomeThing in main.awesomeThings'))
+}
 
-  this.techEl = element(by.css('.row'));
-  this.thumbnailEls = this.techEl.all(by.repeater('awesomeThing in awesomeThings'));
-};
-
-module.exports = new MainPage();
-
+module.exports = new MainPage()

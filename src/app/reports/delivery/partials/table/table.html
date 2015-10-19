@@ -1,0 +1,40 @@
+<div classs="row">
+  <div class="panel-body alert alert-info"
+       ng-if="devRepCtrl.zoneReport.length === 0">
+    <i class="fa fa-lg fa-info-circle"></i>
+    <span> No delivery was made within selected period.</span>
+  </div>
+
+  <table class="table table-condensed table-striped table-bordered"
+         ng-if="devRepCtrl.zoneReport.length > 0">
+    <thead>
+    <tr>
+      <th class="col-sm-1">#</th>
+      <th class="col-sm-2">Zone</th>
+      <th class="col-sm-2 alert-success">Success</th>
+      <th class="col-sm-2 alert-danger">Failed</th>
+      <th class="col-sm-2 alert-warning">Canceled</th>
+      <th class="col-sm-2 alert-info">Grand Total</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="zr in devRepCtrl.zoneReport"
+        ng-init="devRepCtrl.rowCount = $index">
+      <td ng-bind="($index + 1)"></td>
+      <td ng-bind="zr.zone"></td>
+      <td ng-bind="zr.success"></td>
+      <td ng-bind="zr.failed"></td>
+      <td ng-bind="zr.canceled"></td>
+      <td ng-bind="(zr.success + zr.failed + zr.canceled)"></td>
+    </tr>
+    <tr>
+      <th ng-bind="(devRepCtrl.rowCount + 2)"></th>
+      <th>Total</th>
+      <th ng-bind="devRepCtrl.statusReport.success"></th>
+      <th ng-bind="devRepCtrl.statusReport.failed"></th>
+      <th ng-bind="devRepCtrl.statusReport.canceled"></th>
+      <th ng-bind="devRepCtrl.statusReport.total"></th>
+    </tr>
+    </tbody>
+  </table>
+</div>

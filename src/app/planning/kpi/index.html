@@ -1,0 +1,110 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-sm-4 pull-left">
+        <h4>
+          <i class="fa fa-file-text"></i>
+          <span>KPI for Delivery Round: {{ kpiCtrl.deliveryRound._id }} </span>
+        </h4>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Search : </label>
+          <div class="col-sm-10">
+            <input class="form-control input-lg" ng-model="kpiCtrl.query"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="panel-body" ng-show="kpiCtrl.isEmptyFacilityKPI()">
+      <div class="panel-body alert alert-info">
+        <i class="fa fa-lg fa-info-circle"></i>
+        <span> No facility KPIs available, please use KPI template to set KPI for deliveries.</span>
+      </div>
+    </div>
+
+    <div>
+    <table class="table table-condensed table-bordered table-striped"
+        ng-hide="kpiCtrl.isEmptyFacilityKPI()">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Facility</th>
+        <th>LGA</th>
+        <th>Driver</th>
+        <th>Date</th>
+        <th ng-repeat="pt in kpiCtrl.antigens" ng-bind="pt"></th>
+        <th>Outreach Sessions</th>
+        <th>Notes</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="facKPI in kpiCtrl.facilityKPIList | filter:kpiCtrl.query track by $index ">
+        <td ng-bind="($index + 1 )"></td>
+        <td class="col-sm-2" ng-bind="facKPI.facility.name"></td>
+        <td class="col-sm-1" ng-bind="facKPI.facility.lga"></td>
+        <td ng-bind="kpiCtrl.getDriver(facKPI.driverID)"></td>
+        <td class="col-sm-1" ng-bind="facKPI.date"></td>
+        <td class="col-sm-1" ng-repeat="antigenKPI in facKPI.antigensKPI">
+          <span editable-number="antigenKPI.noImmunized"
+                e-min="0"
+                e-required
+                e-name="{{ antigenKPI.productID }}"
+                e-form="kpiForm">
+            </span>
+          {{  antigenKPI.noImmunized  }}
+        </td>
+        <th class="col-sm-1">
+          <span editable-text="facKPI.outreachSessions"
+                e-min="0"
+                e-required
+                e-name="outreachSessions"
+                e-form="kpiForm">
+            </span>
+          {{  facKPI.outreachSessions  }}
+        </th>
+        <th class="col-sm-2">
+          <span editable-textarea="facKPI.notes"
+                e-rows="7"
+                e-cols="40"
+                e-form="kpiForm"
+                e-name="notes">
+          </span>
+          <pre>{{ facKPI.notes || 'No comment' }}</pre>
+        </th>
+        <td class="col-sm-1">
+          <!-- form -->
+          <form editable-form name="kpiForm"
+                onbeforesave="kpiCtrl.saveRow($data, kpiCtrl.facilityKPIList, $index)"
+                ng-show="kpiForm.$visible" class="form-buttons form-inline"
+                shown="inserted == facKPI">
+            <button type="submit" ng-disabled="kpiForm.$waiting" class="btn btn-primary">
+              <span>Save</span>
+            </button>
+            <button type="button btn-default" ng-disabled="kpiForm.$waiting"
+                    ng-click="kpiForm.$cancel()" class="btn btn-default">
+              <span>Cancel</span>
+            </button>
+          </form>
+          <div class="buttons" ng-show="!kpiForm.$visible">
+            <button class="btn btn-primary"
+                    ng-click="kpiForm.$show()">
+              <i class="fa fa-pencil-square-o"></i>
+              <span>Edit</span>
+            </button>
+          </div>
+
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+
+

@@ -1,0 +1,60 @@
+<div class="clearfix">
+  <span class="dropdown" dropdown on-toggle="toggled(open)">
+     <a href class="dropdown-toggle btn btn-lg fa-2x" dropdown-toggle>
+        <b>
+          <i class="fa fa-check-circle text-success"></i>
+          {{calculationsController.selectedTemplate.name}}
+        <span class="caret"></span></b>
+     </a>
+     <ul class="dropdown-menu">
+       <li ng-repeat="template in calculationsController.assumptionList track by $index">
+         <a href ng-click="calculationsController.switchTemplate(template)">{{template._id}}</a>
+       </li>
+     </ul>
+  </span>
+</div>
+<hr/>
+   <form class="form-inline" role="form">
+      <div class="form-group">
+        <select
+            class="form-control"
+            ng-change="calculationsController.switchLocationState(calculationsController.selectedState)"
+            ng-model="calculationsController.selectedState"
+            ng-options="state for state in calculationsController.locationStates"
+            ng-init="calculationsController.selectedState">
+        </select>
+      </div>
+      <div class="form-group">
+        <select
+            class="form-control"
+            ng-options="lga.name for lga in calculationsController.lgas"
+            ng-change="calculationsController.switchLocationLga(calculationsController.selectedLga)"
+            ng-model="calculationsController.selectedLga">
+        </select>
+      </div>
+     <div class=" clearfix pull-right">
+        <span class="dropdown" dropdown on-toggle="toggled(open)">
+           <a href class="dropdown-toggle btn btn-success" dropdown-toggle>
+              <b>
+                <i class="fa fa-check"></i>
+                {{calculationsController.renderedViewLabel}}
+              <span class="caret"></span></b>
+           </a>
+           <ul class="dropdown-menu">
+             <!--<li><a href ng-click="calculationsController.changeDataView('tp', 'targetpopulation')">target populations</a></li>-->
+             <li class="divider"></li>
+             <li><a href ng-click="calculationsController.changeDataView('pv', 'coverage', '%')">coverage</a></li>
+             <li><a href ng-click="calculationsController.changeDataView('pv', 'schedule', '')">schedule</a></li>
+             <li><a href ng-click="calculationsController.changeDataView('pv', 'wastage', '')">wastage</a></li>
+             <li><a href ng-click="calculationsController.changeDataView('pv', 'buffer', '%')">buffer</a></li>
+             <li class="divider"></li>
+             <li><a href ng-click="calculationsController.changeDataView('pv', 'MR')">monthly requirements</a></li>
+             <li><a href ng-click="calculationsController.changeDataView('pv', 'MMax')">monthly max.</a></li>
+             <li><a href ng-click="calculationsController.changeDataView('pv', 'BWMax')">bi-weekly max</a></li>
+             <li><a href ng-click="calculationsController.changeDataView('pv', 'BWMin')">bi-weekly min</a></li>
+           </ul>
+        </span>
+     </div>
+   </form>
+<hr/>
+ <div ng-include="'app/configurations/allocations/calculations/partials/pv.html'"></div>

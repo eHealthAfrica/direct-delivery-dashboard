@@ -1,13 +1,13 @@
-'use strict';
+'use strict'
 
-(function(angular) {
+;(function (angular) {
   var deliveryRounds = [
     {
       id: 'round1',
       key: ['State1', '2015-01-01'],
       value: {roundCode: 'RC1', endDate: '2015-01-13'}
     }
-  ];
+  ]
 
   var dailyDeliveries = [
     {
@@ -48,40 +48,40 @@
         }
       }
     }
-  ];
+  ]
 
   angular.module('reportsMock', [])
     .constant('deliveryRounds', deliveryRounds)
     .constant('dailyDeliveries', dailyDeliveries)
-    .factory('pouchDB', function($q) {
-      return function pouchDB() {
+    .factory('pouchDB', function ($q) {
+      return function pouchDB () {
         return {
-          query: function(view) {
-            var response = null;
+          query: function (view) {
+            var response = null
 
             switch (view) {
               case 'reports/delivery-rounds':
                 response = {
                   rows: deliveryRounds
-                };
-                break;
+                }
+                break
 
               case 'reports/daily-deliveries':
                 response = {
                   rows: dailyDeliveries
-                };
-                break;
+                }
+                break
 
               default:
-                break;
+                break
             }
 
-            var deferred = $q.defer();
-            deferred.resolve(response);
+            var deferred = $q.defer()
+            deferred.resolve(response)
 
-            return deferred.promise;
+            return deferred.promise
           }
-        };
-      };
-    });
-}(angular));
+        }
+      }
+    })
+}(angular))

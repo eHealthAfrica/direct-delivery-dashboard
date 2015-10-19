@@ -1,0 +1,26 @@
+<p><br/></p>
+<form role="form" ng-submit="productPresentationCtrl.save()">
+  <div class="form-group">
+    <label> Unit of Measurement</label>
+    <select class="form-control input-lg" ng-model="productPresentationCtrl.openedDoc.uom">
+      <option></option>
+      <option
+          ng-repeat="uom in productPresentationCtrl.baseUOMs"
+          value="{{uom}}"
+          >{{uom}}</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label> Volumn</label>
+    <input class="form-control input-lg" type="number" ng-model="productPresentationCtrl.openedDoc.volume"/>
+  </div>
+  <div class="form-group">
+    <label> Code</label>
+    <input class="form-control input-lg" ng-model="productPresentationCtrl.openedDoc.code"/>
+  </div>
+  <div class="clearfix">
+    <button type="submit" class="btn btn-primary btn-lg pull-right"><i class="fa fa-save"></i> Add</button>
+  </div>
+</form>
+
+<hr/>

@@ -6,3 +6,5 @@ dist/
 src/app/config.js
 coverage
 npm-debug.log
+.idea
+.couchapprc

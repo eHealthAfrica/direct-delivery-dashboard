@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
 angular.module('users')
-  .config(function($stateProvider) {
+  .config(function ($stateProvider) {
     $stateProvider.state('users.all', {
       url: '',
       templateUrl: 'app/users/all/all.html',
@@ -10,5 +10,5 @@ angular.module('users')
       data: {
         label: 'Users'
       }
-    });
-  });
+    })
+  })

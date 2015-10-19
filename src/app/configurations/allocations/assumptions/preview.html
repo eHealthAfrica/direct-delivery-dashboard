@@ -1,0 +1,26 @@
+<table class="table table-bordered">
+  <thead>
+    <th>Product</th>
+    <th class="bg-primary">Presentation</th>
+    <th class="bg-danger">Coverage</th>
+    <th class="bg-info">Schedule</th>
+    <th class="bg-warning">Wastage</th>
+    <th class="bg-success">Buffer</th>
+    <th></th>
+  </thead>
+  <tbody>
+    <tr ng-repeat="(key, assumption) in assumptionsController.assumptionList.products track by $index" ng-click="assumptionsController.editAssumption(assumption)">
+      <td><span tooltip="click on row to edit"><b>{{key}}</b></span></td>
+      <td ng-bind="assumption.presentation"></td>
+      <td>{{assumption.coverage}} %</td>
+      <td ng-bind="assumption.schedule" ></td>
+      <td ng-bind="assumption.wastage" ></td>
+      <td>{{assumption.buffer}} %</td>
+      <td><a><i class="fa fa-wrench"></i> </a></td>
+    </tr>
+  </tbody>
+</table>
+<div class="alert alert-warning" ng-if="!(assumptionsController.assumptionList.length > 0)">
+  <i class="fa fa-info-circle"></i>
+  We couldn't retrieve previous assumptions, please check that you have added products. If so, please contact admin.
+</div>

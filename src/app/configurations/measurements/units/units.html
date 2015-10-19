@@ -1,0 +1,38 @@
+<div class="panel panel-info">
+  <div class="panel-heading">Measurement Units</div>
+  <div class="panel-body">
+    <form role="role" ng-submit="measurementUnitsCtrl.save()">
+      <div class="form-group">
+        <label>Name</label>
+        <input class="form-control" ng-model="measurementUnitsCtrl.openedDoc.name">
+      </div>
+       <div class="form-group">
+        <label>Symbol</label>
+        <input class="form-control" ng-model="measurementUnitsCtrl.openedDoc.symbol">
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select class="form-control" ng-model="measurementUnitsCtrl.openedDoc.category">
+          <option></option>
+          <option ng-repeat="category in measurementUnitsCtrl.categories track by $index" value="{{category._id}}">
+            {{category._id}}
+          </option>
+        </select>
+      </div>
+      <div class="clearfix"><button class="btn btn-success pull-right" type="submit">Submit</button> </div>
+    </form>
+    <p><br/></p>
+    <table class="table table-bordered table-striped">
+      <tr>
+        <th>Name</th>
+        <th>Symbol</th>
+        <th>Category</th>
+      </tr>
+      <tr ng-repeat="unit in measurementUnitsCtrl.units track by $index">
+        <td ng-bind="unit.name"></td>
+        <td ng-bind="unit.symbol"></td>
+        <td ng-bind="unit.category"></td>
+      </tr>
+    </table>
+  </div>
+</div>

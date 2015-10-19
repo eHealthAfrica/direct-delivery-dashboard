@@ -1,0 +1,35 @@
+<a class="btn btn-success pull-right adjust-up" ng-click="assumptionsCtrl.addAssumption()">
+  <i class="fa fa-plus"></i>
+  Create New Template
+</a>
+<hr/>
+<div class="clearfix">
+</div>
+<hr/>
+<table ng-if="assumptionsCtrl.assumptionList.length > 0" class="table table-bordered">
+  <thead>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Primary State</th>
+    <th>Primary Year</th>
+    <th></th>
+  </thead>
+  <tbody>
+    <tr ng-repeat="template in assumptionsCtrl.assumptionList track by $index">
+      <td ng-bind="template._id"></td>
+      <td ng-bind="template.description"></td>
+      <td ng-bind="template.primary.state"></td>
+      <td ng-bind="template.primary.year"></td>
+      <td>
+        <a class="btn btn-info" ui-sref="configurations.allocations.allocationView({id: template._id})">
+          <i class="fa fa-eye"></i>
+          <em>View</em>
+        </a>
+        <a class="btn btn-primary" ng-click="assumptionsCtrl.addAssumption(template)">
+          <i class="fa fa-wrench"></i>
+          <em>Edit</em>
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>

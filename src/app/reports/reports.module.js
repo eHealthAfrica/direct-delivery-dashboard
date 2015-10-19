@@ -1,9 +1,12 @@
-'use strict';
+'use strict'
 
 angular.module('reports', [
   'core',
   'pouchdb',
   'config',
   'drivers',
-  'delivery'
-]);
+  'delivery',
+  'db',
+  'planning',
+  'auth'
+])
