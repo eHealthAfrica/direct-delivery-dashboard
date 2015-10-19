@@ -177,7 +177,7 @@ angular.module('lmisApp')
             appConfig.facility = facilities[appConfig.facility._id] || appConfig.facility;
             var currentDueDate = getStockCountDueDate(appConfig.facility.stockCountInterval, appConfig.facility.reminderDay);
             var nextCountDate = currentDueDate.getTime() + new Date(1000 * 60 * 60 * 24 * appConfig.facility.stockCountInterval).getTime();
-            var daysFromLastCount =  latestStockCount.countDate ? getDaysFromLastCountDate(new Date(latestStockCount.countDate)) : null;
+            var daysFromLastCount =  latestStockCount.created ? getDaysFromLastCountDate(new Date(latestStockCount.created)) : null;
             var hasPendingCount = latestStockCount.countDate ? hasPendingStockCount(new Date(latestStockCount.countDate), currentDueDate) : true;
 
               configObject[appConfig.facility._id] = appConfig;

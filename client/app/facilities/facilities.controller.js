@@ -2,6 +2,7 @@
 
 angular.module('lmisApp')
   .controller('FacilitiesCtrl', function($q, Auth, facilityCSV, facilityChart, FACILITY_FILTERS, summaries, AppConfig, facilityReports) {
+    console.log(summaries);
     var vm = this;
     vm.currentUser = Auth.getCurrentUser();
     vm.reportingFilters = FACILITY_FILTERS;

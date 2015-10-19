@@ -56,7 +56,7 @@ angular.module('lmisApp')
 
     function formatDate(date, dateTimeString) {
       dateTimeString = dateTimeString || 'DD MMM YYYY';
-      return $window.moment(date).format(dateTimeString);
+      return  (!date || date === "None") ? "" : $window.moment(date).format(dateTimeString);
     }
 
     function formatSummaries(resolvedPromises) {
