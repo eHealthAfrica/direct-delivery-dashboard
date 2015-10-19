@@ -24,6 +24,10 @@ angular.module('planning').controller('KPIController', function (deliveryRound, 
     return log.error('saveKPIError', err)
   }
 
+  vm.isEmptyFacilityKPI = function () {
+    return vm.facilityKPIList.length === 0
+  }
+
   vm.saveRow = function ($data, kpiList, $index) {
     var facKPI = kpiList[$index]
     var tempDoc = angular.copy(facKPI)
