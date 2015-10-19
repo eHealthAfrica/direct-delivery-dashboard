@@ -104,7 +104,7 @@ describe('KPIController', function () {
       }
       var $index = 0
       KPIController.saveRow($data, KPIController.facilityKPIList, $index)
-      expect(kpiService.save).toHaveBeenCalledWith()
+      expect(kpiService.save).toHaveBeenCalled()
     })
   })
 })
