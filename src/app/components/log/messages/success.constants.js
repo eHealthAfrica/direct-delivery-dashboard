@@ -49,5 +49,9 @@ angular.module('log')
     returnRouteSaved: {
       title: 'Return route updated',
       message: 'Return route update was saved successfully!'
+    },
+    plannerNotificationEmailSuccess: {
+      title: 'Email Notification Sent Successfully',
+      message: 'Email alert has been sent to designated recipients!'
     }
   })

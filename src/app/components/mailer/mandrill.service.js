@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('mailer')
-  .service('mandrillService', function ($http) {
+  .service('mandrillService', function ($http, $q) {
     function EMail () {
       var self = this
       self.to = []
@@ -28,7 +28,11 @@ angular.module('mailer')
       }
 
       this.addRecipient = function (recipient) {
-        self.to.push(recipient)
+        if (angular.isArray(recipient)) {
+          self.to.concat(recipient)
+        } else {
+          self.to.push(recipient)
+        }
       }
     }
 
@@ -74,7 +78,13 @@ angular.module('mailer')
     this.send = function (msg) {
       var reqData = {
         'key': config.apiKey,
-        'message': msg
+        'message': {
+          'html': msg.html,
+          'subject': msg.subject,
+          'from_email': msg.from_email,
+          'from_name': msg.from_name,
+          'to': msg.to
+        }
       }
 
       var reqOptions = {
@@ -83,5 +93,12 @@ angular.module('mailer')
         data: reqData
       }
       return $http(reqOptions)
+        .then(function (res) {
+          var status = res.data[0].status
+          if (status === 'invalid' || status === 'rejected') {
+            return $q.reject(res.data)
+          }
+          return res.data
+        })
     }
   })
