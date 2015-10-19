@@ -19,7 +19,16 @@
   </div>
 
   <div>
-    <table class="table table-condensed table-bordered table-striped">
+    <div class="panel-body" ng-show="kpiCtrl.isEmptyFacilityKPI()">
+      <div class="panel-body alert alert-info">
+        <i class="fa fa-lg fa-info-circle"></i>
+        <span> No facility KPIs available, please use KPI template to set KPI for deliveries.</span>
+      </div>
+    </div>
+
+    <div>
+    <table class="table table-condensed table-bordered table-striped"
+        ng-hide="kpiCtrl.isEmptyFacilityKPI()">
       <thead>
       <tr>
         <th>#</th>
