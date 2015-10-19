@@ -3,7 +3,6 @@
 angular.module('reports')
   .controller('DeliveryReportCtrl', function ($window, config, reportsService, log) {
     var vm = this // viewModel
-
     vm.dateFormat = config.dateFormat
     vm.stopOn = new Date()
     var ONE_MONTH = 2.62974e9 // milli secs
@@ -79,7 +78,7 @@ angular.module('reports')
       return graphData
     }
   })
-  .controller('DeliveryReportByZonesCtrl', function (config, reportsService, log, deliveryReportService) {
+  .controller('DeliveryReportByZonesCtrl', function (config, reportsService, log, deliveryReportService, deliveryRoundService) {
     var vm = this // viewModel
 
     function openDatePicker ($event) {
@@ -105,14 +104,15 @@ angular.module('reports')
     var TWO_MONTHS_BEFORE = vm.stopDateOn.getTime() - (ONE_MONTH * 2)
     vm.startDate = new Date(TWO_MONTHS_BEFORE)
 
+    deliveryRoundService.getLatestBy('Kano')
+      .then(function (response) {
+        vm.roundCodes = response.roundCodes
+      })
+
     vm.loadReport = function () {
       deliveryReportService.getDailyDeliveryReport(vm.startDate, vm.stopDateOn)
         .then(function (deliveryStatusReport) {
-          vm.byZoneByLGA = deliveryStatusReport.byZoneByLGA
-          vm.byZoneByDriver = deliveryStatusReport.byZoneByDriver
-          vm.byZoneByDriverKeys = Object.keys(deliveryStatusReport.byZoneByDriver).sort()
-          vm.capturedZones = Object.keys(deliveryStatusReport.byZoneByLGA).sort()
-          vm.selectedZone = vm.capturedZones[0] || ''
+          loadViewData(deliveryStatusReport)
         })
         .catch(function (reason) {
           console.log(reason)
@@ -124,11 +124,29 @@ angular.module('reports')
       return type === 'zone' ? stringArr[1] : stringArr[0]
     }
 
+    vm.updateReport = function () {
+      deliveryReportService.getDailyDeliveryReportByRound(vm.selectedRound)
+        .then(function (deliveryStatusReport) {
+          loadViewData(deliveryStatusReport)
+        })
+        .catch(function (reason) {
+          console.log(reason)
+        })
+    }
+
     vm.sum = function (row) {
       var success = row.success || 0
       var failed = row.failed || 0
       var cancelled = row.canceled || 0
       return success + failed + cancelled
+    }
+
+    function loadViewData (deliveryStatusReport) {
+      vm.byZoneByLGA = deliveryStatusReport.byZoneByLGA
+      vm.byZoneByDriver = deliveryStatusReport.byZoneByDriver
+      vm.byZoneByDriverKeys = Object.keys(deliveryStatusReport.byZoneByDriver).sort()
+      vm.capturedZones = Object.keys(deliveryStatusReport.byZoneByLGA).sort()
+      vm.selectedZone = vm.capturedZones[0] || ''
     }
 
     vm.loadReport()
