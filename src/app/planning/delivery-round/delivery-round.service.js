@@ -9,7 +9,8 @@ angular.module('planning')
     locationService,
     config,
     log,
-    planningService
+    planningService,
+    ehaCouchDbAuthService
   ) {
     var _this = this
     var successTag = 'success'
@@ -295,7 +296,8 @@ angular.module('planning')
     }
 
     this.getStateAdminLevels = function () {
-      return authService.authorisedStates()
+      return ehaCouchDbAuthService.getCurrentUser()
+        .then(authService.authorisedStates.bind(null))
         .then(locationService.getLocationsByLevelAndId
           .bind(null, config.deliveryRoundAdminLevel))
         .catch(function () {

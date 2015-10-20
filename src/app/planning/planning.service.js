@@ -7,7 +7,8 @@ angular.module('planning')
     log,
     utility,
     ROUND_STATUS,
-    authService
+    authService,
+    ehaCouchDbAuthService
   ) {
     var deliveryDocType = 'deliveryRound'
 
@@ -41,7 +42,8 @@ angular.module('planning')
         options.keys = stateCodes
       }
 
-      return authService.authorisedStates()
+      return ehaCouchDbAuthService.getCurrentUser()
+        .then(authService.authorisedStates.bind(null))
         .then(addStatesToOptions)
         .then(dbService.getView.bind(null, view, options))
         .then(pouchUtil.pluckDocs)
