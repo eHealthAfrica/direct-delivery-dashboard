@@ -1,6 +1,8 @@
 <div class="panel panel-default">
   <div class="panel-heading clearfix">
-    <a class="btn btn-primary btn-xs pull-right" ui-sref="users.create">Create</a>
+    <a class="btn btn-primary btn-lg pull-right" ui-sref="users.create">
+      <i class="fa fa-plus-circle"></i>  Create
+    </a>
     <div class="form-group col-sm-4 pull-left">
       <select
         id="state"
@@ -38,8 +40,8 @@
         <td ng-bind="::user.profile.phone"></td>
         <td ng-bind="::usersCtrl.statesObject[user.profile.state]"></td>
         <td class="actions">
-          <a class="btn btn-xs btn-primary" ui-sref="users.update({id: user.profile._id})"><span class="fa fa-pencil-square-o"></span></a>
-          <button class="btn btn-xs btn-danger" ng-click="usersAllCtrl.remove(user)"><span class="fa fa-trash"></span></button>
+          <a class="btn btn-xs btn-primary" ui-sref="users.update({id: user.profile._id})"><span class="fa fa-pencil-square-o"></span> Edit</a>
+          <button class="btn btn-xs btn-danger" ng-click="usersAllCtrl.remove(user)"><span class="fa fa-trash"></span> Delete</button>
         </td>
       </tr>
     </tbody>
