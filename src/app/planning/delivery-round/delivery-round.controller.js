@@ -1,7 +1,13 @@
 'use strict'
 
 angular.module('planning')
-  .controller('DeliveryRoundCtrl', function ($modal, deliveryRounds, planningService, log) {
+  .controller('DeliveryRoundCtrl', function (
+    $modal,
+    deliveryRounds,
+    planningService,
+    log,
+    deliveryRoundService
+  ) {
     var vm = this
     vm.deliveryRounds = deliveryRounds
 
@@ -25,12 +31,7 @@ angular.module('planning')
             return planningService.getByRoundId(deliveryRoundId)
               .catch(handleError)
           },
-          stateAdminLevels: function (locationService, config) {
-            return locationService.getLocationsByLevel(config.deliveryRoundAdminLevel)
-              .catch(function () {
-                return []
-              })
-          }
+          stateAdminLevels: deliveryRoundService.getStateAdminLevels
         }
       })
     }

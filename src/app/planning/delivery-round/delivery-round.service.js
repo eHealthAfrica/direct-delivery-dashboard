@@ -1,7 +1,14 @@
 'use strict'
 
 angular.module('planning')
-  .service('deliveryRoundService', function (dbService, utility, pouchUtil) {
+  .service('deliveryRoundService', function (
+    dbService,
+    utility,
+    pouchUtil,
+    authService,
+    locationService,
+    config
+  ) {
     var _this = this
     var successTag = 'success'
     var firstAttempt = '1st'
@@ -282,6 +289,15 @@ angular.module('planning')
             latestRoundId: latestRoundId,
             roundCodes: rounds
           }
+        })
+    }
+
+    this.getStateAdminLevels = function () {
+      return authService.authorisedStates()
+        .then(locationService.getLocationsByLevelAndId
+          .bind(null, config.deliveryRoundAdminLevel))
+        .catch(function () {
+          return []
         })
     }
   })
