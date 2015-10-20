@@ -296,13 +296,22 @@ angular.module('planning')
     }
 
     this.getStateAdminLevels = function () {
+      function getLocationsByUser (user) {
+        if (user.isAdmin()) {
+          return locationService.getLocationsByLevel(
+            config.deliveryRoundAdminLevel
+          )
+        }
+        var stateIds = authService.authorisedStates(user)
+        return locationService.getLocationsByLevelAndId(
+          config.deliveryRoundAdminLevel,
+          stateIds
+        )
+      }
+
       return ehaCouchDbAuthService.getCurrentUser()
-        .then(authService.authorisedStates.bind(null))
-        .then(locationService.getLocationsByLevelAndId
-          .bind(null, config.deliveryRoundAdminLevel))
-        .catch(function () {
-          return []
-        })
+        .then(getLocationsByUser)
+        .catch(utility.returnEmptyList)
     }
 
     this.getDeliveryRound = function (id) {

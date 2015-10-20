@@ -38,13 +38,16 @@ angular.module('planning')
         include_docs: true
       }
 
-      function addStatesToOptions (stateCodes) {
-        options.keys = stateCodes
+      function getStatesByUser (user) {
+        if (user.isAdmin()) {
+          return
+        }
+        var stateIds = authService.authorisedStates(user)
+        options.keys = stateIds
       }
 
       return ehaCouchDbAuthService.getCurrentUser()
-        .then(authService.authorisedStates.bind(null))
-        .then(addStatesToOptions)
+        .then(getStatesByUser)
         .then(dbService.getView.bind(null, view, options))
         .then(pouchUtil.pluckDocs)
         .then(pouchUtil.rejectIfEmpty)
