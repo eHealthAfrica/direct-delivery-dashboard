@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('users')
-  .service('usersService', function ($q, pouchDB, config, driversService) {
+  .service('usersService', function ($q, pouchDB, config, driversService, locationService) {
     var service = this
 
     service.db = pouchDB(config.db)
@@ -12,34 +12,13 @@ angular.module('users')
     }
 
     // currently only drivers ar supported
-    service.all = function () {
+    service.all = function (state) {
+      if (state) {
+        return driversService.getByState(state)
+          .then(formatData)
+      }
       return driversService.all()
-        .then(function (drivers) {
-          var users = {}
-          var keys = []
-          angular.forEach(drivers, function (driver, key) {
-            users[key] = {
-              profile: driver, // deliveries user
-              account: null // system user
-            }
-
-            keys.push('org.couchdb.user:' + key)
-          })
-
-          return service.userDB.allDocs({keys: keys, include_docs: true})
-            .then(function (response) {
-              angular.forEach(response.rows, function (row) {
-                if (row.doc) {
-                  var user = users[row.doc.name]
-                  if (user) {
-                    user.account = service.clean(row.doc)
-                  }
-                }
-              })
-
-              return users
-            })
-        })
+        .then(formatData)
     }
 
     service.save = function (user) {
@@ -166,50 +145,40 @@ angular.module('users')
       }
     }
 
+    this.getStates = function () {
+      var STATE_LEVEL = '2'
+      return locationService.getLocationsByLevel(STATE_LEVEL)
+    }
+
     this.getDriversBy = function (state) {
       // TODO: call from view
-      var drivers = [
-        {
-          '_id': 'abdullahi@example.com',
-          'forename': 'Abdullahi'
-        },
-        {
-          '_id': 'bashir@example.com',
-          'forename': 'Bashir'
-        },
-        {
-          '_id': 'ibrahim@example.com',
-          'forename': 'Ibrahim'
-        },
-        {
-          '_id': 'khalil@example.com',
-          'forename': 'Khalil'
-        },
-        {
-          '_id': 'tijjani@example.com',
-          'forename': 'Tijjani'
-        },
-        {
-          '_id': 'umar@example.com',
-          'forename': 'Umar'
-        },
-        {
-          '_id': 'basheer@example.com',
-          'forename': 'Basheer'
-        },
-        {
-          '_id': 'garba@example.com',
-          'forename': 'Garba'
-        },
-        {
-          '_id': 'bello@example.com',
-          'forename': 'Bello'
-        },
-        {
-          '_id': 'sani@example.com',
-          'forename': 'Sani'
+      return driversService.getByState(state)
+    }
+
+    function formatData (drivers) {
+      var users = {}
+      var keys = []
+      angular.forEach(drivers, function (driver, key) {
+        users[key] = {
+          profile: driver, // deliveries user
+          account: null // system user
         }
-      ]
-      return $q.when(drivers)
+
+        keys.push('org.couchdb.user:' + key)
+      })
+
+      return service.userDB.allDocs({keys: keys, include_docs: true})
+        .then(function (response) {
+          angular.forEach(response.rows, function (row) {
+            if (row.doc) {
+              var user = users[row.doc.name]
+              if (user) {
+                user.account = service.clean(row.doc)
+              }
+            }
+          })
+
+          return users
+        })
     }
   })
