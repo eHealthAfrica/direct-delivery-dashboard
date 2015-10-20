@@ -20,11 +20,9 @@ describe('reportsService', function () {
     reportsService.getDeliveryRounds()
       .then(function (rounds) {
         expect(rounds.length).toEqual(deliveryRounds.length)
-
         for (var i = 0; i < rounds.length; i++) {
           var round = rounds[i]
           var mock = deliveryRounds[i]
-
           expect(round.id).toEqual(mock.id)
           expect(round.state).toEqual(mock.key[0])
           expect(round.startDate).toEqual(new Date(mock.key[1]))
