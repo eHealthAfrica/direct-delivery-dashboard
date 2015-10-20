@@ -3,7 +3,7 @@
 angular.module('planning')
   .controller('ScheduleRoundCtrl', function (deliveryRound, $state, dailyDeliveries,
     scheduleService, planningService, log, config,
-    $modal, utility, $q, DELIVERY_STATUS, mailerService) {
+    $modal, utility, $q, DELIVERY_STATUS, mailerService, driversService) {
     var vm = this
     vm.isSavingList = {}
     vm.deliveryStatuses = DELIVERY_STATUS
@@ -20,14 +20,16 @@ angular.module('planning')
       {value: 10, text: '10'}
     ]
 
-    // TODO: set to drivers list pulled from database
-    vm.drivers = [
-      {value: 'bashir@example.com', text: 'bashir@example.com'},
-      {value: 'abdullahi@example.com', text: 'abdullahi@example.com'},
-      {value: 'khalil@example.com', text: 'khalil@example.com'},
-      {value: 'umar@example.com', text: 'umar@example.com'}
-    ]
-
+    var STATE = 'KN' // TODO: get state from current user profile
+    driversService.getByState(STATE)
+      .then(function (response) {
+        vm.drivers = response.map(function (row) {
+          return {
+            value: row._id,
+            text: row._id
+          }
+        })
+      })
     vm.deliveryRound = deliveryRound
     vm.deliveriesHash = {}
     scheduleService.flatten(dailyDeliveries)
