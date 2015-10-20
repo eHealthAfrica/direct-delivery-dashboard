@@ -43,4 +43,27 @@ angular.module('auth')
         .then($state.go.bind($state, 'login'))
         .catch(log.error.bind(log, 'logoutFailed'))
     }
+
+    this.authorisedStates = function () {
+      function formatStates (user) {
+        // TODO: get this from role lib
+        var prefix = 'direct_delivery_dashboard_state_'
+
+        function isState (role) {
+          return role.indexOf(prefix) !== -1
+        }
+
+        function format (role) {
+          var state = role.split(prefix)[1]
+          return state.toUpperCase()
+        }
+
+        return user.roles
+          .filter(isState)
+          .map(format)
+      }
+
+      return ehaCouchDbAuthService.getCurrentUser()
+        .then(formatStates)
+    }
   })
