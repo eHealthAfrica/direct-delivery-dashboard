@@ -7,7 +7,9 @@ angular.module('planning')
     pouchUtil,
     authService,
     locationService,
-    config
+    config,
+    log,
+    planningService
   ) {
     var _this = this
     var successTag = 'success'
@@ -299,5 +301,16 @@ angular.module('planning')
         .catch(function () {
           return []
         })
+    }
+
+    this.getDeliveryRound = function (id) {
+      if (!angular.isString(id)) {
+        return
+      }
+      function handleError (err) {
+        log.error('deliveryRoundNotFound', err)
+      }
+      return planningService.getByRoundId(id)
+        .catch(handleError)
     }
   })

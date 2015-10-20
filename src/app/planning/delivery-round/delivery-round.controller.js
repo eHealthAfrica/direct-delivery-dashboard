@@ -4,14 +4,12 @@ angular.module('planning')
   .controller('DeliveryRoundCtrl', function (
     $modal,
     deliveryRounds,
-    planningService,
-    log,
     deliveryRoundService
   ) {
     var vm = this
     vm.deliveryRounds = deliveryRounds
 
-    vm.open = function (deliveryRoundId) {
+    vm.open = function (id) {
       $modal.open({
         animation: true,
         templateUrl: 'app/planning/delivery-round/dialog/round.html',
@@ -21,16 +19,7 @@ angular.module('planning')
         keyboard: false,
         backdrop: 'static',
         resolve: {
-          deliveryRound: function () {
-            if (!angular.isString(deliveryRoundId)) {
-              return
-            }
-            function handleError (err) {
-              log.error('deliveryRoundNotFound', err)
-            }
-            return planningService.getByRoundId(deliveryRoundId)
-              .catch(handleError)
-          },
+          deliveryRound: deliveryRoundService.getDeliveryRound.bind(null, id),
           stateAdminLevels: deliveryRoundService.getStateAdminLevels
         }
       })
