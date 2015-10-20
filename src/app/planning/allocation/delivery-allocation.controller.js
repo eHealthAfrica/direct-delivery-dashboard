@@ -2,7 +2,10 @@ angular.module('planning')
   .controller('DeliveryAllocationCtrl', function (deliveryRound, allocationTemplates,
     facilityAllocationInfo,
     deliveryAllocationService, log,
-    calculationService) {
+    calculationService, presentations) {
+
+
+
     var vm = this
     vm.views = {
       packedProduct: 'Packed Product',
@@ -15,52 +18,7 @@ angular.module('planning')
     vm.selectedAllocTemp = ''
 
     // TODO: replace with list pulled from DB after Presentation config UI has been completed.
-    vm.presentations = [
-      {
-        '_id': '10-DPV',
-        '_rev': '1-c0efb4b87d91694895ba26ba8b705ed0',
-        'is_deleted': false,
-        'code': '10-DPV',
-        'name': '10 Doses per Vial',
-        'value': 10,
-        'uom': 'Vial',
-        'doc_type': 'product_presentation',
-        'description': 'vaccine product presentation'
-      },
-      {
-        '_id': '20-DPV',
-        '_rev': '1-c0efb4b87d91694895ba26ba8b70520',
-        'is_deleted': false,
-        'code': '20-DPV',
-        'name': '20 Doses per Vial',
-        'value': 20,
-        'uom': 'Vial',
-        'doc_type': 'product_presentation',
-        'description': 'vaccine product presentation'
-      },
-      {
-        '_id': '5-DPV',
-        '_rev': '1-c0efb4b87d91694895ba26ba8b7055',
-        'is_deleted': false,
-        'code': '5-DPV',
-        'name': '5 Doses per Vial',
-        'value': 5,
-        'uom': 'Vial',
-        'doc_type': 'product_presentation',
-        'description': 'vaccine product presentation'
-      },
-      {
-        '_id': '1-Unit',
-        '_rev': '1-c0efb4b87d91694895ba26ba8b7051',
-        'is_deleted': false,
-        'code': '1-Unit',
-        'name': '1 Unit',
-        'value': 1,
-        'uom': 'Unit',
-        'doc_type': 'product_presentation',
-        'description': 'dry good product presentation'
-      }
-    ]
+    vm.presentations = presentations
 
     function initPresentations () {
       for (var ppId in vm.facAllocInfo.presentationsByProduct) {

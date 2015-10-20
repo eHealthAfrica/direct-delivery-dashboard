@@ -8,6 +8,13 @@ angular.module('planning')
       controller: 'DeliveryAllocationCtrl',
       controllerAs: 'daCtrl',
       resolve: {
+        presentations: function(productPresentationService){
+         return productPresentationService.getAll()
+            .catch(function(err){
+             log.error('productPresentionError', err)
+             return []
+          })
+        },
         deliveryRound: function (log, planningService, $stateParams) {
           function handleError (err) {
             log.error('deliveryRoundNotFound', err)
