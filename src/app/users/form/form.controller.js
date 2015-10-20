@@ -10,6 +10,11 @@ angular.module('users')
     vm.user = angular.copy(model)
     vm.user.enabled = !!model.account
 
+    usersService.getStates()
+      .then(function (response) {
+        vm.states = response
+      })
+
     vm.save = function (form) {
       vm.submitted = true
 
@@ -30,7 +35,7 @@ angular.module('users')
 
               vm.user.account._id = 'org.couchdb.user:' + vm.user.profile._id
               vm.user.account.name = vm.user.profile._id
-              vm.user.account.roles = []
+              vm.user.account.roles = vm.user.account.roles || []
 
               return usersService.saveAccount(vm.user.account)
                 .then(function (account) {
