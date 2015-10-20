@@ -140,4 +140,18 @@ angular.module('reports')
       return $q.all(promises)
         .then(collatePackingReport)
     }
+
+    _this.getPackingReportByRound = function (roundID) {
+      var view = 'reports/packing-by-round'
+      var options = {
+        startkey: [roundID],
+        endkey: [roundID, {}, {}]
+      }
+      var promises = [
+        dbService.getView(view, options),
+        productService.getAll()
+      ]
+      return $q.all(promises)
+        .then(collatePackingReport)
+    }
   })

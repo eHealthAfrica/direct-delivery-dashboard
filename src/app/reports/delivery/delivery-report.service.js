@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('reports')
-  .service('deliveryReportService', function (reportsService, dbService) {
+  .service('deliveryReportService', function (dbService) {
     function defaultStatus () {
       return {
         success: 0,
@@ -57,6 +57,16 @@ angular.module('reports')
       var options = {
         startkey: [startDate],
         endkey: [endDate, {}, {}]
+      }
+      return dbService.getView(view, options)
+        .then(collateReport)
+    }
+
+    this.getDailyDeliveryReportByRound = function (roundID) {
+      var view = 'reports/by-rounds'
+      var options = {
+        startkey: [roundID],
+        endkey: [roundID, {}, {}]
       }
       return dbService.getView(view, options)
         .then(collateReport)

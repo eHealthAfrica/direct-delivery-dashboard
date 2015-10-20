@@ -112,6 +112,11 @@ angular.module('log')
       message: 'Could not logout',
       remedy: 'Please, try again and contact support if it persists'
     },
+    plannerNotificationEmailErr: {
+      title: 'Email alert failed',
+      message: 'Could not send email alert due to unknown error',
+      remedy: 'Please, try again and contact support if it persists'
+    },
     saveKPIError: {
       title: 'Save KPI failed',
       message: 'Could not save KPI record',

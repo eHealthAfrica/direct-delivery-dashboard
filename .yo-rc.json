@@ -42,7 +42,6 @@
         "module": null
       },
       "advancedFeatures": [
-        "imagemin"
       ],
       "paths": {
         "src": "src",

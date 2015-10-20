@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('reports')
-  .controller('PackingReportCtrl', function ($window, config, log, packingReportService) {
+  .controller('PackingReportCtrl', function ($window, config, log, packingReportService, deliveryRoundService) {
     var vm = this // viewModel
     vm.selectedLocation = {}
     vm.list = {
@@ -100,12 +100,29 @@ angular.module('reports')
     vm.getReport = function () {
       packingReportService.getPackingReport(vm.startFrom, vm.stopOn)
         .then(function (response) {
-          vm.reports = response.group
-          vm.products = response.products
-          resetLocations()
-          getSelectedLocation()
+          setViewVars(response)
         })
     }
 
+    vm.updateReport = function () {
+      packingReportService.getPackingReportByRound(vm.selectedRound)
+        .then(function (response) {
+          setViewVars(response)
+        })
+    }
+
+    // TODO: Get state dynamically from user logged in user profile
+    deliveryRoundService.getLatestBy('Kano')
+      .then(function (response) {
+        vm.roundCodes = response.roundCodes
+      })
+
     vm.getReport()
+
+    function setViewVars (response) {
+      vm.reports = response.group
+      vm.products = response.products
+      resetLocations()
+      getSelectedLocation()
+    }
   })

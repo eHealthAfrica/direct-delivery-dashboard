@@ -50,6 +50,10 @@ angular.module('log')
       title: 'Return route updated',
       message: 'Return route update was saved successfully!'
     },
+    plannerNotificationEmailSuccess: {
+      title: 'Email Notification Sent Successfully',
+      message: 'Email alert has been sent to designated recipients!'
+    },
     saveKPISuccess: {
       title: 'KPI record saved',
       message: 'KPI record was saved successfully!'
