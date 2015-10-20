@@ -8,6 +8,9 @@ angular.module('planning')
       controller: 'ReturnRouteCtrl',
       controllerAs: 'rrCtrl',
       resolve: {
+        authorization: function (authService, $stateParams) {
+          return authService.hasStateRole($stateParams.roundId)
+        },
         deliveryRound: function (log, planningService, $stateParams) {
           function handleError (err) {
             log.error('deliveryRoundNotFound', err)

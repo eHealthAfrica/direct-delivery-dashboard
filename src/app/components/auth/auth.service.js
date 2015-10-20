@@ -9,6 +9,8 @@ angular.module('auth')
     navbarService,
     ehaCouchDbAuthService
   ) {
+    var self = this
+
     this.requireRoles = function (roles) {
       roles = roles || []
       // Always authorise admins
@@ -60,5 +62,18 @@ angular.module('auth')
       return user.roles
         .filter(isState)
         .map(format)
+    }
+
+    this.hasStateRole = function (roundId) {
+      // TODO: get this from role lib
+      var prefix = 'direct_delivery_dashboard_state_'
+
+      // TODO: make this more robust
+      var stateCode = roundId.split('-')[0]
+
+      var role = prefix + stateCode.toLowerCase()
+      return self.requireRoles([
+        role
+      ])
     }
   })
