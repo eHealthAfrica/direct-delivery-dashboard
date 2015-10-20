@@ -1,8 +1,10 @@
 'use strict'
 
-var pkg = require('../package.json')
 var url = require('url')
 var extend = require('extend')
+
+var pkg = require('../package.json')
+var roles = require('./roles')
 
 var env = process.env.NODE_ENV || 'development'
 
@@ -11,18 +13,7 @@ var defaults = {
     name: pkg.name,
     version: pkg.version,
     dateFormat: 'yyyy-MM-dd',
-    admin: {
-      roles: [
-        'direct_delivery_dashboard_super'
-      ]
-    },
-    user: {
-      roles: [
-        'direct_delivery_dashboard_accounting',
-        'direct_delivery_dashboard_stakeholder',
-        'direct_delivery_dashboard_gis'
-      ]
-    }
+    roles: roles()
   }
 }
 

@@ -14,7 +14,7 @@ angular.module('auth')
       // Always authorise admins
       // TODO: remove depending on
       //       https://github.com/eHealthAfrica/angular-eha.couchdb-auth/issues/28
-      roles = roles.concat(config.admin.roles)
+      roles = roles.concat(config.roles.admin.roles)
 
       function hasRoles (user) {
         return user.hasRole(roles) ? true : $q.reject('unauthorized')
