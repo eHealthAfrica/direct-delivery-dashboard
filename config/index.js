@@ -4,7 +4,7 @@ var url = require('url')
 var extend = require('extend')
 
 var pkg = require('../package.json')
-var roles = require('./roles')
+var roles = require('../lib/roles')
 
 var env = process.env.NODE_ENV || 'development'
 
