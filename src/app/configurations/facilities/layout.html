@@ -1,6 +1,5 @@
 <div class="panel panel-default">
-	<div class="panel-heading"></div>
-	<div class="panel-body ">
+	<div class="panel-heading">
 		<div class="clearfix">
 		  <div class="btn-group pull-right">
 		  	<div 
@@ -13,45 +12,14 @@
 		  		download template
 		  	</div>
 				
-		  	<div class="btn btn-primary btn-lg">
+		  	<div class="btn btn-primary btn-lg" ui-sref="configurations.facilities.uploader">
 		  		<i class="fa fa-upload"></i>
 		  		upload facilities
 		  	</div>
 		  </div>
 		</div>
-		<hr/>
-			<form class="form-inline" role="form">
-	      <div class="form-group">
-	        <select
-	            class="form-control"
-	            ng-change="facilitiesCtrl.switchLocationState(facilitiesCtrl.selectedState)"
-	            ng-model="facilitiesCtrl.selectedState"
-	            ng-options="state.name for state in facilitiesCtrl.states"
-	            ng-init="facilitiesCtrl.selectedState">
-	        </select>
-	      </div>
-	      <div class="form-group">
-	        <select
-	            class="form-control"
-	            ng-options="lga.name for lga in facilitiesCtrl.lgas"
-	            ng-change="facilitiesCtrl.switchLocationLga(facilitiesCtrl.selectedLga)"
-	            ng-model="facilitiesCtrl.selectedLga"
-													ng-init="facilitiesCtrl.selectedLga">
-	        </select>
-	      </div>
-	    </form>
-		<hr/>
-		<table role="table" class="table table-bordered table-striped">
-			<tr>
-				<th>#</th>
-				<th>Name</th>
-				<th></th>
-			</tr>
-			<tr ng-repeat="facility in facilitiesCtrl.facilities track by $index">
-				<td>{{$index + 1}}</td>
-				<td ng-bind="facility.name"></td>
-				<td><button class="btn btn-primary"><i class="fa fa-edit"></i> edit </button>
-			</tr>
-		</table>
+	</div>
+	<div class="panel-body ">
+		<ui-view></ui-view>
 	</div>
 </div>
