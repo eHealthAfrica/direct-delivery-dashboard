@@ -1,7 +1,15 @@
 'use strict'
 
 angular.module('reports')
-  .service('reportsService', function ($q, dbService, deliveryRoundService, locationService, pouchUtil) {
+  .service('reportsService', function (
+    $q,
+    dbService,
+    deliveryRoundService,
+    locationService,
+    pouchUtil,
+    authService,
+    ehaCouchDbAuthService
+  ) {
     var _this = this
 
     this.getDeliveryRounds = function () {
@@ -118,8 +126,6 @@ angular.module('reports')
     }
 
     _this.getDeliveryReportWithin = function (startDate, endDate, deliveryRounds) {
-      var ZONE_LEVEL = '3'
-      var STATE_CODE = 'KN' // TODO: get this from user profile
       var view = 'dashboard-delivery-rounds/report-by-date'
       startDate = new Date(startDate).toJSON()
       endDate = new Date(endDate).toJSON()
@@ -127,12 +133,35 @@ angular.module('reports')
         startkey: [startDate],
         endkey: [endDate, {}, {}]
       }
-      var locKeys = []
-      locKeys.push([ZONE_LEVEL, STATE_CODE])
+
+      function getLocations () {
+        function branchByUser (user) {
+          // TODO: move into config
+          var ZONE_LEVEL = '3'
+
+          if (user.isAdmin()) {
+            return locationService.getLocationsByLevel(ZONE_LEVEL)
+          }
+          var states = authService.authorisedStates(user)
+          if (states.length) {
+            // TODO: display a dropdown on the frontend if the user can access
+            // more than state?
+            var state = states[0]
+            var locKeys = [ZONE_LEVEL, state]
+            return locationService.getByLevelAndAncestor(locKeys)
+          }
+          return []
+        }
+
+        return ehaCouchDbAuthService.getCurrentUser()
+          .then(branchByUser.bind(null))
+      }
+
       var promises = [
         dbService.getView(view, options),
-        locationService.getByLevelAndAncestor(locKeys)
+        getLocations()
       ]
+
       return $q.all(promises)
         .then(function (res) {
           return _this.collateReport(res[0], deliveryRounds, res[1])
