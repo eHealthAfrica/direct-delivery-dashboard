@@ -121,5 +121,10 @@ angular.module('log')
       title: 'Save KPI failed',
       message: 'Could not save KPI record',
       remedy: 'Please, try again and contact support if it persists'
+    },
+    assignKPIFromTemplateErr: {
+      title: 'Assign KPI error',
+      message: 'An unknown error occurred while filling in missing KPI',
+      remedy: 'Please, try again and contact support if it persists'
     }
   })
