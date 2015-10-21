@@ -5,5 +5,6 @@ angular.module('facility', [
   'db',
   'utility',
   'log',
-  'delivery'
+  'delivery',
+  'auth'
 ])
