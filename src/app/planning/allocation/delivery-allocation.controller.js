@@ -3,9 +3,6 @@ angular.module('planning')
     facilityAllocationInfo,
     deliveryAllocationService, log,
     calculationService, presentations) {
-
-
-
     var vm = this
     vm.views = {
       packedProduct: 'Packed Product',

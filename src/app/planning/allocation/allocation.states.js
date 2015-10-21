@@ -8,12 +8,12 @@ angular.module('planning')
       controller: 'DeliveryAllocationCtrl',
       controllerAs: 'daCtrl',
       resolve: {
-        presentations: function(productPresentationService){
-         return productPresentationService.getAll()
-            .catch(function(err){
-             log.error('productPresentionError', err)
-             return []
-          })
+        presentations: function (productPresentationService, log) {
+          return productPresentationService.getAll()
+            .catch(function (err) {
+              log.error('productPresentionError', err)
+              return []
+            })
         },
         deliveryRound: function (log, planningService, $stateParams) {
           function handleError (err) {

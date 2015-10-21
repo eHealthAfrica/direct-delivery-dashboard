@@ -11,15 +11,17 @@ describe('DeliveryAllocationCtrl', function () {
   var facilityAllocationInfo
   var deliveryAllocationService
   var DeliveryAllocationCtrl
+  var presentations
 
   beforeEach(inject(function (_$controller_, _log_, _deliveryAllocationService_, _calculationService_,
-    _deliveryRoundMock_, _facilityAllocationInfoMock_, _allocationTemplatesMock_) {
+    _deliveryRoundMock_, _facilityAllocationInfoMock_, _allocationTemplatesMock_, _presentationsMock_) {
     $controller = _$controller_
     log = _log_
     deliveryRound = _deliveryRoundMock_
     allocationTemplates = _allocationTemplatesMock_
     facilityAllocationInfo = _facilityAllocationInfoMock_
     deliveryAllocationService = _deliveryAllocationService_
+    presentations = _presentationsMock_
 
     DeliveryAllocationCtrl = $controller('DeliveryAllocationCtrl', {
       deliveryRound: deliveryRound,
@@ -27,7 +29,8 @@ describe('DeliveryAllocationCtrl', function () {
       deliveryAllocationService: deliveryAllocationService,
       allocationTemplates: allocationTemplates,
       calculationService: _calculationService_,
-      log: log
+      log: log,
+      presentations: presentations
     })
 
     spyOn(deliveryAllocationService, 'getAllocationBy').and.callThrough()
