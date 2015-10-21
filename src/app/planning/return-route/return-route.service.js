@@ -70,31 +70,14 @@ angular.module('planning')
     }
 
     _this.getPackingStoreBy = function (state) {
+      state = state && state.split('-')[0]
       // TODO: update to query db after ticket #113
-      var packingStores = [
-        {
-          _id: 'STATE-STORE',
-          name: 'Kano State Store',
-          state: 'Kano'
-        },
-        {
-          _id: 'NASSARAWA-ZONAL-STORE',
-          name: 'Nassarawa Zonal Store',
-          state: 'Kano'
-        },
-        {
-          _id: 'RANO-ZONAL-STORE',
-          name: 'Rano Zonal Store',
-          state: 'Kano'
-        },
-        {
-          _id: 'WUDIL-ZONAL-STORE',
-          name: 'Wudil Zonal Store',
-          state: 'Kano'
-        }
-      ]
-      return $q.when(packingStores.filter(function (row) {
-        return row.state.toLowerCase() === state.toLowerCase()
-      }))
+      var view = 'location/by-packing-store-and-state'
+      var params = {
+        key: state,
+        include_docs: true
+      }
+      return dbService.getView(view, params)
+        .then(pouchUtil.pluckDocs)
     }
   })
