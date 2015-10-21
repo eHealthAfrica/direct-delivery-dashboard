@@ -4,8 +4,20 @@ angular.module('planning').controller('KPIController', function (deliveryRound, 
   var vm = this
   vm.deliveryRound = deliveryRound
   vm.kpiTemplates = kpiTemplates
-  vm.antigens = kpiInfo.antigens
-  vm.facilityKPIList = kpiInfo.kpiList
+
+  vm.setKPI = function (kpi) {
+    vm.antigens = kpi.antigens
+    vm.facilityKPIList = kpi.kpiList
+    kpiService.fillInMissingKPI(vm.facilityKPIList, vm.deliveryRound._id, vm.kpiTemplates[0])
+      .then(function (kpiList) {
+        vm.facilityKPIList = kpiList
+      })
+      .catch(function (err) {
+        log.error('assignKPIFromTemplateErr', err)
+      })
+  }
+
+  vm.setKPI(kpiInfo)
 
   vm.getDriver = function (driver) {
     if (angular.isString(driver)) {
@@ -24,8 +36,32 @@ angular.module('planning').controller('KPIController', function (deliveryRound, 
     return log.error('saveKPIError', err)
   }
 
+  vm.onSuccess = function () {
+    return log.success('saveKPISuccess')
+  }
+
   vm.isEmptyFacilityKPI = function () {
     return vm.facilityKPIList.length === 0
+  }
+
+  vm.saveAll = function () {
+    vm.isSavingAll = true
+    return kpiService.saveDocs(vm.facilityKPIList)
+      .then(function () {
+        return kpiService.getByRoundId(vm.deliveryRound._id)
+          .then(vm.setKPI)
+          .catch(function (err) {
+            log.error('getDeliveryRoundKPIListErr', err)
+            return {
+              antigens: [],
+              kpiList: []
+            }
+          })
+      })
+      .catch(vm.onSaveError)
+      .finally(function () {
+        vm.isSavingAll = false
+      })
   }
 
   vm.saveRow = function ($data, kpiList, $index) {
@@ -42,9 +78,7 @@ angular.module('planning').controller('KPIController', function (deliveryRound, 
     tempDoc.outreachSessions = $data.outreachSessions
     tempDoc.notes = $data.notes
     return kpiService.save(tempDoc)
-      .then(function () {
-        return log.success('saveKPISuccess')
-      })
+      .then(vm.onSuccess)
       .catch(vm.onSaveError)
   }
 })
