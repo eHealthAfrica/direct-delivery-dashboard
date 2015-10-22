@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('reports')
-  .controller('DeliveryReportCtrl', function ($window, config, reportsService, log) {
+  .controller('DeliveryReportCtrl', function ($window, config, reportsService, log, deliveryRoundService) {
     var vm = this // viewModel
     vm.dateFormat = config.dateFormat
     vm.stopOn = new Date()
@@ -31,22 +31,39 @@ angular.module('reports')
       }
     }
 
+    vm.formatYAxis = function () {
+      return function (d) {
+        return [Math.round(d), '%'].join('')
+      }
+    }
+
+    deliveryRoundService.getLatestBy('Kano')
+      .then(function (response) {
+        vm.roundCodes = response.roundCodes
+      })
+
     vm.zoneReport = []
     vm.statusReport = {}
 
-    vm.getReport = function () {
-      reportsService.getByWithin('Kano', vm.startFrom, vm.stopOn)
+    vm.getByRound = function () {
+      reportsService.getReportByRound(vm.selectedRound)
         .then(function (res) {
-          vm.zoneReport = res.zones
-          vm.statusReport = res.status
-          vm.exampleData = vm.getChartData(res.zones)
+          loadSuccess(res)
         })
         .catch(function (err) {
           log.error('cumulativeReportErr', err)
         })
     }
 
-    vm.getReport() // call on init
+    vm.getReport = function () {
+      reportsService.getByWithin('Kano', vm.startFrom, vm.stopOn)
+        .then(function (res) {
+          loadSuccess(res)
+        })
+        .catch(function (err) {
+          log.error('cumulativeReportErr', err)
+        })
+    }
 
     vm.getChartData = function (zoneData) {
       var graphData = [
@@ -85,6 +102,14 @@ angular.module('reports')
       }
       return percent
     }
+
+    function loadSuccess (res) {
+      vm.zoneReport = res.zones
+      vm.statusReport = res.status
+      vm.exampleData = vm.getChartData(res.zones)
+    }
+
+    vm.getReport() // call on init
   })
   .controller('DeliveryReportByZonesCtrl', function (config, reportsService, log, deliveryReportService, deliveryRoundService) {
     var vm = this // viewModel
