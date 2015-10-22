@@ -23,7 +23,7 @@
     "gulp-autoprefixer": "^2.3.1",
     "gulp-csso": "^1.0.0",
     "gulp-filter": "^2.0.2",
-    "gulp-flatten": "^0.0.4",
+    "gulp-flatten": "^0.2.0",
     "gulp-inject": "^3.0.0",
     "gulp-load-plugins": "^0.10.0",
     "gulp-minify-html": "^1.0.3",
