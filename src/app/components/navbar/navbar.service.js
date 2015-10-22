@@ -30,7 +30,7 @@ angular.module('navbar')
         var roles = state.data.roles || []
         // Always authorise admins
         // XXX: this can contain duplicates. Do a union instead
-        roles = roles.concat(config.admin.roles)
+        roles = roles.concat(config.roles.admin.roles)
         transposed.roles = roles
 
         return transposed

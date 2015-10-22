@@ -1,49 +1,30 @@
 'use strict'
 
 angular.module('reports')
-  .service('reportsService', function ($q, pouchDB, config, dbService, deliveryRoundService, locationService) {
+  .service('reportsService', function (
+    $q,
+    dbService,
+    deliveryRoundService,
+    locationService,
+    pouchUtil,
+    authService,
+    ehaCouchDbAuthService
+  ) {
     var _this = this
-    var db = pouchDB(config.db)
 
-    // TODO: most of there should be moved to Server side if we start using server side rendering engine
-    // or move to CouchDB
     this.getDeliveryRounds = function () {
-      return db.query('reports/delivery-rounds')
-        .then(function (response) {
-          // TODO: move this to CouchDB view
-          return response.rows.map(function (row) {
-            return {
-              id: row.id,
-              state: row.key[0],
-              startDate: new Date(row.key[1]),
-              endDate: new Date(row.value.endDate),
-              roundCode: row.value.roundCode
-            }
-          })
-        })
+      return dbService.getView('reports/delivery-rounds')
+        .then(pouchUtil.pluckValues)
     }
 
     this.getDailyDeliveries = function (roundId) {
-      return db
-        .query('reports/daily-deliveries', {
-          startkey: [roundId],
-          endkey: [roundId, {}, {}, {}]
-        })
-        .then(function (response) {
-          // TODO: move this to CouchDB view
-          return response.rows.map(function (row) {
-            return {
-              id: row.id,
-              driverID: row.key[1],
-              date: new Date(row.key[2]),
-              drop: row.key[3],
-              status: row.value.status,
-              window: row.value.window,
-              signature: row.value.signature,
-              facility: row.value.facility
-            }
-          })
-        })
+      var view = 'reports/daily-deliveries'
+      var params = {
+        startkey: [roundId],
+        endkey: [roundId, {}, {}, {}]
+      }
+      return dbService.getView(view, params)
+        .then(pouchUtil.pluckValues)
     }
 
     _this.getStatusTypes = function () {
@@ -145,8 +126,6 @@ angular.module('reports')
     }
 
     _this.getDeliveryReportWithin = function (startDate, endDate, deliveryRounds) {
-      var ZONE_LEVEL = '3'
-      var STATE_CODE = 'KN' // TODO: get this from user profile
       var view = 'dashboard-delivery-rounds/report-by-date'
       startDate = new Date(startDate).toJSON()
       endDate = new Date(endDate).toJSON()
@@ -154,12 +133,35 @@ angular.module('reports')
         startkey: [startDate],
         endkey: [endDate, {}, {}]
       }
-      var locKeys = []
-      locKeys.push([ZONE_LEVEL, STATE_CODE])
+
+      function getLocations () {
+        function branchByUser (user) {
+          // TODO: move into config
+          var ZONE_LEVEL = '3'
+
+          if (user.isAdmin()) {
+            return locationService.getLocationsByLevel(ZONE_LEVEL)
+          }
+          var states = authService.authorisedStates(user)
+          if (states.length) {
+            // TODO: display a dropdown on the frontend if the user can access
+            // more than state?
+            var state = states[0]
+            var locKeys = [ZONE_LEVEL, state]
+            return locationService.getByLevelAndAncestor(locKeys)
+          }
+          return []
+        }
+
+        return ehaCouchDbAuthService.getCurrentUser()
+          .then(branchByUser.bind(null))
+      }
+
       var promises = [
         dbService.getView(view, options),
-        locationService.getByLevelAndAncestor(locKeys)
+        getLocations()
       ]
+
       return $q.all(promises)
         .then(function (res) {
           return _this.collateReport(res[0], deliveryRounds, res[1])

@@ -1,7 +1,15 @@
 'use strict'
 
 angular.module('planning')
-  .service('planningService', function (dbService, pouchUtil, log, utility, ROUND_STATUS) {
+  .service('planningService', function (
+    dbService,
+    pouchUtil,
+    log,
+    utility,
+    ROUND_STATUS,
+    authService,
+    ehaCouchDbAuthService
+  ) {
     var deliveryDocType = 'deliveryRound'
 
     function formatDoc (doc, id) {
@@ -20,6 +28,27 @@ angular.module('planning')
         include_docs: true
       }
       return dbService.getView(view, options)
+        .then(pouchUtil.pluckDocs)
+        .then(pouchUtil.rejectIfEmpty)
+    }
+
+    this.byAuthorisedStates = function () {
+      var view = 'delivery-rounds/by-state-code'
+      var options = {
+        include_docs: true
+      }
+
+      function getStatesByUser (user) {
+        if (user.isAdmin()) {
+          return
+        }
+        var stateIds = authService.authorisedStates(user)
+        options.keys = stateIds
+      }
+
+      return ehaCouchDbAuthService.getCurrentUser()
+        .then(getStatesByUser)
+        .then(dbService.getView.bind(null, view, options))
         .then(pouchUtil.pluckDocs)
         .then(pouchUtil.rejectIfEmpty)
     }

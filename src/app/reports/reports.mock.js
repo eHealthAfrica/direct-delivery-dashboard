@@ -5,7 +5,13 @@
     {
       id: 'round1',
       key: ['State1', '2015-01-01'],
-      value: {roundCode: 'RC1', endDate: '2015-01-13'}
+      value: {
+        roundCode: 'RC1',
+        endDate: new Date('2015-01-13'),
+        id: 'round1',
+        state: 'State1',
+        startDate: new Date('2015-01-01')
+      }
     }
   ]
 
@@ -14,6 +20,10 @@
       id: 'delivery1',
       key: ['round1', 'driver1@example.com', '2015-01-01', 1],
       value: {
+        id: 'delivery1',
+        drop: 1,
+        date: new Date('2015-01-01'),
+        driverID: 'driver1@example.com',
         status: 'Success: 1st Attempt',
         window: '9AM-11AM',
         signature: {
@@ -35,6 +45,10 @@
       id: 'delivery2',
       key: ['round1', 'driver1@example.com', '2015-01-01', 2],
       value: {
+        drop: 2,
+        date: new Date('2015-01-01'),
+        id: 'delivery2',
+        driverID: 'driver1@example.com',
         status: 'Failed: Staff availability',
         window: '11AM-1PM',
         facility: {
@@ -53,34 +67,32 @@
   angular.module('reportsMock', [])
     .constant('deliveryRounds', deliveryRounds)
     .constant('dailyDeliveries', dailyDeliveries)
-    .factory('pouchDB', function ($q) {
-      return function pouchDB () {
-        return {
-          query: function (view) {
-            var response = null
+    .factory('dbService', function ($q) {
+      return {
+        getView: function (view) {
+          var response = null
 
-            switch (view) {
-              case 'reports/delivery-rounds':
-                response = {
-                  rows: deliveryRounds
-                }
-                break
+          switch (view) {
+            case 'reports/delivery-rounds':
+              response = {
+                rows: deliveryRounds
+              }
+              break
 
-              case 'reports/daily-deliveries':
-                response = {
-                  rows: dailyDeliveries
-                }
-                break
+            case 'reports/daily-deliveries':
+              response = {
+                rows: dailyDeliveries
+              }
+              break
 
-              default:
-                break
-            }
-
-            var deferred = $q.defer()
-            deferred.resolve(response)
-
-            return deferred.promise
+            default:
+              break
           }
+
+          var deferred = $q.defer()
+          deferred.resolve(response)
+
+          return deferred.promise
         }
       }
     })

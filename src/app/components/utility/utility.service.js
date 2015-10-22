@@ -58,4 +58,9 @@ angular.module('utility')
       })
       return hash
     }
+
+    // Useful when writing in a functional style
+    this.returnEmptyList = function () {
+      return []
+    }
   })
