@@ -98,8 +98,8 @@ gulp.task('users', function () {
     return userFactory(name, [role])
   }
 
-  var roles = config.config.admin.roles.concat(
-    config.config.user.roles
+  var roles = config.config.roles.admin.roles.concat(
+    config.config.roles.user.roles
   )
   var users = roles.map(create)
 
