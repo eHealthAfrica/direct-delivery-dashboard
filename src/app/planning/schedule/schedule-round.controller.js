@@ -70,17 +70,13 @@ angular.module('planning')
       email.setSender(config.senderEmail, config.senderName)
       email.setHTML(generateMsgBody(round.roundCode))
       // TODO: once you confirm list of recipient, move to a central location DB or attach to delivery round.
-      /*var recipients = {
-        'email': 'jideobi.ofomah@ehealthnigeria.org',
-        'name': 'Jideobi',
-        'type': 'to'
-      }*/
+
       return scheduleService.getAlertReceiversForRound(round)
-        .then(function(result){
-          email.addRecipient(result.emails)
+        .then(function (result) {
+          email.addRecipients(result.emails)
           return email
         })
-        .then(function(email){
+        .then(function (email) {
           return mailerService.send(email)
         })
     }
