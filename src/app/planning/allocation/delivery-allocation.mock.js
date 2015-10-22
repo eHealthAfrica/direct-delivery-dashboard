@@ -255,3 +255,12 @@ angular.module('deliveryAllocationMock', [])
     },
     'primary': {'state': 'KN', 'year': '2015'}
   }])
+  .constant('presentationsMock', [{
+    '_id': 'KN-2015-1',
+    '_rev': '1-4bbd5453f21c9d9c635ec89c8baf277c',
+    'description': 'Allocation template for Kano state, 2015',
+    'createdOn': '2015-08-13T11:02:28.723Z',
+    'modifiedOn': '2015-09-03T11:04:10.761Z',
+    'doc_type': 'products/presentations',
+    'name': 'KN-2015-1'
+  }])

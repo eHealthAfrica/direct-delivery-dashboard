@@ -27,7 +27,7 @@ angular.module('planning')
             })
         },
         packingStores: function (log, deliveryRound, returnRouteService) {
-          return returnRouteService.getPackingStoreBy(deliveryRound.state)
+          return returnRouteService.getPackingStoreBy(deliveryRound._id)
             .catch(function (err) {
               log.error('getPackingStoresErr', err)
               return []

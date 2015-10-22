@@ -11,6 +11,13 @@ angular.module('planning')
         authorization: function (authService, $stateParams) {
           return authService.hasStateRole($stateParams.roundId)
         },
+        presentations: function (productPresentationService, log) {
+          return productPresentationService.getAll()
+            .catch(function (err) {
+              log.error('productPresentionError', err)
+              return []
+            })
+        },
         deliveryRound: function (log, planningService, $stateParams) {
           function handleError (err) {
             log.error('deliveryRoundNotFound', err)

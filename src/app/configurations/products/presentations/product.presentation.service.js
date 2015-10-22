@@ -8,7 +8,7 @@ angular.module('products')
       return dbService.get(id)
     }
 
-    _this.getByProduct = function (productID) {
+    _this.getAll = function () {
       var view = 'products/presentations'
       var opts = {
         include_docs: true
