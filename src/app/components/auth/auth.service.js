@@ -9,8 +9,6 @@ angular.module('auth')
     navbarService,
     ehaCouchDbAuthService
   ) {
-    var self = this
-
     this.login = function (username, password) {
       var params = {
         username: username,
@@ -49,16 +47,13 @@ angular.module('auth')
         .map(format)
     }
 
-    this.hasStateRole = function (roundId) {
+    this.roundToStateRole = function (roundId) {
       // TODO: get this from role lib
       var prefix = 'direct_delivery_dashboard_state_'
 
       // TODO: make this more robust
       var stateCode = roundId.split('-')[0]
 
-      var role = prefix + stateCode.toLowerCase()
-      return self.requireRoles([
-        role
-      ])
+      return prefix + stateCode.toLowerCase()
     }
   })
