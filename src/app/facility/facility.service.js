@@ -1,7 +1,14 @@
 'use strict'
 
 angular.module('facility')
-  .service('facilityService', function ($q, dbService, pouchUtil) {
+  .service('facilityService', function (
+    $q,
+    log,
+    dbService,
+    pouchUtil,
+    authService,
+    ehaCouchDbAuthService
+  ) {
     var _this = this
 
     function getGrouped (group, type, row) {
@@ -135,7 +142,22 @@ angular.module('facility')
         endkey: state,
         include_docs: true
       }
-      return dbService.getView(view, params)
+
+      function branchByUser (user) {
+        if (user.isAdmin()) {
+          return
+        }
+        var states = authService.authorisedStates(user)
+        if (states.indexOf(state) !== -1) {
+          return
+        }
+        log.error('unauthorizedAccess')
+        return $q.reject('unauthorized')
+      }
+
+      return ehaCouchDbAuthService.getCurrentUser()
+        .then(branchByUser)
+        .then(dbService.getView.bind(null, view, params))
         .then(pouchUtil.pluckDocs)
         .then(collate)
     }

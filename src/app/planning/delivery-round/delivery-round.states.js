@@ -9,7 +9,7 @@ angular.module('planning')
       controllerAs: 'crCtrl',
       resolve: {
         deliveryRounds: function (planningService) {
-          return planningService.all()
+          return planningService.byAuthorisedStates()
             .catch(function () {
               return []
             })
