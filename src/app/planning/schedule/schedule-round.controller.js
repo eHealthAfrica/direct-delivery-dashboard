@@ -58,31 +58,37 @@ angular.module('planning')
       ].join(' ')
     }
 
-    function emailNotification (roundId) {
+    function emailNotification (round) {
       var mailConfig = {
         apiUrl: config.mailerAPI,
         apiKey: config.apiKey
       }
       mailerService.setConfig(mailConfig)
       var email = mailerService.Email()
-      var subject = ['[VDD]', roundId, 'is ready to edit'].join(' ')
+      var subject = ['[VDD]', round.roundCode, 'is ready to edit'].join(' ')
       email.setSubject(subject)
       email.setSender(config.senderEmail, config.senderName)
-      email.setHTML(generateMsgBody(roundId))
+      email.setHTML(generateMsgBody(round.roundCode))
       // TODO: once you confirm list of recipient, move to a central location DB or attach to delivery round.
-      var recipients = {
+      /*var recipients = {
         'email': 'jideobi.ofomah@ehealthnigeria.org',
         'name': 'Jideobi',
         'type': 'to'
-      }
-      email.addRecipient(recipients)
-      return mailerService.send(email)
+      }*/
+      return scheduleService.getAlertReceiversForRound(round)
+        .then(function(result){
+          email.addRecipient(result.emails)
+          return email
+        })
+        .then(function(email){
+          return mailerService.send(email)
+        })
     }
 
     vm.completePlanning = function () {
       planningService.completePlanning(vm.deliveryRound)
         .then(function () {
-          emailNotification(vm.deliveryRound._id)
+          emailNotification(vm.deliveryRound)
             .then(function () {
               log.success('plannerNotificationEmailSuccess')
             })

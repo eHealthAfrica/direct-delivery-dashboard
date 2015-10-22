@@ -1,8 +1,35 @@
 'use strict'
 
 angular.module('planning')
-  .service('scheduleService', function (dbService, log, utility) {
+  .service('scheduleService', function (dbService, log, utility, pouchUtil) {
     var _this = this
+
+
+    _this.getAlertReceiversForRound = function(deliveryRound){
+      var stateCode = deliveryRound.roundCode.split("-")[0];
+      var view = 'dashboard-delivery-rounds/alert-recievers'
+      var options = {include_docs :true , state : stateCode}
+      debugger;
+      return dbService.getView(view, options)
+       .then(pouchUtil.pluckDocs)
+       .then(function(data){
+          debugger;
+         var obj = {emails : [], phones : []}
+         return data.filter(function(item){
+           return item.active
+         }).reduce(function(previous,current){
+             current.emails.forEach(function(item){
+             previous.emails.push({email : item, type :"to", name : current.name});
+           })
+           current.phones.forEach(function(item){
+             previous.phones.push(item);
+           })
+             return previous;
+         }, obj)
+       }).catch(function(err){
+          return log.error('notificationError', err)
+        })
+    }
 
     _this.getHeaders = function () {
       return _this.headerIndex
