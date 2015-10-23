@@ -1,0 +1,60 @@
+{
+  "docs": [
+    {
+      "_id": "kpi-template-1",
+      "name": "Number Immunized",
+      "outreachSessions": "",
+      "notes": "",
+      "doc_type": "kpi-template",
+      "date": "",
+      "originRow": "",
+      "deliveryRoundID": "",
+      "driverID": "",
+      "version": "2.0.0",
+      "worksheetId": "ojuogcm",
+      "spreadsheetId": "",
+      "importedAt": "",
+      "antigensKPI": [
+        {
+          "productID": "BCG",
+          "noImmunized": 0
+        },
+        {
+          "productID": "MV",
+          "noImmunized": 0
+        },
+        {
+          "productID": "OPV",
+          "noImmunized": 0
+        },
+        {
+          "productID": "IPV",
+          "noImmunized": 0
+        },
+        {
+          "productID": "TT",
+          "noImmunized": 0
+        },
+        {
+          "productID": "Penta",
+          "noImmunized": 0
+        },
+        {
+          "productID": "HBV",
+          "noImmunized": 0
+        },
+        {
+          "productID": "YF",
+          "noImmunized": 0
+        }
+      ],
+      "facility": {
+        "zone": "",
+        "lga": "",
+        "ward": "",
+        "name": "",
+        "id": ""
+      }
+    }
+  ]
+}

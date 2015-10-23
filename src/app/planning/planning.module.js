@@ -8,5 +8,6 @@ angular.module('planning', [
   'delivery',
   'users',
   'mailer',
-  'auth'
+  'auth',
+  'kpi'
 ])
