@@ -47,9 +47,7 @@ angular.module('reports')
 
     vm.getByRound = function () {
       reportsService.getReportByRound(vm.selectedRound)
-        .then(function (res) {
-          loadSuccess(res)
-        })
+        .then(loadSuccess)
         .catch(function (err) {
           log.error('cumulativeReportErr', err)
         })
@@ -57,9 +55,7 @@ angular.module('reports')
 
     vm.getReport = function () {
       reportsService.getByWithin('Kano', vm.startFrom, vm.stopOn)
-        .then(function (res) {
-          loadSuccess(res)
-        })
+        .then(loadSuccess)
         .catch(function (err) {
           log.error('cumulativeReportErr', err)
         })
