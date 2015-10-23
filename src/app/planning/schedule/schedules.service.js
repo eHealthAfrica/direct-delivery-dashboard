@@ -6,7 +6,7 @@ angular.module('planning')
 
     _this.getAlertReceiversForRound = function (deliveryRound) {
       var stateCode = deliveryRound.roundCode.split('-')[0]
-      var view = 'dashboard-delivery-rounds/alert-recievers'
+      var view = 'dashboard-delivery-rounds/alert-receivers'
       var options = {include_docs: true, state: stateCode}
 
       return dbService.getView(view, options)
@@ -24,8 +24,6 @@ angular.module('planning')
             })
             return previous
           }, obj)
-        }).catch(function (err) {
-          return log.error('notificationError', err)
         })
     }
 
