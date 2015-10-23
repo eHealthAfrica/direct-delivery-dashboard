@@ -1,5 +1,5 @@
 <div classs="row">
-  <nvd3-line-chart
+  <nvd3-multi-bar-chart
       data="devRepCtrl.exampleData"
       id="deliveryGraph"
       xAxisTickFormat="devRepCtrl.formatXAxis()"
@@ -12,7 +12,9 @@
       height="350"
       noData="No Data Available!"
       showXAxis="true"
+      stacked="true"
+      style="text-anchor: bottom"
       showYAxis="true">
     <svg></svg>
-  </nvd3-line-chart>
+  </nvd3-multi-bar-chart>
 </div>

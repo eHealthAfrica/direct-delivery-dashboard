@@ -33,8 +33,8 @@ angular.module('allocations')
             return log.error('assumptionSaveFailed', err)
           })
       })
-      .catch(function (err) {
-        log.info('canceledAssumptionEdit', err)
-      })
+        .catch(function (err) {
+          log.info('canceledAssumptionEdit', err)
+        })
     }
   })

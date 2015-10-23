@@ -42,4 +42,20 @@ angular.module('location')
       return dbService.getView(view, params)
         .then(pouchUtil.pluckDocs)
     }
+
+    _this.getLocationsByLevelAndId = function (level, ids) {
+      function getLevelIdTuple (id) {
+        return [ level, id ]
+      }
+
+      var keys = ids.map(getLevelIdTuple)
+      var view = 'location/by-level-and-id'
+      var params = {
+        include_docs: true,
+        keys: keys
+      }
+      return dbService.getView(view, params)
+        .then(pouchUtil.pluckDocs)
+        .then(pouchUtil.rejectIfEmpty)
+    }
   })

@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('reports')
-  .service('deliveryReportService', function (reportsService, dbService) {
+  .service('deliveryReportService', function (dbService) {
     function defaultStatus () {
       return {
         success: 0,

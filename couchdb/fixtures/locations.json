@@ -17,6 +17,15 @@
       ]
     },
     {
+      "_id": "NE",
+      "doc_type": "location",
+      "level": "1",
+      "name": "North East",
+      "ancestors": [
+        "NG"
+      ]
+    },
+    {
       "_id": "KN",
       "doc_type": "location",
       "level": "2",
@@ -24,6 +33,16 @@
       "ancestors": [
         "NG",
         "NW"
+      ]
+    },
+    {
+      "_id": "BA",
+      "doc_type": "location",
+      "level": "2",
+      "name": "Bauchi",
+      "ancestors": [
+        "NG",
+        "NE"
       ]
     },
     {
@@ -270,7 +289,8 @@
         "RANO-KN",
         "BEBEJI-RANO-KN",
         "GARMAI-BEBEJI-RANO-KN"
-      ]
+      ],
+      "isPackingStore": true
     },
     {
       "_id": "KNS-GZW-BBW-101",
