@@ -12,9 +12,18 @@ angular.module('reports')
   ) {
     var _this = this
 
-    this.getDeliveryRounds = function () {
-      return dbService.getView('reports/delivery-rounds')
-        .then(pouchUtil.pluckValues)
+    this.getDeliveryRounds = function (options) {
+      options = options || {}
+      options.limit = options.limit || 10
+      return dbService.getView('reports/delivery-rounds', options)
+        .then(function (response) {
+          return {
+            total: response.total_rows,
+            offset: response.offset,
+            results:pouchUtil.pluckValues(response)
+          }
+
+        })
     }
 
     this.getDailyDeliveries = function (roundId) {
@@ -119,7 +128,6 @@ angular.module('reports')
           zones[z].canceled = report.zones[z].canceled
         }
       }
-      console.log(zones)
       report.zones = toList(zones)
       report.dates = collateSortedDate(roundRows)
       return report
