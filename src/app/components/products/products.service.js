@@ -4,6 +4,7 @@
 
 angular.module('products')
   .service('productService', function (pouchUtil, dbService) {
+
     this.baseUOMs = ['Units', 'Vials', 'Doses']
 
     this.get = function (id) {
@@ -15,30 +16,21 @@ angular.module('products')
         include_docs: true
       }
       var view = 'products/products'
-
       return dbService.getView(view, conf)
-        .then(function (res) {
-          return pouchUtil.pluckDocs(res)
-        })
-    }
-
-    this.getProductStorageType = function () {
-      return dbService.getView('product-storages/product-storages', {
-        include_docs: true
-      })
         .then(pouchUtil.pluckDocs)
     }
 
-    this.CategoriseByStorageType = function () {}
+    this.getProductStorageType = function () {
+      var params = {
+        include_docs: true
+      }
+      var view = 'product-storages/product-storages'
+      return dbService.getView(view, params)
+        .then(pouchUtil.pluckDocs)
+    }
 
-    this.getDryProducts = function () {}
-
-    this.getColdProducts = function () {}
-
-    this.getFrozenProducts = function () {}
     this.save = function (doc) {
       var use = 'update'
-
       if (!doc._id) {
         doc._id = doc.code // new product
       }
