@@ -18,6 +18,10 @@ angular.module('planning')
         }))
     }
 
+    vm.isEmptyReturnRoutes = function () {
+      return vm.deliveryReturnRoutes.length === 0
+    }
+
     vm.saveRow = function ($data, driverId, deliveryDate) {
       var doc = vm.getDocBy(driverId, deliveryDate)
       if (doc) {

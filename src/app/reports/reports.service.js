@@ -119,8 +119,7 @@ angular.module('reports')
           zones[z].canceled = report.zones[z].canceled
         }
       }
-      console.log(zones)
-      report.zones = toList(zones)
+      report.zones = rows.length > 0 ? toList(zones) : []
       report.dates = collateSortedDate(roundRows)
       return report
     }
@@ -181,6 +180,27 @@ angular.module('reports')
             deliveryRoundIds.push(row.id)
           })
           return _this.getDeliveryReportWithin(startDate, endDate, deliveryRoundIds)
+        })
+    }
+
+    _this.getReportByRound = function (roundID) {
+      var ZONE_LEVEL = '3'
+      var STATE_CODE = 'KN' // TODO: get this from user profile
+      var deliveryRounds = [roundID]
+      var view = 'reports/by-rounds'
+      var options = {
+        startkey: [roundID],
+        endkey: [roundID, {}, {}]
+      }
+      var locKeys = []
+      locKeys.push([ZONE_LEVEL, STATE_CODE])
+      var promises = [
+        dbService.getView(view, options),
+        locationService.getByLevelAndAncestor(locKeys)
+      ]
+      return $q.all(promises)
+        .then(function (res) {
+          return _this.collateReport(res[0], deliveryRounds, res[1])
         })
     }
   })
