@@ -9,5 +9,6 @@ angular.module('planning', [
   'users',
   'mailer',
   'auth',
-  'kpi'
+  'kpi',
+  'drivers'
 ])
