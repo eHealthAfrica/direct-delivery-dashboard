@@ -19,13 +19,10 @@ angular.module('configurations')
         },
         resolve: {
           authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser,
-          authorization: function (authService) {
-            // TODO: de-dupe with data.roles
-            return authService.requireRoles([
-              'direct_delivery_dashboard_accounting',
-              'direct_delivery_dashboard_stakeholder'
-            ])
-          }
+          authorization: ehaCouchDbAuthServiceProvider.requireUserWithRoles([
+            'direct_delivery_dashboard_accounting',
+            'direct_delivery_dashboard_stakeholder'
+          ])
         }
       })
       .state('reports.layout', {
