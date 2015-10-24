@@ -126,5 +126,10 @@ angular.module('log')
       title: 'Assign KPI error',
       message: 'An unknown error occurred while filling in missing KPI',
       remedy: 'Please, try again and contact support if it persists'
+    },
+    updateCCEStatusErr: {
+      title: 'CCE Status update error',
+      message: 'An unknown error occurred while updating CCE Status',
+      remedy: 'Please, try again and contact support if it persists'
     }
   })
