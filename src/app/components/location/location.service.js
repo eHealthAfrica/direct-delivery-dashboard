@@ -58,4 +58,8 @@ angular.module('location')
         .then(pouchUtil.pluckDocs)
         .then(pouchUtil.rejectIfEmpty)
     }
+
+    _this.saveMany = function (locations) {
+      return dbService.saveDocs(locations)
+    }
   })
