@@ -20,20 +20,40 @@ angular.module('reports')
           return {
             total: response.total_rows,
             offset: response.offset,
-            results:pouchUtil.pluckValues(response)
+            results: pouchUtil.pluckValues(response)
           }
-
         })
     }
 
-    this.getDailyDeliveries = function (roundId) {
+    this.getDailyDeliveries = function (roundId, pagination) {
+      pagination = pagination || {}
       var view = 'reports/daily-deliveries'
       var params = {
         startkey: [roundId],
         endkey: [roundId, {}, {}, {}]
       }
+      var promises = [
+        dbService.getView(view, angular.merge({}, pagination, params)),
+        _this.getDailyDeliveriesCount(roundId)
+      ]
+
+      return $q.all(promises)
+        .then(function (response) {
+          return {
+            total: response[1].rows.length > 0 ? response[1].rows[0].value : 0,
+            offset: response[0].offset,
+            results: pouchUtil.pluckValues(response[0])
+          }
+        })
+    }
+
+    _this.getDailyDeliveriesCount = function (roundId) {
+      var view = 'reports/daily-deliveries-count'
+      var params = {
+        startkey: roundId,
+        endkey: roundId
+      }
       return dbService.getView(view, params)
-        .then(pouchUtil.pluckValues)
     }
 
     _this.getStatusTypes = function () {
