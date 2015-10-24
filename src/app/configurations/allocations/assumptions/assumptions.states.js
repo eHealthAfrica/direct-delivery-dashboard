@@ -28,7 +28,7 @@ angular.module('allocations')
           assumptionList: function (assumptionService) {
             return assumptionService.getAll()
               .catch(function (error) {
-                console.error(error);
+                console.error(error)
                 return []
               })
           }

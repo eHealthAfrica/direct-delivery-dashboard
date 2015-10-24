@@ -18,5 +18,4 @@ angular.module('allocations')
     vm.showTable = function () {
       return vm.assumptionList.length > 0
     }
-
   })

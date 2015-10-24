@@ -4,7 +4,6 @@
 
 angular.module('products')
   .service('productService', function (pouchUtil, dbService) {
-
     this.baseUOMs = ['Units', 'Vials', 'Doses']
 
     this.get = function (id) {

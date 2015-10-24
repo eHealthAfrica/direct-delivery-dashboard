@@ -2,7 +2,6 @@
 
 angular.module('allocations')
   .service('assumptionAddService', function ($modal, log, assumptionService, config) {
-
     this.openForm = function (data, templateType) {
       var modalInstance = $modal.open({
         animation: true,
