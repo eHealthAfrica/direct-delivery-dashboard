@@ -6,7 +6,7 @@ angular.module('configurations.locations')
 
     vm.csv = {
       header: true,
-      separator: ',',
+      separator: ','
     }
 
     vm.finished = function (data) {
@@ -31,7 +31,7 @@ angular.module('configurations.locations')
             results[i].admin_level_1,
             results[i].admin_level_2,
             results[i].admin_level_3,
-            results[i].admin_level_4,
+            results[i].admin_level_4
           ],
           doc_type: 'location',
           level: results[i].level
