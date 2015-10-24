@@ -32,6 +32,15 @@
         <label for="phone">Phone</label>
         <input id="phone" name="phone" type="text" class="form-control" ng-model="usersFormCtrl.user.profile.phone">
       </div>
+      <div class="form-group">
+        <label for="state">State</label>
+        <select id="state" name="state" class="form-control" ng-model="usersFormCtrl.user.profile.state">
+          <option
+            ng-repeat="state in usersFormCtrl.states"
+            value="{{ state._id }}"
+            ng-bind="state.name"></option>
+        </select>
+      </div>
       <div class="checkbox">
         <label>
           <input type="checkbox" ng-model="usersFormCtrl.user.enabled"> Enabled

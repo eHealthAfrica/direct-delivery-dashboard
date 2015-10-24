@@ -19,7 +19,21 @@
   </div>
 
   <div>
-    <table class="table table-condensed table-bordered table-striped">
+
+    <div class="panel-body" ng-show="rrCtrl.isEmptyReturnRoutes()">
+      <div class="panel-body alert alert-info">
+        <i class="fa fa-lg fa-info-circle"></i>
+        <span>
+          No return route available, please make sure there are
+          <a class="btn btn-success btn-lg" ui-sref="planning.schedule({ roundId: rrCtrl.deliveryRound._id})">
+            delivery schedules.
+          </a>
+        </span>
+      </div>
+    </div>
+
+    <table class="table table-condensed table-bordered table-striped"
+           ng-hide="rrCtrl.isEmptyReturnRoutes()">
       <thead>
       <tr>
         <th>#</th>
