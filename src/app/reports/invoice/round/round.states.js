@@ -9,12 +9,6 @@ angular.module('reports')
       controller: 'ReportsRoundCtrl',
       controllerAs: 'reportsRoundCtrl',
       resolve: {
-        deliveryRounds: function (reportsService) {
-          return reportsService.getDeliveryRounds()
-        },
-        dailyDeliveries: function ($stateParams, reportsService) {
-          return reportsService.getDailyDeliveries($stateParams.id)
-        },
         drivers: function (driversService) {
           return driversService.all()
         }
