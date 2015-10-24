@@ -32,7 +32,6 @@ angular.module('allocations')
       })
       modalInstance.result
         .then(function (formData) {
-          console.log(formData)
           assumptionService.save(formData)
             .then(function (data) {
               return log.success('assumptionEdited', data)
