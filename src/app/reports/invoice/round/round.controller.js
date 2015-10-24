@@ -91,5 +91,4 @@ angular.module('reports')
       return Math.ceil(vm.pagination.totalItems / vm.pagination.limit)
     }
     vm.getReport()
-
   })
