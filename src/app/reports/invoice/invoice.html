@@ -1,19 +1,24 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="row">
-      <div class="col-sm-11">
+      <div class="col-sm-8">
         <h3 class="panel-title">Delivery Rounds</h3>
       </div>
-      <div class="col-sm-1">
-        <select
-          ng-change="reportsAllCtrl.getReport()"
-          ng-model="reportsAllCtrl.pagination.limit"
-          class="form-control">
-          <option value="10">10</option>
-          <option value="25">25</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
-        </select>
+      <div class="col-sm-4">
+        <div class="row">
+          <div class="col-xs-8 text-right">Page Size:</div>
+          <div class="col-xs-4">
+            <select
+              ng-change="reportsAllCtrl.getReport(1)"
+              ng-model="reportsAllCtrl.pagination.limit"
+              class="form-control">
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
       </div>
     </div>
   </div>
