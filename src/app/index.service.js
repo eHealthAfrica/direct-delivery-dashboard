@@ -2,7 +2,6 @@
 
 angular.module('directDeliveryDashboard')
   .service('indexService', function ($rootScope, $state, editableOptions, log, authService) {
-
     function stateChangeError (event, toState, toParams, fromState, fromParams, err) {
       if (err === 'unauthenticated' || err === 'User not found') {
         return $state.go('login')
@@ -28,4 +27,3 @@ angular.module('directDeliveryDashboard')
       $rootScope.$on('unauthorized', onDBAuthError)
     }
   })
-
