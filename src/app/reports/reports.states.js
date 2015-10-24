@@ -8,7 +8,9 @@ angular.module('configurations')
         url: '/reports',
         templateUrl: 'app/reports/index.html',
         controller: function ($state) {
-          $state.go('reports.layout.delivery')
+          if ($state.current.name === 'reports') {
+            $state.go('reports.layout.delivery')
+          }
         },
         data: {
           label: 'Reports',
