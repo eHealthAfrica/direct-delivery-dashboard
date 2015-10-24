@@ -39,8 +39,12 @@ angular.module('reports')
 
       return $q.all(promises)
         .then(function (response) {
+          var total = 0
+          if (response[1]) {
+            total = response[1].rows.length > 0 ? response[1].rows[0].value : 0
+          }
           return {
-            total: response[1].rows.length > 0 ? response[1].rows[0].value : 0,
+            total: total,
             offset: response[0].offset,
             results: pouchUtil.pluckValues(response[0])
           }
