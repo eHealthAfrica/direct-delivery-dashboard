@@ -6,10 +6,15 @@ angular.module('products')
 
     vm.presentations = presentations
     vm.baseUOMs = baseUOMs
-    vm.openedDoc = {}
-    console.log(presentations)
+    vm.openedDoc = {
+      uom: ''
+    }
+
+    vm.showTable = function () {
+      return vm.presentations.length > 0
+    }
+
     vm.save = function () {
-      console.log(vm.openedDoc)
       return productPresentationService.save(vm.openedDoc)
         .then(function (response) {
           vm.presentations.push(angular.extend({}, vm.openedDoc, response))

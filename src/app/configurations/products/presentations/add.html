@@ -1,9 +1,15 @@
 <p><br/></p>
 <form role="form" ng-submit="productPresentationCtrl.save()">
   <div class="form-group">
+    <label>Code</label>
+    <input class="form-control input-lg"
+           placeholder="e.g 20-DPV, 1-Unit, 10-DPV"
+           ng-model="productPresentationCtrl.openedDoc.code"/>
+  </div>
+  <div class="form-group">
     <label> Unit of Measurement</label>
     <select class="form-control input-lg" ng-model="productPresentationCtrl.openedDoc.uom">
-      <option></option>
+      <option value=''>Select presentation UOM</option>
       <option
           ng-repeat="uom in productPresentationCtrl.baseUOMs"
           value="{{uom}}"
@@ -11,12 +17,12 @@
     </select>
   </div>
   <div class="form-group">
-    <label> Volumn</label>
-    <input class="form-control input-lg" type="number" ng-model="productPresentationCtrl.openedDoc.volume"/>
-  </div>
-  <div class="form-group">
-    <label> Code</label>
-    <input class="form-control input-lg" ng-model="productPresentationCtrl.openedDoc.code"/>
+    <label>Value</label>
+    <input class="form-control input-lg"
+           min="0"
+           placeholder="e.g 1, 5, 10, 20"
+           type="number"
+           ng-model="productPresentationCtrl.openedDoc.value"/>
   </div>
   <div class="clearfix">
     <button type="submit" class="btn btn-primary btn-lg pull-right"><i class="fa fa-save"></i> Add</button>

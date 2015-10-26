@@ -1,20 +1,27 @@
-<a class="btn btn-success pull-right adjust-up" ng-click="assumptionsCtrl.addAssumption()">
-  <i class="fa fa-plus"></i>
-  Create New Template
-</a>
-<hr/>
 <div class="clearfix">
+  <button class="btn btn-success btn-lg pull-right adjust-up"
+          ng-click="assumptionsCtrl.createNewTemplate(assumptionsCtrl.docTypes.assumptions)">
+    <i class="fa fa-plus"></i>
+    <span>Create New Template</span>
+  </button>
 </div>
-<hr/>
-<table ng-if="assumptionsCtrl.assumptionList.length > 0" class="table table-bordered">
-  <thead>
+<br/><br/>
+<div>
+  <div class="alert alert-info" ng-show="!assumptionsCtrl.showTable()">
+    <i class="fa fa-info"></i>
+    <span>Assumption template does not exist, please create new one</span>
+  </div>
+</div>
+<div>
+  <table ng-if="assumptionsCtrl.showTable()" class="table table-bordered">
+    <thead>
     <th>Name</th>
     <th>Description</th>
     <th>Primary State</th>
     <th>Primary Year</th>
     <th></th>
-  </thead>
-  <tbody>
+    </thead>
+    <tbody>
     <tr ng-repeat="template in assumptionsCtrl.assumptionList track by $index">
       <td ng-bind="template._id"></td>
       <td ng-bind="template.description"></td>
@@ -25,11 +32,13 @@
           <i class="fa fa-eye"></i>
           <em>View</em>
         </a>
-        <a class="btn btn-primary" ng-click="assumptionsCtrl.addAssumption(template)">
+        <a class="btn btn-primary" ng-click="assumptionsCtrl.editTemplate(template)">
           <i class="fa fa-wrench"></i>
           <em>Edit</em>
         </a>
       </td>
     </tr>
-  </tbody>
-</table>
+    </tbody>
+  </table>
+</div>
+

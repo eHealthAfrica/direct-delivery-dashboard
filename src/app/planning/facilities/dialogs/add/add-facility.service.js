@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('planning')
-  .service('addFacilityService', function () {
+  .service('addFacilityService', function (DELIVERY_STATUS) {
     var _this = this
 
     _this.prepareSchedules = function (facilities, selected, roundId) {
@@ -16,7 +16,7 @@ angular.module('planning')
             drop: '',
             signature: {},
             cancelReport: {},
-            status: 'Upcoming: 1st attempt' // TODO read from constant
+            status: DELIVERY_STATUS.UPCOMING_FIRST
           }
           facilitySchedule.facility = facility
           facilitySchedules.push(facilitySchedule)

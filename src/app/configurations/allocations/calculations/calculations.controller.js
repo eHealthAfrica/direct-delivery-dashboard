@@ -51,7 +51,6 @@ angular.module('allocations')
     function resetView (facilities) {
       return calculationService[viewMap[vm.activeView]](facilities)
         .then(function (response) {
-          console.log(response)
           vm.renderedData = response
           return response
         })

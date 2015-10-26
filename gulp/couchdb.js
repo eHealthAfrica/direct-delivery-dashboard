@@ -1,7 +1,7 @@
 'use strict'
 
 var url = require('url')
-var got = require('got')
+var get = require('simple-get')
 var glob = require('glob')
 var gulp = require('gulp')
 var argv = require('optimist').argv
@@ -30,18 +30,24 @@ function push (docs, url) {
   })
 
   var options = {
+    url: url,
     body: docs,
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     }
   }
 
-  return got.post(url, options, function (err, data) {
+  if (argv.u && argv.p) {
+    options.auth = argv.u + ':' + argv.p
+  }
+
+  return get.concat(options, function (err, data) {
     if (err) {
-      console.error(data)
+      console.error(data.toString())
       throw err
     }
-    console.log(data)
+    console.log(data.toString())
   })
 }
 
