@@ -1,7 +1,7 @@
 <hr/>
 		<div class="clearfix">
 			<form class="form form-inline">
-				<div class="input-group ">
+				<div class="form-group ">
 					<ng-csv-import
               content="facilityUploadCtrl.csv.content"
               header="facilityUploadCtrl.csv.header"
@@ -10,7 +10,13 @@
               result="facilityUploadCtrl.csv.result">
             </ng-csv-import>
 				</div>
-				<button class="btn btn-success pull-right btn-lg">
+				<div class="form-group">
+					<label>State</label>
+					<select class="form-control" ng-model="facilityUploadCtrl.state">
+						<option ng-repeat="state in facilityUploadCtrl.states track by $index" value="{{state._id}}">{{state.name}}</option>
+					</select>
+				</div>
+				<button class="btn btn-success pull-right btn-lg" ng-class="{disabled: !facilityUploadCtrl.canSave}">
 					<i class="fa fa-check"></i>
 					Save
 				</button>
@@ -18,8 +24,8 @@
 		</div>
 <hr/>
 
-<!--<div ng-if="facilityUploadCtrl.csv.result.length == 0">-->
-	<table class="table table-bordered table-hover table-condensed">
+<div ng-if="facilityUploadCtrl.csv.result.length > 0">
+	<table class="table table-bordered table-hover table-condensed table-striped">
 		<tr style="font-weight: bold">
 			<th style="">State</th>
 			<th style="">Zone</th>
@@ -47,7 +53,6 @@
 			</td>
 		</tr>
 	</table>
-	
-<!--</div>-->
+</div>
 
 
