@@ -27,15 +27,15 @@ angular.module('planning')
         })
     }
 
-    _this.getRoundEmailTemplate = function(deliveryRound){
+    _this.getRoundEmailTemplate = function (deliveryRound) {
       var stateCode = deliveryRound.roundCode.split('-')[0]
       var view = 'dashboard-delivery-rounds/round-emails'
       var options = {include_docs: true, state: stateCode}
       return dbService.getView(view, options)
         .then(pouchUtil.pluckDocs)
-        .then(function(data){
+        .then(function (data) {
           var msg = data[0] && data[0].content && data[0].content.replace('{roundId}', deliveryRound.roundCode)
-          return msg;
+          return msg
         })
     }
 

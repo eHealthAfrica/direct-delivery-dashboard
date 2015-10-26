@@ -63,24 +63,22 @@ angular.module('planning')
       email.setSender(config.senderEmail, config.senderName)
 
       return generateMsgBody(round)
-        .then(function(msg){
-        email.setHTML(msg)
-        return email;
-      })
-        .then(function(){
-        return scheduleService.getAlertReceiversForRound(round)
-      })
-        .then(function (result) {
-        email.addRecipients(result.emails)
-        return email
-      })
+        .then(function (msg) {
+          email.setHTML(msg)
+          return email
+        })
         .then(function () {
-          debugger
+          return scheduleService.getAlertReceiversForRound(round)
+        })
+        .then(function (result) {
+          email.addRecipients(result.emails)
+          return email
+        })
+        .then(function () {
           return mailerService.send(email)
         }).catch(function (err) {
           log.success('notificationError', err)
         })
-
     }
 
     vm.completePlanning = function () {
