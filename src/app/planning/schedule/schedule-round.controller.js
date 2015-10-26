@@ -47,15 +47,8 @@ angular.module('planning')
     vm.exportForRouting = exportData.rows
     vm.exportHeader = exportData.headers
 
-    function generateMsgBody (roundId) {
-      // TODO: fetch message from DB, to make it easy to change and config.
-      return [
-        '<p>Hi</p>',
-        '<p>The locations have been chosen for',
-        roundId,
-        ', please route.</p>',
-        '<p>Thanks</p>'
-      ].join(' ')
+    function generateMsgBody (round) {
+      return scheduleService.getRoundEmailTemplate(round)
     }
 
     function emailNotification (round) {
@@ -68,19 +61,26 @@ angular.module('planning')
       var subject = ['[VDD]', round.roundCode, 'is ready to edit'].join(' ')
       email.setSubject(subject)
       email.setSender(config.senderEmail, config.senderName)
-      email.setHTML(generateMsgBody(round.roundCode))
-      // TODO: once you confirm list of recipient, move to a central location DB or attach to delivery round.
 
-      return scheduleService.getAlertReceiversForRound(round)
+      return generateMsgBody(round)
+        .then(function(msg){
+        email.setHTML(msg)
+        return email;
+      })
+        .then(function(){
+        return scheduleService.getAlertReceiversForRound(round)
+      })
         .then(function (result) {
-          email.addRecipients(result.emails)
-          return email
-        })
-        .then(function (email) {
+        email.addRecipients(result.emails)
+        return email
+      })
+        .then(function () {
+          debugger
           return mailerService.send(email)
         }).catch(function (err) {
           log.success('notificationError', err)
         })
+
     }
 
     vm.completePlanning = function () {
