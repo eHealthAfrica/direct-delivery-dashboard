@@ -79,7 +79,8 @@ angular.module('reports')
     }
 
     function getLastPage () {
-      return Math.ceil(vm.pagination.totalItems / vm.pagination.limit)
+      vm.pagination.lastPage = Math.ceil(vm.pagination.totalItems / vm.pagination.limit)
+      return vm.pagination.lastPage
     }
 
     function loadReport (response) {
