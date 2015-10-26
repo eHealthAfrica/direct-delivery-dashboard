@@ -5,16 +5,21 @@ angular.module('directDeliveryDashboard')
     var vm = this // view models
     vm.selectedRound = ''
 
+
+
     vm.roundCodes = roundReport.roundInfo.roundCodes || []
     vm.roundReport = roundReport
     vm.onTime = []
 
-    // TODO: move to generate report service function
     if (roundReport.onTime || roundReport.behindTime > 0) {
       vm.onTime = [
         { key: 'Behind Time', y: roundReport.behindTime, color: 'orange' },
         { key: 'On Time', y: roundReport.onTime, color: 'green' }
       ]
+    }
+
+    vm.hasSchedules = function () {
+      return vm.roundReport && vm.roundReport.total > 0
     }
 
     vm.showReport = function () {
@@ -30,7 +35,6 @@ angular.module('directDeliveryDashboard')
             vm.selectedRound,
             'does not exist!'
           ].join(' ')
-
           log.error('', err, msg)
         })
     }
