@@ -58,13 +58,12 @@ angular.module('planning')
       }
       mailerService.setConfig(mailConfig)
       var email = mailerService.Email()
-      var subject = ['[VDD]', round.roundCode, 'is ready to edit'].join(' ')
-      email.setSubject(subject)
       email.setSender(config.senderEmail, config.senderName)
 
       return generateMsgBody(round)
-        .then(function (msg) {
-          email.setHTML(msg)
+        .then(function (result) {
+          email.setSubject(result.subject)
+          email.setHTML(result.msg)
           return email
         })
         .then(function () {

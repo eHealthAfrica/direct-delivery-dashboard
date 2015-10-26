@@ -35,7 +35,9 @@ angular.module('planning')
         .then(pouchUtil.pluckDocs)
         .then(function (data) {
           var msg = data[0] && data[0].content && data[0].content.replace('{roundId}', deliveryRound.roundCode)
-          return msg
+          var subject = data[0] && data[0].subject && data[0].subject.replace('{roundId}', deliveryRound.roundCode)
+          var result = {ms: msg, subject: subject}
+          return result
         })
     }
 
