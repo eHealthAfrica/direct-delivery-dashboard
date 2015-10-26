@@ -8,7 +8,16 @@ angular.module('configurations.locations')
       templateUrl: 'app/configurations/locations/layout.html',
       controller: 'ConfigurationsLocationsCtrl as configLocationCtrl'
     })
-      .state('configurations.locations.state', {
-
-      })
+    .state('configurations.locations.zones', {
+      parent: 'configurations.layout',
+      url : '/zones',
+      controller: 'ConfigurationsLocationsZonesCtrl as configLocationCtrl',
+      templateUrl: 'app/configurations/locations/layout.html'
+    })
+    .state('configurations.locations.lgas', {
+      parent: 'configurations.layout',
+      url : '/lgas',
+      controller: 'ConfigurationsLocationsLgasCtrl as configLocationCtrl',
+      templateUrl: 'app/configurations/locations/lgas/index.html'
+    })
   })

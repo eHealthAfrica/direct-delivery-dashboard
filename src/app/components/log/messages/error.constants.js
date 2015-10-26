@@ -126,5 +126,15 @@ angular.module('log')
       title: 'Assign KPI error',
       message: 'An unknown error occurred while filling in missing KPI',
       remedy: 'Please, try again and contact support if it persists'
+    },
+    InvalidFileImport: {
+      title: 'File not Uploaded',
+      message: 'An unknown error occurred while uploading file',
+      remedy: 'Please, check the file, make corrections and try again and contact support if it persists'
+    },
+    locationSaveErr: {
+      title: 'Saving location failed',
+      message: 'Error occurred while saving locations',
+      remedy: 'Please, try again and contact support if it persists'
     }
   })
