@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('reports')
-  .controller('ReportsAllCtrl', function (reportsService, deliveryRounds) {
+  .controller('ReportsAllCtrl', function (reportsService, deliveryRounds, log) {
     var vm = this
     vm.deliveryRounds = deliveryRounds.results
     vm.pagination = {
@@ -17,6 +17,9 @@ angular.module('reports')
           vm.deliveryRounds = response.results
           vm.pagination.totalItems = response.total
           vm.pagination.offset = response.offset
+        })
+        .catch(function (reason) {
+          log.error('invoiceRoundListErr', reason)
         })
     }
 

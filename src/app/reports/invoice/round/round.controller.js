@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('reports')
-  .controller('ReportsRoundCtrl', function ($stateParams, $window, drivers, ZONE_CLASS, reportsService, dailyDeliveries) {
+  .controller('ReportsRoundCtrl', function ($stateParams, $window, drivers, ZONE_CLASS, reportsService, dailyDeliveries, log) {
     var vm = this
     var keys = ['driverID', 'date']
     var keyRows = {}
@@ -53,6 +53,9 @@ angular.module('reports')
       }
       reportsService.getDailyDeliveries($stateParams.id, vm.pagination)
         .then(loadReport)
+        .catch(function (reason) {
+          log.error('invoiceDailyDeliveryErr', reason)
+        })
     }
 
     vm.allIn = function () {

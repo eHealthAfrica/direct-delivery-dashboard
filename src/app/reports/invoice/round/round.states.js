@@ -12,8 +12,11 @@ angular.module('reports')
         drivers: function (driversService) {
           return driversService.all()
         },
-        dailyDeliveries: function (reportsService, $stateParams) {
+        dailyDeliveries: function (reportsService, $stateParams, log) {
           return reportsService.getDailyDeliveries($stateParams.id, {limit: 10})
+            .catch(function (reason) {
+              log.error('invoiceDailyDeliveryErr', reason)
+            })
         }
       }
     })
