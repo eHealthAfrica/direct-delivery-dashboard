@@ -12,10 +12,10 @@
               ng-change="reportsAllCtrl.getReport(1)"
               ng-model="reportsAllCtrl.pagination.limit"
               class="form-control">
-              <option value="10">10</option>
-              <option value="25">25</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
+              <option ng-selected="reportsAllCtrl.pagination.limit === 10" value="10" value="10">10</option>
+              <option ng-selected="reportsAllCtrl.pagination.limit === 25" value="25">25</option>
+              <option ng-selected="reportsAllCtrl.pagination.limit === 50" value="50">50</option>
+              <option ng-selected="reportsAllCtrl.pagination.limit === 100" value="100">100</option>
             </select>
           </div>
         </div>
@@ -50,12 +50,18 @@
       </tbody>
     </table>
 
-    <pager
-      total-items="reportsAllCtrl.pagination.totalItems"
-      ng-change="reportsAllCtrl.getReport()"
-      ng-disabled="reportsAllCtrl.allIn()"
-      ng-model="reportsAllCtrl.pagination.page">
-    </pager>
+    <div class="row">
+      <div class="col-sm-12">
+        <ul class="pager ng-isolate-scope ng-valid" >
+          <li ng-class="{'disabled': !reportsAllCtrl.hasPrev()||reportsAllCtrl.allIn()}" class="previous"><a href="" ng-click="reportsAllCtrl.selectPage('prev')" class="ng-binding">« Previous</a></li>
+          <li>
+            Page <i ng-bind="reportsAllCtrl.pagination.page"></i> of
+            <i ng-bind="reportsAllCtrl.pagination.lastPage"></i>
+          </li>
+          <li ng-class="{'disabled': !reportsAllCtrl.hasNext()||reportsAllCtrl.allIn()}" class="next"><a href="" ng-click="reportsAllCtrl.selectPage('next')" class="ng-binding">Next »</a></li>
+        </ul>
+      </div>
+    </div>
   </div>
 
 </div>
