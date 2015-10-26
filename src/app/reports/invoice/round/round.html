@@ -75,19 +75,14 @@
         </tr>
       </tbody>
     </table>
-    <div class="row hidden-print" ng-if="reportsRoundCtrl.dailyDeliveries.length">
-      <div class="col-sm-12">
-        <!--pager
-          total-items="reportsRoundCtrl.pagination.totalItems"
-          ng-change="reportsRoundCtrl.getReport()"
-          ng-disabled="reportsRoundCtrl.allIn()"
-          ng-model="reportsRoundCtrl.pagination.page">
-        </pager-->
-
-        <ul class="pager ng-isolate-scope ng-valid" >
-          <li ng-class="{'disabled': !reportsRoundCtrl.hasPrev()||reportsRoundCtrl.allIn()}" class="previous"><a href="" ng-click="reportsRoundCtrl.selectPage('prev')" class="ng-binding">« Previous</a></li>
-          <li ng-class="{'disabled': !reportsRoundCtrl.hasNext()||reportsRoundCtrl.allIn()}" class="next"><a href="" ng-click="reportsRoundCtrl.selectPage('next')" class="ng-binding">Next »</a></li>
-        </ul>
+    <div class="panel-body hidden-print" ng-if="reportsRoundCtrl.dailyDeliveries.length">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="pager ng-isolate-scope ng-valid" >
+            <li ng-class="{'disabled': !reportsRoundCtrl.hasPrev()||reportsRoundCtrl.allIn()}" class="previous"><a href="" ng-click="reportsRoundCtrl.selectPage('prev')" class="ng-binding">« Previous</a></li>
+            <li ng-class="{'disabled': !reportsRoundCtrl.hasNext()||reportsRoundCtrl.allIn()}" class="next"><a href="" ng-click="reportsRoundCtrl.selectPage('next')" class="ng-binding">Next »</a></li>
+          </ul>
+        </div>
       </div>
     </div>
 
