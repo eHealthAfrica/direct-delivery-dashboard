@@ -28,6 +28,7 @@ angular.module('users')
             })
             .catch(function (reason) {
               log.error('userLoadErr')
+              return []
             })
         }
       },
