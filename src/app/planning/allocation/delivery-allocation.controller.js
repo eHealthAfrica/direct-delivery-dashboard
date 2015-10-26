@@ -7,7 +7,6 @@ angular.module('planning')
     log,
     calculationService,
     presentations) {
-
     var vm = this
     vm.views = {
       packedProduct: 'Packed Product',
@@ -100,11 +99,11 @@ angular.module('planning')
     }
 
     vm.setAllocationTemplate = function (template) {
-      if(!template || !angular.isObject(template.products)){
-        return log.info('missingAllocTemplateProducts');
+      if (!template || !angular.isObject(template.products)) {
+        return log.info('missingAllocTemplateProducts')
       }
       vm.selectedAllocTemp = template
-      for(var pType in vm.selectedAllocTemp.products) {
+      for (var pType in vm.selectedAllocTemp.products) {
         if (vm.facAllocInfo.productList.indexOf(pType) === -1) {
           vm.facAllocInfo.productList.push(pType)
         }
