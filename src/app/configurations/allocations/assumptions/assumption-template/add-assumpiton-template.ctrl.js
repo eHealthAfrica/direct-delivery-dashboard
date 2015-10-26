@@ -3,7 +3,7 @@
  */
 
 angular.module('allocations')
-  .controller('AssumptionsTemplateAddCtrl', function ($scope, data, products, states, $modalInstance) {
+  .controller('AssumptionsTemplateAddCtrl', function ($scope, data, products, templateType, states, $modalInstance) {
     var vm = this
     vm.template = {
       name: '',
@@ -13,12 +13,12 @@ angular.module('allocations')
         year: ''
       },
       products: {},
-      doc_type: 'allocation_template'
+      doc_type: templateType
     }
 
     vm.productList = products
     vm.dragging = false
-    console.log(states)
+    vm.states = states
 
     if (data) {
       vm.template = data
