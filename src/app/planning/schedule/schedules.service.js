@@ -1,8 +1,45 @@
 'use strict'
 
 angular.module('planning')
-  .service('scheduleService', function (dbService, log, utility) {
+  .service('scheduleService', function (dbService, log, utility, pouchUtil) {
     var _this = this
+
+    _this.getAlertReceiversForRound = function (deliveryRound) {
+      var stateCode = deliveryRound.roundCode.split('-')[0]
+      var view = 'dashboard-delivery-rounds/alert-receivers'
+      var options = {include_docs: true, state: stateCode}
+
+      return dbService.getView(view, options)
+        .then(pouchUtil.pluckDocs)
+        .then(function (data) {
+          var obj = {emails: [], phones: []}
+          return data.filter(function (item) {
+            return item.active
+          }).reduce(function (previous, current) {
+            current.emails.forEach(function (item) {
+              previous.emails.push({email: item, type: 'to', name: current.name})
+            })
+            current.phones.forEach(function (item) {
+              previous.phones.push(item)
+            })
+            return previous
+          }, obj)
+        })
+    }
+
+    _this.getRoundEmailTemplate = function (deliveryRound) {
+      var stateCode = deliveryRound.roundCode.split('-')[0]
+      var view = 'dashboard-delivery-rounds/round-emails'
+      var options = {include_docs: true, state: stateCode}
+      return dbService.getView(view, options)
+        .then(pouchUtil.pluckDocs)
+        .then(function (data) {
+          var msg = data[0] && data[0].content && data[0].content.replace('{roundId}', deliveryRound.roundCode)
+          var subject = data[0] && data[0].subject && data[0].subject.replace('{roundId}', deliveryRound.roundCode)
+          var result = {ms: msg, subject: subject}
+          return result
+        })
+    }
 
     _this.getHeaders = function () {
       return _this.headerIndex

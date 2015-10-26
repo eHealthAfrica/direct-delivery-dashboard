@@ -141,5 +141,15 @@ angular.module('log')
       title: 'User Load error',
       message: 'An unknown error occurred while loading users',
       remedy: 'Please, try again and contact support if it persists'
+    },
+    invoiceDailyDeliveryErr: {
+      title: 'Daily Delivery Invoice error',
+      message: 'An unknown error occurred while loading Invoice for selected round',
+      remedy: 'Please, try again and contact support if it persists'
+    },
+    invoiceRoundListErr: {
+      title: 'Delivery Rounds error',
+      message: 'An unknown error occurred while loading delivery rounds',
+      remedy: 'Please, try again and contact support if it persists'
     }
   })
