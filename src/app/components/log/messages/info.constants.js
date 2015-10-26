@@ -9,5 +9,10 @@ angular.module('log')
     canceledAssumptionEdit: {
       title: 'Update cancelled',
       message: 'editing assumption cancelled'
+    },
+    missingAllocTemplateProducts: {
+      title: 'Incomplete allocation template',
+      message: 'Allocation template does not have required properties',
+      remedy: 'Please, notify support team'
     }
   })

@@ -1,8 +1,13 @@
 angular.module('planning')
-  .controller('DeliveryAllocationCtrl', function (deliveryRound, allocationTemplates,
+  .controller('DeliveryAllocationCtrl', function (
+    deliveryRound,
+    allocationTemplates,
     facilityAllocationInfo,
-    deliveryAllocationService, log,
-    calculationService, presentations) {
+    deliveryAllocationService,
+    log,
+    calculationService,
+    presentations) {
+
     var vm = this
     vm.views = {
       packedProduct: 'Packed Product',
@@ -13,8 +18,6 @@ angular.module('planning')
 
     vm.allocationTemplates = allocationTemplates
     vm.selectedAllocTemp = ''
-
-    // TODO: replace with list pulled from DB after Presentation config UI has been completed.
     vm.presentations = presentations
 
     function initPresentations () {
@@ -97,13 +100,15 @@ angular.module('planning')
     }
 
     vm.setAllocationTemplate = function (template) {
+      if(!template || !angular.isObject(template.products)){
+        return log.info('missingAllocTemplateProducts');
+      }
       vm.selectedAllocTemp = template
-      Object.keys(vm.selectedAllocTemp.products)
-        .forEach(function (pType) {
-          if (vm.facAllocInfo.productList.indexOf(pType) === -1) {
-            vm.facAllocInfo.productList.push(pType)
-          }
-        })
+      for(var pType in vm.selectedAllocTemp.products) {
+        if (vm.facAllocInfo.productList.indexOf(pType) === -1) {
+          vm.facAllocInfo.productList.push(pType)
+        }
+      }
       calculationService.setTemplate(vm.selectedAllocTemp)
       var facilities = vm.facAllocInfo.rows
         .map(function (row) {
