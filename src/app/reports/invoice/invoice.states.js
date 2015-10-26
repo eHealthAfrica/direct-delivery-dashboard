@@ -7,6 +7,11 @@ angular.module('reports')
       url: '/invoice',
       templateUrl: 'app/reports/invoice/invoice.html',
       controller: 'ReportsAllCtrl',
-      controllerAs: 'reportsAllCtrl'
+      controllerAs: 'reportsAllCtrl',
+      resolve: {
+        deliveryRounds: function (reportsService) {
+          return reportsService.getDeliveryRounds()
+        }
+      }
     })
   })

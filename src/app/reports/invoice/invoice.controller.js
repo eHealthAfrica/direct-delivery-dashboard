@@ -1,8 +1,9 @@
 'use strict'
 
 angular.module('reports')
-  .controller('ReportsAllCtrl', function (reportsService) {
+  .controller('ReportsAllCtrl', function (reportsService, deliveryRounds) {
     var vm = this
+    vm.deliveryRounds = deliveryRounds.results
     vm.pagination = {
       limit: 10,
       page: 1

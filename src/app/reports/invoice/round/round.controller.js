@@ -1,11 +1,12 @@
 'use strict'
 
 angular.module('reports')
-  .controller('ReportsRoundCtrl', function ($stateParams, $window, drivers, ZONE_CLASS, reportsService) {
+  .controller('ReportsRoundCtrl', function ($stateParams, $window, drivers, ZONE_CLASS, reportsService, dailyDeliveries) {
     var vm = this
     var keys = ['driverID', 'date']
     var keyRows = {}
     var lastKeyValues = []
+    vm.deliveryRound = $stateParams.id
     vm.pagination = {
       limit: 10,
       page: 1,
@@ -39,6 +40,8 @@ angular.module('reports')
     vm.print = function () {
       $window.jQuery('#report').print()
     }
+    vm.dailyDeliveries = dailyDeliveries.results
+    formatReport()
 
     vm.getReport = function (page) {
       keyRows = {}
@@ -49,22 +52,7 @@ angular.module('reports')
         vm.pagination = {}
       }
       reportsService.getDailyDeliveries($stateParams.id, vm.pagination)
-        .then(function (response) {
-          vm.dailyDeliveries = response.results
-          vm.pagination.totalItems = response.total
-          vm.pagination.lastPage = isNaN(getLastPage()) ? getLastPage() : 1
-          angular.forEach(vm.dailyDeliveries, function (delivery) {
-            var value = ''
-            angular.forEach(keys, function (key) {
-              value += delivery[key]
-              if (keyRows[value]) {
-                keyRows[value]++
-              } else {
-                keyRows[value] = 1
-              }
-            })
-          })
-        })
+        .then(loadReport)
     }
 
     vm.allIn = function () {
@@ -89,6 +77,27 @@ angular.module('reports')
 
     function getLastPage () {
       return Math.ceil(vm.pagination.totalItems / vm.pagination.limit)
+    }
+
+    function loadReport (response) {
+      vm.dailyDeliveries = response.results
+      vm.pagination.totalItems = response.total
+      vm.pagination.lastPage = isNaN(getLastPage()) ? getLastPage() : 1
+      formatReport()
+    }
+
+    function formatReport () {
+      angular.forEach(vm.dailyDeliveries, function (delivery) {
+        var value = ''
+        angular.forEach(keys, function (key) {
+          value += delivery[key]
+          if (keyRows[value]) {
+            keyRows[value]++
+          } else {
+            keyRows[value] = 1
+          }
+        })
+      })
     }
     vm.getReport()
   })

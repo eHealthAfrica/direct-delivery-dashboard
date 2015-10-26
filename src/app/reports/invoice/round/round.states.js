@@ -11,6 +11,9 @@ angular.module('reports')
       resolve: {
         drivers: function (driversService) {
           return driversService.all()
+        },
+        dailyDeliveries: function (reportsService, $stateParams) {
+          return reportsService.getDailyDeliveries($stateParams.id, {limit: 10})
         }
       }
     })
