@@ -39,7 +39,7 @@ angular.module('products')
         controller: 'ProductUpdateCtrl',
         controllerAs: 'productUpdateCtrl',
         resolve: {
-          product: function ($stateParams, productService, log) {
+          product: function () {
             return {doc_type: 'product'}
           },
           storageTypes: function (productService, log) {

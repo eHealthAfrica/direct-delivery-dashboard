@@ -1,6 +1,5 @@
-
 function(doc){
   if(doc.doc_type ==='product_presentation'){
-    emit(doc.productID);
+    emit(doc.code);
   }
 }
