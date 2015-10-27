@@ -7,11 +7,6 @@ angular.module('users')
       parent: 'index',
       url: '/users',
       templateUrl: 'app/users/users.html',
-      controller: function ($state) {
-        if ($state.current.name === 'users') {
-          $state.go('users.all')
-        }
-      },
       resolve: {
         authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser,
         authorization: ehaCouchDbAuthServiceProvider.requireAdminUser,
