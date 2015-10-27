@@ -58,7 +58,7 @@ angular.module('log')
       title: 'KPI record saved',
       message: 'KPI record was saved successfully!'
     },
-    locationSaveSuccess:{
+    locationSaveSuccess: {
       title: 'Locations saved',
       message: 'Location(s) saved successfully'
     }

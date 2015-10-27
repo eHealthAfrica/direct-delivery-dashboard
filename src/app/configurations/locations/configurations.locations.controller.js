@@ -20,9 +20,9 @@ angular.module('configurations.locations')
       console.log('saving...')
       var locations = []
       var results = vm.csv.result
-      console.log(results); return;
+
       for (var i in results) {
-        if(results[i].name){
+        if (results[i].name) {
           locations.push({
             name: results[i].name,
             _id: results[i].id,
@@ -39,7 +39,6 @@ angular.module('configurations.locations')
             level: results[i].level
           })
         }
-        
       }
 
       return locationService.saveMany(locations)
