@@ -12,9 +12,9 @@ angular.module('log')
       message: 'An error has occurred',
       remedy: 'Please try again'
     },
-    authInvalid: {
-      title: 'Authentication',
-      message: 'Invalid username or password',
+    loginFailed: {
+      title: 'Login failed',
+      message: 'We could not log you in',
       remedy: 'Please try again'
     },
     networkError: {
