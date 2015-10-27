@@ -40,15 +40,15 @@ angular.module('configurations.facilities')
             for (var r in response) {
               if ((utility.replaceAll(facility.zone, ' ', '-').toUpperCase() === utility.replaceAll(response[r].name, ' ', '-').toUpperCase()) && response[r].level === '3') {
                 facility.ancestors.push(response[r]._id)
-                zone = response[r].name.utility.replaceAll(' ', '_')
+                zone = utility.replaceAll(response[r].name,' ', '_')
               }
               if ((utility.replaceAll(facility.lganame, ' ', '-') === utility.replaceAll(response[r].name, ' ', '-')) && response[r].level === '4') {
                 facility.ancestors.push(response[r]._id)
-                lga = response[r].name.replace(' ', '_')
+                lga = utility.replaceAll(response[r].name, ' ', '_')
               }
               if ((utility.replaceAll(facility.wardname, ' ', '-') === utility.replaceAll(response[r].name, ' ', '-')) && response[r].level === '5') {
                 facility.ancestors.push(response[r]._id)
-                ward = response[r].name.replace(' ', '_')
+                ward = utility.replaceAll(response[r].name, ' ', '_')
               }
             }
             facility._id = (_id + '-' + [zone, lga, ward, utility.replaceAll(facility.primary_name, ' ', '_')].join('-')).toUpperCase()
@@ -91,5 +91,14 @@ angular.module('configurations.facilities')
       }
     }
 
-    vm.save = function () {}
+    vm.save = function () {
+      return locationService.saveMany(dataToSave)
+        .then(function (response) {
+          log.success('locationSaveSuccess', response);
+          return response;
+        })
+        .catch(function (err) {
+          log.error('locationSaveErr', err)
+        })
+    }
   })
