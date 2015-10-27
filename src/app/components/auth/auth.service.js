@@ -58,6 +58,4 @@ angular.module('auth')
 
       return prefix + stateCode.toLowerCase()
     }
-
-    this.getCurrentUser = ehaCouchDbAuthService.getCurrentUser
   })
