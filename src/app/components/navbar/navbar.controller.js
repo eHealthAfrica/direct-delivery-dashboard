@@ -17,7 +17,6 @@ angular.module('navbar')
     authService.getCurrentUser()
       .then(function (user) {
         vm.username = user.name
-        console.log(user)
       })
 
   })
