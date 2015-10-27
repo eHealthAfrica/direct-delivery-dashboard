@@ -18,7 +18,7 @@ angular.module('auth')
       return ehaCouchDbAuthService.signIn(params)
         .then(navbarService.updateItems.bind(null))
         .then(log.success.bind(log, 'authSuccess'))
-        .then($state.go.bind($state, 'home'))
+        .then($state.go.bind($state, 'home', { reload: true }))
         .catch(log.error.bind(log))
     }
 
@@ -56,4 +56,6 @@ angular.module('auth')
 
       return prefix + stateCode.toLowerCase()
     }
+
+    this.getCurrentUser = ehaCouchDbAuthService.getCurrentUser
   })

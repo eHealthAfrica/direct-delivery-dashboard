@@ -7,8 +7,17 @@ angular.module('navbar')
     navbarService,
     authService
   ) {
-    this.name = config.name
-    this.navbarState = navbarState
-    this.logout = authService.logout
-    this.toggleCollapse = navbarService.toggleCollapse
+    var vm = this
+    vm.name = config.name
+    vm.username = ''
+    vm.navbarState = navbarState
+    vm.logout = authService.logout
+    vm.toggleCollapse = navbarService.toggleCollapse
+
+    authService.getCurrentUser()
+      .then(function (user) {
+        vm.username = user.name
+        console.log(user)
+      })
+
   })
