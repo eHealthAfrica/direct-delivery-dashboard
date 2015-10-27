@@ -44,9 +44,10 @@ angular.module('navbar')
     this.updateItems = function (authentication) {
       if (authentication && authentication.ok) {
         navbarState.items = get(authentication)
-        return
+        return authentication
       }
       navbarState.items = []
+      return authentication
     }
 
     this.toggleCollapse = function () {
