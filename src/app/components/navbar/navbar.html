@@ -39,10 +39,19 @@
           ></a>
         </li>
       </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li>
-          <a ng-click="navbarCtrl.toggleCollapse(); navbarCtrl.logout()">Logout</a>
-        </li>
+      <ul class="nav navbar-nav navbar-right dropdown">
+        <div class="btn-group" dropdown is-open="navbarCtrl.isopen">
+          <button type="button" class="btn btn-default btn-lg dropdown-toggle" dropdown-toggle ng-disabled="disabled">
+            <i class="fa fa-user fa-lg"></i>
+            <span ng-bind="navbarCtrl.username"></span>
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li>
+              <a ng-click="navbarCtrl.toggleCollapse(); navbarCtrl.logout()">Logout</a>
+            </li>
+          </ul>
+        </div>
       </ul>
     </div>
   </div>
