@@ -19,7 +19,7 @@ angular.module('auth')
         .then(navbarService.updateItems.bind(null))
         .then(navbarService.updateUsername.bind(null))
         .then(log.success.bind(log, 'authSuccess'))
-        .then($state.go.bind($state, 'home', { reload: true }))
+        .then($state.go.bind($state, 'home'))
         .catch(log.error.bind(log))
     }
 
