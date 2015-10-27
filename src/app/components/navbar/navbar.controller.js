@@ -18,5 +18,4 @@ angular.module('navbar')
       .then(function (user) {
         vm.username = user.name
       })
-
   })
