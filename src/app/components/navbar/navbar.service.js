@@ -22,18 +22,11 @@ angular.module('navbar')
         return first
       }
       function transpose (state) {
-        var transposed = {
+        return {
           name: state.name,
-          label: state.data.label
+          label: state.data.label,
+          roles: state.data.roles || []
         }
-
-        var roles = state.data.roles || []
-        // Always authorise admins
-        // XXX: this can contain duplicates. Do a union instead
-        roles = roles.concat(config.roles.admin.roles)
-        transposed.roles = roles
-
-        return transposed
       }
       return states
         .filter(hasLabel)
