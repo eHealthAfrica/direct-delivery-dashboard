@@ -10,7 +10,7 @@ angular.module('allocations')
     }
 
     service.getAll = function () {
-      var view = 'allocations/assumptions'
+      var view = 'allocations/all'
       var params = {
         include_docs: true
       }
