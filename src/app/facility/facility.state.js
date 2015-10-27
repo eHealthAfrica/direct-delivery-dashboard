@@ -14,14 +14,13 @@ angular.module('facility')
       },
       templateUrl: 'app/facility/facility.html'
     })
-    .state('facility.layout', {
-      parent: 'facility',
-      views: {
-        menu: {
-          templateUrl: 'app/facility/menu/menu.html'
-        },
-        'facility.content': {}
-      }
-    })
+      .state('facility.layout', {
+        parent: 'facility',
+        views: {
+          menu: {
+            templateUrl: 'app/facility/menu/menu.html'
+          },
+          'facility.content': {}
+        }
+      })
   })
-

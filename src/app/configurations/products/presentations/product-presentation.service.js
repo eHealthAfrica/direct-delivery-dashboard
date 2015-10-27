@@ -8,17 +8,14 @@ angular.module('products')
       return dbService.get(id)
     }
 
-    _this.getAll = function (productID) {
+    _this.getAll = function () {
       var view = 'products/presentations'
       var opts = {
         include_docs: true
       }
-
       return dbService.getView(view, opts)
         .then(pouchUtil.pluckDocs)
     }
-
-    _this.getByBaseUOM = function () {} // will there ever be a use case for this?
 
     _this.save = function (doc) {
       var use = 'update'
@@ -29,7 +26,6 @@ angular.module('products')
         doc._id = doc.code
         use = 'insertWithId'
       }
-
       return dbService[use](doc)
     }
   })

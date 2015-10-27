@@ -2,10 +2,10 @@
 /* global describe, beforeEach, it, expect, inject, module, jasmine, spyOn */
 
 describe('calculations service', function () {
-  var locationService //eslint-disable-line
+  var locationService // eslint-disable-line
   var dbService
   var pouchUtil // eslint-disable-line
-  var assumptionService //eslint-disable-line
+  var assumptionService // eslint-disable-line
   var calculationService
   var facilities
 

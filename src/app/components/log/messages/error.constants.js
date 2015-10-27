@@ -111,5 +111,35 @@ angular.module('log')
       title: 'Logout failed',
       message: 'Could not logout',
       remedy: 'Please, try again and contact support if it persists'
+    },
+    plannerNotificationEmailErr: {
+      title: 'Email alert failed',
+      message: 'Could not send email alert due to unknown error',
+      remedy: 'Please, try again and contact support if it persists'
+    },
+    saveKPIError: {
+      title: 'Save KPI failed',
+      message: 'Could not save KPI record',
+      remedy: 'Please, try again and contact support if it persists'
+    },
+    assignKPIFromTemplateErr: {
+      title: 'Assign KPI error',
+      message: 'An unknown error occurred while filling in missing KPI',
+      remedy: 'Please, try again and contact support if it persists'
+    },
+    updateCCEStatusErr: {
+      title: 'CCE Status update error',
+      message: 'An unknown error occurred while updating CCE Status',
+      remedy: 'Please, try again and contact support if it persists'
+    },
+    invoiceDailyDeliveryErr: {
+      title: 'Daily Delivery Invoice error',
+      message: 'An unknown error occurred while loading Invoice for selected round',
+      remedy: 'Please, try again and contact support if it persists'
+    },
+    invoiceRoundListErr: {
+      title: 'Delivery Rounds error',
+      message: 'An unknown error occurred while loading delivery rounds',
+      remedy: 'Please, try again and contact support if it persists'
     }
   })

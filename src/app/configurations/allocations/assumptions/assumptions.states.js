@@ -27,7 +27,8 @@ angular.module('allocations')
         resolve: {
           assumptionList: function (assumptionService) {
             return assumptionService.getAll()
-              .catch(function () {
+              .catch(function (error) {
+                console.error(error)
                 return []
               })
           }
@@ -36,14 +37,13 @@ angular.module('allocations')
       .state('configurations.allocations.allocationView', {
         url: '/view/:id',
         parent: 'configurations.allocations',
-        templateUrl: 'app/configurations/allocations/assumptions/assumption.template/template.values/values.html',
+        templateUrl: 'app/configurations/allocations/assumptions/assumption-template/edit-template/edit-template.html',
         controller: 'AllocationValuesController',
         controllerAs: 'allocationValCtrl',
         resolve: {
           data: function ($stateParams, assumptionService) {
             return assumptionService.get($stateParams.id)
-              .catch(function (err) {
-                console.log(err)
+              .catch(function () {
                 return []
               })
           }

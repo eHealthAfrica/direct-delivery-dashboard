@@ -4,53 +4,87 @@
       <div class="col-sm-12">
         <div class="form-group">
 
-
           <div class="row">
-            <div class="col-md-3">
-              <label for="fromDate">Start</label>
+            <div class="col-md-2">
 
-              <div class="input-group">
-                <input id="fromDate" type="text" class="form-control input-lg"
-                       ng-model="packingRepCtrl.startFrom"
-                       datepicker-popup="{{packingRepCtrl.dateFormat}}"
-                       max-date="packingRepCtrl.stopOn"
-                       is-open="packingRepCtrl.start.opened"/>
+              <label>
+                <span ng-if="!packingRepCtrl.filterType">Filter By Round</span>
+                <span ng-if="packingRepCtrl.filterType">Filter By Date</span>
+              </label>
+              <div>
+                <label class="switch">
+                  <input ng-model="packingRepCtrl.filterType" type="checkbox">
+                  <i></i>
+                </label>
+              </div>
+
+            </div>
+            <div class="col-md-10">
+              <div class="row" ng-if="!packingRepCtrl.filterType">
+                <div class="col-md-3">
+                  <label for="fromDate">Start</label>
+
+                  <div class="input-group">
+                    <input id="fromDate" type="text" class="form-control input-lg"
+                           ng-model="packingRepCtrl.startFrom"
+                           datepicker-popup="{{packingRepCtrl.dateFormat}}"
+                           max-date="packingRepCtrl.stopOn"
+                           is-open="packingRepCtrl.start.opened"/>
                     <span class="input-group-btn">
                       <button type="button" class="btn btn-default btn-lg"
                               ng-click="packingRepCtrl.start.open($event)">
                         <i class="fa fa-calendar"></i>
                       </button>
                     </span>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <label for="fromDate">End</label>
-              <div class="input-group">
-                <input type="text" class="form-control input-lg"
-                       ng-model="packingRepCtrl.stopOn"
-                       min-date="packingRepCtrl.startFrom"
-                       datepicker-popup="{{packingRepCtrl.dateFormat}}"
-                       is-open="packingRepCtrl.stop.opened"/>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label for="fromDate">End</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control input-lg"
+                           ng-model="packingRepCtrl.stopOn"
+                           min-date="packingRepCtrl.startFrom"
+                           datepicker-popup="{{packingRepCtrl.dateFormat}}"
+                           is-open="packingRepCtrl.stop.opened"/>
                     <span class="input-group-btn">
                       <button type="button" class="btn btn-default btn-lg"
                               ng-click="packingRepCtrl.stop.open($event)">
                         <i class="fa fa-calendar"></i>
                       </button>
                     </span>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label></label>
+                  <div class="input-group">
+                    <button class="btn btn-primary btn-lg" type="button"
+                            ng-click="packingRepCtrl.getReport()">
+                      <i class="fa fa-search"></i>
+                      <span>Search</span>
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-
-            <div class="col-md-3">
-              <label></label>
-              <div class="input-group">
-                <button class="btn btn-primary btn-lg" type="button"
-                        ng-click="packingRepCtrl.getReport()">
-                  <i class="fa fa-search"></i>
-                  <span>Search</span>
-                </button>
+              <div class="row" ng-if="packingRepCtrl.filterType">
+                <div class="col-md-6">
+                  <label></label>
+                  <div class="form-group has-feedback">
+                    <div class="input-group">
+                      <input type="text" class="form-control input-lg filter" placeholder="Enter Round code"
+                             ng-model="packingRepCtrl.selectedRound"
+                             typeahead="roundCode for roundCode in packingRepCtrl.roundCodes">
+                  <span class="input-group-btn">
+                    <button class="btn btn-primary btn-lg" type="button" ng-click="packingRepCtrl.updateReport()">
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+          
         </div>
         <!-- end of date range selector -->
       </div>

@@ -25,7 +25,7 @@ angular.module('products')
         controller: 'ProductPresentationCtrl',
         controllerAs: 'productPresentationCtrl',
         resolve: {
-          presentations: function ($stateParams, productPresentationService, log) {
+          presentations: function ($stateParams, productPresentationService) {
             return productPresentationService.getAll()
               .catch(function () {
                 return []

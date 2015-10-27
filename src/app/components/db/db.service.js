@@ -5,9 +5,17 @@
  * @desc
  */
 angular.module('db')
-  .service('dbService', function (config, pouchDB) {
+  .service('dbService', function (config, pouchDB, $rootScope) {
     var _this = this
     var remoteDB = pouchDB(config.db)
+
+    function emitAuthError (err) {
+      var dbAuthErr = 'unauthorized'
+      if (err.status === 401 || err.name === dbAuthErr) {
+        $rootScope.$broadcast(dbAuthErr, err)
+      }
+      throw err
+    }
 
     _this.addTimeInfo = function (doc) {
       var now = new Date().toJSON()
@@ -29,23 +37,29 @@ angular.module('db')
      */
     _this.save = function (doc) {
       doc = _this.addTimeInfo(doc)
-      if (doc._id) {
-        return _this.update(doc)
-          .catch(function () {
-            return remoteDB.put(doc, doc._id)
-              .then(function (res) {
-                doc._id = res.id
-                doc._rev = res.rev
-                return doc
-              })
-          })
-      } else {
-        return _this.insert(doc)
+      function saveDoc (doc) {
+        if (doc._id) {
+          return _this.update(doc)
+            .catch(function () {
+              return remoteDB.put(doc, doc._id)
+                .then(function (res) {
+                  doc._id = res.id
+                  doc._rev = res.rev
+                  return doc
+                })
+            })
+        } else {
+          return _this.insert(doc)
+        }
       }
+
+      return saveDoc(doc)
+        .catch(emitAuthError)
     }
 
     _this.get = function (id) {
       return remoteDB.get(id)
+        .catch(emitAuthError)
     }
 
     _this.delete = function (doc) {
@@ -53,6 +67,7 @@ angular.module('db')
         .then(function (doc) {
           return remoteDB.remove(doc)
         })
+        .catch(emitAuthError)
     }
 
     /**
@@ -71,11 +86,13 @@ angular.module('db')
           doc._rev = res.rev
           return doc
         })
+        .catch(emitAuthError)
     }
 
     _this.insertWithId = function (doc, id) {
       doc = _this.addTimeInfo(doc)
       return remoteDB.put(doc, id)
+        .catch(emitAuthError)
     }
 
     /**
@@ -97,17 +114,20 @@ angular.module('db')
               return doc
             })
         })
+        .catch(emitAuthError)
     }
 
     _this.getView = function (view, options) {
       return remoteDB.query(view, options)
+        .catch(emitAuthError)
     }
 
     _this.saveDocs = function (docs, options) {
-      var opt = { all_or_nothing: true }
+      var opt = {all_or_nothing: true}
       if (options) {
         opt = options
       }
       return remoteDB.bulkDocs(docs, opt)
+        .catch(emitAuthError)
     }
   })

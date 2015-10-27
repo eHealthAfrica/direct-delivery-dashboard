@@ -19,12 +19,10 @@ describe('reportsService', function () {
   it('should return delivery rounds correctly structured', function (done) {
     reportsService.getDeliveryRounds()
       .then(function (rounds) {
-        expect(rounds.length).toEqual(deliveryRounds.length)
-
-        for (var i = 0; i < rounds.length; i++) {
-          var round = rounds[i]
+        expect(rounds.results.length).toEqual(deliveryRounds.length)
+        for (var i = 0; i < rounds.results.length; i++) {
+          var round = rounds.results[i]
           var mock = deliveryRounds[i]
-
           expect(round.id).toEqual(mock.id)
           expect(round.state).toEqual(mock.key[0])
           expect(round.startDate).toEqual(new Date(mock.key[1]))
@@ -41,12 +39,10 @@ describe('reportsService', function () {
   it('should return daily deliveries correctly structured', function (done) {
     reportsService.getDailyDeliveries()
       .then(function (deliveries) {
-        expect(deliveries.length).toEqual(dailyDeliveries.length)
-
-        for (var i = 0; i < deliveries.length; i++) {
-          var delivery = deliveries[i]
+        expect(deliveries.results.length).toEqual(dailyDeliveries.length)
+        for (var i = 0; i < deliveries.results.length; i++) {
+          var delivery = deliveries.results[i]
           var mock = dailyDeliveries[i]
-
           expect(delivery.id).toEqual(mock.id)
           expect(delivery.driverID).toEqual(mock.key[1])
           expect(delivery.date).toEqual(new Date(mock.key[2]))
@@ -56,7 +52,6 @@ describe('reportsService', function () {
           expect(delivery.signature).toEqual(mock.value.signature)
           expect(delivery.facility).toEqual(mock.value.facility)
         }
-
         done()
       })
 

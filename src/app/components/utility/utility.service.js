@@ -58,6 +58,11 @@ angular.module('utility')
       })
       return hash
     }
+
+    // Useful when writing in a functional style
+    this.returnEmptyList = function () {
+      return []
+    }
     this.escapeRegExp = function escapeRegExp (string) {
       return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1')
     }

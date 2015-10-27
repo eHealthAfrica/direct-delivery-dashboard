@@ -2,8 +2,8 @@
 
 angular.module('planning')
   .controller('ScheduleRoundCtrl', function (deliveryRound, $state, dailyDeliveries,
-    scheduleService, planningService, log,
-    $modal, utility, $q, DELIVERY_STATUS) {
+    scheduleService, planningService, log, config,
+    $modal, utility, $q, DELIVERY_STATUS, mailerService, driversService) {
     var vm = this
     vm.isSavingList = {}
     vm.deliveryStatuses = DELIVERY_STATUS
@@ -20,14 +20,16 @@ angular.module('planning')
       {value: 10, text: '10'}
     ]
 
-    // TODO: set to drivers list pulled from database
-    vm.drivers = [
-      {value: 'bashir@example.com', text: 'bashir@example.com'},
-      {value: 'abdullahi@example.com', text: 'abdullahi@example.com'},
-      {value: 'khalil@example.com', text: 'khalil@example.com'},
-      {value: 'umar@example.com', text: 'umar@example.com'}
-    ]
-
+    var STATE = 'KN' // TODO: get state from current user profile
+    driversService.getByState(STATE)
+      .then(function (response) {
+        vm.drivers = response.map(function (row) {
+          return {
+            value: row._id,
+            text: row._id
+          }
+        })
+      })
     vm.deliveryRound = deliveryRound
     vm.deliveriesHash = {}
     scheduleService.flatten(dailyDeliveries)
@@ -47,9 +49,49 @@ angular.module('planning')
     vm.exportForRouting = exportData.rows
     vm.exportHeader = exportData.headers
 
+    function generateMsgBody (round) {
+      return scheduleService.getRoundEmailTemplate(round)
+    }
+
+    function emailNotification (round) {
+      var mailConfig = {
+        apiUrl: config.mailerAPI,
+        apiKey: config.apiKey
+      }
+      mailerService.setConfig(mailConfig)
+      var email = mailerService.Email()
+      email.setSender(config.senderEmail, config.senderName)
+
+      return generateMsgBody(round)
+        .then(function (result) {
+          email.setSubject(result.subject)
+          email.setHTML(result.msg)
+          return email
+        })
+        .then(function () {
+          return scheduleService.getAlertReceiversForRound(round)
+        })
+        .then(function (result) {
+          email.addRecipients(result.emails)
+          return email
+        })
+        .then(function () {
+          return mailerService.send(email)
+        }).catch(function (err) {
+          log.success('notificationError', err)
+        })
+    }
+
     vm.completePlanning = function () {
       planningService.completePlanning(vm.deliveryRound)
         .then(function () {
+          emailNotification(vm.deliveryRound)
+            .then(function () {
+              log.success('plannerNotificationEmailSuccess')
+            })
+            .catch(function (err) {
+              log.error('plannerNotificationEmailErr', err)
+            })
           log.success('completePlanningSuccess')
           $state.go('planning.deliveryRound')
         })
@@ -125,7 +167,7 @@ angular.module('planning')
               log.success('schedulesSaved', res)
               // TODO: think of better way to refresh all data after changes though this
               // seems like the easiest and the best chance of having latest server copy while editing
-              // but might be have performance issues.
+              // but might be having performance issues.
               $state.go('planning.schedule', {roundId: vm.deliveryRound._id}, {
                 reload: true,
                 inherit: false,

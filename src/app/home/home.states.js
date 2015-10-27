@@ -36,7 +36,7 @@ angular.module('home')
       },
       data: {
         label: 'Home',
-        roles: config.admin.roles.concat(config.user.roles)
+        roles: config.roles.admin.roles.concat(config.roles.user.roles)
       }
     })
   })

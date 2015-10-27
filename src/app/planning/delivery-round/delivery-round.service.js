@@ -1,7 +1,17 @@
 'use strict'
 
 angular.module('planning')
-  .service('deliveryRoundService', function (dbService, utility, pouchUtil) {
+  .service('deliveryRoundService', function (
+    dbService,
+    utility,
+    pouchUtil,
+    authService,
+    locationService,
+    config,
+    log,
+    planningService,
+    ehaCouchDbAuthService
+  ) {
     var _this = this
     var successTag = 'success'
     var firstAttempt = '1st'
@@ -283,5 +293,35 @@ angular.module('planning')
             roundCodes: rounds
           }
         })
+    }
+
+    this.getStateAdminLevels = function () {
+      function getLocationsByUser (user) {
+        if (user.isAdmin()) {
+          return locationService.getLocationsByLevel(
+            config.deliveryRoundAdminLevel
+          )
+        }
+        var stateIds = authService.authorisedStates(user)
+        return locationService.getLocationsByLevelAndId(
+          config.deliveryRoundAdminLevel,
+          stateIds
+        )
+      }
+
+      return ehaCouchDbAuthService.getCurrentUser()
+        .then(getLocationsByUser)
+        .catch(utility.returnEmptyList)
+    }
+
+    this.getDeliveryRound = function (id) {
+      if (!angular.isString(id)) {
+        return
+      }
+      function handleError (err) {
+        log.error('deliveryRoundNotFound', err)
+      }
+      return planningService.getByRoundId(id)
+        .catch(handleError)
     }
   })
