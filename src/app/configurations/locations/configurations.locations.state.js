@@ -20,4 +20,10 @@ angular.module('configurations.locations')
       controller: 'ConfigurationsLocationsLgasCtrl as configLocationCtrl',
       templateUrl: 'app/configurations/locations/lgas/index.html'
     })
+    .state('configurations.locations.wards', {
+      parent: 'configurations.layout',
+      url : '/wards',
+      controller: 'ConfigurationsLocationsWardsCtrl as configLocationCtrl',
+      templateUrl: 'app/configurations/locations/wards/index.html'
+    })
   })
