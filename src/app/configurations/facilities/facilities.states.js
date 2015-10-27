@@ -14,15 +14,15 @@ angular.module('configurations.facilities')
         }
       }
     })
-    .state('configurations.facilities.list', {
-      parent: 'configurations.facilities',
-      url: '/list',
-      templateUrl: 'app/configurations/facilities/list/list.html'
-    })
-    .state('configurations.facilities.uploader', {
-      parent: 'configurations.facilities',
-      url: '/upload',
-      controller: 'FacilityUploadCtrl as facilityUploadCtrl',
-      templateUrl: 'app/configurations/facilities/upload/upload.html'
-    })
+      .state('configurations.facilities.list', {
+        parent: 'configurations.facilities',
+        url: '/list',
+        templateUrl: 'app/configurations/facilities/list/list.html'
+      })
+      .state('configurations.facilities.uploader', {
+        parent: 'configurations.facilities',
+        url: '/upload',
+        controller: 'FacilityUploadCtrl as facilityUploadCtrl',
+        templateUrl: 'app/configurations/facilities/upload/upload.html'
+      })
   })
