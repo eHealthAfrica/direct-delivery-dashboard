@@ -50,6 +50,15 @@ angular.module('navbar')
       return authentication
     }
 
+    this.updateUsername = function (auth) {
+      if (auth && auth.userCtx && auth.userCtx.name) {
+        navbarState.username = auth.userCtx.name
+        return auth
+      }
+      navbarState.username = ''
+      return auth
+    }
+
     this.toggleCollapse = function () {
       // Bootstrap small screen breakpoint
       if ($window.innerWidth < 768) {

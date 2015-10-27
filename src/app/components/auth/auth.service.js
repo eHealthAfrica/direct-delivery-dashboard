@@ -17,6 +17,7 @@ angular.module('auth')
 
       return ehaCouchDbAuthService.signIn(params)
         .then(navbarService.updateItems.bind(null))
+        .then(navbarService.updateUsername.bind(null))
         .then(log.success.bind(log, 'authSuccess'))
         .then($state.go.bind($state, 'home', { reload: true }))
         .catch(log.error.bind(log))
@@ -25,6 +26,7 @@ angular.module('auth')
     this.logout = function () {
       return ehaCouchDbAuthService.signOut()
         .then(navbarService.updateItems.bind())
+        .then(navbarService.updateUsername.bind())
         .then($state.go.bind($state, 'login'))
         .catch(log.error.bind(log, 'logoutFailed'))
     }
