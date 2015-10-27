@@ -49,42 +49,43 @@ angular.module('planning')
     vm.exportForRouting = exportData.rows
     vm.exportHeader = exportData.headers
 
-    function generateMsgBody (roundId) {
-      // TODO: fetch message from DB, to make it easy to change and config.
-      return [
-        '<p>Hi</p>',
-        '<p>The locations have been chosen for',
-        roundId,
-        ', please route.</p>',
-        '<p>Thanks</p>'
-      ].join(' ')
+    function generateMsgBody (round) {
+      return scheduleService.getRoundEmailTemplate(round)
     }
 
-    function emailNotification (roundId) {
+    function emailNotification (round) {
       var mailConfig = {
         apiUrl: config.mailerAPI,
         apiKey: config.apiKey
       }
       mailerService.setConfig(mailConfig)
       var email = mailerService.Email()
-      var subject = ['[VDD]', roundId, 'is ready to edit'].join(' ')
-      email.setSubject(subject)
       email.setSender(config.senderEmail, config.senderName)
-      email.setHTML(generateMsgBody(roundId))
-      // TODO: once you confirm list of recipient, move to a central location DB or attach to delivery round.
-      var recipients = {
-        'email': 'jideobi.ofomah@ehealthnigeria.org',
-        'name': 'Jideobi',
-        'type': 'to'
-      }
-      email.addRecipient(recipients)
-      return mailerService.send(email)
+
+      return generateMsgBody(round)
+        .then(function (result) {
+          email.setSubject(result.subject)
+          email.setHTML(result.msg)
+          return email
+        })
+        .then(function () {
+          return scheduleService.getAlertReceiversForRound(round)
+        })
+        .then(function (result) {
+          email.addRecipients(result.emails)
+          return email
+        })
+        .then(function () {
+          return mailerService.send(email)
+        }).catch(function (err) {
+          log.success('notificationError', err)
+        })
     }
 
     vm.completePlanning = function () {
       planningService.completePlanning(vm.deliveryRound)
         .then(function () {
-          emailNotification(vm.deliveryRound._id)
+          emailNotification(vm.deliveryRound)
             .then(function () {
               log.success('plannerNotificationEmailSuccess')
             })

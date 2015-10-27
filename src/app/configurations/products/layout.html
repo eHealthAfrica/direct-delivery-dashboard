@@ -1,8 +1,14 @@
 <div class="panel panel-default">
   <div class="panel-heading clearfix">
     <div class="btn-group pull-right">
-      <button class='btn btn-default' ui-sref="configurations.products"><i class="fa fa-backward"></i> Back to List</button>
-      <button class='btn btn-info' ui-sref="configurations.products.edit({code:product._id})"><i class="fa fa-wrench"></i> Edit Product</button>
+      <button class='btn btn-default btn-lg' ui-sref="configurations.products">
+        <i class="fa fa-backward"></i>
+        <span>Back to List</span>
+      </button>
+      <button class='btn btn-info btn-lg' ui-sref="configurations.products.edit({ code: product._id})">
+        <i class="fa fa-plus"></i>
+        <span>Add New Product</span>
+      </button>
     </div>
   </div>
   <div class="panel-body">

@@ -127,6 +127,21 @@ angular.module('log')
       message: 'An unknown error occurred while filling in missing KPI',
       remedy: 'Please, try again and contact support if it persists'
     },
+    updateCCEStatusErr: {
+      title: 'CCE Status update error',
+      message: 'An unknown error occurred while updating CCE Status',
+      remedy: 'Please, try again and contact support if it persists'
+    },
+    invoiceDailyDeliveryErr: {
+      title: 'Daily Delivery Invoice error',
+      message: 'An unknown error occurred while loading Invoice for selected round',
+      remedy: 'Please, try again and contact support if it persists'
+    },
+    invoiceRoundListErr: {
+      title: 'Delivery Rounds error',
+      message: 'An unknown error occurred while loading delivery rounds',
+      remedy: 'Please, try again and contact support if it persists'
+    },
     InvalidFileImport: {
       title: 'File not Uploaded',
       message: 'An unknown error occurred while uploading file',

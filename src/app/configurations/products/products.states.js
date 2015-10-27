@@ -25,8 +25,8 @@ angular.module('products')
         controller: 'ProductPresentationCtrl',
         controllerAs: 'productPresentationCtrl',
         resolve: {
-          presentations: function ($stateParams, productPresentationService, log) {
-            return productPresentationService.getByProduct($stateParams['code'])
+          presentations: function ($stateParams, productPresentationService) {
+            return productPresentationService.getAll()
               .catch(function () {
                 return []
               })

@@ -101,7 +101,6 @@ angular.module('allocations')
               fillwithTemplate(facilities[v], service.template)
             }
           }
-          console.log(facilities)
           return facilities
         })
     }

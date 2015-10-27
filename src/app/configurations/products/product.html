@@ -29,8 +29,14 @@
           <td ng-bind="product.baseUOM"></td>
           <td ng-bind="product.storageID"></td>
           <td>
-            <a class="btn btn-default" ui-sref="configurations.products.edit({code:product._id})"><i class="fa fa-wrench"></i> Edit</a>
-             <a class="btn btn-info" ui-sref="configurations.products.view({code:product._id})"><i class="fa fa-eye"></i> View</a>
+            <a class="btn btn-default"
+               ui-sref="configurations.products.edit({code:product._id})">
+              <i class="fa fa-wrench"></i>
+              <span>Edit</span>
+            </a>
+             <a class="btn btn-info"
+                ui-sref="configurations.products.view({code:product._id})">
+               <i class="fa fa-eye"></i> View</a>
           </td>
         </tr>
       </tbody>
