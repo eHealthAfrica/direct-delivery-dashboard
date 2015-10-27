@@ -7,11 +7,6 @@ angular.module('configurations')
         parent: 'index',
         url: '/reports',
         templateUrl: 'app/reports/index.html',
-        controller: function ($state) {
-          if ($state.current.name === 'reports') {
-            $state.go('reports.layout.delivery')
-          }
-        },
         data: {
           label: 'Reports',
           roles: [
