@@ -41,13 +41,13 @@ angular.module('navbar')
         .map(transpose)
     }
 
-    this.updateItems = function (authentication) {
-      if (authentication && authentication.ok) {
-        navbarState.items = get(authentication)
-        return authentication
+    this.updateItems = function (auth) {
+      if (auth && auth.ok) {
+        navbarState.items = get(auth)
+        return auth
       }
       navbarState.items = []
-      return authentication
+      return auth
     }
 
     this.updateUsername = function (auth) {
