@@ -58,4 +58,10 @@ angular.module('utility')
       })
       return hash
     }
+    this.escapeRegExp = function escapeRegExp(string) {
+      return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+    }
+    this.replaceAll = function(string, find, replace){
+      return string.replace(new RegExp(this.escapeRegExp(find), 'g'), replace);
+    }
   })

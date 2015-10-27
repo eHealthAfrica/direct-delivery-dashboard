@@ -1,12 +1,12 @@
 angular.module('configurations.facilities')
-	.controller('FacilityUploadCtrl', function(log, locationService){
+	.controller('FacilityUploadCtrl', function(log, locationService, utility){
 		var vm = this
     vm.csv = {
       header: true,
       separator: ','
     }
     vm.state
-    vm.dataToSave = []
+    var dataToSave = []
     var ancestorsFetched = false
     
     
@@ -26,24 +26,44 @@ angular.module('configurations.facilities')
       ]
        return locationService.getByLevelAndAncestor(keys)
         .then(function(response){
-          var p = 0;
+          var p = 0, zone, lga, ward, _id;
           for(var i in vm.csv.result){
             var facility = vm.csv.result[i];
-            facility.ancestor = ['NG', 'NW'];
-            facility.ancestor.push(vm.state);
+            facility.ancestors = ['NG', 'NW'];
+            facility.ancestors.push(vm.state);
+            _id = facility.ancestors.join('-');
+            
             for(var r in response){
-              
-              if(facility.zone.replace(' ', '-') === response[r].name.replace(' ', '-')){
-                facility.ancestor.push(response[r]._id);
+              if((utility.replaceAll(facility.zone, ' ', '-').toUpperCase() === utility.replaceAll(response[r].name, ' ', '-').toUpperCase()) && response[r].level === '3' ){
+                facility.ancestors.push(response[r]._id);
+                zone = response[r].name.utility.replaceAll(' ', '_')
               }
-              if(facility.lganame.replace(' ', '-') === response[r].name.replace(' ', '-')){
-                facility.ancestor.push(response[r]._id);
+              if((utility.replaceAll(facility.lganame, ' ', '-') === utility.replaceAll(response[r].name, ' ', '-')) && response[r].level === '4' ){
+                facility.ancestors.push(response[r]._id);
+                lga = response[r].name.replace(' ', '_')
               }
-              if(facility.wardname.replace(' ', '-') === response[r].name.replace(' ', '-')){
-                facility.ancestor.push(response[r]._id);
+              if((utility.replaceAll(facility.wardname, ' ', '-') === utility.replaceAll(response[r].name, ' ', '-')) && response[r].level === '5' ){
+                facility.ancestors.push(response[r]._id);
+                ward = response[r].name.replace(' ', '_');
               }
             }
-            
+            facility._id = (_id + '-' +[zone, lga, ward, utility.replaceAll(facility.primary_name, ' ', '_')].join('-')).toUpperCase();
+            console.info(facility);
+            dataToSave.push({
+              ancestors: facility.ancestors,
+              osmId: facility.id,
+              ownership: facility.ownership,
+              latitude: facility.latitude,
+              longitude: facility.longitude,
+              category: facility.category,
+              first_contact_name: '',
+              first_contact_phone: '',
+              first_contact_email: '',
+              second_contact_name: '',
+              second_contact_phone: '',
+              second_contact_email: '',
+            });
+            return;
           }
           
         })
