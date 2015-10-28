@@ -1,19 +1,23 @@
-<table class="table table-bordered">
-  <tr>
-    <th>Facility</th>
-    <th ng-repeat="product in calculationsController.getProductKeys() track by $index" ng-bind="product"></th>
-    <th>Edit</th>
-  </tr>
-  <tr ng-repeat="allocation in calculationsController.renderedData track by $index">
-    <td >
-      <a href ng-bind="allocation.name"></a>
-    </td>
-    <td ng-repeat="product in allocation[calculationsController.activeView]">
-      {{product}}
-      <span ng-show="calculationsController.activeView ==='coverage' || calculationsController.activeView === 'buffer'">
-        %
-      </span>
-    </td>
-    <td><a href ng-click="calculationsController.addCustomAssumption(allocation)"><i class="fa fa-wrench"></i> Customize</a></td>
-  </tr>
-</table>
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <tr>
+      <th>Facility</th>
+      <th ng-repeat="p in calculationsController.productList track by $index" ng-bind="p"></th>
+      <th>Edit</th>
+    </tr>
+    <tr ng-repeat="allocation in calculationsController.renderedData track by $index">
+      <td >
+        <a href ng-bind="allocation.name"></a>
+      </td>
+      <td ng-repeat="p in calculationsController.productList">
+        {{allocation[calculationsController.activeView][p]}}
+      <span ng-show="calculationsController.activeView ==='coverage' || calculationsController.activeView === 'buffer'">%</span>
+      </td>
+      <td>
+        <a href ng-if="!allocation.customTemplate" ng-click="calculationsController.addCustomAssumption(allocation)"><i class="fa fa-wrench"></i> Customize</a>
+        <a href ng-if="allocation.customTemplate" ><i class="fa fa-edit"></i>Edit</a>
+      </td>
+    </tr>
+  </table>
+
+</div>

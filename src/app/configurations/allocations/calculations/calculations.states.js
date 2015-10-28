@@ -12,6 +12,11 @@ angular.module('allocations')
         resolve: {
           products: function (productService) {
             return productService.getAll()
+              .then(function (productList) {
+                return productList.map(function (item) {
+                  return item._id
+                })
+              })
               .catch(function () {
                 return []
               })
@@ -23,7 +28,7 @@ angular.module('allocations')
               })
           },
           assumptionList: function (assumptionService) {
-            return assumptionService.getAll()
+            return assumptionService.getAssumptions()
               .catch(function () {
                 return []
               })

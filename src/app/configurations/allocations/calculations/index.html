@@ -57,5 +57,5 @@
      </div>
    </form>
 <hr/>
- <div ng-if=" !(calculationsController.renderedData.length > 0)"><p>No data found</p></div>
+ <div ng-show=" !(calculationsController.renderedData.length > 0)"><p class="alert alert-info"><i class="fa fa-lg fa-info-circle"></i> No data found</p></div>
  <div ng-include="'app/configurations/allocations/calculations/partials/pv.html'"  ng-if="calculationsController.renderedData.length > 0"></div>

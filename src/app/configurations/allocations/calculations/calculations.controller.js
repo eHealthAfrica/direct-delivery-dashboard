@@ -35,11 +35,6 @@ angular.module('allocations')
       vm.switchLocationState(vm.selectedState)
     }
 
-    vm.getProductKeys = function () {
-      var keys = vm.selectedTemplate && vm.selectedTemplate.products ? Object.keys(vm.selectedTemplate.products) : []
-      return keys
-    }
-
     function findLga (state) {
       var keys = []
       keys.push(['4', state])
@@ -54,7 +49,7 @@ angular.module('allocations')
         })
     }
     function resetView (facilities) {
-      return calculationService[viewMap[vm.activeView]](facilities)
+      return calculationService[viewMap[vm.activeView]](facilities, vm.productList)
         .then(function (response) {
           vm.renderedData = response
           return response
