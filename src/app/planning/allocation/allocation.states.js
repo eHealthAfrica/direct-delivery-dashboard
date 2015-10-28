@@ -8,10 +8,8 @@ angular.module('planning')
       controller: 'DeliveryAllocationCtrl',
       controllerAs: 'daCtrl',
       resolve: {
-        authorization: function ($q, authService, $stateParams) {
-          var role = authService.roundToStateRole($stateParams.roundId)
-          var auth = authProvider.requireUserWithRoles([role])
-          return auth(authService, $q)
+        authorization: function (authService, $stateParams) {
+          return authService.requireStateRole($stateParams.roundId, authProvider)
         },
         presentations: function (productPresentationService, log) {
           return productPresentationService.getAll()

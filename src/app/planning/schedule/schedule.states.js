@@ -8,10 +8,8 @@ angular.module('planning')
       controller: 'ScheduleRoundCtrl',
       controllerAs: 'srCtrl',
       resolve: {
-        authorization: function ($q, authService, $stateParams) {
-          var role = authService.roundToStateRole($stateParams.roundId)
-          var auth = authProvider.requireUserWithRoles([role])
-          return auth(authService, $q)
+        authorization: function (authService, $stateParams) {
+          return authService.requireStateRole($stateParams.roundId, authProvider)
         },
         deliveryRound: function (log, planningService, $stateParams) {
           function handleError (err) {

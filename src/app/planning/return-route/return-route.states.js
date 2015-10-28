@@ -1,17 +1,18 @@
 'use strict'
 
 angular.module('planning')
-  .config(function ($stateProvider, authProvider) {
+  .config(function (
+    $stateProvider,
+    authProvider
+  ) {
     $stateProvider.state('planning.returnRoute', {
       url: '/return-route/:roundId',
       templateUrl: 'app/planning/return-route/index.html',
       controller: 'ReturnRouteCtrl',
       controllerAs: 'rrCtrl',
       resolve: {
-        authorization: function ($q, authService, $stateParams) {
-          var role = authService.roundToStateRole($stateParams.roundId)
-          var auth = authProvider.requireUserWithRoles([role])
-          return auth(authService, $q)
+        authorization: function (authService, $stateParams) {
+          return authService.requireStateRole($stateParams.roundId, authProvider)
         },
         deliveryRound: function (log, planningService, $stateParams) {
           function handleError (err) {

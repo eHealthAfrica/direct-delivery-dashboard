@@ -59,7 +59,7 @@ angular.module('auth')
         .map(format)
     }
 
-    this.roundToStateRole = function (roundId) {
+    function roundToStateRole (roundId) {
       // TODO: get this from role lib
       var prefix = 'direct_delivery_dashboard_state_'
 
@@ -67,5 +67,14 @@ angular.module('auth')
       var stateCode = roundId.split('-')[0]
 
       return prefix + stateCode.toLowerCase()
+    }
+
+    this.requireStateRole = function (roundId, authProvider) {
+      var role = roundToStateRole(roundId)
+      if (!role) {
+        return $q.reject('Could not determine state role from round')
+      }
+      var authFun = authProvider.requireUserWithRoles([role])
+      return authFun(ehaCouchDbAuthService, $q)
     }
   })
