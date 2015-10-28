@@ -21,8 +21,8 @@ angular.module('directDeliveryDashboard')
             controller: 'NavbarCtrl',
             controllerAs: 'navbarCtrl',
             resolve: {
-              authentication: function ($q, ehaCouchDbAuthService, navbarService) {
-                return ehaCouchDbAuthService.getCurrentUser()
+              authentication: function ($q, authService, navbarService) {
+                return authService.getCurrentUser()
                   .then(navbarService.updateItems.bind(null))
                   .catch($q.when.bind($q))
               }

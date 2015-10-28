@@ -1,17 +1,17 @@
 'use strict'
 
 angular.module('planning')
-  .config(function ($stateProvider, ehaCouchDbAuthServiceProvider) {
+  .config(function ($stateProvider, authProvider) {
     $stateProvider.state('planning.schedule', {
       url: '/schedule/:roundId',
       templateUrl: 'app/planning/schedule/index.html',
       controller: 'ScheduleRoundCtrl',
       controllerAs: 'srCtrl',
       resolve: {
-        authorization: function ($q, ehaCouchDbAuthService, authService, $stateParams) {
+        authorization: function ($q, authService, $stateParams) {
           var role = authService.roundToStateRole($stateParams.roundId)
-          var auth = ehaCouchDbAuthServiceProvider.requireUserWithRoles([role])
-          return auth(ehaCouchDbAuthService, $q)
+          var auth = authProvider.requireUserWithRoles([role])
+          return auth(authService, $q)
         },
         deliveryRound: function (log, planningService, $stateParams) {
           function handleError (err) {

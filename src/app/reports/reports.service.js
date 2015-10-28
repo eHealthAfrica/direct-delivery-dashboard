@@ -7,8 +7,7 @@ angular.module('reports')
     deliveryRoundService,
     locationService,
     pouchUtil,
-    authService,
-    ehaCouchDbAuthService
+    authService
   ) {
     var _this = this
 
@@ -185,7 +184,7 @@ angular.module('reports')
           return []
         }
 
-        return ehaCouchDbAuthService.getCurrentUser()
+        return authService.getCurrentUser()
           .then(branchByUser.bind(null))
       }
 

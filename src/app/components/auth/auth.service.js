@@ -9,6 +9,8 @@ angular.module('auth')
     navbarService,
     ehaCouchDbAuthService
   ) {
+    this.getCurrentUser = ehaCouchDbAuthService.getCurrentUser
+
     this.login = function (username, password) {
       var params = {
         username: username,

@@ -1,17 +1,17 @@
 'use strict'
 
 angular.module('planning')
-  .config(function ($stateProvider, ehaCouchDbAuthServiceProvider) {
+  .config(function ($stateProvider, authProvider) {
     $stateProvider.state('planning.allocation', {
       url: '/allocation/:roundId',
       templateUrl: 'app/planning/allocation/index.html',
       controller: 'DeliveryAllocationCtrl',
       controllerAs: 'daCtrl',
       resolve: {
-        authorization: function ($q, ehaCouchDbAuthService, authService, $stateParams) {
+        authorization: function ($q, authService, $stateParams) {
           var role = authService.roundToStateRole($stateParams.roundId)
-          var auth = ehaCouchDbAuthServiceProvider.requireUserWithRoles([role])
-          return auth(ehaCouchDbAuthService, $q)
+          var auth = authProvider.requireUserWithRoles([role])
+          return auth(authService, $q)
         },
         presentations: function (productPresentationService, log) {
           return productPresentationService.getAll()

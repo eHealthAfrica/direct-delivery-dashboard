@@ -1,7 +1,10 @@
 'use strict'
 
 angular.module('configurations')
-  .config(function ($stateProvider, ehaCouchDbAuthServiceProvider) {
+  .config(function (
+    $stateProvider,
+    authProvider
+  ) {
     $stateProvider.state('configurations', {
       parent: 'index',
       // abstract: true,
@@ -19,8 +22,8 @@ angular.module('configurations')
         ]
       },
       resolve: {
-        authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser,
-        authorization: ehaCouchDbAuthServiceProvider.requireAdminUser
+        authentication: authProvider.requireAuthenticatedUser,
+        authorization: authProvider.requireAdminUser
       }
     })
       .state('configurations.layout', {
