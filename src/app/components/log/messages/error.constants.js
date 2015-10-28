@@ -12,9 +12,9 @@ angular.module('log')
       message: 'An error has occurred',
       remedy: 'Please try again'
     },
-    authInvalid: {
-      title: 'Authentication',
-      message: 'Invalid username or password',
+    loginFailed: {
+      title: 'Login failed',
+      message: 'We could not log you in',
       remedy: 'Please try again'
     },
     networkError: {
@@ -130,6 +130,36 @@ angular.module('log')
     updateCCEStatusErr: {
       title: 'CCE Status update error',
       message: 'An unknown error occurred while updating CCE Status',
+      remedy: 'Please, try again and contact support if it persists'
+    },
+    locationLoadErr: {
+      title: 'Location load error',
+      message: 'An unknown error occurred while locations',
+      remedy: 'Please, try again and contact support if it persists'
+    },
+    userLoadErr: {
+      title: 'User Load error',
+      message: 'An unknown error occurred while loading users',
+      remedy: 'Please, try again and contact support if it persists'
+    },
+    invoiceDailyDeliveryErr: {
+      title: 'Daily Delivery Invoice error',
+      message: 'An unknown error occurred while loading Invoice for selected round',
+      remedy: 'Please, try again and contact support if it persists'
+    },
+    invoiceRoundListErr: {
+      title: 'Delivery Rounds error',
+      message: 'An unknown error occurred while loading delivery rounds',
+      remedy: 'Please, try again and contact support if it persists'
+    },
+    InvalidFileImport: {
+      title: 'File not Uploaded',
+      message: 'An unknown error occurred while uploading file',
+      remedy: 'Please, check the file, make corrections and try again and contact support if it persists'
+    },
+    locationSaveErr: {
+      title: 'Saving location failed',
+      message: 'Error occurred while saving locations',
       remedy: 'Please, try again and contact support if it persists'
     }
   })

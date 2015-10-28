@@ -9,8 +9,12 @@ angular.module('reports')
       controller: 'ReportsAllCtrl',
       controllerAs: 'reportsAllCtrl',
       resolve: {
-        deliveryRounds: function (reportsService) {
+        deliveryRounds: function (reportsService, log) {
           return reportsService.getDeliveryRounds()
+            .catch(function (reason) {
+              log.error('invoiceRoundListErr', reason)
+              return {}
+            })
         }
       }
     })

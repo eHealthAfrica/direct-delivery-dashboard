@@ -7,12 +7,10 @@ angular.module('users')
       parent: 'index',
       url: '/users',
       templateUrl: 'app/users/users.html',
-      controller: 'UsersCtrl',
-      controllerAs: 'usersCtrl',
       resolve: {
         authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser,
         authorization: ehaCouchDbAuthServiceProvider.requireAdminUser,
-        users: function (usersService) {
+        users: function (usersService, log) {
           return usersService.all()
             .then(function (usersObj) {
               var users = []
@@ -22,6 +20,10 @@ angular.module('users')
               })
 
               return users
+            })
+            .catch(function (reason) {
+              log.error('userLoadErr')
+              return []
             })
         }
       },

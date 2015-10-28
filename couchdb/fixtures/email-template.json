@@ -1,0 +1,11 @@
+{
+  "_id": "4cd167a74113b70dced1395b6a000717",
+  "_rev": "6-f110d7bac7c351a90f5318c5376704ac",
+  "content": "<p>Hi</p><p>The locations have been chosen for {roundId} please route.</p><p>Thanks</p>",
+  "type": "round-email-alert",
+  "states": [
+    "KN",
+    "BA"
+  ],
+  "subject": "[VDD] {roundId} is ready to edit"
+}

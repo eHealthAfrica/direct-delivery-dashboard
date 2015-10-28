@@ -22,18 +22,11 @@ angular.module('navbar')
         return first
       }
       function transpose (state) {
-        var transposed = {
+        return {
           name: state.name,
-          label: state.data.label
+          label: state.data.label,
+          roles: state.data.roles || []
         }
-
-        var roles = state.data.roles || []
-        // Always authorise admins
-        // XXX: this can contain duplicates. Do a union instead
-        roles = roles.concat(config.roles.admin.roles)
-        transposed.roles = roles
-
-        return transposed
       }
       return states
         .filter(hasLabel)
@@ -41,12 +34,22 @@ angular.module('navbar')
         .map(transpose)
     }
 
-    this.updateItems = function (authentication) {
-      if (authentication && authentication.ok) {
-        navbarState.items = get(authentication)
-        return
+    this.updateItems = function (auth) {
+      if (auth && auth.ok) {
+        navbarState.items = get(auth)
+        return auth
       }
       navbarState.items = []
+      return auth
+    }
+
+    this.updateUsername = function (auth) {
+      if (auth && auth.userCtx && auth.userCtx.name) {
+        navbarState.username = auth.userCtx.name
+        return auth
+      }
+      navbarState.username = ''
+      return auth
     }
 
     this.toggleCollapse = function () {
