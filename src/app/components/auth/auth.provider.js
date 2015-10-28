@@ -6,7 +6,4 @@ angular.module('auth')
     this.requireAdminUser = ehaCouchDbAuthServiceProvider.requireAdminUser
     this.requireAuthenticatedUser = ehaCouchDbAuthServiceProvider.requireAuthenticatedUser
     this.requireUserWithRoles = ehaCouchDbAuthServiceProvider.requireUserWithRoles
-    this.requireDirectDeliveryDashboardGisUser = function () {
-      return ehaCouchDbAuthServiceProvider.requireDirectDeliveryDashboardGisUser
-    }
   })

@@ -9,7 +9,9 @@ angular.module('planning')
       templateUrl: 'app/planning/planning.html',
       resolve: {
         authentication: authProvider.requireAuthenticatedUser,
-        authorization: authProvider.requireDirectDeliveryDashboardGisUser
+        authorization: authProvider.requireUserWithRoles([
+          'direct_delivery_dashboard_gis'
+        ])
       },
       data: {
         roles: [
