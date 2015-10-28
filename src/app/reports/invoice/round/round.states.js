@@ -16,6 +16,7 @@ angular.module('reports')
           return reportsService.getDailyDeliveries($stateParams.id, {limit: 10})
             .catch(function (reason) {
               log.error('invoiceDailyDeliveryErr', reason)
+              return {}
             })
         }
       }

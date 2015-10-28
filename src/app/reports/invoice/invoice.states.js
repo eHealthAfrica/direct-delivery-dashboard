@@ -13,6 +13,7 @@ angular.module('reports')
           return reportsService.getDeliveryRounds()
             .catch(function (reason) {
               log.error('invoiceRoundListErr', reason)
+              return {}
             })
         }
       }

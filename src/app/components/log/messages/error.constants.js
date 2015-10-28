@@ -132,6 +132,16 @@ angular.module('log')
       message: 'An unknown error occurred while updating CCE Status',
       remedy: 'Please, try again and contact support if it persists'
     },
+    locationLoadErr: {
+      title: 'Location load error',
+      message: 'An unknown error occurred while locations',
+      remedy: 'Please, try again and contact support if it persists'
+    },
+    userLoadErr: {
+      title: 'User Load error',
+      message: 'An unknown error occurred while loading users',
+      remedy: 'Please, try again and contact support if it persists'
+    },
     invoiceDailyDeliveryErr: {
       title: 'Daily Delivery Invoice error',
       message: 'An unknown error occurred while loading Invoice for selected round',
