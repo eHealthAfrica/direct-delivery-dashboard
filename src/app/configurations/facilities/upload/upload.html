@@ -23,9 +23,10 @@
 			</form>
 		</div>
 <hr/>
-
+<div class="alert alert-warning" ng-show="facilityUploadCtrl.invalidUploads">
+  <i class="fa fa-warning"></i> Facilities highlighted in red background cannot be upload due to missing parent locations</div>
 <div ng-if="facilityUploadCtrl.csv.result.length > 0">
-	<table class="table table-bordered table-hover table-condensed table-striped">
+	<table class="table table-bordered table-hover table-condensed">
 		<tr style="font-weight: bold">
 			<th style="">State</th>
 			<th style="">Zone</th>
@@ -36,17 +37,17 @@
 			<th style="">Contact Phones</th>
 			<th style="">Contact eMails</th>
 		</tr>
-		<tr ng-repeat="facility in facilityUploadCtrl.csv.result track by $index">
+		<tr ng-repeat="facility in facilityUploadCtrl.csv.result track by $index" ng-class="{'bg-danger': facility.error}">
 			<td ng-bind="facility.statename"></td>
 			<td ng-bind="facility.zone"></td>
 			<td ng-bind="facility.lganame"></td>
 			<td ng-bind="facility.wardname"></td>
 			<td ng-bind="facility.primary_name"></td>
 			<td>
-					{{facility.first_contact_name}} 
+					{{facility.first_contact_name}}
 			</td>
 			<td>
-					{{facility.first_contact_kanoconnect_phone}} 
+					{{facility.first_contact_kanoconnect_phone}}
 			</td>
 			<td>
 					{{facility.first_contact_kanoconnect_email_address}}
