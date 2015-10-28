@@ -41,12 +41,22 @@ angular.module('navbar')
         .map(transpose)
     }
 
-    this.updateItems = function (authentication) {
-      if (authentication && authentication.ok) {
-        navbarState.items = get(authentication)
-        return
+    this.updateItems = function (auth) {
+      if (auth && auth.ok) {
+        navbarState.items = get(auth)
+        return auth
       }
       navbarState.items = []
+      return auth
+    }
+
+    this.updateUsername = function (auth) {
+      if (auth && auth.userCtx && auth.userCtx.name) {
+        navbarState.username = auth.userCtx.name
+        return auth
+      }
+      navbarState.username = ''
+      return auth
     }
 
     this.toggleCollapse = function () {
