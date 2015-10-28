@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('configurations')
-  .config(function ($stateProvider, ehaCouchDbAuthServiceProvider) {
+  .config(function ($stateProvider, authProvider) {
     $stateProvider
       .state('reports', {
         parent: 'index',
@@ -20,8 +20,8 @@ angular.module('configurations')
           ]
         },
         resolve: {
-          authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser,
-          authorization: ehaCouchDbAuthServiceProvider.requireUserWithRoles([
+          authentication: authProvider.requireAuthenticatedUser,
+          authorization: authProvider.requireUserWithRoles([
             'direct_delivery_dashboard_accounting',
             'direct_delivery_dashboard_stakeholder'
           ])

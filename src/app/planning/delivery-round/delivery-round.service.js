@@ -9,8 +9,7 @@ angular.module('planning')
     locationService,
     config,
     log,
-    planningService,
-    ehaCouchDbAuthService
+    planningService
   ) {
     var _this = this
     var successTag = 'success'
@@ -309,7 +308,7 @@ angular.module('planning')
         )
       }
 
-      return ehaCouchDbAuthService.getCurrentUser()
+      return authService.getCurrentUser()
         .then(getLocationsByUser)
         .catch(utility.returnEmptyList)
     }

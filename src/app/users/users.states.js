@@ -1,15 +1,15 @@
 'use strict'
 
 angular.module('users')
-  .config(function ($stateProvider, ehaCouchDbAuthServiceProvider) {
+  .config(function ($stateProvider, authProvider) {
     $stateProvider.state('users', {
       abstract: true,
       parent: 'index',
       url: '/users',
       templateUrl: 'app/users/users.html',
       resolve: {
-        authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser,
-        authorization: ehaCouchDbAuthServiceProvider.requireAdminUser,
+        authentication: authProvider.requireAuthenticatedUser,
+        authorization: authProvider.requireAdminUser,
         users: function (usersService, log) {
           return usersService.all()
             .then(function (usersObj) {

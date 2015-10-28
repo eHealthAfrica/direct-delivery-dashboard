@@ -1,14 +1,17 @@
 'use strict'
 
 angular.module('finance')
-  .config(function ($stateProvider, ehaCouchDbAuthServiceProvider) {
+  .config(function (
+    $stateProvider,
+    authProvider
+  ) {
     $stateProvider.state('finance', {
       abstract: true,
       parent: 'index',
       url: '/finance',
       templateUrl: 'app/finance/finance.html',
       resolve: {
-        authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser
+        authentication: authProvider.requireAuthenticatedUser
       }
     })
   })

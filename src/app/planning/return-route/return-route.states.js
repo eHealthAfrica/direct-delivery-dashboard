@@ -1,17 +1,18 @@
 'use strict'
 
 angular.module('planning')
-  .config(function ($stateProvider, ehaCouchDbAuthServiceProvider) {
+  .config(function (
+    $stateProvider,
+    authProvider
+  ) {
     $stateProvider.state('planning.returnRoute', {
       url: '/return-route/:roundId',
       templateUrl: 'app/planning/return-route/index.html',
       controller: 'ReturnRouteCtrl',
       controllerAs: 'rrCtrl',
       resolve: {
-        authorization: function ($q, ehaCouchDbAuthService, authService, $stateParams) {
-          var role = authService.roundToStateRole($stateParams.roundId)
-          var auth = ehaCouchDbAuthServiceProvider.requireUserWithRoles([role])
-          return auth(ehaCouchDbAuthService, $q)
+        authorization: function (authService, $stateParams) {
+          return authService.requireStateRole($stateParams.roundId, authProvider)
         },
         deliveryRound: function (log, planningService, $stateParams) {
           function handleError (err) {

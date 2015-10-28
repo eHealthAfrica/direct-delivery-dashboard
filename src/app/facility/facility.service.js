@@ -6,8 +6,7 @@ angular.module('facility')
     log,
     dbService,
     pouchUtil,
-    authService,
-    ehaCouchDbAuthService
+    authService
   ) {
     var _this = this
 
@@ -155,7 +154,7 @@ angular.module('facility')
         return $q.reject('unauthorized')
       }
 
-      return ehaCouchDbAuthService.getCurrentUser()
+      return authService.getCurrentUser()
         .then(branchByUser)
         .then(dbService.getView.bind(null, view, params))
         .then(pouchUtil.pluckDocs)
