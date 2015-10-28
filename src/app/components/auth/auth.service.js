@@ -15,12 +15,20 @@ angular.module('auth')
         password: password
       }
 
+      function handleError (err) {
+        var reason
+        if (err && err.message) {
+          reason = 'The error message was: "' + err.message + '"'
+        }
+        log.error('loginFailed', err, reason)
+      }
+
       return ehaCouchDbAuthService.signIn(params)
         .then(navbarService.updateItems.bind(null))
         .then(navbarService.updateUsername.bind(null))
         .then(log.success.bind(log, 'authSuccess'))
         .then($state.go.bind($state, 'home'))
-        .catch(log.error.bind(log))
+        .catch(handleError)
     }
 
     this.logout = function () {
