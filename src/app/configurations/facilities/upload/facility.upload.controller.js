@@ -30,7 +30,7 @@ angular.module('configurations.facilities')
           var lga
           var ward
           var _id
-          vm.invalidUploads = false;
+          vm.invalidUploads = false
 
           for (var i in vm.csv.result) {
             var facility = vm.csv.result[i]
@@ -52,6 +52,9 @@ angular.module('configurations.facilities')
                 ward = utility.replaceAll(response[r].name, ' ', '_')
               }
             }
+            if (!facility.primary_name) {
+              return log.error('InvalidFileImport', {})
+            }
             var f = {
               ancestors: facility.ancestors,
               osmId: facility.id,
@@ -70,11 +73,11 @@ angular.module('configurations.facilities')
               doc_type: 'location',
               _id: (_id + '-' + [zone, lga, ward, utility.replaceAll(facility.primary_name, ' ', '_')].join('-')).toUpperCase()
             }
-            if(f.ancestors.length > 6){
+            if (f.ancestors.length > 6) {
               dataToSave.push(f)
-            }else{
+            } else {
               vm.invalidUploads = true
-              facility.error = true;
+              facility.error = true
             }
           }
         })
