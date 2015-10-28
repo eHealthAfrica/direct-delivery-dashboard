@@ -1,0 +1,10 @@
+{
+  "_id": "org.couchdb.user:stakeholder",
+  "type": "user",
+  "roles": [
+    "dd_user",
+    "direct_delivery_dashboard_stakeholder"
+  ],
+  "name": "stakeholder",
+  "password": "stakeholder"
+}

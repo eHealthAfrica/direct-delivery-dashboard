@@ -1,12 +1,13 @@
 'use strict'
 
 var url = require('url')
+var util = require('util')
+
 var get = require('simple-get')
-var glob = require('glob')
 var gulp = require('gulp')
 var argv = require('optimist').argv
 var ensure = require('couchdb-ensure')
-var compile = require('couchdb-compile')
+var bootstrap = require('couchdb-bootstrap')
 
 var config = require('../config')
 var fixtures = require('../couchdb/fixtures')
@@ -51,7 +52,7 @@ function push (docs, url) {
   })
 }
 
-gulp.task('fixtures', function () {
+gulp.task('couchdb-fixtures', function () {
   ensure(dbUrl, function (err) {
     if (err) {
       throw err
@@ -63,58 +64,27 @@ gulp.task('fixtures', function () {
   })
 })
 
-gulp.task('views', function () {
-  function couchCompile (dir) {
-    compile(dir, function (err, docs) {
-      if (err) {
-        throw err
-      }
-      console.log(docs)
-      docs = [docs]
-      return push(docs)
-    })
-  }
-
-  ensure(dbUrl, function (err) {
-    if (err) {
-      throw err
-    }
-    glob('couchdb/app/*', function (err, matches) {
-      if (err) {
-        throw err
-      }
-      matches.forEach(couchCompile)
-    })
-  })
-})
-
-gulp.task('users', function () {
-  function userFactory (name, roles) {
-    return {
-      _id: 'org.couchdb.user:' + name,
-      name: name,
-      type: 'user',
-      roles: roles,
-      password: name
-    }
-  }
-
-  function create (role) {
-    var name = role.split('_').pop()
-    return userFactory(name, [role])
-  }
-
-  var roles = config.config.roles.admin.roles.concat(
-    config.config.roles.user.roles
-  )
-  var users = roles.map(create)
-
-  // TODO: de-duplicate this with deliveries DB URL parsing
-  var usersUrl = url.parse(config.config.baseUrl + '/_users/_bulk_docs')
+gulp.task('couchdb-bootstrap', function (done) {
+  // TODO: de-dupe with url handling above
+  var baseUrl = url.parse(config.config.baseUrl)
   if (argv.u && argv.p) {
-    usersUrl.auth = argv.u + ':' + argv.p
+    baseUrl.auth = argv.u + ':' + argv.p
   }
-  usersUrl = url.format(usersUrl)
+  baseUrl = url.format(baseUrl)
 
-  return push(users, usersUrl)
+  // XXX: couchdb-bootstrap doesn't like trailing /
+  baseUrl = baseUrl.slice(0, -1)
+
+  bootstrap(baseUrl, 'couchdb/app', function (err, res) {
+    if (err) {
+      done(err)
+    }
+    // Untruncate
+    res = util.inspect(res, {
+      depth: null
+    })
+    console.log(res)
+
+    done()
+  })
 })
