@@ -30,6 +30,7 @@ angular.module('configurations.facilities')
           var lga
           var ward
           var _id
+          vm.invalidUploads = false;
 
           for (var i in vm.csv.result) {
             var facility = vm.csv.result[i]
@@ -69,7 +70,12 @@ angular.module('configurations.facilities')
               doc_type: 'location',
               _id: (_id + '-' + [zone, lga, ward, utility.replaceAll(facility.primary_name, ' ', '_')].join('-')).toUpperCase()
             }
-            dataToSave.push(f)
+            if(f.ancestors.length > 6){
+              dataToSave.push(f)
+            }else{
+              vm.invalidUploads = true
+              facility.error = true;
+            }
           }
         })
     }
