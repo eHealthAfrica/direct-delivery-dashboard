@@ -1,0 +1,58 @@
+<hr/>
+		<div class="clearfix">
+			<form class="form form-inline">
+				<div class="form-group ">
+					<ng-csv-import
+              content="facilityUploadCtrl.csv.content"
+              header="facilityUploadCtrl.csv.header"
+              separator="facilityUploadCtrl.csv.separator"
+              finished="facilityUploadCtrl.finished(facilityUploadCtrl.csv.result)"
+              result="facilityUploadCtrl.csv.result">
+            </ng-csv-import>
+				</div>
+				<div class="form-group">
+					<label>State</label>
+					<select class="form-control" ng-model="facilityUploadCtrl.state">
+						<option ng-repeat="state in facilityUploadCtrl.states track by $index" value="{{state._id}}">{{state.name}}</option>
+					</select>
+				</div>
+				<button class="btn btn-success pull-right btn-lg" ng-class="{disabled: !facilityUploadCtrl.canSave}" ng-click="facilityUploadCtrl.save()">
+					<i class="fa fa-check"></i>
+					Save
+				</button>
+			</form>
+		</div>
+<hr/>
+
+<div ng-if="facilityUploadCtrl.csv.result.length > 0">
+	<table class="table table-bordered table-hover table-condensed table-striped">
+		<tr style="font-weight: bold">
+			<th style="">State</th>
+			<th style="">Zone</th>
+			<th style="">Lga</th>
+			<th style="">Ward</th>
+			<th style="">Name</th>
+			<th style="">Contact Person</th>
+			<th style="">Contact Phones</th>
+			<th style="">Contact eMails</th>
+		</tr>
+		<tr ng-repeat="facility in facilityUploadCtrl.csv.result track by $index">
+			<td ng-bind="facility.statename"></td>
+			<td ng-bind="facility.zone"></td>
+			<td ng-bind="facility.lganame"></td>
+			<td ng-bind="facility.wardname"></td>
+			<td ng-bind="facility.primary_name"></td>
+			<td>
+					{{facility.first_contact_name}} 
+			</td>
+			<td>
+					{{facility.first_contact_kanoconnect_phone}} 
+			</td>
+			<td>
+					{{facility.first_contact_kanoconnect_email_address}}
+			</td>
+		</tr>
+	</table>
+</div>
+
+
