@@ -20,8 +20,8 @@ angular.module('facility')
           vm.facilityStatus[report._id].date = status.date
           updateView()
         })
-        .catch(function (reason) {
-          console.log(reason)
+        .catch(function (err) {
+          log.error('updateCCEStatusErr', err)
         })
     }
 
@@ -34,8 +34,8 @@ angular.module('facility')
           vm.locations = response.locations
           setStatus(response.facilities)
         })
-        .catch(function (reason) {
-          log('unknownError', reason)
+        .catch(function (err) {
+          log.error('unknownError', err)
         })
     }
 

@@ -9,23 +9,6 @@ angular.module('auth')
     navbarService,
     ehaCouchDbAuthService
   ) {
-    var self = this
-
-    this.requireRoles = function (roles) {
-      roles = roles || []
-      // Always authorise admins
-      // TODO: remove depending on
-      //       https://github.com/eHealthAfrica/angular-eha.couchdb-auth/issues/28
-      roles = roles.concat(config.roles.admin.roles)
-
-      function hasRoles (user) {
-        return user.hasRole(roles) ? true : $q.reject('unauthorized')
-      }
-
-      return ehaCouchDbAuthService.getCurrentUser()
-        .then(hasRoles)
-    }
-
     this.login = function (username, password) {
       var params = {
         username: username,
@@ -64,16 +47,13 @@ angular.module('auth')
         .map(format)
     }
 
-    this.hasStateRole = function (roundId) {
+    this.roundToStateRole = function (roundId) {
       // TODO: get this from role lib
       var prefix = 'direct_delivery_dashboard_state_'
 
       // TODO: make this more robust
       var stateCode = roundId.split('-')[0]
 
-      var role = prefix + stateCode.toLowerCase()
-      return self.requireRoles([
-        role
-      ])
+      return prefix + stateCode.toLowerCase()
     }
   })

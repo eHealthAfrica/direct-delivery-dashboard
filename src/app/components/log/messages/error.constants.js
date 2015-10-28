@@ -116,5 +116,20 @@ angular.module('log')
       title: 'Email alert failed',
       message: 'Could not send email alert due to unknown error',
       remedy: 'Please, try again and contact support if it persists'
+    },
+    saveKPIError: {
+      title: 'Save KPI failed',
+      message: 'Could not save KPI record',
+      remedy: 'Please, try again and contact support if it persists'
+    },
+    assignKPIFromTemplateErr: {
+      title: 'Assign KPI error',
+      message: 'An unknown error occurred while filling in missing KPI',
+      remedy: 'Please, try again and contact support if it persists'
+    },
+    updateCCEStatusErr: {
+      title: 'CCE Status update error',
+      message: 'An unknown error occurred while updating CCE Status',
+      remedy: 'Please, try again and contact support if it persists'
     }
   })

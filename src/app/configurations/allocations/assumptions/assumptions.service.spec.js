@@ -40,7 +40,7 @@ describe('AssumptionsService', function () {
     var options = {
       include_docs: true
     }
-    var view = 'allocations/assumptions'
+    var view = 'allocations/all'
 
     assumptionService.getAll(view, options)
     expect(dbService.getView).toHaveBeenCalledWith(view, options)

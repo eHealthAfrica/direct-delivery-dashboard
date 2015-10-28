@@ -44,64 +44,65 @@ angular.module('allocations')
         .then(pouchUtil.pluckDocs)
     }
 
-    service.getAllocations = function (facilities) {
-      var promises = {}
-
-      function fillwithTemplate (facility, template) {
-        for (var i in template.products) { // Todo: adjust this to suit the new template structure
-          facility['coverage'][i] = parseInt(template.products[i].coverage, 10)
-          facility['wastage'][i] = template.products[i].wastage
-          facility['schedule'][i] = parseInt(template.products[i].schedule, 10)
-          facility['buffer'][i] = parseInt(template.products[i].buffer, 10)
+    service.getAllocations = function (facilities, products) {
+      function fillwithTemplate (facility, template, custom, products) {
+        var coverage, wastage, schedule, buffer, k
+        facility.customTemplate = custom && template
+        for (var i in products) {
+          k = products[i]
+          coverage = wastage = schedule = buffer = undefined
+          if (template.products[k]) {
+            coverage = parseInt(template.products[k].coverage, 10)
+            wastage = template.products[k].wastage
+            schedule = parseInt(template.products[k].schedule, 10)
+            buffer = parseInt(template.products[k].buffer, 10)
+          }
+          facility['coverage'][k] = isNaN(coverage) ? 0 : coverage
+          facility['wastage'][k] = isNaN(wastage) ? 0 : wastage
+          facility['schedule'][k] = isNaN(schedule) ? 0 : schedule
+          facility['buffer'][k] = isNaN(buffer) ? 0 : buffer
         }
         return facility
       }
 
       function setAllocations () {
         var view = 'allocations/custom-templates'
-
-        var opts = {
-          include_docs: true
-        }
-        facilities.forEach(function (facility) {
+        return facilities.map(function (facility) {
           facility.coverage = {}
           facility.wastage = {}
           facility.schedule = {}
           facility.buffer = {}
 
-          // get custom template
-          opts.key = facility._id
-          promises[facility._id] = dbService.getView(view, opts)
-          return promises[facility._id]
+          return (function (v, key) {
+            var opts = {
+              include_docs: true,
+              key: key
+            }
+            return dbService.getView(v, opts)
+          }(view, facility._id))
         })
-        return facilities
       }
-      setAllocations()
-
-      return $q.all(promises)
+      return $q.all(setAllocations())
         .then(function (response) {
-          var r = {}
-          for (var i in response) {
-            if (response[i].rows.length > 0) {
-              r[i] = response[i].rows[0].doc
-            }
-          }
-          return r
+          return response.filter(function (item) {
+            return item.rows.length > 0
+          })
         })
-        .then(function (r) {
-          var keys = Object.keys(r)
-          var index
-          for (var v in facilities) {
-            index = keys.indexOf(r)
-
-            if (index !== -1) {
-              console.log(r)
-              fillwithTemplate(facilities[v], r[facilities[v]._id])
-            } else {
-              fillwithTemplate(facilities[v], service.template)
+        .then(function (results) {
+          facilities.forEach(function (facility) {
+            var customTpl
+            for (var i in results) {
+              if (results[i].rows[0].key === facility._id) {
+                customTpl = results[i].rows[0].doc
+                continue
+              }
             }
-          }
-          console.log(facilities)
+            if (customTpl) {
+              fillwithTemplate(facility, customTpl, true, products)
+            } else {
+              fillwithTemplate(facility, service.template, false, products)
+            }
+          })
           return facilities
         })
     }

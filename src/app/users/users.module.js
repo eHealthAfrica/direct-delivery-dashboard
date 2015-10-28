@@ -7,5 +7,7 @@ angular.module('users', [
   'config',
   'drivers',
   'ngMessages',
-  'auth'
+  'auth',
+  'db',
+  'location'
 ])
