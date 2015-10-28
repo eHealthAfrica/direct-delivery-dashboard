@@ -12,9 +12,9 @@ angular.module('log')
       message: 'An error has occurred',
       remedy: 'Please try again'
     },
-    authInvalid: {
-      title: 'Authentication',
-      message: 'Invalid username or password',
+    loginFailed: {
+      title: 'Login failed',
+      message: 'We could not log you in',
       remedy: 'Please try again'
     },
     networkError: {
@@ -130,6 +130,16 @@ angular.module('log')
     updateCCEStatusErr: {
       title: 'CCE Status update error',
       message: 'An unknown error occurred while updating CCE Status',
+      remedy: 'Please, try again and contact support if it persists'
+    },
+    locationLoadErr: {
+      title: 'Location load error',
+      message: 'An unknown error occurred while locations',
+      remedy: 'Please, try again and contact support if it persists'
+    },
+    userLoadErr: {
+      title: 'User Load error',
+      message: 'An unknown error occurred while loading users',
       remedy: 'Please, try again and contact support if it persists'
     },
     invoiceDailyDeliveryErr: {
