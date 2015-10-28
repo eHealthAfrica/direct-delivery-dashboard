@@ -10,6 +10,15 @@ angular.module('allocations')
     }
 
     service.getAll = function () {
+      var view = 'allocations/all'
+      var params = {
+        include_docs: true
+      }
+      return dbService.getView(view, params)
+        .then(pouchUtil.pluckDocs)
+    }
+
+    service.getAssumptions = function () {
       var view = 'allocations/assumptions'
       var params = {
         include_docs: true

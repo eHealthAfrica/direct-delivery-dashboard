@@ -30,9 +30,9 @@ angular.module('allocations')
 
     vm.switchTemplate = function (template) {
       vm.selectedTemplate = template
-
       calculationService.setTemplate(vm.selectedTemplate)
-      vm.switchLocationLga()
+     // vm.switchLocationLga()
+      vm.switchLocationState(vm.selectedState)
     }
 
     function findLga (state) {
@@ -49,7 +49,7 @@ angular.module('allocations')
         })
     }
     function resetView (facilities) {
-      return calculationService[viewMap[vm.activeView]](facilities)
+      return calculationService[viewMap[vm.activeView]](facilities, vm.productList)
         .then(function (response) {
           vm.renderedData = response
           return response
@@ -62,7 +62,7 @@ angular.module('allocations')
       var lgas = lgs || vm.selectedLga
       if (!lgas) {
         vm.rederedData = []
-        return
+        return []
       }
       if (angular.isArray(lgas)) {
         for (var i in lgas) {
