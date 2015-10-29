@@ -1,7 +1,11 @@
 'use strict'
 
 angular.module('home')
-  .config(function ($stateProvider, config, ehaCouchDbAuthServiceProvider) {
+  .config(function (
+    $stateProvider,
+    config,
+    authProvider
+  ) {
     $stateProvider.state('home', {
       parent: 'index',
       url: '/',
@@ -9,7 +13,7 @@ angular.module('home')
       controllerAs: 'homeCtrl',
       templateUrl: 'app/home/home.html',
       resolve: {
-        authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser,
+        authentication: authProvider.requireAuthenticatedUser,
         roundReport: function (deliveryRoundService) {
           var userDefaultState = 'Kano' // TODO: pick from user document states they can access.
           var key = ''

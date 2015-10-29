@@ -9,22 +9,34 @@ angular.module('auth')
     navbarService,
     ehaCouchDbAuthService
   ) {
+    this.getCurrentUser = ehaCouchDbAuthService.getCurrentUser
+
     this.login = function (username, password) {
       var params = {
         username: username,
         password: password
       }
 
+      function handleError (err) {
+        var reason
+        if (err && err.message) {
+          reason = 'The error message was: "' + err.message + '"'
+        }
+        log.error('loginFailed', err, reason)
+      }
+
       return ehaCouchDbAuthService.signIn(params)
         .then(navbarService.updateItems.bind(null))
+        .then(navbarService.updateUsername.bind(null))
         .then(log.success.bind(log, 'authSuccess'))
         .then($state.go.bind($state, 'home'))
-        .catch(log.error.bind(log))
+        .catch(handleError)
     }
 
     this.logout = function () {
       return ehaCouchDbAuthService.signOut()
         .then(navbarService.updateItems.bind())
+        .then(navbarService.updateUsername.bind())
         .then($state.go.bind($state, 'login'))
         .catch(log.error.bind(log, 'logoutFailed'))
     }
@@ -47,7 +59,7 @@ angular.module('auth')
         .map(format)
     }
 
-    this.roundToStateRole = function (roundId) {
+    function roundToStateRole (roundId) {
       // TODO: get this from role lib
       var prefix = 'direct_delivery_dashboard_state_'
 
@@ -55,5 +67,14 @@ angular.module('auth')
       var stateCode = roundId.split('-')[0]
 
       return prefix + stateCode.toLowerCase()
+    }
+
+    this.requireStateRole = function (roundId, authProvider) {
+      var role = roundToStateRole(roundId)
+      if (!role) {
+        return $q.reject('Could not determine state role from round')
+      }
+      var authFun = authProvider.requireUserWithRoles([role])
+      return authFun(ehaCouchDbAuthService, $q)
     }
   })

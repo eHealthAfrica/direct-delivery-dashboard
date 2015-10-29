@@ -1,14 +1,16 @@
 'use strict'
 
 angular.module('configurations')
-  .config(function ($stateProvider, ehaCouchDbAuthServiceProvider) {
+  .config(function ($stateProvider, authProvider) {
     $stateProvider
       .state('reports', {
         parent: 'index',
         url: '/reports',
         templateUrl: 'app/reports/index.html',
         controller: function ($state) {
-          $state.go('reports.layout.delivery')
+          if ($state.current.name === 'reports') {
+            $state.go('reports.layout.delivery')
+          }
         },
         data: {
           label: 'Reports',
@@ -18,8 +20,8 @@ angular.module('configurations')
           ]
         },
         resolve: {
-          authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser,
-          authorization: ehaCouchDbAuthServiceProvider.requireUserWithRoles([
+          authentication: authProvider.requireAuthenticatedUser,
+          authorization: authProvider.requireUserWithRoles([
             'direct_delivery_dashboard_accounting',
             'direct_delivery_dashboard_stakeholder'
           ])

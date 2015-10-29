@@ -7,24 +7,56 @@ angular.module('reports')
     deliveryRoundService,
     locationService,
     pouchUtil,
-    authService,
-    ehaCouchDbAuthService
+    authService
   ) {
     var _this = this
 
-    this.getDeliveryRounds = function () {
-      return dbService.getView('reports/delivery-rounds')
-        .then(pouchUtil.pluckValues)
+    this.getDeliveryRounds = function (options) {
+      options = options || {}
+      options.limit = options.limit || 10
+      return dbService.getView('reports/delivery-rounds', options)
+        .then(function (response) {
+          return {
+            total: response.total_rows,
+            offset: response.offset,
+            results: pouchUtil.pluckValues(response)
+          }
+        })
     }
 
-    this.getDailyDeliveries = function (roundId) {
+    this.getDailyDeliveries = function (roundId, pagination) {
+      pagination = pagination || {}
       var view = 'reports/daily-deliveries'
       var params = {
         startkey: [roundId],
         endkey: [roundId, {}, {}, {}]
       }
+      var promises = [
+        dbService.getView(view, angular.merge({}, pagination, params)),
+        _this.getDailyDeliveriesCount(roundId)
+      ]
+
+      return $q.all(promises)
+        .then(function (response) {
+          var total = 0
+          if (response[1]) {
+            total = response[1].rows.length > 0 ? response[1].rows[0].value : 0
+          }
+          return {
+            total: total,
+            offset: response[0].offset,
+            results: pouchUtil.pluckValues(response[0])
+          }
+        })
+    }
+
+    _this.getDailyDeliveriesCount = function (roundId) {
+      var view = 'reports/daily-deliveries-count'
+      var params = {
+        startkey: roundId,
+        endkey: roundId
+      }
       return dbService.getView(view, params)
-        .then(pouchUtil.pluckValues)
     }
 
     _this.getStatusTypes = function () {
@@ -152,7 +184,7 @@ angular.module('reports')
           return []
         }
 
-        return ehaCouchDbAuthService.getCurrentUser()
+        return authService.getCurrentUser()
           .then(branchByUser.bind(null))
       }
 

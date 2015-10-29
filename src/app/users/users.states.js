@@ -1,18 +1,16 @@
 'use strict'
 
 angular.module('users')
-  .config(function ($stateProvider, ehaCouchDbAuthServiceProvider) {
+  .config(function ($stateProvider, authProvider) {
     $stateProvider.state('users', {
       abstract: true,
       parent: 'index',
       url: '/users',
       templateUrl: 'app/users/users.html',
-      controller: 'UsersCtrl',
-      controllerAs: 'usersCtrl',
       resolve: {
-        authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser,
-        authorization: ehaCouchDbAuthServiceProvider.requireAdminUser,
-        users: function (usersService) {
+        authentication: authProvider.requireAuthenticatedUser,
+        authorization: authProvider.requireAdminUser,
+        users: function (usersService, log) {
           return usersService.all()
             .then(function (usersObj) {
               var users = []
@@ -22,6 +20,10 @@ angular.module('users')
               })
 
               return users
+            })
+            .catch(function (reason) {
+              log.error('userLoadErr')
+              return []
             })
         }
       },
