@@ -22,12 +22,11 @@ angular.module('configurations.locations')
     }
 
     vm.save = function () {
-      console.log('saving...')
       var locations = []
       var results = vm.csv.result
       for (var i in results) {
         if (results[i].name) {
-          locations.push({
+          var location = {
             name: results[i].name,
             _id: results[i].id,
             osmId: results[i].osmId,
@@ -41,13 +40,15 @@ angular.module('configurations.locations')
             ],
             doc_type: 'location',
             level: results[i].level
-          })
+          }
+          locations.push(location)
         } else {
           return log.error('InvalidFileImport', {})
         }
         return locationService.saveMany(locations)
           .then(function (response) {
             console.log(response)
+            vm.canSave = false;
           })
           .catch(function (err) {
             console.log(err)

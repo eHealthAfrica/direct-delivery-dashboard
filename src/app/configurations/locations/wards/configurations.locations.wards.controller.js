@@ -48,27 +48,36 @@ angular.module('configurations.locations')
             _id: results[i].id,
             osmId: results[i].osmId,
             'ISO3166-2': results[i]['ISO3166-2'],
-            ancestors: [
-              results[i].admin_level_0,
-              results[i].admin_level_1,
-              results[i].admin_level_2,
-              JSON.parse(vm.zone)._id,
-              JSON.parse(vm.lga)._id
-            ],
+
             doc_type: 'location',
             level: results[i].level
           }
-
-          l._id = ([
+          l.ancestors = [
             results[i].admin_level_0,
             results[i].admin_level_1,
             results[i].admin_level_2,
-            (JSON.parse(vm.zone).name.replace(' ', '_').toUpperCase()),
-            (JSON.parse(vm.lga).name.replace(' ', '_').toUpperCase()),
-            l.name.replace(' ', '_').toUpperCase()
-          ].join('-'))
+            JSON.parse(vm.zone)._id,
+            JSON.parse(vm.lga)._id
+          ].filter(function(item){
+              return (typeof item === 'string')
+            })
 
-          locations.push(l)
+          if(l.ancestors.length === 4){
+            l._id = ([
+              results[i].admin_level_0,
+              results[i].admin_level_1,
+              results[i].admin_level_2,
+              (JSON.parse(vm.zone).name.replace(' ', '_').toUpperCase()),
+              (JSON.parse(vm.lga).name.replace(' ', '_').toUpperCase()),
+              l.name.replace(' ', '_').toUpperCase()
+            ].join('-'))
+
+            locations.push(l)
+          }else{
+            results[i].error = true
+            vm.invalidUploads = true
+          }
+
         } else {
           return log.error('InvalidFileImport', {})
         }
