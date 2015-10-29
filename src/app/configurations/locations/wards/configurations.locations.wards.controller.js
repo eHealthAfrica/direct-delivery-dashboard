@@ -58,11 +58,11 @@ angular.module('configurations.locations')
             results[i].admin_level_2,
             JSON.parse(vm.zone)._id,
             JSON.parse(vm.lga)._id
-          ].filter(function(item){
-              return (typeof item === 'string')
-            })
+          ].filter(function (item) {
+            return (typeof item === 'string')
+          })
 
-          if(l.ancestors.length === 4){
+          if (l.ancestors.length === 4) {
             l._id = ([
               results[i].admin_level_0,
               results[i].admin_level_1,
@@ -73,11 +73,10 @@ angular.module('configurations.locations')
             ].join('-'))
 
             locations.push(l)
-          }else{
+          } else {
             results[i].error = true
             vm.invalidUploads = true
           }
-
         } else {
           return log.error('InvalidFileImport', {})
         }

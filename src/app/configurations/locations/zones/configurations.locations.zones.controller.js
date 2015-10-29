@@ -48,7 +48,7 @@ angular.module('configurations.locations')
         return locationService.saveMany(locations)
           .then(function (response) {
             console.log(response)
-            vm.canSave = false;
+            vm.canSave = false
           })
           .catch(function (err) {
             console.log(err)
