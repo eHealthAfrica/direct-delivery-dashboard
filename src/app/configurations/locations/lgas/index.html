@@ -1,20 +1,15 @@
 <div class="panel panel-default">
   <div class="panel-heading clearfix">
-    <div class="btn-group pull-right btn-group-lg">
-      <button class='btn btn-primary active' ui-sref="configurations.products">States</button>
-      <button class='btn btn-info' ui-sref="configurations.locations.zones">Zones</button>
-			<button class='btn btn-default' ui-sref="configurations.locations.lgas">LGAs</button>
-			<button class='btn btn-warning' ui-sref="configurations.locations.wards">Wards</button>
-    </div>
+    <div ng-include="'app/configurations/locations/menu.html'"></div>
   </div>
   <div class="panel-body">
     <form role="form" class="form form-inline">
         <div class="import clearfix">
           <div class="form-group" ng-show="configLocationCtrl.states.length > 0">
             <label>select state</label>
-            <select 
-							class="form-control" 
-							ng-show="configLocationCtrl.states.length > 0" 
+            <select
+							class="form-control"
+							ng-show="configLocationCtrl.states.length > 0"
 							ng-model="configLocationCtrl.state"
 							ng-change="configLocationCtrl.getZones(configLocationCtrl.state)">
               <option ng-repeat="state in configLocationCtrl.states track by $index" value="{{state}}">{{state.name}}</option>
