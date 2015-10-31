@@ -23,18 +23,15 @@ angular.module('allocations')
     vm.lgas = []
     vm.wards = []
 
-
-
     vm.assumptionList = assumptionList
     vm.selectedTemplate = assumptionList[0]
-
 
     calculationService.setTemplate(vm.selectedTemplate)
 
     vm.switchTemplate = function (template) {
       vm.selectedTemplate = template
       calculationService.setTemplate(vm.selectedTemplate)
-     // vm.switchLocationLga()
+      // vm.switchLocationLga()
       vm.switchLocationState(vm.selectedState)
     }
 
@@ -110,8 +107,6 @@ angular.module('allocations')
         })
     }
 
-
-
     vm.changeDataView = function (partial, viewLabel, suffix) {
       var view = viewLabel.replace(' ', '')
       vm.renderedViewLabel = view
@@ -167,8 +162,8 @@ angular.module('allocations')
 
     authService.getCurrentUser()
       .then(authService.authorisedStates)
-      .then(function(response){
-        vm.selectedState = response[0];
+      .then(function (response) {
+        vm.selectedState = response[0]
         return vm.selectedState
       })
       .then(vm.switchLocationState)

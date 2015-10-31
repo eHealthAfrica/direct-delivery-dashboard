@@ -23,7 +23,7 @@ angular.module('allocations')
           },
           locationStates: function (locationService) {
             var keys = []
-            keys.push(['2', 'NG']) //TODO: get this from auth
+            keys.push(['2', 'NG']) // TODO: get this from auth
             return locationService.getByLevelAndAncestor(keys)
               .catch(function () {
                 return []
