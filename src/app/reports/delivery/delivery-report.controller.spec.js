@@ -5,9 +5,19 @@ describe('DeliveryReportCtrl', function () {
   beforeEach(module('reports', 'config'))
 
   var DeliveryReportCtrl
-
+  var scope = {
+    selectedState: {
+      _id: 'KN',
+      name: 'Kano'
+    },
+    $on: function () {
+      return {}
+    }
+  }
   beforeEach(inject(function ($controller, config) {
-    DeliveryReportCtrl = $controller('DeliveryReportCtrl', {})
+    DeliveryReportCtrl = $controller('DeliveryReportCtrl', {
+      $scope: scope
+    })
   }))
 
   it('should be defined', function () {
