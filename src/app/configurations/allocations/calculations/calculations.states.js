@@ -21,8 +21,10 @@ angular.module('allocations')
                 return []
               })
           },
-          locations: function (locationService) {
-            return locationService.getLocationsByLevel()
+          locationStates: function (locationService) {
+            var keys = []
+            keys.push(['2', 'NG']) //TODO: get this from auth
+            return locationService.getByLevelAndAncestor(keys)
               .catch(function () {
                 return []
               })

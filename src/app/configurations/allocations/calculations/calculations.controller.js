@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('allocations')
-  .controller('CalculationsController', function (products, locations, locationService, calculationService, pouchUtil, assumptionList, log, assumptionAddService) {
+  .controller('CalculationsController', function (authService, products, locationStates, locationService, calculationService, pouchUtil, assumptionList, log, assumptionAddService) {
     var vm = this
     var viewMap = {
       coverage: 'getAllocations',
@@ -18,14 +18,17 @@ angular.module('allocations')
     vm.renderedViewLabel = 'Coverage'
     vm.activeView = 'coverage'
     vm.renderedData = []
-    vm.locationStates = ['KN', 'BA']
-    vm.selectedState = 'KN'
+    vm.locationStates = locationStates
     vm.selectedLga = ''
     vm.lgas = []
     vm.wards = []
 
+
+
     vm.assumptionList = assumptionList
     vm.selectedTemplate = assumptionList[0]
+
+
     calculationService.setTemplate(vm.selectedTemplate)
 
     vm.switchTemplate = function (template) {
@@ -86,6 +89,7 @@ angular.module('allocations')
     }
     vm.switchLocationState = function (stateID) {
       var state = stateID || vm.selectedState
+      console.log(state)
       return findLga(state)
         .then(getFacilities)
         .then(resetView)
@@ -106,7 +110,7 @@ angular.module('allocations')
         })
     }
 
-    vm.switchLocationState(vm.selectedState)
+
 
     vm.changeDataView = function (partial, viewLabel, suffix) {
       var view = viewLabel.replace(' ', '')
@@ -160,4 +164,12 @@ angular.module('allocations')
       }
       assumptionAddService.openForm(emptyTemplate)
     }
+
+    authService.getCurrentUser()
+      .then(authService.authorisedStates)
+      .then(function(response){
+        vm.selectedState = response[0];
+        return vm.selectedState
+      })
+      .then(vm.switchLocationState)
   })
