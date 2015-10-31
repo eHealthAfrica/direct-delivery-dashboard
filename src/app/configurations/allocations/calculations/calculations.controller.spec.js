@@ -44,11 +44,11 @@ describe('CalculationsController', function () {
     })
   )
 
-  beforeEach(inject(function ($controller, calculationService, locationService,authService, pouchUtil, log, assumptionService) {
+  beforeEach(inject(function ($controller, calculationService, locationService, authService, pouchUtil, log, assumptionService) {
     mockCalSvc = calculationService
     mockProductList = []
     mockLocationSvc = locationService
-    mockLocationState = [];
+    mockLocationState = []
     mockAssumptionList = []
     calculationsCtrl = $controller('CalculationsController', {
       calculationService: mockCalSvc,
