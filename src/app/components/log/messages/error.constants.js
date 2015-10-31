@@ -172,6 +172,4 @@ angular.module('log')
       message: 'An unknown error occurred while loading delivery report',
       remedy: 'Please, try again and contact support if it persists'
     }
-
-
   })
