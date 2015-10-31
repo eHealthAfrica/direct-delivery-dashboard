@@ -161,5 +161,17 @@ angular.module('log')
       title: 'Saving location failed',
       message: 'Error occurred while saving locations',
       remedy: 'Please, try again and contact support if it persists'
+    },
+    userStatesErr: {
+      title: 'User States error',
+      message: 'An unknown error occurred while fetching states for user',
+      remedy: 'Please, try again and contact support if it persists'
+    },
+    deliveryReportErr: {
+      title: 'Delivery Report error',
+      message: 'An unknown error occurred while loading delivery report',
+      remedy: 'Please, try again and contact support if it persists'
     }
+
+
   })
