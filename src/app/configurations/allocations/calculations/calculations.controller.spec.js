@@ -4,12 +4,12 @@
 describe('CalculationsController', function () {
   var mockCalSvc
   var mockProductList
-  var mockLocations
   var mockLocationSvc
   var mockAssumptionList
   var calculationsCtrl
+  var mockLocationState
 
-  beforeEach(module('allocations', 'db'))
+  beforeEach(module('allocations', 'db', 'auth'))
 
   beforeEach(
     module(function ($provide) {
@@ -44,17 +44,18 @@ describe('CalculationsController', function () {
     })
   )
 
-  beforeEach(inject(function ($controller, calculationService, locationService, pouchUtil, log, assumptionService) {
+  beforeEach(inject(function ($controller, calculationService, locationService,authService, pouchUtil, log, assumptionService) {
     mockCalSvc = calculationService
     mockProductList = []
-    mockLocations = []
     mockLocationSvc = locationService
+    mockLocationState = [];
     mockAssumptionList = []
     calculationsCtrl = $controller('CalculationsController', {
       calculationService: mockCalSvc,
       products: mockProductList,
-      locations: mockLocations,
+      locationStates: mockLocationState,
       locationSvc: mockLocationSvc,
+      authService: authService,
       pouchUtil: pouchUtil,
       log: log,
       assumptionSvc: assumptionService,
