@@ -25,6 +25,13 @@ angular.module('directDeliveryDashboard')
                 return authService.getCurrentUser()
                   .then(navbarService.updateItems.bind(null))
                   .catch($q.when.bind($q))
+              },
+              userStates: function (usersService, log) {
+                return usersService.getUserStates()
+                  .catch(function (reason) {
+                    log.error('userStatesErr', reason)
+                    return []
+                  })
               }
             }
           },
