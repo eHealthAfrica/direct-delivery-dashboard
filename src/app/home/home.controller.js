@@ -1,7 +1,15 @@
 'use strict'
 
 angular.module('directDeliveryDashboard')
-  .controller('HomeCtrl', function (DELIVERY_STATUS, $window, roundReport, deliveryRoundService, log, utility) {
+  .controller('HomeCtrl', function (
+    DELIVERY_STATUS,
+    $window,
+    roundReport,
+    deliveryRoundService,
+    log,
+    utility,
+    $scope
+  ) {
     var vm = this // view models
     vm.selectedRound = ''
 
@@ -90,6 +98,36 @@ angular.module('directDeliveryDashboard')
         }
       ]
     }
-
+    $scope.$on('stateChanged', function (event, data) {
+      var key = ''
+      deliveryRoundService.getLatestBy(data.state.name)
+        .then(function (roundInfo) {
+          vm.roundCodes = roundInfo.roundCodes || []
+          key = roundInfo.latestRoundId
+          vm.selectedRound = ''
+          return deliveryRoundService.getReport(key)
+        })
+        .then(function (roundReport) {
+          roundReport.deliveryRoundID = key
+          vm.roundReport = roundReport
+          if (roundReport.onTime || roundReport.behindTime > 0) {
+            vm.onTime = [
+              { key: 'Behind Time', y: roundReport.behindTime, color: 'orange' },
+              { key: 'On Time', y: roundReport.onTime, color: 'green' }
+            ]
+          }
+          vm.hasSchedules()
+          vm.setTimeline()
+        })
+        .catch(function () {
+          var defaultReport = deliveryRoundService.getDefaultReport()
+          defaultReport.deliveryRoundID = key
+          defaultReport.status = []
+          vm.onTime = []
+          vm.roundReport = defaultReport
+          vm.hasSchedules()
+          vm.setTimeline()
+        })
+    })
     vm.setTimeline()
   })
