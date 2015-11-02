@@ -1,8 +1,8 @@
 {
   "db": "http://localhost:5984/deliveries",
   "mailerAPI": "https://mandrillapp.com/api/1.0/messages/send.json",
-  "apiKey": "apiKey",
-  "senderEmail": "no-reply@test.org",
+  "apiKey": "MANDRILL-MAILER-API-KEY",
+  "senderEmail": "no-reply@example.com",
   "senderName": "EHA Direct-Delivery",
   "deliveryRoundAdminLevel": "2"
 }

@@ -11,7 +11,7 @@
           <button class="btn btn-success btn-lg"
                   ng-click="srCtrl.completePlanning()">
             <i class="fa fa-thumbs-up"></i>
-            <span>Complete Planning</span>
+            <span>Complete and Send Alert</span>
           </button>
 
           <button class="btn btn-primary btn-lg"
@@ -108,7 +108,15 @@
                 e-required></span>
           {{ facRnd.distance || '' }}
         </td>
-        <td ng-bind="facRnd.status"></td>
+        <td ng-class="facRnd | deliveryStatus:true">
+          <span editable-select="srCtrl.facilityDeliveries[$index].status"
+                e-ng-class="danger | deliveryStatus"
+                e-ng-options="status as status for status in srCtrl.deliveryStatuses"
+                e-name="status"
+                e-form="rowform">
+          </span>
+          {{ facRnd.status || 'Please set status' }}
+        </td>
         <td>
           <!-- form -->
           <form editable-form name="rowform" onbeforesave="srCtrl.saveRow($data, srCtrl.facilityDeliveries[$index])"
@@ -126,7 +134,6 @@
           </form>
           <div class="buttons" ng-show="!rowform.$visible">
             <button class="btn btn-primary btn-block" ng-click="rowform.$show()">Edit</button>
-            </button>
           </div>
         </td>
       </tr>

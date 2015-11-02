@@ -1,64 +1,100 @@
 <div class="panel panel-default" ng-controller="DeliveryReportByZonesCtrl as devRepCtrl">
   <div class="panel-heading">
-
     <div class="row">
-      <div class="col-md-3">
-        <label for="selectedZone">Selected Zone</label>
-        <select
-          id="selectedZone"
-          ng-model="devRepCtrl.selectedZone"
-          class="form-control input-lg">
-          <option
-            ng-repeat="zone in devRepCtrl.capturedZones"
-            ng-selected="zone === devRepCtrl.selectedZone"
-            value="{{ zone }}"
-            ng-bind="zone"></option>
-        </select>
-      </div>
-      <div class="col-md-3">
-        <label for="fromDate">Start</label>
+      <div class="col-md-2">
 
-        <div class="input-group">
-          <input id="fromDate" type="text" class="form-control input-lg"
-                 ng-model="devRepCtrl.startDate"
-                 datepicker-popup="{{devRepCtrl.dateFormat}}"
-                 max-date="devRepCtrl.stopDateOn"
-                 is-open="devRepCtrl.filteredReport.start.opened"/>
+        <label>
+          <span ng-if="!devRepCtrl.filterType">Filter By Round</span>
+          <span ng-if="devRepCtrl.filterType">Filter By Date</span>
+        </label>
+        <div>
+          <label class="switch">
+            <input ng-model="devRepCtrl.filterType" type="checkbox">
+            <i></i>
+          </label>
+        </div>
+
+      </div>
+      <div class="col-md-10">
+        <div class="row" ng-if="!devRepCtrl.filterType">
+          <div class="col-md-3">
+            <label for="selectedZone">Selected Zone</label>
+            <select
+              id="selectedZone"
+              ng-model="devRepCtrl.selectedZone"
+              class="form-control input-lg">
+              <option
+                ng-repeat="zone in devRepCtrl.capturedZones"
+                ng-selected="zone === devRepCtrl.selectedZone"
+                value="{{ zone }}"
+                ng-bind="zone"></option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label for="fromDate">Start</label>
+
+            <div class="input-group">
+              <input id="fromDate" type="text" class="form-control input-lg"
+                     ng-model="devRepCtrl.startDate"
+                     datepicker-popup="{{devRepCtrl.dateFormat}}"
+                     max-date="devRepCtrl.stopDateOn"
+                     is-open="devRepCtrl.filteredReport.start.opened"/>
                     <span class="input-group-btn">
                       <button type="button" class="btn btn-default btn-lg"
                               ng-click="devRepCtrl.filteredReport.start.open($event)">
                         <i class="fa fa-calendar"></i>
                       </button>
                     </span>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <label for="fromDate">End</label>
-        <div class="input-group">
-          <input type="text" class="form-control input-lg"
-                 ng-model="devRepCtrl.stopDateOn"
-                 min-date="devRepCtrl.startDate"
-                 datepicker-popup="{{devRepCtrl.dateFormat}}"
-                 is-open="devRepCtrl.filteredReport.stop.opened"/>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <label for="fromDate">End</label>
+            <div class="input-group">
+              <input type="text" class="form-control input-lg"
+                     ng-model="devRepCtrl.stopDateOn"
+                     min-date="devRepCtrl.startDate"
+                     datepicker-popup="{{devRepCtrl.dateFormat}}"
+                     is-open="devRepCtrl.filteredReport.stop.opened"/>
                     <span class="input-group-btn">
                       <button type="button" class="btn btn-default btn-lg"
                               ng-click="devRepCtrl.filteredReport.stop.open($event)">
                         <i class="fa fa-calendar"></i>
                       </button>
                     </span>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <label></label>
+            <div class="input-group">
+              <button class="btn btn-primary btn-lg" type="button"
+                      ng-click="devRepCtrl.loadReport()">
+                <i class="fa fa-search"></i>
+                <span>Search</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="row" ng-if="devRepCtrl.filterType">
+          <div class="col-md-6">
+            <label></label>
+            <div class="form-group has-feedback">
+              <div class="input-group">
+                <input type="text" class="form-control input-lg filter" placeholder="Enter Round code"
+                       ng-model="devRepCtrl.selectedRound"
+                       typeahead="roundCode for roundCode in devRepCtrl.roundCodes">
+                  <span class="input-group-btn">
+                    <button class="btn btn-primary btn-lg" type="button" ng-click="devRepCtrl.updateReport()">
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </span>
+              </div>
+            </div>
+          </div>
+        </div>
         </div>
       </div>
-      <div class="col-md-3">
-        <label></label>
-        <div class="input-group">
-          <button class="btn btn-primary btn-lg" type="button"
-                  ng-click="devRepCtrl.loadReport()">
-            <i class="fa fa-search"></i>
-            <span>Search</span>
-          </button>
-        </div>
-      </div>
-    </div>
+  </div>
+
 
     <div class="panel-body alert alert-info"
          ng-show="devRepCtrl.capturedZones.length === 0">

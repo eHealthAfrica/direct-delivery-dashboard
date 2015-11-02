@@ -1,28 +1,30 @@
-'use strict';
+'use strict'
 
 angular.module('users')
-  .config(function($stateProvider, ehaCouchDbAuthServiceProvider) {
+  .config(function ($stateProvider, authProvider) {
     $stateProvider.state('users', {
       abstract: true,
       parent: 'index',
       url: '/users',
       templateUrl: 'app/users/users.html',
-      controller: 'UsersCtrl',
-      controllerAs: 'usersCtrl',
       resolve: {
-        authentication: ehaCouchDbAuthServiceProvider.requireAuthenticatedUser,
-        authorization: ehaCouchDbAuthServiceProvider.requireAdminUser,
-        users: function(usersService) {
+        authentication: authProvider.requireAuthenticatedUser,
+        authorization: authProvider.requireAdminUser,
+        users: function (usersService, log) {
           return usersService.all()
-            .then(function(usersObj) {
-              var users = [];
+            .then(function (usersObj) {
+              var users = []
 
-              angular.forEach(usersObj, function(user) {
-                users.push(user);
-              });
+              angular.forEach(usersObj, function (user) {
+                users.push(user)
+              })
 
-              return users;
-            });
+              return users
+            })
+            .catch(function (reason) {
+              log.error('userLoadErr')
+              return []
+            })
         }
       },
       data: {
@@ -30,5 +32,5 @@ angular.module('users')
           'direct_delivery_dashboard_super'
         ]
       }
-    });
-  });
+    })
+  })

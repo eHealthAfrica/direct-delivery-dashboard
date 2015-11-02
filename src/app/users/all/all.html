@@ -1,30 +1,47 @@
 <div class="panel panel-default">
   <div class="panel-heading clearfix">
-    <a class="btn btn-primary btn-xs pull-right" ui-sref="users.create">Create</a>
-    <h3 class="panel-title">Users</h3>
+    <a class="btn btn-primary btn-lg pull-right" ui-sref="users.create">
+      <i class="fa fa-plus-circle"></i>  Create
+    </a>
+    <div class="form-group col-sm-4 pull-left">
+      <select
+        id="state"
+        name="state"
+        ng-change="usersAllCtrl.getUsers()"
+        class="form-control"
+        ng-model="usersAllCtrl.selectedState">
+        <option value="">All States</option>
+        <option
+          ng-repeat="state in usersAllCtrl.states"
+          value="{{ state._id }}"
+          ng-bind="state.name"></option>
+      </select>
+    </div>
   </div>
-  <div ng-hide="usersCtrl.users.length" class="panel-body">
+  <div ng-hide="usersAllCtrl.allUsers.length" class="panel-body">
     No users found.
   </div>
-  <table ng-show="usersCtrl.users.length" class="table table-condensed table-striped">
+  <table ng-show="usersAllCtrl.allUsers.length" class="table table-condensed table-striped">
     <thead>
       <tr>
         <th>Forename</th>
         <th>Surname</th>
         <th>Email</th>
         <th>Phone</th>
+        <th>State</th>
         <th>&nbsp;</th>
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="user in usersCtrl.users | orderBy:['profile.forename', 'profile.surname', 'profile.email']">
+      <tr ng-repeat="user in usersAllCtrl.allUsers | orderBy:['profile.forename', 'profile.surname', 'profile.email']">
         <td ng-bind="::user.profile.forename"></td>
         <td ng-bind="::user.profile.surname"></td>
         <td ng-bind="::user.profile.email"></td>
         <td ng-bind="::user.profile.phone"></td>
+        <td ng-bind="::usersAllCtrl.statesObject[user.profile.state]"></td>
         <td class="actions">
-          <a class="btn btn-xs btn-primary" ui-sref="users.update({id: user.profile._id})"><span class="fa fa-pencil-square-o"></span></a>
-          <button class="btn btn-xs btn-danger" ng-click="usersAllCtrl.remove(user)"><span class="fa fa-trash"></span></button>
+          <a class="btn btn-xs btn-primary" ui-sref="users.update({id: user.profile._id})"><span class="fa fa-pencil-square-o"></span> Edit</a>
+          <button class="btn btn-xs btn-danger" ng-click="usersAllCtrl.remove(user)"><span class="fa fa-trash"></span> Delete</button>
         </td>
       </tr>
     </tbody>

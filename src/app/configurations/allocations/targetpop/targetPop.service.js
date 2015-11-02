@@ -3,15 +3,14 @@
  */
 
 angular.module('allocations')
-  .service('targetPopulationService',  function(dbService){
+  .service('targetPopulationService', function (dbService) {
+    var service = this
 
-    var service = this;
-
-    service.saveMany = function(docs){
-      return dbService.saveDocs(docs);
-    };
-
-    service.update = function(doc){
-      return  dbService.update(doc);
+    service.saveMany = function (docs) {
+      return dbService.saveDocs(docs)
     }
-  });
+
+    service.update = function (doc) {
+      return dbService.update(doc)
+    }
+  })

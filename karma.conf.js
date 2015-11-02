@@ -1,17 +1,16 @@
-'use strict';
-/*eslint-env node */
+'use strict'
 
-var path = require('path');
-var conf = require('./gulp/conf');
+var path = require('path')
+var conf = require('./gulp/conf')
 
-var _ = require('lodash');
-var wiredep = require('wiredep');
+var extend = require('extend')
+var wiredep = require('wiredep')
 
-function listFiles() {
-  var wiredepOptions = _.extend({}, conf.wiredep, {
+function listFiles () {
+  var wiredepOptions = extend({}, conf.wiredep, {
     dependencies: true,
     devDependencies: true
-  });
+  })
 
   return wiredep(wiredepOptions).js
     .concat([
@@ -20,11 +19,10 @@ function listFiles() {
       path.join(conf.paths.src, '/**/*.spec.js'),
       path.join(conf.paths.src, '/**/*.mock.js'),
       path.join(conf.paths.src, '/**/*.html')
-    ]);
+    ])
 }
 
-module.exports = function(config) {
-
+module.exports = function (config) {
   var configuration = {
     files: listFiles(),
 
@@ -64,21 +62,7 @@ module.exports = function(config) {
         }
       ]
     }
-  };
-
-  // This block is needed to execute Chrome on Travis
-  // If you ever plan to use Chrome and Travis, you can keep it
-  // If not, you can safely remove it
-  // https://github.com/karma-runner/karma/issues/1144#issuecomment-53633076
-  if (configuration.browsers[0] === 'Chrome' && process.env.TRAVIS) {
-    configuration.customLaunchers = {
-      'chrome-travis-ci': {
-        base: 'Chrome',
-        flags: ['--no-sandbox']
-      }
-    };
-    configuration.browsers = ['chrome-travis-ci'];
   }
 
-  config.set(configuration);
-};
+  config.set(configuration)
+}

@@ -1,30 +1,30 @@
 <div class="panel panel-default">
-  <div class="panel-heading">Add/Edit Products</div>
-  <div class="panel-body">
-    <div><!-- editing.. --></div>
-    <hr/>
-    <div class="clearfix">
-      <div class="pull-right">
-        <button class="btn btn-lg btn-default" ui-sref="configurations.products"><i class="fa fa-backward"></i> Back to List</button>
-        <button class="btn btn-lg btn-success" ng-click="productUpdateCtrl.save()"><i class="fa fa-save" ></i> Save</button>
-      </div>
+  <div class="panel-heading clearfix">
+    <i class="fa fa-file-powerpoint-o"></i>
+    <span><b>Add/Edit Products</b></span>
+    <div class="btn-group pull-right">
+      <button class='btn btn-default btn-lg' ui-sref="configurations.products">
+        <i class="fa fa-backward"></i>
+        <span>Back to List</span>
+      </button>
     </div>
-    <hr/>
+  </div>
+  <div class="panel-body">
     <form role="form">
       <div class="form-group">
-        <label>product name</label>
+        <label>Product Name</label>
         <input class="form-control input-lg" ng-model="productUpdateCtrl.product.name">
       </div>
       <div class="form-group">
-        <label>product code</label>
+        <label>Product Code</label>
         <input class="form-control input-lg"  ng-model="productUpdateCtrl.product.code">
       </div>
       <div class="form-group">
-        <label>product description</label>
+        <label>Product Description</label>
         <input class="form-control input-lg"  ng-model="productUpdateCtrl.product.description">
       </div>
       <div class="form-group">
-        <label>measured in</label>
+        <label>Measured In</label>
         <select class="form-control input-lg" ng-model="productUpdateCtrl.product.baseUOM">
           <option></option>
           <option
@@ -35,20 +35,26 @@
         </select>
       </div>
       <div class="form-group ">
-        <label>storage type</label>
-        <select
-            class="form-control input-lg"
-             ng-model="productUpdateCtrl.product.storageID"
-            >
-          <option></option>
+        <label>Storage Type</label>
+        <select class="form-control input-lg"
+            ng-model="productUpdateCtrl.product.storageID">
+          <option value=""></option>
           <option
               ng-repeat="(item, value) in productUpdateCtrl.storageTypes track by $index"
               value="{{value._id}}"
               ng-selected="(productUpdateCtrl.product.storageID === value._id)">
             {{value.label}}
           </option>
-
         </select>
+      </div>
+      <div class="clearfix">
+        <div class="pull-right">
+          <button class="btn btn-lg btn-success"
+                  ng-click="productUpdateCtrl.save()">
+            <i class="fa fa-save" ></i>
+            <span>Save</span>
+          </button>
+        </div>
       </div>
     </form>
   </div>

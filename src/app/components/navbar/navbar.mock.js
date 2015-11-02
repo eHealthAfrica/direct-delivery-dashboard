@@ -1,8 +1,8 @@
-'use strict';
+'use strict'
 
 angular.module('navbarMock', [])
-  .service('$state', function() {
-    this.get = function() {
+  .service('$state', function () {
+    this.get = function () {
       return [
         {
           name: 'parent',
@@ -16,6 +16,6 @@ angular.module('navbarMock', [])
             label: 'Child'
           }
         }
-      ];
-    };
-  });
+      ]
+    }
+  })

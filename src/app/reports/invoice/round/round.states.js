@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
 angular.module('reports')
-  .config(function($stateProvider) {
+  .config(function ($stateProvider) {
     $stateProvider.state('reports.layout.round', {
       parent: 'reports.layout',
       url: '/round/:id',
@@ -9,15 +9,16 @@ angular.module('reports')
       controller: 'ReportsRoundCtrl',
       controllerAs: 'reportsRoundCtrl',
       resolve: {
-        deliveryRounds: function(reportsService){
-          return reportsService.getDeliveryRounds();
+        drivers: function (driversService) {
+          return driversService.all()
         },
-        dailyDeliveries: function($stateParams, reportsService) {
-          return reportsService.getDailyDeliveries($stateParams.id);
-        },
-        drivers: function(driversService) {
-          return driversService.all();
+        dailyDeliveries: function (reportsService, $stateParams, log) {
+          return reportsService.getDailyDeliveries($stateParams.id, {limit: 10})
+            .catch(function (reason) {
+              log.error('invoiceDailyDeliveryErr', reason)
+              return {}
+            })
         }
       }
-    });
-  });
+    })
+  })

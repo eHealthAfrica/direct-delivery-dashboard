@@ -3,8 +3,8 @@
  */
 
 angular.module('configurations')
-  .config(function($stateProvider){
+  .config(function ($stateProvider) {
     $stateProvider.state('configurations.menu', {
 
-    });
-  });
+    })
+  })

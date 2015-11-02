@@ -1,0 +1,65 @@
+{
+  "docs": [
+    {
+      "_id": "bashir@example.com",
+      "email": "bashir@example.com",
+      "forename": "Bashir",
+      "surname": "Yakubu",
+      "phone": "08987978767676",
+      "doc_type": "driver",
+      "version": "1.0.0",
+      "state": "KN"
+    },
+    {
+      "_id": "abdullahi@example.com",
+      "email": "abdullahi@example.com",
+      "forename": "Abdullahi",
+      "surname": "Ahmed",
+      "phone": "08987978767676",
+      "doc_type": "driver",
+      "version": "1.0.0",
+      "state": "KN"
+    },
+    {
+      "_id": "ibrahim@example.com",
+      "email": "ibrahim@example.com",
+      "forename": "Ibrahim",
+      "surname": "Hassan",
+      "phone": "08987978767676",
+      "doc_type": "driver",
+      "version": "1.0.0",
+      "state": "KN"
+    },
+    {
+      "_id": "khalil@example.com",
+      "email": "khalil@example.com",
+      "forename": "Khalil",
+      "surname": "Jibril",
+      "phone": "08987978767676",
+      "doc_type": "driver",
+      "version": "1.0.0",
+      "state": "KN"
+    },
+    {
+      "_id": "usman@example.com",
+      "email": "usman@example.com",
+      "forename": "Usman",
+      "surname": "Abubakar",
+      "phone": "08987978767676",
+      "doc_type": "driver",
+      "version": "1.0.0",
+      "state": "KN"
+    },
+    {
+      "_id": "umar@example.com",
+      "email": "umar@example.com",
+      "forename": "Umar",
+      "surname": "Salisu",
+      "phone": "08987978767676",
+      "doc_type": "driver",
+      "version": "1.0.0",
+      "state": "KN"
+    }
+
+  ]
+}

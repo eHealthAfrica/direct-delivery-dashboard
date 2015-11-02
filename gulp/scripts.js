@@ -1,15 +1,15 @@
-'use strict';
+'use strict'
 
-var path = require('path');
-var gulp = require('gulp');
-var conf = require('./conf');
+var path = require('path')
+var gulp = require('gulp')
+var conf = require('./conf')
 
-var browserSync = require('browser-sync');
+var browserSync = require('browser-sync')
 
-var $ = require('gulp-load-plugins')();
+var $ = require('gulp-load-plugins')()
 
 gulp.task('scripts', ['ngConfig'], function () {
   return gulp.src(path.join(conf.paths.src, '/app/**/*.js'))
     .pipe(browserSync.reload({stream: true}))
-    .pipe($.size());
-});
+    .pipe($.size())
+})

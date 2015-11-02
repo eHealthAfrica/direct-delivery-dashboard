@@ -1,8 +1,8 @@
-'use strict';
+'use strict'
 
 angular.module('directDeliveryDashboard')
-  .config(function($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise('/');
+  .config(function ($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise('/')
     $stateProvider
       .state('root', {
         abstract: true,
@@ -19,7 +19,14 @@ angular.module('directDeliveryDashboard')
           header: {
             templateUrl: 'app/components/navbar/navbar.html',
             controller: 'NavbarCtrl',
-            controllerAs: 'navbarCtrl'
+            controllerAs: 'navbarCtrl',
+            resolve: {
+              authentication: function ($q, authService, navbarService) {
+                return authService.getCurrentUser()
+                  .then(navbarService.updateItems.bind(null))
+                  .catch($q.when.bind($q))
+              }
+            }
           },
           content: {},
           footer: {
@@ -28,5 +35,5 @@ angular.module('directDeliveryDashboard')
             controllerAs: 'footerCtrl'
           }
         }
-      });
-  });
+      })
+  })

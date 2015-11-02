@@ -1,8 +1,8 @@
 <div class="panel panel-default">
   <div class="panel-heading clearfix">
     <div class="btn-group btn-group-lg pull-right">
-       <button class="btn btn-warning" ui-sref="configurations.products.presentation"><i class="fa fa-list-ol"></i> presentations</button>
-      <button class="btn btn-success" ui-sref="configurations.products.add"><i class="fa fa-plus"></i> add product</button>
+       <button class="btn btn-warning" ui-sref="configurations.products.presentation"><i class="fa fa-list-ol"></i> Presentations</button>
+      <button class="btn btn-success" ui-sref="configurations.products.add"><i class="fa fa-plus"></i> Add Product</button>
     </div>
   </div>
   <div class="panel-body">
@@ -29,8 +29,14 @@
           <td ng-bind="product.baseUOM"></td>
           <td ng-bind="product.storageID"></td>
           <td>
-            <a class="btn btn-default" ui-sref="configurations.products.edit({code:product._id})"><i class="fa fa-wrench"></i> edit</a>
-             <a class="btn btn-info" ui-sref="configurations.products.view({code:product._id})"><i class="fa fa-eye"></i> view</a>
+            <a class="btn btn-default"
+               ui-sref="configurations.products.edit({code:product._id})">
+              <i class="fa fa-wrench"></i>
+              <span>Edit</span>
+            </a>
+             <a class="btn btn-info"
+                ui-sref="configurations.products.view({code:product._id})">
+               <i class="fa fa-eye"></i> View</a>
           </td>
         </tr>
       </tbody>

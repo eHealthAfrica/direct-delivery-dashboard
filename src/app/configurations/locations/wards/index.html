@@ -1,0 +1,73 @@
+<div class="panel panel-default">
+  <div class="panel-heading clearfix">
+    <div ng-include="'app/configurations/locations/menu.html'"></div>
+  </div>
+  <div class="panel-body">
+    <form role="form" class="form form-inline">
+        <div class="import clearfix">
+          <div class="form-group" ng-show="configLocationCtrl.states.length > 0">
+            <label>select state</label>
+            <select
+							class="form-control"
+							ng-show="configLocationCtrl.states.length > 0"
+							ng-model="configLocationCtrl.state"
+							ng-change="configLocationCtrl.getZones(configLocationCtrl.state)">
+              <option ng-repeat="state in configLocationCtrl.states track by $index" value="{{state}}">{{state.name}}</option>
+            </select>
+          </div>
+					<div class="form-group" ng-show="configLocationCtrl.zones.length > 0">
+            <label>select zone</label>
+            <select class="form-control"  ng-model="configLocationCtrl.zone" ng-change="configLocationCtrl.getLgas(configLocationCtrl.zone)">
+              <option ng-repeat="zone in configLocationCtrl.zones track by $index" value="{{zone}}">{{zone.name}}</option>
+            </select>
+          </div>
+          <div class="form-group" ng-show="configLocationCtrl.lgas.length > 0">
+            <label>select LGA</label>
+            <select class="form-control"  ng-model="configLocationCtrl.lga">
+              <option ng-repeat="lga in configLocationCtrl.lgas track by $index" value="{{lga}}">{{lga.name}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <ng-csv-import
+              content="configLocationCtrl.csv.content"
+              header="configLocationCtrl.csv.header"
+              separator="configLocationCtrl.csv.separator"
+              finished="configLocationCtrl.finished(configLocationCtrl.csv.result)"
+              result="configLocationCtrl.csv.result">
+            </ng-csv-import>
+          </div>
+          <div class="form-group pull-right">
+            <button class="btn btn-success btn-lg " ng-click="configLocationCtrl.save()">
+              <i class="fa fa-check"></i> Save</button>
+          </div>
+        </div>
+    </form>
+    <div class="alert alert-warning" ng-show="fconfigLocationCtrl.invalidUploads">
+      <i class="fa fa-warning"></i> wardss highlighted in red background cannot be upload due to missing parent locations
+    </div>
+    <div ng-if="configLocationCtrl.csv.result.length > 0">
+      <table class="table table-bordered table-hover table-condensed">
+        <tr style="font-weight: bold">
+          <th style="">Name</th>
+          <th>Level</th>
+          <th style="">OSMID</th>
+          <th style="">Country</th>
+          <th style="">G/P Zone</th>
+          <th style="">State</th>
+          <th style="">Zone</th>
+          <th style="">LGA</th>
+        </tr>
+        <tr ng-repeat="location in configLocationCtrl.csv.result track by $index">
+          <td>{{location.name}}</td>
+          <td ng-bind="location.level"></td>
+          <td ng-bind="location.osmId"></td>
+          <td ng-bind="location.admin_level_0"></td>
+          <td ng-bind="location.admin_level_1"></td>
+          <td ng-bind="location.admin_level_2"></td>
+          <td ng-bind="location.admin_level_3"></td>
+          <td ng-bind="location.admin_level_4"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

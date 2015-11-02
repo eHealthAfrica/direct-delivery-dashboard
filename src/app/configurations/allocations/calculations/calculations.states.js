@@ -1,9 +1,7 @@
-/**
- * Created by ehealthafrica on 7/10/15.
- */
+'use strict'
 
 angular.module('allocations')
-  .config(function($stateProvider){
+  .config(function ($stateProvider) {
     $stateProvider
       .state('configurations.allocations.calculations', {
         parent: 'configurations.allocations',
@@ -12,24 +10,29 @@ angular.module('allocations')
         controller: 'CalculationsController',
         controllerAs: 'calculationsController',
         resolve: {
-          products : function(productService){
+          products: function (productService) {
             return productService.getAll()
-              .catch(function(err){
-                return [];
-              });
-          },
-          locations : function(locationService){
-            return locationService.getLocationsByLevel()
-              .catch(function(err){
-                return [];
-              });
-          },
-          assumptionList : function(assumptionService){
-            return assumptionService.getAll()
-              .catch(function(err){
+              .then(function (productList) {
+                return productList.map(function (item) {
+                  return item._id
+                })
+              })
+              .catch(function () {
                 return []
-              });
+              })
+          },
+          locations: function (locationService) {
+            return locationService.getLocationsByLevel()
+              .catch(function () {
+                return []
+              })
+          },
+          assumptionList: function (assumptionService) {
+            return assumptionService.getAssumptions()
+              .catch(function () {
+                return []
+              })
           }
         }
       })
-  });
+  })

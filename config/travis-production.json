@@ -1,3 +1,4 @@
 {
-  "db": "https://dd-db.ehealth.org.ng/deliveries"
+  "db": "https://dd-db.ehealth.org.ng/deliveries",
+  "deliveryRoundAdminLevel": "2"
 }

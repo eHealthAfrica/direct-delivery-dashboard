@@ -3,6 +3,7 @@ function(doc) {
     var successTag = 'success';
     var cceTag = 'cce';
     var failedTag = 'failed';
+    var cancelTag = 'cancel';
 
     var DELIVERY_STATUSES = {
         UPCOMING_FIRST: 'Upcoming: 1st Attempt',
@@ -52,7 +53,12 @@ function(doc) {
     }
 
     function hasWorkingCCE(status) {
-        return (status.toLowerCase().indexOf(cceTag) === -1);
+        status = status.toLowerCase();
+        var isFailedOrCanceled = (status.indexOf(cancelTag) !== -1 || status.indexOf(failedTag) !== -1);
+        if(isFailedOrCanceled){
+            return (status.indexOf(cceTag) === -1)
+        }
+        return true;
     }
 
     function isDelivered(status) {

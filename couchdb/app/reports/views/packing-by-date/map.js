@@ -15,7 +15,7 @@ function(doc) {
 
     return newObject;
   }
-  if (doc.doc_type === 'dailyDelivery' && doc.driverID && doc.date && doc.deliveryRoundID, doc.packed) {
+  if (doc.doc_type === 'dailyDelivery' && doc.driverID && doc.date && doc.deliveryRoundID && doc.packed) {
     var i = doc.facilityRounds.length;
     while (i--) {
       var row = doc.facilityRounds[i];

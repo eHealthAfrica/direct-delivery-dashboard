@@ -1,3 +1,3 @@
-'use strict';
+'use strict'
 
-angular.module('mailer', []);
+angular.module('mailer', [])

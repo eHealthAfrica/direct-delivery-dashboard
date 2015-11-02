@@ -1,162 +1,238 @@
-'use strict';
+'use strict'
 
 angular.module('reports')
-		.service('reportsService', function (pouchDB, config, dbService, deliveryRoundService) {
+  .service('reportsService', function (
+    $q,
+    dbService,
+    deliveryRoundService,
+    locationService,
+    pouchUtil,
+    authService
+  ) {
+    var _this = this
 
-			var _this = this;
-			var db = pouchDB(config.db);
+    this.getDeliveryRounds = function (options) {
+      options = options || {}
+      options.limit = options.limit || 10
+      return dbService.getView('reports/delivery-rounds', options)
+        .then(function (response) {
+          return {
+            total: response.total_rows,
+            offset: response.offset,
+            results: pouchUtil.pluckValues(response)
+          }
+        })
+    }
 
-			//TODO: most of there should be moved to Server side if we start using server side rendering engine
-      //or move to CouchDB
-			this.getDeliveryRounds = function () {
-				return db.query('reports/delivery-rounds')
-						.then(function (response) {
-							//TODO: move this to CouchDB view
-							return response.rows.map(function (row) {
-								return {
-									id: row.id,
-									state: row.key[0],
-									startDate: new Date(row.key[1]),
-									endDate: new Date(row.value.endDate),
-									roundCode: row.value.roundCode
-								};
-							});
-						});
-			};
+    this.getDailyDeliveries = function (roundId, pagination) {
+      pagination = pagination || {}
+      var view = 'reports/daily-deliveries'
+      var params = {
+        startkey: [roundId],
+        endkey: [roundId, {}, {}, {}]
+      }
+      var promises = [
+        dbService.getView(view, angular.merge({}, pagination, params)),
+        _this.getDailyDeliveriesCount(roundId)
+      ]
 
-			this.getDailyDeliveries = function (roundId) {
-				return db
-						.query('reports/daily-deliveries', {
-							startkey: [roundId],
-							endkey: [roundId, {}, {}, {}]
-						})
-						.then(function (response) {
-							//TODO: move this to CouchDB view
-							return response.rows.map(function (row) {
-								return {
-									id: row.id,
-									driverID: row.key[1],
-									date: new Date(row.key[2]),
-									drop: row.key[3],
-									status: row.value.status,
-									window: row.value.window,
-									signature: row.value.signature,
-									facility: row.value.facility
-								};
-							});
-						});
-			};
+      return $q.all(promises)
+        .then(function (response) {
+          var total = 0
+          if (response[1]) {
+            total = response[1].rows.length > 0 ? response[1].rows[0].value : 0
+          }
+          return {
+            total: total,
+            offset: response[0].offset,
+            results: pouchUtil.pluckValues(response[0])
+          }
+        })
+    }
 
-			_this.getStatusTypes = function () {
-				return {
-					success: 0,
-					failed: 0,
-					canceled: 0,
-					total: 0
-				};
-			};
+    _this.getDailyDeliveriesCount = function (roundId) {
+      var view = 'reports/daily-deliveries-count'
+      var params = {
+        startkey: roundId,
+        endkey: roundId
+      }
+      return dbService.getView(view, params)
+    }
 
-			_this.collateStatusByZone = function (zoneReport, rowZone, rowStatus) {
-				if (!zoneReport[rowZone]) {
-					zoneReport[rowZone] = _this.getStatusTypes();
-				}
-				zoneReport[rowZone][rowStatus] += 1;
-				return zoneReport;
-			};
+    _this.getStatusTypes = function () {
+      return {
+        success: 0,
+        failed: 0,
+        canceled: 0,
+        total: 0
+      }
+    }
 
-			function collateSortedDate(ddReports) {
-				var cumDayCount = {};
-				ddReports
-						.sort(function (a, b) {
-							//ascending
-							return (new Date(a.date) - new Date(b.date));
-						})
-						.forEach(function (row) {
-							if (row.date) {
-								if (!cumDayCount[row.date]) {
-									cumDayCount[row.date] = _this.getStatusTypes();
-								}
-								cumDayCount[row.date][row.status] += 1;
-							}
-						});
-				return cumDayCount;
-			}
+    _this.collateStatusByZone = function (zoneReport, rowZone, rowStatus) {
+      if (!zoneReport[rowZone]) {
+        zoneReport[rowZone] = _this.getStatusTypes()
+      }
+      zoneReport[rowZone][rowStatus] += 1
+      return zoneReport
+    }
 
-			_this.collateReport = function (res, deliveryRounds) {
+    function collateSortedDate (ddReports) {
+      var cumDayCount = {}
+      ddReports
+        .sort(function (a, b) {
+          // ascending
+          return (new Date(a.date) - new Date(b.date))
+        })
+        .forEach(function (row) {
+          if (row.date) {
+            if (!cumDayCount[row.date]) {
+              cumDayCount[row.date] = _this.getStatusTypes()
+            }
+            cumDayCount[row.date][row.status] += 1
+          }
+        })
+      return cumDayCount
+    }
 
-				//TODO: move this collation to reduce view if possible
-				var rows = res.rows;
+    function formatZones (zones) {
+      var length = zones.length
+      var formatted = {}
+      for (var i = 0; i < length; i++) {
+        var statusType = _this.getStatusTypes()
+        statusType.zone = zones[i].name
+        formatted[zones[i].name.toLowerCase()] = statusType
+      }
+      return formatted
+    }
 
-				var index = rows.length;
-				var report = {
-					zones: {},
-					dates: {},
-					status: _this.getStatusTypes()
-				};
+    function toList (object) {
+      var list = []
+      for (var key in object) {
+        if (object.hasOwnProperty(key)) {
+          list.push(object[key])
+        }
+      }
+      return list
+    }
 
-				var row;
-				var roundRows = [];
-				while (index--) {
-					row = rows[index].value;
-					if (deliveryRounds && row.deliveryRoundID && deliveryRounds.indexOf(row.deliveryRoundID) === -1) {
-						continue;//skip
-					}
-					roundRows.push(row);
-					var rowZone = row.zone.trim().toLowerCase();
-					var rowStatus = row.status.trim().toLowerCase();
+    _this.collateReport = function (res, deliveryRounds, zones) {
+      // TODO: move this collation to reduce view if possible
+      var rows = res.rows
 
-					//collate report
-					report.zones = _this.collateStatusByZone(report.zones, rowZone, rowStatus);
-					report.status[rowStatus] += 1;
-					report.status.total += 1;
-				}
+      var index = rows.length
+      var report = {
+        zones: {},
+        dates: {},
+        status: _this.getStatusTypes()
+      }
 
-				var zones = [];
-				for (var z in report.zones) {
-					var zoneReport = {
-						zone: z,
-						success: report.zones[z].success,
-						failed: report.zones[z].failed,
-						canceled: report.zones[z].canceled
-					};
-					zones.push(zoneReport);
-				}
+      var row
+      var roundRows = []
+      while (index--) {
+        row = rows[index].value
+        if (deliveryRounds && row.deliveryRoundID && deliveryRounds.indexOf(row.deliveryRoundID) === -1) {
+          continue // skip
+        }
+        roundRows.push(row)
+        var rowZone = row.zone.trim().toLowerCase()
+        var rowStatus = row.status.trim().toLowerCase()
 
-				report.zones = zones;
-				report.dates = collateSortedDate(roundRows);
-				return report;
-			};
+        // collate report
+        report.zones = _this.collateStatusByZone(report.zones, rowZone, rowStatus)
+        report.status[rowStatus] += 1
+        report.status.total += 1
+      }
 
-			_this.getDeliveryReportWithin = function (startDate, endDate, deliveryRounds) {
-				var view = 'dashboard-delivery-rounds/report-by-date';
-				startDate = new Date(startDate).toJSON();
-				endDate = new Date(endDate).toJSON();
-				var options = {
-					startkey: [startDate],
-					endkey: [endDate, {}, {}]
-				};
-				return dbService.getView(view, options)
-						.then(function (res) {
-							return _this.collateReport(res, deliveryRounds);
-						});
-			};
+      zones = formatZones(zones)
+      for (var z in report.zones) {
+        if (report.zones.hasOwnProperty(z) && zones.hasOwnProperty(z)) {
+          zones[z].success = report.zones[z].success
+          zones[z].failed = report.zones[z].failed
+          zones[z].canceled = report.zones[z].canceled
+        }
+      }
+      report.zones = rows.length > 0 ? toList(zones) : []
+      report.dates = collateSortedDate(roundRows)
+      return report
+    }
 
+    _this.getDeliveryReportWithin = function (startDate, endDate, deliveryRounds) {
+      var view = 'dashboard-delivery-rounds/report-by-date'
+      startDate = new Date(startDate).toJSON()
+      endDate = new Date(endDate).toJSON()
+      var options = {
+        startkey: [startDate],
+        endkey: [endDate, {}, {}]
+      }
 
-			_this.getByWithin = function (state, startDate, endDate) {
-				var params = {
-					startkey: [state],
-					endkey: [state, {}]
-				};
+      function getLocations () {
+        function branchByUser (user) {
+          // TODO: move into config
+          var ZONE_LEVEL = '3'
 
-				return deliveryRoundService.getBy(params)
-						.then(function (res) {
-							var deliveryRoundIds = [];
-							res.rows.forEach(function (row) {
-								deliveryRoundIds.push(row.id);
-							});
-							return _this.getDeliveryReportWithin(startDate, endDate, deliveryRoundIds);
-						});
-			};
+          if (user.isAdmin()) {
+            return locationService.getLocationsByLevel(ZONE_LEVEL)
+          }
+          var states = authService.authorisedStates(user)
+          if (states.length) {
+            // TODO: display a dropdown on the frontend if the user can access
+            // more than state?
+            var state = states[0]
+            var locKeys = [ZONE_LEVEL, state]
+            return locationService.getByLevelAndAncestor(locKeys)
+          }
+          return []
+        }
 
+        return authService.getCurrentUser()
+          .then(branchByUser.bind(null))
+      }
 
-		});
+      var promises = [
+        dbService.getView(view, options),
+        getLocations()
+      ]
+
+      return $q.all(promises)
+        .then(function (res) {
+          return _this.collateReport(res[0], deliveryRounds, res[1])
+        })
+    }
+
+    _this.getByWithin = function (state, startDate, endDate) {
+      var params = {
+        startkey: [state],
+        endkey: [state, {}]
+      }
+
+      return deliveryRoundService.getBy(params)
+        .then(function (res) {
+          var deliveryRoundIds = []
+          res.rows.forEach(function (row) {
+            deliveryRoundIds.push(row.id)
+          })
+          return _this.getDeliveryReportWithin(startDate, endDate, deliveryRoundIds)
+        })
+    }
+
+    _this.getReportByRound = function (roundID) {
+      var ZONE_LEVEL = '3'
+      var STATE_CODE = 'KN' // TODO: get this from user profile
+      var deliveryRounds = [roundID]
+      var view = 'reports/by-rounds'
+      var options = {
+        startkey: [roundID],
+        endkey: [roundID, {}, {}]
+      }
+      var locKeys = []
+      locKeys.push([ZONE_LEVEL, STATE_CODE])
+      var promises = [
+        dbService.getView(view, options),
+        locationService.getByLevelAndAncestor(locKeys)
+      ]
+      return $q.all(promises)
+        .then(function (res) {
+          return _this.collateReport(res[0], deliveryRounds, res[1])
+        })
+    }
+  })

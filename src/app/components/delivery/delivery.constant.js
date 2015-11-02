@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 angular.module('delivery')
   .constant('DELIVERY_STATUS', {
@@ -12,4 +12,4 @@ angular.module('delivery')
     FAILED_CCE: 'Failed: CCE',
     FAILED_STAFF: 'Failed: Staff availability',
     FAILED_OTHER: 'Failed: other'
-  });
+  })

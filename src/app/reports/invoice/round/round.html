@@ -1,20 +1,42 @@
 <div id="report">
   <div class="report-title clearfix visible-print-block">
     <img src="/assets/images/ehealth-africa-logo.png">
-    <h1>eHealth Africa delivery report: round {{reportsRoundCtrl.deliveryRound.roundCode}}</h1>
+    <h1>eHealth Africa delivery report: round {{reportsRoundCtrl.deliveryRound}}</h1>
   </div>
   <div class="panel panel-default">
     <div class="panel-heading hidden-print">
-      <button ng-show="reportsRoundCtrl.dailyDeliveries.length" ng-click="reportsRoundCtrl.print()"
-        type="button" class="btn btn-primary btn-xs pull-right">
-        Print
-      </button>
-      <h3 class="panel-title">
-        eHealth Africa delivery report: round {{reportsRoundCtrl.deliveryRound.roundCode}}
-      </h3>
+
+      <div class="row">
+        <div class="col-sm-7">
+          <h3 class="panel-title">Delivery report: round {{reportsRoundCtrl.deliveryRound}}</h3>
+        </div>
+        <div class="col-sm-3">
+          <div class="row" ng-if="reportsRoundCtrl.dailyDeliveries.length">
+            <div class="col-xs-8 text-right">Page Size:</div>
+            <div class="col-xs-4">
+              <select
+                ng-change="reportsRoundCtrl.getReport(1)"
+                ng-model="reportsRoundCtrl.pagination.limit"
+                class="form-control">
+                <option ng-selected="reportsRoundCtrl.pagination.limit === 10" value="10" value="10">10</option>
+                <option ng-selected="reportsRoundCtrl.pagination.limit === 25" value="25">25</option>
+                <option ng-selected="reportsRoundCtrl.pagination.limit === 50" value="50">50</option>
+                <option ng-selected="reportsRoundCtrl.pagination.limit === 100" value="100">100</option>
+                <option ng-selected="reportsRoundCtrl.pagination.limit === 0" value="0">All</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <button ng-show="reportsRoundCtrl.dailyDeliveries.length" ng-click="reportsRoundCtrl.print()"
+                  type="button" class="btn btn-primary pull-right">
+            <i class="fa fa-print"></i> Print
+          </button>
+        </div>
+      </div>
     </div>
     <div ng-if="!reportsRoundCtrl.dailyDeliveries.length" class="panel-body">
-      No daily deliveries found.
+      <div class="alert alert-info">No daily deliveries found.</div>
     </div>
     <table ng-if="reportsRoundCtrl.dailyDeliveries.length" class="table table-condensed table-bordered">
       <thead>
@@ -53,5 +75,20 @@
         </tr>
       </tbody>
     </table>
+    <div class="panel-body hidden-print" ng-if="reportsRoundCtrl.dailyDeliveries.length">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="pager ng-isolate-scope ng-valid" >
+            <li ng-class="{'disabled': !reportsRoundCtrl.hasPrev()||reportsRoundCtrl.allIn()}" class="previous"><a href="" ng-click="reportsRoundCtrl.selectPage('prev')" class="ng-binding">« Previous</a></li>
+            <li>
+              Page <i ng-bind="reportsRoundCtrl.pagination.page"></i> of
+              <i ng-bind="reportsRoundCtrl.pagination.lastPage"></i>
+            </li>
+            <li ng-class="{'disabled': !reportsRoundCtrl.hasNext()||reportsRoundCtrl.allIn()}" class="next"><a href="" ng-click="reportsRoundCtrl.selectPage('next')" class="ng-binding">Next »</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>

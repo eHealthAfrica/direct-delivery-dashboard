@@ -1,8 +1,10 @@
 function(doc) {
   if (doc.doc_type === 'deliveryRound') {
-    //TODO: replace 'Kano' when state support is added
-    emit(['Kano', doc.startDate], {
+    emit([doc.state, doc.startDate], {
+      id: doc._id,
+      state: doc.state,
       roundCode: doc.roundCode,
+      startDate: doc.startDate,
       endDate: doc.endDate
     });
   }

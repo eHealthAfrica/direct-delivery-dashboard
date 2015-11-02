@@ -3,10 +3,10 @@
  */
 
 angular.module('allocations')
-  .config(function($stateProvider){
+  .config(function ($stateProvider) {
     $stateProvider.state('configurations.allocations', {
       parent: 'configurations.layout',
-      url : '/allocations',
+      url: '/allocations',
       templateUrl: 'app/configurations/allocations/index.html'
     })
-  });
+  })

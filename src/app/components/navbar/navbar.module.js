@@ -1,8 +1,7 @@
-'use strict';
+'use strict'
 
 angular.module('navbar', [
   'core',
   'config',
-  'auth',
-  'log'
-]);
+  'auth'
+])

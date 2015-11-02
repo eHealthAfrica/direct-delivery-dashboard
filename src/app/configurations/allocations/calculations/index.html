@@ -1,9 +1,9 @@
 <div class="clearfix">
   <span class="dropdown" dropdown on-toggle="toggled(open)">
-     <a href class="dropdown-toggle btn btn-lg fa-2x" dropdown-toggle>
+     <a href class="dropdown-toggle btn btn-success" dropdown-toggle>
         <b>
-          <i class="fa fa-check-circle text-success"></i>
-          {{calculationsController.selectedTemplate.name}}
+          <i class="fa fa-check"></i>
+          {{calculationsController.selectedTemplate._id}}
         <span class="caret"></span></b>
      </a>
      <ul class="dropdown-menu">
@@ -32,7 +32,7 @@
             ng-model="calculationsController.selectedLga">
         </select>
       </div>
-     <div class=" clearfix pull-right">
+     <div class="clearfix pull-right">
         <span class="dropdown" dropdown on-toggle="toggled(open)">
            <a href class="dropdown-toggle btn btn-success" dropdown-toggle>
               <b>
@@ -57,4 +57,5 @@
      </div>
    </form>
 <hr/>
- <div ng-include="'app/configurations/allocations/calculations/partials/pv.html'"></div>
+ <div ng-show=" !(calculationsController.renderedData.length > 0)"><p class="alert alert-info"><i class="fa fa-lg fa-info-circle"></i> No data found</p></div>
+ <div ng-include="'app/configurations/allocations/calculations/partials/pv.html'"  ng-if="calculationsController.renderedData.length > 0"></div>

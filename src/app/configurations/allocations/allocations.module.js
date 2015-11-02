@@ -2,7 +2,7 @@
  * Created by ehealthafrica on 7/3/15.
  */
 
-angular.module('allocations',[
+angular.module('allocations', [
   'core',
   'config',
   'pouchdb',
@@ -12,4 +12,4 @@ angular.module('allocations',[
   'ngDragDrop',
   'ngCsvImport',
   'ngCsv'
-]);
+])

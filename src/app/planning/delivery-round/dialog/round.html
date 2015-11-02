@@ -23,7 +23,7 @@
         <label>Round Number</label>
         <input type="text" class="form-control"
                ng-disabled="nrdCtrl.edit"
-               ng-model="nrdCtrl.deliveryRound.roundNo" placeholder="23">
+               ng-model="nrdCtrl.deliveryRound.roundNo" placeholder="e.g 23">
       </div>
 
       <div class="form-group">
@@ -45,7 +45,8 @@
           <div class="form-group">
             <div class="input-group">
               <input type="text" class="form-control" ng-model="nrdCtrl.deliveryRound.startDate"
-                     datepicker-popup="{{dateFormat}}" is-open="start.opened"/>
+                     datepicker-popup="{{dateFormat}}" is-open="start.opened"
+                     max-date="nrdCtrl.deliveryRound.endDate"/>
             <span class="input-group-btn">
               <button type="button" class="btn btn-default" ng-click="start.open($event)">
                 <i class="fa fa-calendar"></i>

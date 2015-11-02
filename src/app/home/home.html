@@ -21,8 +21,17 @@
   </div>
 </div>
 
+<div class="row" ng-hide="homeCtrl.hasSchedules()">
+  <div class="panel-body">
+    <div class="panel-body alert alert-info">
+      <i class="fa fa-lg fa-info-circle"></i>
+      <span> No delivery rounds found, please create one or add schedules through planning tab.</span>
+    </div>
+  </div>
+</div>
+
 <!-- Summary Table Section-->
-<div class="row">
+<div class="row" ng-show="homeCtrl.hasSchedules()">
   <br/><br/>
 
   <div class="col-md-3">
@@ -43,21 +52,21 @@
   </div>
 
   <div class="col-md-3">
-    <div class="jumbotron alert-success">
+    <div class="jumbotron alert-info">
       <h1 ng-bind="homeCtrl.roundReport.delivered"></h1>
       <h4>Total Delivered</h4>
     </div>
   </div>
 
   <div class="col-md-3">
-    <div class="jumbotron alert-info">
-      <h1>{{ homeCtrl.roundReport.workingCCE }} %</h1>
-      <h4>Working CCE</h4>
+    <div class="jumbotron alert-danger">
+      <h1>{{ homeCtrl.roundReport.notWorkingCCE || 0 }}</h1>
+      <h4>Faulty CCE</h4>
     </div>
   </div>
 
   <div class="col-md-3">
-    <div class="jumbotron alert-warning">
+    <div class="jumbotron alert-success">
       <h1 ng-bind="homeCtrl.roundReport.billable"></h1>
       <h4>
         <ng-pluralize
@@ -75,7 +84,7 @@
 </div>
 <!-- end summary section -->
 
-<div class="" row>
+<div class="" row ng-show="homeCtrl.hasSchedules()">
   <div class="col-md-12">
     <div class="panel panel-default">
       <div class="panel-heading"><h4>Round Progress</h4></div>
@@ -89,7 +98,7 @@
 </div>
 
 <!-- Delivery Round Chart section-->
-<div class="row">
+<div class="row" ng-show="homeCtrl.hasSchedules()">
   <!-- current status chart -->
   <div class="col-md-6">
     <div class="panel panel-default">
@@ -104,7 +113,7 @@
               tooltips="true"
               showXAxis="true"
               showYAxis="true"
-              showLabels="true
+              showLabels="true"
               interactive="true"
               stacked="true"
               yaxistickformat="homeCtrl.roundOff()"

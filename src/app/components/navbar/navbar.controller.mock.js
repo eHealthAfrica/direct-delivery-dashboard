@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 angular.module('navbarCtrlMock', [])
   .constant('config', {
@@ -17,4 +17,5 @@ angular.module('navbarCtrlMock', [])
         'boss'
       ]
     }
-  ]);
+  ])
+  .constant('dbService', {})
