@@ -1,8 +1,8 @@
 angular.module('configurations.facilities')
-  .controller('FacilitiesCtrl', function (states, locationService) {
+  .controller('FacilitiesCtrl', function ($state) {
     var vm = this
-    vm.states = states
-    vm.selectedState = vm.states[0]
+    //vm.states = states
+    //vm.selectedState = vm.states[0]
     vm.lgas = []
     vm.facilities = []
     vm.csvHeader = [
@@ -17,7 +17,7 @@ angular.module('configurations.facilities')
     vm.csvTemplateDownload = function () {
       return []
     }
-    vm.getLgas = function (stateId) {
+    /*vm.getLgas = function (stateId) {
       var keys = []
       keys.push(['4', stateId])
       return locationService.getByLevelAndAncestor(keys)
@@ -34,10 +34,10 @@ angular.module('configurations.facilities')
       return locationService.getByLevelAndAncestor(keys)
         .then(function (response) {
           vm.facilities = response
-          console.log(response)
           return response
         })
     }
     vm.getLgas(vm.selectedState._id)
-      .then(vm.getFacilities)
+      .then(vm.getFacilities)*/
+    $state.go('configurations.facilities.list')
   })
