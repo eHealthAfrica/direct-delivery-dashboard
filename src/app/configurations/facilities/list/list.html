@@ -29,9 +29,26 @@
 			</tr>
 			<tr ng-repeat="facility in configFacilityListCtrl.facilities track by $index">
 				<td>{{$index + 1}}</td>
-				<td ng-bind="facility.name"></td>
-				<td><button class="btn btn-primary"><i class="fa fa-edit"></i> edit </button>
-			</tr>
+				<td>
+          <span editable-text="facility.name" e-name="name" e-form="rowform"  e-required>
+            {{facility.name}}
+          </span>
+        </td>
+				<td>
+          <form editable-form name="rowform"  ng-show="rowform.$visible" class="form-buttons form-inline" onbeforesave="configFacilityListCtrl.save($data, facility)">
+            <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+              save
+            </button>
+            <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+              cancel
+            </button>
+          </form>
+          <div class="buttons" ng-show="!rowform.$visible">
+            <button class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+            <button class="btn btn-danger" ng-click="removeUser($index)">del</button>
+          </div>
+        </td>
+      </tr>
 		</table>
     <div class="alert alert-info" ng-show="configFacilityListCtrl.facilities.length === 0">
       <i class="fa fa-info-circle"></i> No facilities found.

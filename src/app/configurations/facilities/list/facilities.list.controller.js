@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('configurations.facilities')
-  .controller('ConfigFacilityListCtrl', function (authService, log, states, locationService, pouchUtil) {
+  .controller('ConfigFacilityListCtrl', function (authService, dbService, log, states, locationService, pouchUtil) {
     var vm = this
 
     vm.states = states
@@ -49,4 +49,15 @@ angular.module('configurations.facilities')
       .catch(function (err) {
         log.error('facilitiesRetrivalErr', err)
       })
+
+    vm.save = function (data, facility) {
+      return dbService.update(angular.extend(facility, data))
+        .then(function (response) {
+          log.success('locationSaveSuccess', response)
+          return response
+        })
+        .catch(function (err) {
+          log.error('locationSaveErr', err)
+        })
+    }
   })
