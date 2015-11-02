@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('configurations.facilities')
-  .controller('ConfigFacilityListCtrl', function(authService, log, states, locationService, pouchUtil){
+  .controller('ConfigFacilityListCtrl', function (authService, log, states, locationService, pouchUtil) {
     var vm = this
 
     vm.states = states
@@ -12,15 +12,14 @@ angular.module('configurations.facilities')
       return locationService.getByLevelAndAncestor(keys)
         .then(pouchUtil.rejectIfEmpty)
         .then(function (response) {
-          if(angular.isArray(response)){
-            if(response.length > 0){
+          if (angular.isArray(response)) {
+            if (response.length > 0) {
               vm.lgas = response
               vm.selectedLga = vm.lgas[0]
               return vm.selectedLga._id
             }
           }
         })
-
     }
     vm.getFacilities = function (lgaId) {
       var keys = []
@@ -31,10 +30,10 @@ angular.module('configurations.facilities')
           return response
         })
     }
-    vm.switchState = function(stateId){
+    vm.switchState = function (stateId) {
       return vm.getLgas(stateId)
         .then(vm.getFacilities)
-        .catch(function(err){
+        .catch(function (err) {
           log.error('facilitiesRetrivalErr', err)
         })
     }
@@ -47,7 +46,7 @@ angular.module('configurations.facilities')
         return vm.selectedStateId
       })
       .then(vm.switchState)
-      .catch(function(err){
+      .catch(function (err) {
         log.error('facilitiesRetrivalErr', err)
       })
   })

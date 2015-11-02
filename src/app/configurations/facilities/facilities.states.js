@@ -4,7 +4,7 @@ angular.module('configurations.facilities')
       parent: 'configurations.layout',
       url: '/facilities',
       templateUrl: 'app/configurations/facilities/layout.html',
-      controller: 'FacilitiesCtrl as facilitiesCtrl',
+      controller: 'FacilitiesCtrl as facilitiesCtrl'
     })
       .state('configurations.facilities.list', {
         parent: 'configurations.facilities',
