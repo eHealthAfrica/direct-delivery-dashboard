@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('configurations.locations')
-  .controller('ConfigurationsLocationsCtrl', function (locationService) {
+  .controller('ConfigurationsLocationsCtrl', function (log, locationService) {
     var vm = this
 
     vm.csv = {
@@ -36,17 +36,18 @@ angular.module('configurations.locations')
               results[i].admin_level_4
             ],
             doc_type: 'location',
-            level: results[i].level
+            level: results[i].level || '2'
           })
         }
       }
 
       return locationService.saveMany(locations)
         .then(function (response) {
-          console.log(response)
+          log.success('locationSaveSuccess', response)
+          return response
         })
         .catch(function (err) {
-          console.log(err)
+          log.error('locationSaveErr', err)
         })
     }
   })
