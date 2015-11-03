@@ -10,6 +10,7 @@
     "chalk": "^1.0.0",
     "concat-stream": "^1.5.0",
     "couchdb-bootstrap": "^1.11.1",
+    "couchdb-cors-config": "^1.0.0",
     "couchdb-ensure": "^1.2.1",
     "coveralls": "^2.11.2",
     "del": "^2.0.1",
