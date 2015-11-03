@@ -73,7 +73,7 @@ angular.module('configurations.facilities')
               doc_type: 'location',
               _id: (_id + '-' + [zone, lga, ward, utility.replaceAll(facility.primary_name, ' ', '_')].join('-')).toUpperCase()
             }
-            if (f.ancestors.length > 6) {
+            if (f.ancestors.length === 6) {
               dataToSave.push(f)
             } else {
               vm.invalidUploads = true
