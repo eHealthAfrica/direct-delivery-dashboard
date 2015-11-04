@@ -3,6 +3,7 @@
 angular.module('kpi')
   .service('kpiService', function (dbService, pouchUtil) {
     var _this = this
+    var DOC_TYPE = 'kpi'
 
     _this.getByRoundId = function (id) {
       var view = 'kpi/by-round-id'
@@ -50,8 +51,8 @@ angular.module('kpi')
       var param = {
         key: roundId
       }
-      var kpiHash = hashKPI(kpiList)
       var result = angular.copy(kpiList)
+      var kpiHash = hashKPI(result)
       return dbService.getView(view, param)
         .then(function (res) {
           res.rows
@@ -60,7 +61,11 @@ angular.module('kpi')
               var recordKey = hash(row.driverID, row.date, row.facility.id)
               if (!kpiHash[recordKey]) {
                 var temp = angular.copy(kpiTemplate)
+                delete temp._id
+                delete temp._rev
+                temp.doc_type = DOC_TYPE
                 temp.date = row.date
+                temp.deliveryRoundID = roundId
                 temp.driverID = row.driverID
                 temp.facility = row.facility
                 result.push(temp)
@@ -81,6 +86,7 @@ angular.module('kpi')
     }
 
     _this.save = function (doc) {
+      doc.doc_type = DOC_TYPE
       return dbService.save(doc)
     }
 
