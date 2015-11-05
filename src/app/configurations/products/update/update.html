@@ -10,22 +10,37 @@
     </div>
   </div>
   <div class="panel-body">
-    <form role="form">
-      <div class="form-group">
+    <form role="form" name="productForm" ng-submit="productUpdateCtrl.save(productForm.$valid)">
+
+      <div class="form-group" ng-class="{ 'has-error': productForm.name.$touched && productForm.name.$invalid }">
         <label>Product Name</label>
-        <input class="form-control input-lg" ng-model="productUpdateCtrl.product.name">
+        <input class="form-control input-lg" ng-model="productUpdateCtrl.product.name" name="name" required>
+        <div class="help-block" ng-messages="productForm.name.$error" ng-show="productForm.name.$touched">
+          <p ng-message="required">Product name is required.</p>
+        </div>
       </div>
-      <div class="form-group">
+
+      <div class="form-group" ng-class="{ 'has-error': productForm.code.$touched && productForm.code.$invalid }">
         <label>Product Code</label>
-        <input class="form-control input-lg"  ng-model="productUpdateCtrl.product.code">
+        <input class="form-control input-lg"  ng-model="productUpdateCtrl.product.code" name="code"
+               required eha-unique-product="{id : productUpdateCtrl.productCode, code:'code'}"
+               ng-model-options="{ updateOn: 'default blur', debounce: { default: 500, blur: 0 } }">
+        <div class="help-block"  ng-show="productForm.code.pending">
+          <p>Checking product code.......</p>
+        </div>
+
+        <div class="help-block" ng-messages="productForm.code.$error" ng-show="productForm.code.$touched">
+          <p ng-message="required">Product code is required.</p>
+          <p ng-message="productUnique">Product code already exists.</p>
+        </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" >
         <label>Product Description</label>
-        <input class="form-control input-lg"  ng-model="productUpdateCtrl.product.description">
+        <input class="form-control input-lg"  ng-model="productUpdateCtrl.product.description" name="description">
       </div>
-      <div class="form-group">
+      <div class="form-group" ng-class="{ 'has-error': productForm.measurement.$touched && productForm.measurement.$invalid }">
         <label>Measured In</label>
-        <select class="form-control input-lg" ng-model="productUpdateCtrl.product.baseUOM">
+        <select class="form-control input-lg" ng-model="productUpdateCtrl.product.baseUOM" name="measurement" required>
           <option></option>
           <option
               ng-repeat="baseUOM in productUpdateCtrl.baseUOMs track by $index"
@@ -33,11 +48,14 @@
               value="{{baseUOM}}"
               >{{baseUOM}}</option>
         </select>
+        <div class="help-block" ng-messages="productForm.measurement.$error" ng-show="productForm.measurement.$touched">
+          <p ng-message="required">Measurement is required.</p>
+        </div>
       </div>
-      <div class="form-group ">
+      <div class="form-group " ng-class="{ 'has-error': productForm.storageType.$touched && productForm.storageType.$invalid }">
         <label>Storage Type</label>
         <select class="form-control input-lg"
-            ng-model="productUpdateCtrl.product.storageID">
+            ng-model="productUpdateCtrl.product.storageID" name="storageType" required>
           <option value=""></option>
           <option
               ng-repeat="(item, value) in productUpdateCtrl.storageTypes track by $index"
@@ -46,11 +64,14 @@
             {{value.label}}
           </option>
         </select>
+        <div class="help-block" ng-messages="productForm.storageType.$error" ng-show="productForm.storageType.$touched">
+          <p ng-message="required">Storage type is required.</p>
+        </div>
       </div>
       <div class="clearfix">
         <div class="pull-right">
           <button class="btn btn-lg btn-success"
-                  ng-click="productUpdateCtrl.save()">
+                  ng-disabled="productForm.$invalid" type="submit">
             <i class="fa fa-save" ></i>
             <span>Save</span>
           </button>

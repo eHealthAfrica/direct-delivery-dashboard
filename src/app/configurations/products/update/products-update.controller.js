@@ -10,9 +10,10 @@ angular.module('products')
 
     if (product) {
       vm.product = product
+      vm.productCode = product.code
     }
 
-    vm.save = function () {
+    vm.save = function (valid) {
       if (!vm.product._id) {
         vm.product._id = vm.product.code // new product
       }
