@@ -4,16 +4,20 @@ angular.module('planning').controller('KPIController', function (deliveryRound, 
   var vm = this
   vm.deliveryRound = deliveryRound
   vm.kpiTemplates = kpiTemplates
-
+  vm.loadingKPI = false
   vm.setKPI = function (kpi) {
     vm.antigens = kpi.antigens
     vm.facilityKPIList = kpi.kpiList
+    vm.loadingKPI = true
     kpiService.fillInMissingKPI(vm.facilityKPIList, vm.deliveryRound._id, vm.kpiTemplates[0])
       .then(function (kpiList) {
         vm.facilityKPIList = kpiList
       })
       .catch(function (err) {
         log.error('assignKPIFromTemplateErr', err)
+      })
+      .finally(function () {
+        vm.loadingKPI = false
       })
   }
 
@@ -40,8 +44,16 @@ angular.module('planning').controller('KPIController', function (deliveryRound, 
     return log.success('saveKPISuccess')
   }
 
-  vm.isEmptyFacilityKPI = function () {
-    return vm.facilityKPIList.length === 0
+  vm.hideKPITable = function () {
+    return vm.facilityKPIList.length === 0 || vm.loadingKPI
+  }
+
+  vm.showLoading = function () {
+    return vm.loadingKPI
+  }
+
+  vm.isEmptyTable = function () {
+    return !vm.loadingKPI && vm.facilityKPIList.length === 0
   }
 
   vm.saveAll = function () {
