@@ -30,7 +30,8 @@ angular
     'eha-drag-n-drop',
     'Measurements',
     'configurations.locations',
-    'ngMessages'
+    'ngMessages',
+    'auth'
   ])
   .run(function (indexService) {
     indexService.bootstrap()
