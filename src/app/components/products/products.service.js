@@ -38,4 +38,11 @@ angular.module('products')
       }
       return dbService[use](doc)
     }
+
+    this.getProductByCode = function (value) {
+      var view = 'products/products-by-code'
+      var params = {key: value}
+      return dbService.getView(view, params)
+        .then(pouchUtil.pluckIDs)
+    }
   })
