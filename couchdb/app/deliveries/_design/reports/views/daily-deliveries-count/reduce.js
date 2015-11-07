@@ -1,3 +1,1 @@
-function (key, values, rereduce) {
-  return sum(values);
-}
+_sum
