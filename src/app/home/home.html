@@ -1,7 +1,10 @@
 <div class="row page-header">
   <div class="col-sm-6 pull-left">
-    <h1><i class="fa fa-truck fa-lg"></i> Delivery Round: {{
-      homeCtrl.roundReport.deliveryRoundID }} </h1>
+    <h1>
+      <i class="fa fa-truck fa-lg"></i>
+      <span>Delivery Round:</span>
+      <span ng-bind="homeCtrl.roundReport.deliveryRoundID"></span>
+    </h1>
   </div>
 
   <div class="col-sm-6 pull-right">
