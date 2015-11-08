@@ -1,5 +1,5 @@
-<div class="row page-header">
-  <div class="col-sm-6 pull-left">
+<div class="row home-header">
+  <div class="col-sm-6">
     <h1>
       <i class="fa fa-truck fa-lg"></i>
       <span>Delivery Round:</span>
@@ -7,7 +7,7 @@
     </h1>
   </div>
 
-  <div class="col-sm-6 pull-right">
+  <div class="col-sm-6">
     <div class="form-group has-feedback">
       <input
         type="text"
@@ -25,7 +25,7 @@
   </div>
 </div>
 
-<div class="row" ng-hide="homeCtrl.hasSchedules()">
+<div class="row" ng-if="!homeCtrl.hasSchedules()">
   <div class="panel-body">
     <div class="panel-body alert alert-info">
       <i class="fa fa-lg fa-info-circle"></i>
@@ -35,9 +35,7 @@
 </div>
 
 <!-- Summary Table Section-->
-<div class="row" ng-show="homeCtrl.hasSchedules()">
-  <br/><br/>
-
+<div class="row" ng-if="homeCtrl.hasSchedules()">
   <div class="col-md-3">
     <div class="jumbotron alert-default">
       <h1 ng-bind="homeCtrl.roundReport.total"></h1>
@@ -88,7 +86,7 @@
 </div>
 <!-- end summary section -->
 
-<div class="" row ng-show="homeCtrl.hasSchedules()">
+<div class="row" row ng-if="homeCtrl.hasSchedules()">
   <div class="col-md-12">
     <div class="panel panel-default">
       <div class="panel-heading"><h4>Round Progress</h4></div>
@@ -102,7 +100,7 @@
 </div>
 
 <!-- Delivery Round Chart section-->
-<div class="row" ng-show="homeCtrl.hasSchedules()">
+<div class="row" ng-if="homeCtrl.hasSchedules()">
   <!-- current status chart -->
   <div class="col-md-6">
     <div class="panel panel-default">
