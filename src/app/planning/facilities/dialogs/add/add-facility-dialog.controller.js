@@ -30,10 +30,6 @@ angular.module('planning')
 
     vm.selectedLocLevel = vm.locationLevels.filter(fromLevel).sort(sortBy)
 
-    vm.cancel = function () {
-      $modalInstance.dismiss('cancel')
-    }
-
     vm.isSelected = function (id) {
       return vm.selectedIds[id] === true
     }
