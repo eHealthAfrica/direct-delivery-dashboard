@@ -12,7 +12,6 @@ angular.module('planning')
   ) {
     var vm = this
     vm.deliveryRound = deliveryRound
-    vm.selectedLevel = ''
     vm.START_LEVEL = 3
     vm.END_LEVEL = 5
     vm.locationLevels = locationLevels
@@ -41,9 +40,12 @@ angular.module('planning')
         })
     }
 
-    vm.onSelection = function () {
+    vm.onSelection = function (level) {
+      if (!level) {
+        return
+      }
       vm.selectedlevelLocs = []
-      locationService.getLocationsByLevel(vm.selectedLevel)
+      locationService.getLocationsByLevel(level)
         .then(function (locations) {
           vm.selectedlevelLocs = locations
           selectAll(vm.selectedlevelLocs)
