@@ -1,12 +1,18 @@
 <div class="modal-header alert-info">
-  <h3>Add Facilities to: {{ afdCtrl.deliveryRound._id }}</h3>
+  <h3>
+    <span>Add Facilities to:</span>
+    <span ng-bind="::afdCtrl.deliveryRound._id"></span>
+  </h3>
 </div>
-<!-- Modal body section -->
+
 <div class="modal-body">
   <div class="col-sm-15">
     <form>
       <div class="form-group">
-        <label>State: {{ afdCtrl.deliveryRound.state }}</label>
+        <label>
+          <span>State:</span>
+          <span ng-bind="::afdCtrl.deliveryRound.state"></span>
+        </label>
       </div>
 
       <div class="form-group">
@@ -45,7 +51,7 @@
   </div>
   <br/><br/><br/><br/>
 </div>
-<!-- modal footer section-->
+
 <div class="modal-footer">
   <button class="btn btn-success" ng-click="afdCtrl.addToList()">
     <i class="fa fa-plus"></i>
