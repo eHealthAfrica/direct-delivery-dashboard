@@ -1,44 +1,62 @@
 <div class="panel panel-info">
    <div class="panel-heading clearfix">
-    Editing Template: <b>{{tempAddCtrl.template.name}}</b>
+     <span ng-if="!tempAddCtrl.data">New Template </span>
+     <span ng-if="tempAddCtrl.data">Edit Template : {{tempAddCtrl.templateName}}</span>
   </div>
-  <div class="panel-body">
+  <div class="panel-body" style="overflow: auto; height: 500px;">
     <div class="row">
       <div class="col-md-8">
-        <form>
-          <div class="form-group">
+
+
+        <form name="templateForm" ng-submit="">
+          <div class="form-group" ng-class="{ 'has-error': templateForm.name.$touched && templateForm.name.$invalid }">
             <label>Template Name</label>
-            <input type="text" class="form-control input-lg" ng-model="tempAddCtrl.template.name">
+            <input type="text" class="form-control input-lg" ng-model="tempAddCtrl.template.name" name="name" required>
+            <div class="help-block" ng-messages="templateForm.name.$error" ng-show="templateForm.name.$touched">
+              <p ng-message="required">Template name is required.</p>
+            </div>
           </div>
            <div class="form-group">
             <label>Description</label>
-            <input type="text" class="form-control input-lg" ng-model="tempAddCtrl.template.description">
+            <input type="text" class="form-control input-lg" ng-model="tempAddCtrl.template.description" name="description">
           </div>
-           <div class="form-group">
+           <div class="form-group"  ng-class="{ 'has-error': templateForm.state.$touched && templateForm.state.$invalid }">
             <label>State of Primary Use</label>
             <select data-ng-model="tempAddCtrl.template.primary.state"
                     class="form-control input-lg"
-                    ng-options="state._id as state.name for state in tempAddCtrl.states">
+                    ng-options="state._id as state.name for state in tempAddCtrl.states" name="state" required>
 
             </select>
+             <div class="help-block" ng-messages="templateForm.state.$error" ng-show="templateForm.state.$touched">
+               <p ng-message="required">State is required.</p>
+             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" ng-class="{ 'has-error': templateForm.year.$touched && templateForm.year.$invalid }">
             <label>Year of Primary Use</label>
            <input type="number" class="form-control input-lg"
                   min="0"
-                  ng-model="tempAddCtrl.template.primary.year">
+                  ng-model="tempAddCtrl.template.primary.year" name="year" required>
+            <div class="help-block" ng-messages="templateForm.year.$error" ng-show="templateForm.year.$touched">
+              <p ng-message="required">Year is required.</p>
+            </div>
           </div>
         </form>
         <label>Products</label>
         <div
             class="dropzone thumbnail"
-            ondrop="return tempAddCtrl.dragDrop(event)">
+            ondrop="return tempAddCtrl.dragDrop(event)" ng-hide="tempAddCtrl.template.products | isEmpty" >
           <div
               class="btn btn-success"
               ng-repeat="(product, value) in tempAddCtrl.template.products track by $index">
             {{product}}
           </div>
         </div>
+
+        <div class="alert alert-info" ng-show="tempAddCtrl.template.products | isEmpty">
+          <i class="fa fa-lg fa-info"></i>
+          <span> Please select products to add to the template. </span>
+        </div>
+
       </div>
       <div class="col-md-4" >
         <h4 class="page-heading" draggable="true">Product List</h4>
@@ -61,7 +79,8 @@
   <div class="panel-footer clearfix">
     <span class="pull-right">
       <button class="btn btn-default btn-lg" ng-click="tempAddCtrl.cancel()">Cancel</button>
-      <button class="btn btn-success btn-lg" ng-click="tempAddCtrl.close()">Submit</button>
+      <button class="btn btn-success btn-lg" type="submit" ng-click="tempAddCtrl.close(templateForm.$valid)"
+              ng-disabled="tempAddCtrl.disableSubmit(templateForm)">Submit</button>
     </span>
   </div>
 </div>

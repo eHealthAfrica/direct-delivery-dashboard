@@ -1,9 +1,9 @@
 'use strict'
 
 angular.module('allocations')
-  .service('assumptionAddService', function ($modal, log, assumptionService, config) {
+  .service('assumptionAddService', function ($modal, assumptionService, config) {
     this.openForm = function (data, templateType) {
-      var modalInstance = $modal.open({
+      return $modal.open({
         animation: true,
         templateUrl: 'app/configurations/allocations/assumptions/assumption-template/new-template.html',
         controller: 'AssumptionsTemplateAddCtrl',
@@ -29,18 +29,6 @@ angular.module('allocations')
           }
         }
       })
-      modalInstance.result
-        .then(function (formData) {
-          assumptionService.save(formData)
-            .then(function (data) {
-              return log.success('assumptionEdited', data)
-            })
-            .catch(function (err) {
-              return log.error('assumptionSaveFailed', err)
-            })
-        })
-        .catch(function (err) {
-          log.info('canceledAssumptionEdit', err)
-        })
+
     }
   })
