@@ -1,8 +1,15 @@
 'use strict'
 
 angular.module('planning')
-  .controller('AddFacilityDialogCtrl', function ($modalInstance, deliveryService, deliveryRound, locationService,
-    locationLevels, utility, log) {
+  .controller('AddFacilityDialogCtrl', function (
+    $modalInstance,
+    deliveryService,
+    deliveryRound,
+    locationService,
+    locationLevels,
+    utility,
+    log
+  ) {
     var vm = this
     vm.deliveryRound = deliveryRound
     vm.selectedLevel = ''
