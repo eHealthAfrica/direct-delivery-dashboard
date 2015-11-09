@@ -12,7 +12,7 @@
       <div class="form-group">
         <label>Level</label>
         <select class="form-control" ng-model="afdCtrl.selectedLevel"
-            ng-click="afdCtrl.onSelection()">
+            ng-change="afdCtrl.onSelection()">
           <option value="">Select administrative level</option>
           <option ng-repeat="level in afdCtrl.selectedLocLevel"
                   ng-value="level._id">
