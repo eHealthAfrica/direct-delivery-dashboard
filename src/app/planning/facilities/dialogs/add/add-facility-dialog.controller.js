@@ -41,9 +41,9 @@ angular.module('planning')
 
     vm.onSelection = function (level) {
       if (!level) {
+        vm.selectedlevelLocs = []
         return
       }
-      vm.selectedlevelLocs = []
       locationService.getLocationsByLevel(level)
         .then(function (locations) {
           vm.selectedlevelLocs = locations

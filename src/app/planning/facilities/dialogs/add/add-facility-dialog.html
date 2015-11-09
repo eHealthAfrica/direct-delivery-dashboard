@@ -20,7 +20,7 @@
         <select
           class="form-control"
           ng-model="selectedLevel"
-          ng-click="afdCtrl.onSelection(selectedLevel)"
+          ng-change="afdCtrl.onSelection(selectedLevel)"
         >
           <option value="">Select administrative level</option>
           <option
@@ -45,19 +45,24 @@
             <span>Select all</span>
           </label>
         </div>
+
+        <div
+          class="col-sm-2 checkbox"
+          ng-repeat="location in afdCtrl.selectedlevelLocs track by location._id"
+        >
+          <label>
+            <input
+              type="checkbox"
+              ng-model ="afdCtrl.selectedIds[location._id]"
+              ng-checked="afdCtrl.isSelected(location._id)"
+            >
+            <span ng-bind="::location.name"></span>
+          </label>
+        </div>
       </div>
 
-      <div class="col-sm-2" ng-repeat="location in afdCtrl.selectedlevelLocs track by $index">
-        <label>
-          <input type="checkbox"
-                  ng-model ="afdCtrl.selectedIds[location._id]"
-                 ng-checked="afdCtrl.isSelected(location._id)">
-          {{ location.name }}
-        </label>
-      </div>
     </form>
   </div>
-  <br/><br/><br/><br/>
 </div>
 
 <div class="modal-footer">
