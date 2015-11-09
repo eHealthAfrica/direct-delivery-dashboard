@@ -31,19 +31,22 @@
           </option>
         </select>
       </div>
-      <br/>
-      <h4 ng-show="afdCtrl.selectedlevelLocs.length > 0">
-        <span class="dropdown" dropdown on-toggle="toggled(open)">
-            <a href class="dropdown-toggle" dropdown-toggle>Selection</a>
-            <ul class="dropdown-menu">
-              <li ng-repeat="option in afdCtrl.selectionOpions">
-                <a href ng-click="afdCtrl.onSelectionOptions(option)">
-                  {{option}}
-                </a>
-              </li>
-            </ul>
-          </span>
-      </h4>
+
+      <div ng-if="afdCtrl.selectedlevelLocs.length">
+        <div class="checkbox">
+          <label>
+            <input
+              type="checkbox"
+              ng-model="selectAll"
+              ng-init="selectAll = true"
+              ng-click="afdCtrl.selectAllToggle(selectAll)"
+              ng-checked="selectAll"
+            >
+            <span>Select all</span>
+          </label>
+        </div>
+      </div>
+
       <div class="col-sm-2" ng-repeat="location in afdCtrl.selectedlevelLocs track by $index">
         <label>
           <input type="checkbox"

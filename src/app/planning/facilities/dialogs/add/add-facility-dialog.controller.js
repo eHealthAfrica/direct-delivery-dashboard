@@ -15,7 +15,6 @@ angular.module('planning')
     vm.START_LEVEL = 3
     vm.END_LEVEL = 5
     vm.locationLevels = locationLevels
-    vm.selectionOpions = ['All', 'None']
     vm.selectedIds = {}
 
     function fromLevel (locLevel) {
@@ -56,12 +55,11 @@ angular.module('planning')
       vm.selectedlevelLocs[index].selected = !vm.selectedlevelLocs[index].selected
     }
 
-    vm.onSelectionOptions = function (selected) {
-      if (selected === vm.selectionOpions[0]) {
-        selectAll(vm.selectedlevelLocs, true)
-      } else if (selected === vm.selectionOpions[1]) {
-        vm.selectedIds = {}
+    vm.selectAllToggle = function (toggle) {
+      if (toggle) {
+        return selectAll(vm.selectedlevelLocs, true)
       }
+      vm.selectedIds = {}
     }
 
     function getQueryKey (level, selectedIds) {
