@@ -15,7 +15,7 @@ angular.module('log')
       message: 'Allocation template does not have required properties',
       remedy: 'Please, notify support team'
     },
-    noRounds : {
+    noRounds: {
       title: 'No delivery rounds',
       message: 'Seem like there is not delivery rounds registered yet',
       remedy: 'Please register a delivery round or contact support if you have already'

@@ -308,7 +308,6 @@ angular.module('planning')
         .then(pouchUtil.pluckIDs)
     }
 
-
     /**
      * This sorts rows by delivery round date.
      * @param state
