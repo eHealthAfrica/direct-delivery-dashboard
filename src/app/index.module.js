@@ -29,7 +29,8 @@ angular
     'utility',
     'eha-drag-n-drop',
     'Measurements',
-    'configurations.locations'
+    'configurations.locations',
+    'auth'
   ])
   .run(function (indexService) {
     indexService.bootstrap()

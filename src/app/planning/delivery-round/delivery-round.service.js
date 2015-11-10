@@ -26,6 +26,32 @@ angular.module('planning')
       return (row.delivered === 1 && row.onTime === 0)
     }
 
+    function getLateness (time) {
+      var HOUR = 60 * 60 * 1000
+      var SIX_HOURS = 6 * HOUR
+      var DAY = 24 * HOUR
+      var WEEK = 24 * DAY
+      if (time !== 0 && (!time || time === 'UNKNOWN')) {
+        return 'Unknown'
+      }
+      if (time <= 0) {
+        return 'On_time'
+      }
+      if (time <= HOUR) {
+        return 'An_hour_late'
+      }
+      if (time <= SIX_HOURS) {
+        return 'Less_than_six_hours_late'
+      }
+      if (time <= DAY) {
+        return 'A_day_late'
+      }
+      if (time <= WEEK) {
+        return 'A_week_late'
+      }
+      return 'More_than_a_week_late'
+    }
+
     _this.getDefaultReport = function () {
       var roundReport = {
         onTime: 0,
@@ -34,7 +60,8 @@ angular.module('planning')
         workingCCE: 0,
         delivered: 0,
         billable: 0,
-        status: {}
+        status: {},
+        onTimeMap: {}
       }
       return roundReport
     }
@@ -200,6 +227,9 @@ angular.module('planning')
           if (!endDate || (utility.isValidDate(rowDate) && endDate <= rowDate)) {
             endDate = rowDate
           }
+
+          var lateness = getLateness(row.howMuchLate)
+          roundReport.onTimeMap[lateness] = !roundReport.onTimeMap[lateness] ? 1 : ++roundReport.onTimeMap[lateness]
 
           if (angular.isNumber(row.onTime)) {
             roundReport.onTime += row.onTime

@@ -4,20 +4,21 @@ angular.module('configurations.facilities')
       parent: 'configurations.layout',
       url: '/facilities',
       templateUrl: 'app/configurations/facilities/layout.html',
-      controller: 'FacilitiesCtrl as facilitiesCtrl',
-      resolve: {
-        states: function (locationService) {
-          return locationService.getLocationsByLevel('2')
-            .catch(function () {
-              return []
-            })
-        }
-      }
+      controller: 'FacilitiesCtrl as facilitiesCtrl'
     })
       .state('configurations.facilities.list', {
         parent: 'configurations.facilities',
         url: '/list',
-        templateUrl: 'app/configurations/facilities/list/list.html'
+        controller: 'ConfigFacilityListCtrl as configFacilityListCtrl',
+        templateUrl: 'app/configurations/facilities/list/list.html',
+        resolve: {
+          states: function (locationService) {
+            return locationService.getLocationsByLevel('2')
+              .catch(function () {
+                return []
+              })
+          }
+        }
       })
       .state('configurations.facilities.uploader', {
         parent: 'configurations.facilities',

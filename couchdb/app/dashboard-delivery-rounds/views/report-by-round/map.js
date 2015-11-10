@@ -18,6 +18,35 @@ function(doc) {
         FAILED_OTHER: 'Failed: other'
     };
 
+    function getHowMuchTimeLate (dateString, timeString, arrivedAt) {
+        if(!dateString || !timeString || !arrivedAt){
+            return "UNKNOWN";
+        }
+        var splitedDate = dateString.split("-");
+        if(splitedDate.length < 3){
+            return "UNKNOWN";
+        }
+        splitedDate[1] = +splitedDate[1] - 1;
+        var splitedTime = timeString.split("-");
+
+        if(splitedTime.length < 2){
+            return "UNKNOWN";
+        }
+
+        if(splitedTime[1].indexOf("P") > -1){
+            splitedTime[1] = splitedTime[1].replace("PM", "");
+            splitedTime[1] = +splitedTime[1] +12 ;
+        }
+        else{
+            splitedTime[1]= splitedTime[1].replace("AM", "");
+        }
+        var date = new Date(splitedDate[0], splitedDate[1], splitedDate[2], splitedTime[1]);
+
+        arrivedAt = new Date(arrivedAt);
+        return arrivedAt - date;
+    }
+
+
     function isValidStatus(status) {
         status = status.toLowerCase();
         var option;
@@ -94,6 +123,7 @@ function(doc) {
                 if (isValidStatus(facRnd.status)) {
                     facRnd.status = facRnd.status.toLowerCase();
                     facRndReport = genReport(facRnd.targetDate, doc.date, facRnd.status, facRnd.facility.zone);
+                    facRndReport.howMuchLate = getHowMuchTimeLate(doc.date,facRnd.window, facRnd.arrivedAt )
                     emit([doc.deliveryRoundID, doc.date], facRndReport);
                 }
             }
