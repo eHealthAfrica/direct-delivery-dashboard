@@ -8,7 +8,7 @@ angular.module('kpi')
     _this.getByRoundId = function (id) {
       var view = 'kpi/by-round-id'
       var param = {
-        key: id,
+        keys: id,
         include_docs: true
       }
       var antigens = []

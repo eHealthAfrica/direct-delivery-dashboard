@@ -9,7 +9,7 @@ angular.module('delivery')
         params = pouchUtil.key(roundId)
       }
       params.include_docs = true
-
+      params.descending=true
       return dbService.getView(view, params)
         .then(pouchUtil.pluckDocs)
         .then(pouchUtil.rejectIfEmpty)
