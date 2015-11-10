@@ -1,10 +1,12 @@
 'use strict'
 
 angular.module('reports')
-  .controller('ReportUtilityCtrl', function ($q, deliveryService, kpiService, rounds) {
+  .controller('ReportUtilityCtrl', function ($scope, $q, deliveryService, kpiService, rounds) {
     var vm = this
+    var rnd = []
     vm.rounds = rounds
     vm.utilData = []
+    vm.chartData = []
 
     vm.utilx = function () {
       return function (d) {
@@ -18,41 +20,19 @@ angular.module('reports')
     }
 
     vm.xtick = function () {
-      var roundList = {
-        '7': 'KN-007-2015',
-        '8': 'KN-008-2015',
-        '9': 'KN-009-2015'
-      }
+
       return function (d) {
-        return roundList[d]
+        return vm.rounds[d]
       }
     }
 
-    vm.utilData = [
-      {
-        'key': 'Immunised',
-        'values': [[7, 70], [8, 79], [9, 70]]
-      },
-      {
-        'key': 'BCG',
-        'values': [[7, 350], [8, 400], [9, 350]]
-      },
-      {
-        'key': 'TT',
-        'values': [[7, 500], [8, 500], [9, 560]]
-      },
-      {
-        'key': 'OPV',
-        'values': [[7, 1500], [8, 1560], [9, 1300]]
-      }
-    ]
-    var kpiColate = {}
-    var productColate = {}
+    var kpiData = {}
+    var productData = {}
     function pushProducts (response) {
       var rnd, packed
       for (var i in response) {
-        productColate[response[i].deliveryRoundID] = angular.isObject(productColate[response[i].deliveryRoundID]) ? productColate[response[i].deliveryRoundID] : {}
-        rnd = productColate[response[i].deliveryRoundID]
+        productData[response[i].deliveryRoundID] = angular.isObject(productData[response[i].deliveryRoundID]) ? productData[response[i].deliveryRoundID] : {}
+        rnd = productData[response[i].deliveryRoundID]
         for (var pp in response[i].packedProduct) {
           packed = response[i].packedProduct[pp]
           rnd[packed.productID] = (angular.isNumber(rnd[packed.productID]) ? rnd[packed.productID] : 0) + packed.expectedQty
@@ -61,17 +41,16 @@ angular.module('reports')
     }
 
     function pushkpi (response) {
-      console.log(response)
       var akpi
       var rnd
       if (angular.isArray(response.kpiList)) {
         if (response.kpiList.length > 0) {
           for (var k in response.kpiList) {
             rnd = response.kpiList[k].deliveryRoundID
-            kpiColate[rnd] = angular.isNumber(kpiColate[rnd]) ? kpiColate[rnd] : 0
+            kpiData[rnd] = angular.isNumber(kpiData[rnd]) ? kpiData[rnd] : 0
             for (var a in response.kpiList[k].antigensKPI) {
               akpi = response.kpiList[k].antigensKPI[a]
-              kpiColate[rnd] += akpi.noImmunized
+              kpiData[rnd] += akpi.noImmunized
             }
           }
         }
@@ -81,14 +60,34 @@ angular.module('reports')
       console.error(err)
     }
 
-    for (var r in vm.rounds) {
-      var rnd = {
-        products: {},
-        kpi: {}
-      }
-      rnd.products[vm.rounds[r]] = deliveryService.getByRoundId(vm.rounds).then(pushProducts).catch(errHandler)
-      rnd.kpi[vm.rounds[r]] = kpiService.getByRoundId(vm.rounds).then(pushkpi).catch(errHandler)
-    }
-    console.log(productColate)
-    console.log(kpiColate)
+    rnd.push(deliveryService.getByRoundId(vm.rounds).then(pushProducts).catch(errHandler))
+    rnd.push(kpiService.getByRoundId(vm.rounds).then(pushkpi).catch(errHandler))
+    $q.all(rnd)
+      .then(function(response){
+        var tempObj = {
+          kpi : {
+            key: 'noImmunized',
+            values: []
+          }
+        }
+
+
+        for (var r in vm.rounds) {
+          if(kpiData[vm.rounds[r]]){
+            tempObj.kpi.values.push([parseInt(r), kpiData[vm.rounds[r]]])
+          }
+          if(productData[vm.rounds[r]]){
+            for(var p in productData[vm.rounds[r]]){
+              tempObj[p] = angular.isObject(tempObj[p]) ? tempObj[p] : {
+                key: p,
+                values: [],
+              }
+              tempObj[p].values.push([parseInt(r), productData[vm.rounds[r]][p]])
+            }
+          }
+        }
+        for(var co in tempObj){
+          vm.chartData.push(tempObj[co])
+        }
+      })
   })
