@@ -1,9 +1,13 @@
 'use strict'
 
 angular.module('reports')
-  .controller('ReportUtilityCtrl', function ($scope, $q, deliveryService, kpiService, rounds) {
+  .controller('ReportUtilityCtrl', function ($q, $window, deliveryService, kpiService, rounds) {
     var vm = this
     var rnd = []
+    var kpiData = {}
+    var productData = {}
+    var totalImmunized = 0
+
     vm.rounds = rounds
     vm.utilData = []
     vm.chartData = []
@@ -25,8 +29,6 @@ angular.module('reports')
       }
     }
 
-    var kpiData = {}
-    var productData = {}
     function pushProducts (response) {
       var rnd, packed
       for (var i in response) {
@@ -50,6 +52,7 @@ angular.module('reports')
             for (var a in response.kpiList[k].antigensKPI) {
               akpi = response.kpiList[k].antigensKPI[a]
               kpiData[rnd] += akpi.noImmunized
+              totalImmunized += akpi.noImmunized
             }
           }
         }
@@ -87,5 +90,11 @@ angular.module('reports')
         for (var co in tempObj) {
           vm.chartData.push(tempObj[co])
         }
+        vm.kpiAgg = {
+          total: totalImmunized,
+          ave: $window.Math.floor(totalImmunized / vm.rounds.length)
+        }
+        console.log(productData)
+        console.log(kpiData)
       })
   })
