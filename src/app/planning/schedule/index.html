@@ -75,9 +75,17 @@
           <td ng-bind="::facRnd.facility.name"></td>
           <td ng-bind="::facRnd.facility.id"></td>
           <td>
-            <a href="#" editable-date="facRnd.date" e-name="deliveryDate" e-form="rowform">
-              {{ srCtrl.getDate(facRnd.date) }}
-            </a>
+            <span
+              ng-bind="srCtrl.getDate(facRnd.date)"
+              editable-bsdate="facRnd.date"
+              e-name="deliveryDate"
+              e-form="rowform"
+              e-init-date="false"
+              e-datepicker-popup
+              e-ng-click="dateOpened = !dateOpened"
+              e-is-open="dateOpened"
+              buttons="no"
+            ></span>
           </td>
           <td>
           <span editable-select="facRnd.driverID"
