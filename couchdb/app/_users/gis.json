@@ -1,0 +1,11 @@
+{
+  "_id": "org.couchdb.user:gis",
+  "type": "user",
+  "roles": [
+    "dd_user",
+    "direct_delivery_dashboard_gis",
+    "direct_delivery_dashboard_state_kn"
+  ],
+  "name": "gis",
+  "password": "gis"
+}

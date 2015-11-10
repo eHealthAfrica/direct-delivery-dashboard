@@ -16,7 +16,7 @@
 1. `npm install -g gulp`
 2. `git clone https://github.com/eHealthAfrica/direct-delivery-dashboard.git`
 3. `cd direct-delivery-dashboard && npm install`
-4. `gulp views fixtures`
+4. `gulp [-u <user> -p <pass>] couchdb-bootstrap couchdb-fixtures`
 5. `gulp serve`
 
 [Node.js]: http://nodejs.org

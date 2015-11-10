@@ -1,0 +1,10 @@
+{
+  "_id": "org.couchdb.user:accounting",
+  "type": "user",
+  "roles": [
+    "dd_user",
+    "direct_delivery_dashboard_accounting"
+  ],
+  "name": "accounting",
+  "password": "accounting"
+}
