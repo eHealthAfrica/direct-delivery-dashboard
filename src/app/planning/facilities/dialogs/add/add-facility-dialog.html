@@ -45,7 +45,9 @@
       </div>
 
       <ui-select multiple ng-model="afdCtrl.locations.selected">
-        <ui-select-match placeholder="Select locations">
+        <ui-select-match
+          placeholder="Click to select locations or type to search"
+        >
           <span ng-bind="::$item.name"></span>
         </ui-select-match>
         <ui-select-choices
