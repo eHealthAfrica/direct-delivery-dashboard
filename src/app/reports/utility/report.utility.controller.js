@@ -20,7 +20,6 @@ angular.module('reports')
     }
 
     vm.xtick = function () {
-
       return function (d) {
         return vm.rounds[d]
       }
@@ -63,30 +62,29 @@ angular.module('reports')
     rnd.push(deliveryService.getByRoundId(vm.rounds).then(pushProducts).catch(errHandler))
     rnd.push(kpiService.getByRoundId(vm.rounds).then(pushkpi).catch(errHandler))
     $q.all(rnd)
-      .then(function(response){
+      .then(function (response) {
         var tempObj = {
-          kpi : {
+          kpi: {
             key: 'noImmunized',
             values: []
           }
         }
 
-
         for (var r in vm.rounds) {
-          if(kpiData[vm.rounds[r]]){
-            tempObj.kpi.values.push([parseInt(r), kpiData[vm.rounds[r]]])
+          if (kpiData[vm.rounds[r]]) {
+            tempObj.kpi.values.push([parseInt(r, 10), kpiData[vm.rounds[r]]])
           }
-          if(productData[vm.rounds[r]]){
-            for(var p in productData[vm.rounds[r]]){
+          if (productData[vm.rounds[r]]) {
+            for (var p in productData[vm.rounds[r]]) {
               tempObj[p] = angular.isObject(tempObj[p]) ? tempObj[p] : {
                 key: p,
-                values: [],
+                values: []
               }
-              tempObj[p].values.push([parseInt(r), productData[vm.rounds[r]][p]])
+              tempObj[p].values.push([parseInt(r, 10), productData[vm.rounds[r]][p]])
             }
           }
         }
-        for(var co in tempObj){
+        for (var co in tempObj) {
           vm.chartData.push(tempObj[co])
         }
       })

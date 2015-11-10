@@ -10,7 +10,7 @@ angular.module('reports')
         rounds: function (deliveryRoundService, log, authService) {
           return authService.getCurrentUser()
             .then(authService.authorisedStates)
-            .then(function(r){
+            .then(function (r) {
               console.log(r)
               return r[0]
             })
