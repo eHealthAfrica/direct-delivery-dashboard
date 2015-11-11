@@ -1,0 +1,10 @@
+{
+  "_id": "org.couchdb.user:super",
+  "type": "user",
+  "roles": [
+    "dd_user",
+    "direct_delivery_dashboard_super"
+  ],
+  "name": "super",
+  "password": "super"
+}

@@ -19,7 +19,9 @@
     "angular-csv-import": "~0.0.16",
     "angular-xeditable": "~0.1.9",
     "angular-eha.couchdb-auth": "~1.1.0",
-    "angular-ui-grid": "ui-grid#~3.0.7"
+    "angular-ui-grid": "ui-grid#~3.0.7",
+    "ui-select": "angular-ui-select#~0.13.2",
+    "angular-sanitize": "~1.4.3"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.3",

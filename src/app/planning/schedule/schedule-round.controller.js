@@ -3,7 +3,7 @@
 angular.module('planning')
   .controller('ScheduleRoundCtrl', function (deliveryRound, $state, dailyDeliveries,
     scheduleService, planningService, log, config,
-    $modal, utility, $q, DELIVERY_STATUS, mailerService, driversService) {
+    $modal, utility, $q, DELIVERY_STATUS, mailerService, driversService, $window) {
     var vm = this
     vm.isSavingList = {}
     vm.deliveryStatuses = DELIVERY_STATUS
@@ -19,6 +19,10 @@ angular.module('planning')
       {value: 9, text: '9'},
       {value: 10, text: '10'}
     ]
+
+    vm.print = function () {
+      $window.jQuery('#print-area').print()
+    }
 
     var STATE = 'KN' // TODO: get state from current user profile
     driversService.getByState(STATE)
