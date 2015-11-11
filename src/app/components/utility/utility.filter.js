@@ -1,12 +1,12 @@
 angular.module('utility')
   .filter('isEmpty', function () {
-    var bar;
+    var bar
     return function (obj) {
       for (bar in obj) {
         if (obj.hasOwnProperty(bar)) {
-          return false;
+          return false
         }
       }
-      return true;
-    };
-  });
+      return true
+    }
+  })

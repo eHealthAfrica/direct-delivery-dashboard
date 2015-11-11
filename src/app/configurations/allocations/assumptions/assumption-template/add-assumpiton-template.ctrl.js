@@ -17,7 +17,6 @@ angular.module('allocations')
     }
     vm.data = data
 
-
     vm.disableSubmit = function (form) {
       var isEmpty = $filter('isEmpty')
       return form.$invalid || isEmpty(vm.template.products)
@@ -30,6 +29,11 @@ angular.module('allocations')
     if (data) {
       vm.template = data
     }
+
+    (function () {
+      vm.templateName = !vm.data ? '' : vm.data.name
+    })()
+
     vm.updateTemplateProducts = function (product) {
       vm.template.products[product.code] = product
     }
@@ -39,7 +43,4 @@ angular.module('allocations')
     vm.cancel = function () {
       $modalInstance.dismiss()
     }
-    (function () {
-      vm.templateName = !vm.data ? '' : vm.data.name
-    }())
   })

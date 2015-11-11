@@ -16,7 +16,7 @@ angular.module('allocations')
               log.success('assumptionEdited', data)
               return assumptionService.getAll()
             })
-            .then(function(data){
+            .then(function (data) {
               vm.assumptionList = data
             })
             .catch(function (err) {
@@ -26,7 +26,6 @@ angular.module('allocations')
         .catch(function (err) {
           log.info('canceledAssumptionEdit', err)
         })
-
     }
 
     vm.createNewTemplate = function (templateType) {
@@ -38,7 +37,7 @@ angular.module('allocations')
               log.success('assumptionSaved', data)
               return assumptionService.getAll()
             })
-            .then(function(data){
+            .then(function (data) {
               vm.assumptionList = data
             })
             .catch(function (err) {

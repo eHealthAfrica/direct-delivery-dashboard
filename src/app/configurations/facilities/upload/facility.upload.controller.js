@@ -27,73 +27,70 @@ angular.module('configurations.facilities')
           var lga
           var ward
           var _id
-          var i
-          var facility
           vm.invalidUploads = false
           vm.dataToSave = []
 
-          var state = vm.states.filter(function(st){
+          var state = vm.states.filter(function (st) {
             return st._id === vm.state
           })[0]
 
-          if(vm.csv.result && vm.csv.result.length){
+          if (vm.csv.result && vm.csv.result.length) {
             vm.csv.result.forEach(function (facility) {
-                facility.error = false
-                facility.ancestors = [].concat(state.ancestors)
-                facility.ancestors.push(vm.state)
-                _id = facility.ancestors.join('-')
+              facility.error = false
+              facility.ancestors = [].concat(state.ancestors)
+              facility.ancestors.push(vm.state)
+              _id = facility.ancestors.join('-')
 
-                for (var r in response) {
-                  if ((utility.replaceAll(facility.zone, ' ', '-').toUpperCase() === utility.replaceAll(response[r].name, ' ', '-').toUpperCase()) && response[r].level === '3') {
-                    facility.ancestors.push(response[r]._id)
-                    zone = utility.replaceAll(response[r].name, ' ', '_')
-                  }
-                  if ((utility.replaceAll(facility.lganame, ' ', '-') === utility.replaceAll(response[r].name, ' ', '-')) && response[r].level === '4') {
-                    facility.ancestors.push(response[r]._id)
-                    lga = utility.replaceAll(response[r].name, ' ', '_')
-                  }
-                  if ((utility.replaceAll(facility.wardname, ' ', '-') === utility.replaceAll(response[r].name, ' ', '-')) && response[r].level === '5') {
-                    facility.ancestors.push(response[r]._id)
-                    ward = utility.replaceAll(response[r].name, ' ', '_')
-                  }
+              for (var r in response) {
+                if ((utility.replaceAll(facility.zone, ' ', '-').toUpperCase() === utility.replaceAll(response[r].name, ' ', '-').toUpperCase()) && response[r].level === '3') {
+                  facility.ancestors.push(response[r]._id)
+                  zone = utility.replaceAll(response[r].name, ' ', '_')
                 }
-                if (!facility.primary_name) {
-                  return log.error('InvalidFileImport', {})
+                if ((utility.replaceAll(facility.lganame, ' ', '-') === utility.replaceAll(response[r].name, ' ', '-')) && response[r].level === '4') {
+                  facility.ancestors.push(response[r]._id)
+                  lga = utility.replaceAll(response[r].name, ' ', '_')
                 }
-
-                var f = {
-                  ancestors: facility.ancestors,
-                  osmId: facility.id,
-                  ownership: facility.ownership,
-                  latitude: facility.latitude,
-                  longitude: facility.longitude,
-                  category: facility.category,
-                  name: facility.primary_name,
-                  level: '6',
-                  first_contact_name: '',
-                  first_contact_phone: '',
-                  first_contact_email: '',
-                  second_contact_name: '',
-                  second_contact_phone: '',
-                  second_contact_email: '',
-                  doc_type: 'location',
-                  _id: (_id + '-' + [zone, lga, ward, utility.replaceAll(facility.primary_name, ' ', '_')].join('-')).toUpperCase()
-                }
-                if (f.ancestors.length === 6) {
-                  vm.dataToSave.push(f)
-                } else {
-                  vm.invalidUploads = true
-                  facility.error = true
+                if ((utility.replaceAll(facility.wardname, ' ', '-') === utility.replaceAll(response[r].name, ' ', '-')) && response[r].level === '5') {
+                  facility.ancestors.push(response[r]._id)
+                  ward = utility.replaceAll(response[r].name, ' ', '_')
                 }
               }
+              if (!facility.primary_name) {
+                return log.error('InvalidFileImport', {})
+              }
+
+              var f = {
+                ancestors: facility.ancestors,
+                osmId: facility.id,
+                ownership: facility.ownership,
+                latitude: facility.latitude,
+                longitude: facility.longitude,
+                category: facility.category,
+                name: facility.primary_name,
+                level: '6',
+                first_contact_name: '',
+                first_contact_phone: '',
+                first_contact_email: '',
+                second_contact_name: '',
+                second_contact_phone: '',
+                second_contact_email: '',
+                doc_type: 'location',
+                _id: (_id + '-' + [zone, lga, ward, utility.replaceAll(facility.primary_name, ' ', '_')].join('-')).toUpperCase()
+              }
+              if (f.ancestors.length === 6) {
+                vm.dataToSave.push(f)
+              } else {
+                vm.invalidUploads = true
+                facility.error = true
+              }
+            }
             )
-            vm.csv.result.sort(function(a, b) {
+            vm.csv.result.sort(function (a, b) {
               return a.error - b.error
             })
           }
         })
     }
-
 
     vm.save = function () {
       return locationService.saveMany(vm.dataToSave)
@@ -106,7 +103,7 @@ angular.module('configurations.facilities')
         })
     }
 
-    vm.canSaveData = function(){
+    vm.canSaveData = function () {
       return vm.dataToSave.length
     }
 
@@ -118,13 +115,13 @@ angular.module('configurations.facilities')
     }
 
     vm.changeState = function () {
-      if(vm.state){
+      if (vm.state) {
         getAncestors()
       }
     }
 
     $scope.$watch('csv.result', function (newVal, oldVal) {
-      if(!newVal || !newVal.length){
+      if (!newVal || !newVal.length) {
         return
       }
       getAncestors()
