@@ -7,7 +7,14 @@ $fa-font-path: "../../bower_components/font-awesome/fonts";
 // endbower
 
 .content {
+  margin-top: 20px;
   margin-bottom: 20px;
+}
+
+.page-header {
+  margin-top: 0;
+  margin-bottom: 10px;
+  border: none;
 }
 
 // use pointer for all nav links, even those without a href (they generally use ng-click)
@@ -62,10 +69,7 @@ dl > dt, dl > dd {
 }
 
 // injector
+@import 'home/home.scss';
 @import 'reports/invoice/round/round.scss';
-// endinjector
-
-// injector
 @import 'configurations/allocations/assumptions/assumptions.scss';
 // endinjector
-
