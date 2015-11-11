@@ -71,7 +71,7 @@ angular.module('reports')
       .then(function (response) {
         var tempObj = {
           kpi: {
-            key: 'noImmunized',
+            key: 'Immunized',
             values: []
           }
         }
@@ -97,7 +97,10 @@ angular.module('reports')
           total: totalImmunized,
           ave: $window.Math.floor(totalImmunized / vm.rounds.length)
         }
-        console.log(productData)
-        console.log(kpiData)
+        vm.kpiValues =  angular.copy(tempObj.kpi.values);
+        vm.kpiValues.sort(function(a, b){
+          return a[1] < b[1]
+        })
+        console.log(vm.kpiValues)
       })
   })
