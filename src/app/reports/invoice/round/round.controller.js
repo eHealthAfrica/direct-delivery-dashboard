@@ -41,6 +41,9 @@ angular.module('reports')
       $window.jQuery('#report').print()
     }
     vm.dailyDeliveries = dailyDeliveries.results
+    if (!vm.dailyDeliveries.length) {
+      log.warning('noInvoiceData')
+    }
     formatReport()
 
     vm.getReport = function (page) {

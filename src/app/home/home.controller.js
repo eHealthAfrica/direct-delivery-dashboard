@@ -29,6 +29,10 @@ angular.module('directDeliveryDashboard')
     }
 
     vm.showReport = function () {
+      if (!vm.selectedRound) {
+        return
+      }
+
       deliveryRoundService.getReport(vm.selectedRound)
         .then(function (rndReport) {
           rndReport.deliveryRoundID = vm.selectedRound

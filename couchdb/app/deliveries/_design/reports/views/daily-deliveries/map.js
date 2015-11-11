@@ -26,7 +26,7 @@ function(doc) {
         return doc.status.substr(0, status.length) === status;
       });
       if (include) {
-        emit([doc.deliveryRoundID, doc.driverID, doc.date, round.drop], {
+        emit([doc.deliveryRoundID, doc.driverID, doc.date, doc.drop], {
           status: doc.status,
           window: doc.window,
           signature: doc.signature,
