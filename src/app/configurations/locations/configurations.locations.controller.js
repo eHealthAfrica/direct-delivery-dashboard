@@ -8,11 +8,14 @@ angular.module('configurations.locations')
       header: true,
       separator: ','
     }
-
+    vm.canSave = false
     vm.finished = function (data) {
       if (data) {
         vm.result = data
-        console.log(vm.result)
+        if(vm.data.length > 0){
+          vm.canSave = true
+        }
+
       }
     }
 
@@ -29,11 +32,8 @@ angular.module('configurations.locations')
             osmId: results[i].osmId,
             'ISO3166-2': results[i]['ISO3166-2'],
             ancestors: [
-              results[i].admin_level_0,
-              results[i].admin_level_1,
-              results[i].admin_level_2,
-              results[i].admin_level_3,
-              results[i].admin_level_4
+              (results[i].admin_level_0.length > 2) ? results[i].admin_level_0.length > 2 : null,
+              (results[i].admin_level_1.length > 2) ? results[i].admin_level_1.length > 2 : null,
             ],
             doc_type: 'location',
             level: results[i].level || '2'
