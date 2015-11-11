@@ -3,14 +3,14 @@
  */
 
 angular.module('utility')
-  .directive('ehaPrintDiv', function () {
+  .directive('ehaPrintDiv', function ($window) {
     return {
       restrict: 'A',
       link: function (scope, element, attrs) {
-        element.click(function(event){
+        element.click(function (event) {
           event.preventDefault()
           var div = attrs.ehaPrintDiv
-          $('#'+div).print()
+          $window.jQuery('#' + div).print()
         })
       }
     }
