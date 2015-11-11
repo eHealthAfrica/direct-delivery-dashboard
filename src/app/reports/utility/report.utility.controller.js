@@ -61,9 +61,12 @@ angular.module('reports')
     function errHandler (err) {
       console.error(err)
     }
+    vm.rounds.forEach(function(r){
+      rnd.push(kpiService.getByRoundId(r).then(pushkpi).catch(errHandler))
+      rnd.push(deliveryService.getByRoundId(r).then(pushProducts).catch(errHandler))
+    })
 
-    rnd.push(deliveryService.getByRoundId(vm.rounds).then(pushProducts).catch(errHandler))
-    rnd.push(kpiService.getByRoundId(vm.rounds).then(pushkpi).catch(errHandler))
+
     $q.all(rnd)
       .then(function (response) {
         var tempObj = {
