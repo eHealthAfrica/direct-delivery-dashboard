@@ -10,12 +10,13 @@ angular.module('configurations.locations')
     }
     vm.canSave = false
     vm.finished = function (data) {
-      if (data) {
-        vm.result = data
-        if(vm.data.length > 0){
+      if(angular.isArray(data)){
+        if(data.length > 0 || (vm.csv.header && data.length ==1)){ //empty files or files with only headers
           vm.canSave = true
+          vm.result = data
+        }else{
+          log.warning('emptyDataUpload', data)
         }
-
       }
     }
 

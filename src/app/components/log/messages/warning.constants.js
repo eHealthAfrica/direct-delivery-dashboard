@@ -11,5 +11,10 @@ angular.module('log')
       title: 'Access denied',
       message: 'Access is denied either due to wrong login details or session has expired',
       remedy: 'Please login again to create new session'
+    },
+    emptyDataUpload: {
+      title: 'Empty data upload',
+      message: 'The file you are trying to upload have no data in it',
+      remedy: 'please check the file and try again'
     }
   })
