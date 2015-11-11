@@ -1,27 +1,31 @@
-<div class="row page-header">
-  <div class="col-sm-6 pull-left">
-    <h1><i class="fa fa-truck fa-lg"></i> Delivery Round: {{
-      homeCtrl.roundReport.deliveryRoundID }} </h1>
+<div class="row home-header">
+  <div class="col-sm-6">
+    <h1>
+      <i class="fa fa-truck fa-lg"></i>
+      <span>Delivery Round:</span>
+      <span ng-bind="homeCtrl.roundReport.deliveryRoundID"></span>
+    </h1>
   </div>
 
-  <div class="col-sm-6 pull-right">
+  <div class="col-sm-6">
     <div class="form-group has-feedback">
-      <div class="input-group">
-        <input type="text" class="form-control input-lg filter" placeholder="Round code"
-               ng-model="homeCtrl.selectedRound"
-               typeahead="roundCode for roundCode in homeCtrl.roundCodes">
-        <span class="input-group-btn">
-          <button class="btn btn-primary btn-lg" type="button"
-                  ng-click="homeCtrl.showReport()">
-            <i class="fa fa-search"></i>
-          </button>
-        </span>
-      </div>
+      <input
+        type="text"
+        class="form-control input-lg filter"
+        placeholder="Round code"
+        ng-model="homeCtrl.selectedRound"
+        typeahead="roundCode for roundCode in homeCtrl.roundCodes"
+        typeahead-on-select="homeCtrl.showReport()"
+        typeahead-append-to-body="true"
+      >
+      <span class="form-control-feedback">
+        <i class="fa fa-lg fa-search"></i>
+      </span>
     </div>
   </div>
 </div>
 
-<div class="row" ng-hide="homeCtrl.hasSchedules()">
+<div class="row" ng-if="!homeCtrl.hasSchedules()">
   <div class="panel-body">
     <div class="panel-body alert alert-info">
       <i class="fa fa-lg fa-info-circle"></i>
@@ -31,9 +35,7 @@
 </div>
 
 <!-- Summary Table Section-->
-<div class="row" ng-show="homeCtrl.hasSchedules()">
-  <br/><br/>
-
+<div class="row" ng-if="homeCtrl.hasSchedules()">
   <div class="col-md-3">
     <div class="jumbotron alert-default">
       <h1 ng-bind="homeCtrl.roundReport.total"></h1>
@@ -84,7 +86,7 @@
 </div>
 <!-- end summary section -->
 
-<div class="" row ng-show="homeCtrl.hasSchedules()">
+<div class="row" row ng-if="homeCtrl.hasSchedules()">
   <div class="col-md-12">
     <div class="panel panel-default">
       <div class="panel-heading"><h4>Round Progress</h4></div>
@@ -98,7 +100,7 @@
 </div>
 
 <!-- Delivery Round Chart section-->
-<div class="row" ng-show="homeCtrl.hasSchedules()">
+<div class="row" ng-if="homeCtrl.hasSchedules()">
   <!-- current status chart -->
   <div class="col-md-6">
     <div class="panel panel-default">

@@ -41,7 +41,6 @@ angular.module('planning')
 
       function bind (locations) {
         vm.locations.all = locations
-        vm.locations.selected = locations
       }
 
       if (!level) {
