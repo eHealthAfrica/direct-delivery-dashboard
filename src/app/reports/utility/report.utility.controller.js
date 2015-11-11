@@ -61,11 +61,10 @@ angular.module('reports')
     function errHandler (err) {
       console.error(err)
     }
-    vm.rounds.forEach(function(r){
+    vm.rounds.forEach(function (r) {
       rnd.push(kpiService.getByRoundId(r).then(pushkpi).catch(errHandler))
       rnd.push(deliveryService.getByRoundId(r).then(pushProducts).catch(errHandler))
     })
-
 
     $q.all(rnd)
       .then(function (response) {
@@ -97,8 +96,8 @@ angular.module('reports')
           total: totalImmunized,
           ave: $window.Math.floor(totalImmunized / vm.rounds.length)
         }
-        vm.kpiValues =  angular.copy(tempObj.kpi.values);
-        vm.kpiValues.sort(function(a, b){
+        vm.kpiValues = angular.copy(tempObj.kpi.values)
+        vm.kpiValues.sort(function (a, b) {
           return a[1] < b[1]
         })
         console.log(vm.kpiValues)
