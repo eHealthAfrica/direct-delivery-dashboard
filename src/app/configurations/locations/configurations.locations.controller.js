@@ -9,13 +9,18 @@ angular.module('configurations.locations')
       separator: ','
     }
     vm.canSave = false
+    var warningFired = false
     vm.finished = function (data) {
       if(angular.isArray(data)){
         if(data.length > 0 || (vm.csv.header && data.length ==1)){ //empty files or files with only headers
           vm.canSave = true
           vm.result = data
+          warningFired= false
         }else{
-          log.warning('emptyDataUpload', data)
+          if(!warningFired){
+            log.warning('emptyDataUpload', data)
+            warningFired = true
+          }
         }
       }
     }
