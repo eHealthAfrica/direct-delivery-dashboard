@@ -8,3 +8,4 @@ coverage
 npm-debug.log
 .idea
 .couchapprc
+/config/stage.json

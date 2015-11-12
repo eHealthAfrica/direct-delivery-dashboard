@@ -1,59 +1,72 @@
 <div class="modal-header alert-info">
-  <h3>Add Facilities to: {{ afdCtrl.deliveryRound._id }}</h3>
+  <h3>
+    <span>Add Facilities to:</span>
+    <span ng-bind="::afdCtrl.deliveryRound._id"></span>
+  </h3>
 </div>
-<!-- Modal body section -->
-<div class="modal-body">
-  <div class="col-sm-15">
-    <form>
-      <div class="form-group">
-        <label>State: {{ afdCtrl.deliveryRound.state }}</label>
-      </div>
 
-      <div class="form-group">
-        <label>Level</label>
-        <select class="form-control" ng-model="afdCtrl.selectedLevel"
-            ng-click="afdCtrl.onSelection()">
-          <option value="">Select administrative level</option>
-          <option ng-repeat="level in afdCtrl.selectedLocLevel"
-                  ng-value="level._id">
-            {{ level.name }}
-          </option>
-        </select>
-      </div>
-      <br/>
-      <h4 ng-show="afdCtrl.selectedlevelLocs.length > 0">
-        <span class="dropdown" dropdown on-toggle="toggled(open)">
-            <a href class="dropdown-toggle" dropdown-toggle>Selection</a>
-            <ul class="dropdown-menu">
-              <li ng-repeat="option in afdCtrl.selectionOpions">
-                <a href ng-click="afdCtrl.onSelectionOptions(option)">
-                  {{option}}
-                </a>
-              </li>
-            </ul>
-          </span>
-      </h4>
-      <div class="col-sm-2" ng-repeat="location in afdCtrl.selectedlevelLocs track by $index">
+<div class="modal-body">
+  <form>
+    <div class="form-group">
+      <label>
+        <span>State:</span>
+        <span ng-bind="::afdCtrl.deliveryRound.state"></span>
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label>Level</label>
+      <select
+        class="form-control"
+        ng-model="selectedLevel"
+        ng-change="afdCtrl.onSelection(selectedLevel)"
+      >
+        <option value="">Select administrative level</option>
+        <option
+          ng-repeat="level in afdCtrl.selectedLocLevel track by level._id"
+          ng-value="level._id"
+          ng-bind="::level.name"
+        >
+        </option>
+      </select>
+    </div>
+
+    <div ng-if="afdCtrl.locations.all.length">
+      <div class="checkbox">
         <label>
-          <input type="checkbox"
-                  ng-model ="afdCtrl.selectedIds[location._id]"
-                 ng-checked="afdCtrl.isSelected(location._id)">
-          {{ location.name }}
+          <input
+            type="checkbox"
+            ng-model="selectAll"
+            ng-click="afdCtrl.selectAllToggle(selectAll)"
+            ng-checked="selectAll"
+          >
+          <span>Select all</span>
         </label>
       </div>
-    </form>
-  </div>
-  <br/><br/><br/><br/>
+
+      <ui-select multiple ng-model="afdCtrl.locations.selected">
+        <ui-select-match
+          placeholder="Click to select locations or type to search"
+        >
+          <span ng-bind="::$item.name"></span>
+        </ui-select-match>
+        <ui-select-choices
+          repeat="location in afdCtrl.locations.all | filter: {name: $select.search}"
+        >
+          <div ng-bind-html="location.name | highlight: $select.search"></div>
+        </ui-select-choices>
+      </ui-select>
+
+  </form>
 </div>
-<!-- modal footer section-->
+
 <div class="modal-footer">
   <button class="btn btn-success" ng-click="afdCtrl.addToList()">
     <i class="fa fa-plus"></i>
     <span>Add To List</span>
   </button>
 
-  <button class="btn btn-default"
-          ng-click="afdCtrl.cancel()">
+  <button class="btn btn-default" ng-click="$dismiss()">
     <i class="fa fa-times"></i>
     <span>Close</span>
   </button>

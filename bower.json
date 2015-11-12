@@ -17,9 +17,11 @@
     "angular-dragdrop": "~1.0.12",
     "ng-csv": "~0.3.4",
     "angular-csv-import": "~0.0.16",
-    "angular-xeditable": "~0.1.9",
+    "angular-xeditable": "https://github.com/tlvince/angular-xeditable.git#bd328b25ec309c437b9d1a96bedb0a019768e9a0",
     "angular-eha.couchdb-auth": "~1.1.0",
-    "angular-ui-grid": "ui-grid#~3.0.7"
+    "angular-ui-grid": "ui-grid#~3.0.7",
+    "ui-select": "angular-ui-select#~0.13.2",
+    "angular-sanitize": "~1.4.3"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.3",

@@ -15,12 +15,20 @@ angular.module('directDeliveryDashboard')
 
     vm.roundCodes = roundReport.roundInfo.roundCodes || []
     vm.roundReport = roundReport
-    vm.onTime = []
 
-    if (roundReport.onTime || roundReport.behindTime > 0) {
+    vm.reportLateness = function () {
+      if (!vm.roundReport) {
+        return
+      }
+      var roundReport = vm.roundReport
       vm.onTime = [
-        { key: 'Behind Time', y: roundReport.behindTime, color: 'orange' },
-        { key: 'On Time', y: roundReport.onTime, color: 'green' }
+        { key: 'Unknown', y: roundReport.onTimeMap['Unknown'] || 0, color: '#90C3D4' },
+        { key: 'On time', y: roundReport.onTimeMap['On_time'] || 0, color: '#93C47D' },
+        { key: 'Less than an hour late', y: roundReport.onTimeMap['An_hour_late'] || 0, color: 'orange' },
+        { key: 'Less than six hours late', y: roundReport.onTimeMap['Less_than_six_hours_late'] || 0, color: '#F21142' },
+        { key: 'A day late', y: roundReport.onTimeMap['A_day_late'] || 0, color: 'pink' },
+        { key: 'A week late', y: roundReport.onTimeMap['A_week_late'] || 0, color: '#40030E' },
+        { key: 'More than a week late', y: roundReport.onTimeMap['More_than_a_week_late'] || 0, color: 'red' }
       ]
     }
 
@@ -29,13 +37,19 @@ angular.module('directDeliveryDashboard')
     }
 
     vm.showReport = function () {
+      if (!vm.selectedRound) {
+        return
+      }
+
       deliveryRoundService.getReport(vm.selectedRound)
         .then(function (rndReport) {
           rndReport.deliveryRoundID = vm.selectedRound
           vm.roundReport = rndReport
           vm.setTimeline()
+          vm.reportLateness()
         })
         .catch(function (err) {
+          vm.roundReport.onTimeMap = {}
           var msg = [
             'Report for Round:',
             vm.selectedRound,
@@ -97,6 +111,7 @@ angular.module('directDeliveryDashboard')
           ]
         }
       ]
+      vm.roundReport.upcoming = vm.roundReport.total - (vm.roundReport.delivered + vm.roundReport.notWorkingCCE)
     }
     $scope.$on('stateChanged', function (event, data) {
       var key = ''
@@ -130,4 +145,5 @@ angular.module('directDeliveryDashboard')
         })
     })
     vm.setTimeline()
+    vm.reportLateness()
   })

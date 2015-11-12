@@ -10,5 +10,7 @@ angular.module('planning', [
   'mailer',
   'auth',
   'kpi',
-  'drivers'
+  'drivers',
+  'ui.select',
+  'ngSanitize'
 ])
