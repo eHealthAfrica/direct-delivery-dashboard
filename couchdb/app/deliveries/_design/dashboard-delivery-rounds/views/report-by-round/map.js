@@ -153,6 +153,4 @@ function(doc) {
         emit([facRnd.deliveryRoundID, facRnd.date], facRndReport);
       }
     }
-  }
-
 }
