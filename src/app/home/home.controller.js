@@ -103,6 +103,7 @@ angular.module('directDeliveryDashboard')
           ]
         }
       ]
+      vm.roundReport.upcoming = vm.roundReport.total - (vm.roundReport.delivered + vm.roundReport.notWorkingCCE)
     }
 
     vm.setTimeline()
