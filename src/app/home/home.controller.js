@@ -23,6 +23,16 @@ angular.module('directDeliveryDashboard')
         { key: 'More than a week late', y: roundReport.onTimeMap['More_than_a_week_late'] || 0, color: 'red' }
       ]
     }
+     vm.getLag = function(){
+      if (!vm.roundReport.lag) {
+        return
+      }
+      vm.lag = [
+        {key: 'On scheduled date', y: vm.roundReport.lag.onDate || 0, color: '#93C47D'},
+        {key: 'Before scheduled date', y: vm.roundReport.lag.beforeDate || 0, color: '#90C3D4'},
+        {key: 'After scheduled date', y: vm.roundReport.lag.afterDate || 0, color: 'red'},
+      ]
+    }
 
     vm.hasSchedules = function () {
       return vm.roundReport && vm.roundReport.total > 0
@@ -39,6 +49,7 @@ angular.module('directDeliveryDashboard')
           vm.roundReport = rndReport
           vm.setTimeline()
           vm.reportLateness()
+          vm.getLag()
         })
         .catch(function (err) {
           vm.roundReport.onTimeMap = {}
@@ -107,4 +118,5 @@ angular.module('directDeliveryDashboard')
 
     vm.setTimeline()
     vm.reportLateness()
+    vm.getLag()
   })
