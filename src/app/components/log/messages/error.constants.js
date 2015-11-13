@@ -167,6 +167,11 @@ angular.module('log')
       message: 'An unknown error occurred while fetching states for user',
       remedy: 'Please, try again and contact support if it persists'
     },
+    userHasNoState: {
+      title: 'User has no state',
+      message: 'Current user account has no state assigned',
+      remedy: 'Kindly contact server administrator to assign state to your account'
+    },
     deliveryReportErr: {
       title: 'Delivery Report error',
       message: 'An unknown error occurred while loading delivery report',
