@@ -14,10 +14,10 @@ angular.module('home')
       templateUrl: 'app/home/home.html',
       resolve: {
         authentication: authProvider.requireAuthenticatedUser,
-        roundReport: function (deliveryRoundService, $rootScope, usersService) {
+        roundReport: function (deliveryRoundService, $rootScope, indexService) {
           var key = ''
           var roundInfo = []
-          return usersService.getUserStates()
+          return indexService.getUserStates()
             .then(function (states) {
               var state = angular.isDefined($rootScope.selectedState) ? $rootScope.selectedState.name : states[0].name
               return deliveryRoundService.getLatestBy(state)
