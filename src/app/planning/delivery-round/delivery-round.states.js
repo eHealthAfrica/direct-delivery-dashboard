@@ -8,10 +8,14 @@ angular.module('planning')
       controller: 'DeliveryRoundCtrl',
       controllerAs: 'crCtrl',
       resolve: {
-        deliveryRounds: function (planningService) {
-          return planningService.byAuthorisedStates()
-            .catch(function () {
-              return []
+        deliveryRounds: function (planningService, indexService, $rootScope) {
+          return indexService.getUserStates()
+            .then(function (states) {
+              var state = angular.isDefined($rootScope.selectedState) ? $rootScope.selectedState._id : states[0]._id
+              return planningService.byAuthorisedStates([state])
+                .catch(function () {
+                  return []
+                })
             })
         }
       },
