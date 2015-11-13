@@ -62,7 +62,8 @@
           </button>
           <ul class="dropdown-menu" role="menu">
             <li
-              ng-repeat="state in navbarCtrl.userStates"
+              class="pointer"
+              ng-repeat="state in userStates"
               ng-bind="state.name"
               ng-click="navbarCtrl.changeState(state)">
             </li>

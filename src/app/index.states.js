@@ -29,7 +29,11 @@ angular.module('directDeliveryDashboard')
               userStates: function (indexService, log) {
                 return indexService.getUserStates()
                   .catch(function (reason) {
-                    log.error('userStatesErr', reason)
+                    if (parseInt(reason.code, 10) === 404) {
+                      log.error('userHasNoState')
+                    } else {
+                      log.error('userStatesErr', reason)
+                    }
                     return []
                   })
               }

@@ -11,7 +11,7 @@ angular.module('navbar')
   ) {
     var vm = this
     $rootScope.selectedState = $rootScope.selectedState || userStates[0]
-    vm.userStates = userStates
+    $rootScope.userStates = userStates
     this.name = config.name
     this.navbarState = navbarState
     this.logout = authService.logout

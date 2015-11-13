@@ -10,6 +10,8 @@ angular.module('directDeliveryDashboard')
     authService,
     locationService
   ) {
+    var _this = this
+
     function stateChangeError (event, toState, toParams, fromState, fromParams, err) {
       if (err === 'unauthenticated' || err === 'User not found') {
         return $state.go('login')
@@ -27,7 +29,26 @@ angular.module('directDeliveryDashboard')
         .then($state.go.bind($state, 'login'))
     }
 
-    this.getUserStates = function () {
+    function updateNavbarStates (event, toState, toParams, fromState) {
+      if (fromState.name === 'login') {
+        _this.getUserStates()
+          .then(function (states) {
+            $rootScope.userStates = states
+            $rootScope.selectedState = states[0] || {}
+          })
+          .catch(function (reason) {
+            $rootScope.userStates = []
+            $rootScope.selectedState = {}
+            if (parseInt(reason.code, 10) === 404) {
+              log.error('userHasNoState')
+            } else {
+              log.error('userStatesErr', reason)
+            }
+          })
+      }
+    }
+
+    _this.getUserStates = function () {
       function getStatesByUser (user) {
         var LEVEL = '2'
         if (user.isAdmin()) {
@@ -46,6 +67,8 @@ angular.module('directDeliveryDashboard')
       editableOptions.theme = 'bs3'
 
       $rootScope.$on('$stateChangeError', stateChangeError)
+
+      $rootScope.$on('$stateChangeSuccess', updateNavbarStates)
 
       $rootScope.$on('unauthorized', onDBAuthError)
     }
