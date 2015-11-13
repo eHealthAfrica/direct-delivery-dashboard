@@ -88,7 +88,15 @@ angular.module('planning')
         backdrop: 'static',
         resolve: {
           deliveryRounds: function (planningService) {
+            function filterCurrentRound (rounds) {
+              function isntCurrentRound (round) {
+                return round._id !== deliveryRound._id
+              }
+              return rounds.filter(isntCurrentRound)
+            }
+
             return planningService.all()
+              .then(filterCurrentRound)
               .catch(function () {
                 return []
               })
