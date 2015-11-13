@@ -39,9 +39,10 @@ angular.module('reports')
           rnd[packed.productID] = (angular.isNumber(rnd[packed.productID]) ? rnd[packed.productID] : 0) + (packed['packedQty'] || 0)
         }
       }
+      return rnd
     }
 
-    function pushkpi (response) {
+    function pushKpi (response) {
       var akpi
       var rnd
       if (angular.isArray(response.kpiList)) {
@@ -51,19 +52,32 @@ angular.module('reports')
             kpiData[rnd] = angular.isNumber(kpiData[rnd]) ? kpiData[rnd] : 0
             for (var a in response.kpiList[k].antigensKPI) {
               akpi = response.kpiList[k].antigensKPI[a]
-              kpiData[rnd] += akpi.noImmunized
-              totalImmunized += akpi.noImmunized
+              kpiData[rnd] += angular.isNumber(akpi.noImmunized) ? akpi.noImmunized : 0
+              totalImmunized += angular.isNumber(akpi.noImmunized) ? akpi.noImmunized : 0
             }
           }
         }
       }
     }
-    function errHandler (err) {
-      console.error(err)
-    }
+
     vm.rounds.forEach(function (r) {
-      rnd.push(kpiService.getByRoundId(r).then(pushkpi).catch(errHandler))
-      rnd.push(deliveryService.getByRoundId(r).then(pushProducts).catch(errHandler))
+      rnd.push(
+        deliveryService.getByRoundId(r)
+          .then(pushProducts)
+          .then(function (response) {
+            // console.info(r, response)
+            return r
+          })
+          .then(kpiService.getByRoundId)
+          .then(function (response) {
+            // console.info(r, response)
+            return response
+          })
+          .then(pushKpi)
+          .catch(function errHandler (err) {
+            console.log(err)
+          })
+      )
     })
 
     $q.all(rnd)
@@ -74,7 +88,6 @@ angular.module('reports')
             values: []
           }
         }
-
         for (var r in vm.rounds) {
           if (kpiData[vm.rounds[r]]) {
             tempObj.kpi.values.push([parseInt(r, 10), kpiData[vm.rounds[r]]])
@@ -89,7 +102,6 @@ angular.module('reports')
             }
           }
         }
-        console.log(tempObj)
         for (var co in tempObj) {
           vm.chartData.push(tempObj[co])
         }
@@ -99,8 +111,7 @@ angular.module('reports')
         }
         vm.kpiValues = angular.copy(tempObj.kpi.values)
         vm.kpiValues.sort(function (a, b) {
-          return a[1] < b[1]
+          return a[1] - b[1]
         })
-        console.log(vm.kpiValues)
       })
   })

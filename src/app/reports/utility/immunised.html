@@ -7,12 +7,12 @@
   <h3 class="pull-right">| {{utilityCtrl.kpiAgg.ave}}</h3>
 </div>
 <div class="btn btn-success btn-lg clearfix">
-  <h5 class="pull-left">Highest Immunized <br/> ({{utilityCtrl.rounds[utilityCtrl.kpiValues[0][0]]}})</h5>
-  <h3 class="pull-right">| {{utilityCtrl.kpiValues[0][1]}}</h3>
+  <h5 class="pull-left">Highest Immunized <br/> ({{utilityCtrl.rounds[utilityCtrl.kpiValues[utilityCtrl.kpiValues.length -1][0]]}})</h5>
+  <h3 class="pull-right">| {{utilityCtrl.kpiValues[utilityCtrl.kpiValues.length -1][1]}}</h3>
 </div>
 <div class="btn btn-danger btn-lg clearfix">
-  <h5 class="pull-left">Lowest Immunized <br/> ({{utilityCtrl.rounds[utilityCtrl.kpiValues[utilityCtrl.kpiValues.length -1][0]]}})</h5>
-  <h3 class="pull-right">| {{utilityCtrl.kpiValues[utilityCtrl.kpiValues.length -1][1]}}</h3>
+  <h5 class="pull-left">Lowest Immunized <br/> ({{utilityCtrl.rounds[utilityCtrl.kpiValues[0][0]]}})</h5>
+  <h3 class="pull-right">| {{utilityCtrl.kpiValues[0][1]}}</h3>
 </div>
 <nvd3-line-chart
   data="utilityCtrl.chartData"
