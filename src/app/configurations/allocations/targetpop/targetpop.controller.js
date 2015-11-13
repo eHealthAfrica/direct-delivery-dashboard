@@ -1,11 +1,16 @@
 'use strict'
 
 angular.module('allocations')
-  .controller('TargetPopulationsController', function (locations, locationService, calculationService, $modal, log, targetPopulationService) {
+  .controller('TargetPopulationsController', function (
+    locations,
+    locationService,
+    calculationService,
+    $modal,
+    log,
+    targetPopulationService,
+    states
+  ) {
     var vm = this
-
-    vm.locationStates = ['KN', 'BA']
-    vm.selectedState = 'KN'
     vm.selectedLga = ''
     vm.lgas = []
     vm.wards = []
@@ -16,6 +21,15 @@ angular.module('allocations')
       result: ''
     }
 
+    function loadStates () {
+      var i = states.length
+      vm.locationStates = []
+      while (i--) {
+        vm.locationStates.push(states[i]._id)
+      }
+      vm.selectedState = vm.locationStates[0]
+    }
+    loadStates ()
     function findLga (state) {
       var keys = []
       keys.push(['4', state])
