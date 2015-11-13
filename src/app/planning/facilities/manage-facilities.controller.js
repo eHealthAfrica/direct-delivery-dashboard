@@ -11,7 +11,8 @@ angular.module('planning')
     scheduleService,
     log,
     locationLevels,
-    config
+    config,
+    utility
   ) {
     var vm = this
 
@@ -107,9 +108,7 @@ angular.module('planning')
 
             return planningService.all()
               .then(filterCurrentRound)
-              .catch(function () {
-                return []
-              })
+              .catch(utility.returnEmptyList)
           },
           deliveryRound: function () {
             return vm.deliveryRound
