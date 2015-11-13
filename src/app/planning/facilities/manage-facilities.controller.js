@@ -1,8 +1,18 @@
 'use strict'
 
 angular.module('planning')
-  .controller('ManageFacilitiesCtrl', function ($state, $modal, deliveryRound, addFacilityService, mailerService,
-    copyRoundService, scheduleService, log, locationLevels, config) {
+  .controller('ManageFacilitiesCtrl', function (
+    $state,
+    $modal,
+    deliveryRound,
+    addFacilityService,
+    mailerService,
+    copyRoundService,
+    scheduleService,
+    log,
+    locationLevels,
+    config
+  ) {
     var vm = this
 
     vm.deliveryRound = deliveryRound
