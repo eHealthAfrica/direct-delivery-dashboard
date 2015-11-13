@@ -29,7 +29,7 @@ angular.module('allocations')
       }
       vm.selectedState = vm.locationStates[0]
     }
-    loadStates ()
+    loadStates()
     function findLga (state) {
       var keys = []
       keys.push(['4', state])
