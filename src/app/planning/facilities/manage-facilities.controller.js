@@ -30,13 +30,9 @@ angular.module('planning')
     vm.onSelection = function (roundTemplate) {
       vm.facilityList = []
       vm.roundTemplate = roundTemplate
-      vm.roundTemplate.forEach(function (dailySchedule) {
-        if (angular.isArray(dailySchedule.facilityRounds)) {
-          dailySchedule.facilityRounds.forEach(function (facilityRound) {
-            vm.facilityList.push(facilityRound.facility)
-            vm.selectedList[facilityRound.facility.id] = true
-          })
-        }
+      vm.roundTemplate.forEach(function (facilityRound) {
+        vm.facilityList.push(facilityRound.facility)
+        vm.selectedList[facilityRound.facility.id] = true
       })
     }
 
