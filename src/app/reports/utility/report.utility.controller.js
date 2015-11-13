@@ -59,7 +59,7 @@ angular.module('reports')
       }
     }
     function errHandler (err) {
-      //console.error(err)
+      console.error(err)
     }
     vm.rounds.forEach(function (r) {
       rnd.push(kpiService.getByRoundId(r).then(pushkpi).catch(errHandler))
