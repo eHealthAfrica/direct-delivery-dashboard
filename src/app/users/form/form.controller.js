@@ -10,15 +10,21 @@ angular.module('users')
     vm.user = angular.copy(model)
     vm.user.enabled = !!model.account
 
+    function getStateName (state) {
+      var stateObj = vm.states.filter(function (st) {
+        return st._id === state
+      })[0]
+      return stateObj ? stateObj.name : ''
+    }
+
     function generateMsg (user, password) {
       var deferred = $q.defer()
       var email = user.profile.email
       var forename = user.profile.forename
       var surname = user.profile.surname
-      var state = user.profile.state
+      var state = getStateName(user.profile.state)
       var url = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/'
       var link = '<a href="' + url + '">' + 'EHA Direct Delivery' + '</a>'
-
       driversService.getSignUpEmail()
         .then(function (template) {
           var subject = template.subject
