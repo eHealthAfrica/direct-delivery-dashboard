@@ -19,7 +19,13 @@
         typeahead-append-to-body="true"
       >
       <span class="form-control-feedback">
-        <i class="fa fa-lg fa-search"></i>
+        <i
+          class="fa fa-lg"
+          ng-class="{
+            'fa-search': !homeCtrl.isLoading,
+            'fa-spinner fa-spin': homeCtrl.isLoading
+          }"
+        ></i>
       </span>
     </div>
   </div>
