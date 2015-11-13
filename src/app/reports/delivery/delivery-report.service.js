@@ -43,7 +43,6 @@ angular.module('reports')
         if (deliveryRounds && deliveryRounds.indexOf(row.deliveryRoundID) === -1) {
           continue // skip
         }
-        console.log(row.deliveryRoundID)
         groupedByZoneByDriver = groupByZoneByDriver(groupedByZoneByDriver, row)
         groupedByZoneByLGA = groupByZoneByLGA(groupedByZoneByLGA, row)
       }
