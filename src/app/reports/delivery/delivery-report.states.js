@@ -3,8 +3,7 @@
 angular.module('reports')
   .config(function ($stateProvider) {
     $stateProvider.state('reports.layout.delivery', {
-      parent: 'reports.layout',
-      url: '',
+      url: '/delivery',
       data: {
         label: 'Reports'
       },
