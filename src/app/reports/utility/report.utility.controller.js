@@ -34,9 +34,9 @@ angular.module('reports')
       for (var i in response) {
         productData[response[i].deliveryRoundID] = angular.isObject(productData[response[i].deliveryRoundID]) ? productData[response[i].deliveryRoundID] : {}
         rnd = productData[response[i].deliveryRoundID]
-        for (var pp in response[i].packedProduct) {
-          packed = response[i].packedProduct[pp]
-          rnd[packed.productID] = (angular.isNumber(rnd[packed.productID]) ? rnd[packed.productID] : 0) + packed.expectedQty
+        for (var pp in response[i].packingList) {
+          packed = response[i].packingList[pp]
+          rnd[packed.productID] = (angular.isNumber(rnd[packed.productID]) ? rnd[packed.productID] : 0) + (packed['packedQty'] || 0)
         }
       }
     }
@@ -59,7 +59,7 @@ angular.module('reports')
       }
     }
     function errHandler (err) {
-      console.error(err)
+      //console.error(err)
     }
     vm.rounds.forEach(function (r) {
       rnd.push(kpiService.getByRoundId(r).then(pushkpi).catch(errHandler))
@@ -89,6 +89,7 @@ angular.module('reports')
             }
           }
         }
+        console.log(tempObj)
         for (var co in tempObj) {
           vm.chartData.push(tempObj[co])
         }
