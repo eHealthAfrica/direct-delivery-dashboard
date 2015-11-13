@@ -7,7 +7,8 @@ angular.module('directDeliveryDashboard')
     $state,
     editableOptions,
     log,
-    authService
+    authService,
+    locationService
   ) {
     function stateChangeError (event, toState, toParams, fromState, fromParams, err) {
       if (err === 'unauthenticated' || err === 'User not found') {
@@ -24,6 +25,20 @@ angular.module('directDeliveryDashboard')
       log.warning('accessDeniedOrExpired')
       return authService.logout()
         .then($state.go.bind($state, 'login'))
+    }
+
+    this.getUserStates = function () {
+      function getStatesByUser (user) {
+        var LEVEL = '2'
+        if (user.isAdmin()) {
+          return locationService.getLocationsByLevel(LEVEL)
+        }
+        var stateIds = authService.authorisedStates(user)
+        return locationService.getLocationsByLevelAndId(LEVEL, stateIds)
+      }
+
+      return authService.getCurrentUser()
+        .then(getStatesByUser)
     }
 
     this.bootstrap = function () {
