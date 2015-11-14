@@ -38,5 +38,4 @@ angular.module('products')
       }
       return dbService[use](doc)
     }
-
   })
