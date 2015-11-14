@@ -20,7 +20,6 @@ angular.module('configurations.locations')
       keys.push(['3', JSON.parse(state)._id])
       return locationService.getByLevelAndAncestor(keys)
         .then(function (response) {
-          console.log(response)
           vm.zones = response
         })
     }
