@@ -3,7 +3,7 @@
 angular.module('facility')
   .config(function ($stateProvider) {
     $stateProvider.state('facility.layout.reports', {
-      url: '',
+      url: '/faulty',
       templateUrl: 'app/facility/reports/reports.html',
       controller: 'FacilityReportsCtrl',
       controllerAs: 'facRepCtrl',
