@@ -11,6 +11,7 @@ angular.module('reports')
     vm.rounds = rounds
     vm.utilData = []
     vm.chartData = []
+    vm.isLoading = true
 
     vm.utilx = function () {
       return function (d) {
@@ -105,5 +106,8 @@ angular.module('reports')
         vm.kpiValues.sort(function (a, b) {
           return a[1] < b[1]
         })
+        if(vm.chartData.length > 0){
+          vm.isLoading = false
+        }
       })
   })
