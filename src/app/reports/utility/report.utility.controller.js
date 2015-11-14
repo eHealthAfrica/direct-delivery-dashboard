@@ -39,7 +39,7 @@ angular.module('reports')
           rnd[packed.productID] = (angular.isNumber(rnd[packed.productID]) ? rnd[packed.productID] : 0) + (packed['packedQty'] || 0)
         }
       }
-      return rnd
+      return response[0]['deliveryRoundID']
     }
 
     function pushKpi (response) {
@@ -64,15 +64,7 @@ angular.module('reports')
       rnd.push(
         deliveryService.getByRoundId(r)
           .then(pushProducts)
-          .then(function (response) {
-            // console.info(r, response)
-            return r
-          })
           .then(kpiService.getByRoundId)
-          .then(function (response) {
-            // console.info(r, response)
-            return response
-          })
           .then(pushKpi)
           .catch(function errHandler (err) {
             console.log(err)
