@@ -28,10 +28,16 @@
           </div>
         </div>
         <div class="col-sm-2">
-          <button ng-show="reportsRoundCtrl.dailyDeliveries.length" eha-print-div="report"
+          <button ng-show="reportsRoundCtrl.dailyDeliveries.length"  ng-click="reportsRoundCtrl.print()"
                   type="button" class="btn btn-primary pull-right">
             <i class="fa fa-print"></i> Print
           </button>
+
+          <button ng-show="reportsRoundCtrl.dailyDeliveries.length"  ng-click="reportsRoundCtrl.print('all')"
+                  type="button" class="btn btn-primary pull-right">
+            <i class="fa fa-print"></i> Print All
+          </button>
+
         </div>
       </div>
     </div>
