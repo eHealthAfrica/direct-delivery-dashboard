@@ -4,8 +4,10 @@ angular.module('allocations')
   .config(function ($stateProvider) {
     $stateProvider
       .state('configurations.allocations.assumptions', {
-        parent: 'configurations.allocations',
         url: '/assumptions',
+        data: {
+          label: 'Configurations'
+        },
         templateUrl: 'app/configurations/allocations/assumptions/assumptions.html',
         controller: 'AssumptionsCtrl',
         controllerAs: 'assumptionsCtrl',

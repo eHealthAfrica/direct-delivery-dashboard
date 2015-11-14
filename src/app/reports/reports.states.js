@@ -4,16 +4,11 @@ angular.module('configurations')
   .config(function ($stateProvider, authProvider) {
     $stateProvider
       .state('reports', {
+        abstract: true,
         parent: 'index',
         url: '/reports',
         templateUrl: 'app/reports/index.html',
-        controller: function ($state) {
-          if ($state.current.name === 'reports') {
-            $state.go('reports.layout.delivery')
-          }
-        },
         data: {
-          label: 'Reports',
           roles: [
             'direct_delivery_dashboard_accounting',
             'direct_delivery_dashboard_stakeholder'
@@ -28,7 +23,7 @@ angular.module('configurations')
         }
       })
       .state('reports.layout', {
-        parent: 'reports',
+        abstract: true,
         views: {
           menu: {
             templateUrl: 'app/reports/menu/menu.html'
