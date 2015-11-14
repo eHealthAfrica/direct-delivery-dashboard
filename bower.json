@@ -5,7 +5,7 @@
     "angular-ui-router": "~0.2.13",
     "bootstrap-sass-official": "~3.3.4",
     "angular": "~1.4.3",
-    "angular-messages": "~1.4.3",
+    "angular-messages": "~1.4.7",
     "angular-resource": "~1.4.3",
     "angular-toastr": "~0.5.2",
     "font-awesome": "~4.4.0",
