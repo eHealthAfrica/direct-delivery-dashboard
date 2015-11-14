@@ -106,7 +106,7 @@ angular.module('reports')
         vm.kpiValues.sort(function (a, b) {
           return a[1] < b[1]
         })
-        if(vm.chartData.length > 0){
+        if (vm.chartData.length > 0) {
           vm.isLoading = false
         }
       })
