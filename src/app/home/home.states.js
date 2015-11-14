@@ -19,7 +19,8 @@ angular.module('home')
           var roundInfo = []
           return indexService.getUserStates()
             .then(function (states) {
-              var state = angular.isDefined($rootScope.selectedState) ? $rootScope.selectedState.name : states[0].name
+              var defaultState = angular.isArray(states) && states.length > 0 ? states[0]._id : ''
+              var state = angular.isDefined($rootScope.selectedState) ? $rootScope.selectedState._id : defaultState
               return deliveryRoundService.getLatestBy(state)
             })
             .then(function (ri) {

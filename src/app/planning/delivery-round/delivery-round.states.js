@@ -11,7 +11,8 @@ angular.module('planning')
         deliveryRounds: function (planningService, indexService, $rootScope) {
           return indexService.getUserStates()
             .then(function (states) {
-              var state = angular.isDefined($rootScope.selectedState) ? $rootScope.selectedState._id : states[0]._id
+              var defaultState = angular.isArray(states) && states.length > 0 ? states[0]._id : ''
+              var state = angular.isDefined($rootScope.selectedState) ? $rootScope.selectedState._id : defaultState
               return planningService.byAuthorisedStates([state])
                 .catch(function () {
                   return []
