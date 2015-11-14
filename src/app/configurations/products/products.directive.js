@@ -15,16 +15,16 @@ angular.module('products')
           }
           ngModel.pending = true
           $timeout(function () {
-            productService.getProductByCode(value)
+            productService.get(value)
               .then(function (data) {
-                return (!data.length || data[0] === params.id)
+                return (!data || data._id === params.id)
               })
               .then(function (data) {
                 ngModel.$setValidity('productUnique', data)
                 ngModel.pending = false
               })
               .catch(function () {
-                ngModel.$setValidity('productUnique', false)
+                ngModel.$setValidity('productUnique', true)
                 ngModel.pending = false
               })
           }, 2000)
