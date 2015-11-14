@@ -4,7 +4,13 @@
       Facility CCE Status Report
     </h2>
 
-    <div class="panel-body">
+    <div class="panel-body" ng-if="facAllCtrl.facilities.length === 0">
+      <div class="alert alert-info">
+        <i class="fa fa-lg fa-info-circle"></i> No facility with faulty CCE found
+      </div>
+    </div>
+
+    <div class="panel-body" ng-if="facAllCtrl.facilities.length > 0">
       <div class="row">
         <div class="col-sm-3">
           <h4>

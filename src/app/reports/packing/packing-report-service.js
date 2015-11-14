@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('reports')
-  .service('packingReportService', function ($q, dbService, productService) {
+  .service('packingReportService', function ($q, dbService, productService, deliveryRoundService) {
     var _this = this
 
     function defaultFields () {
@@ -79,9 +79,9 @@ angular.module('reports')
       return object
     }
 
-    function collatePackingReport (response) {
-      var rows = response[0].rows
-      var orderedObject = productOrder(response[1])
+    function collatePackingReport (deliveries, productsList, deliveryRounds, roundKey) {
+      var rows = deliveries.rows
+      var orderedObject = productOrder(productsList)
 
       var i = rows.length
       var grouped = {
@@ -93,6 +93,10 @@ angular.module('reports')
 
       while (i--) {
         var row = rows[i].value
+        var roundID = rows[i].key[roundKey]
+        if (deliveryRounds && roundID && deliveryRounds.indexOf(roundID) === -1) {
+          continue // skip
+        }
         grouped = getGrouped(grouped, 'zone', row)
         grouped = getGrouped(grouped, 'lga', row)
         grouped = getGrouped(grouped, 'ward', row)
@@ -125,7 +129,7 @@ angular.module('reports')
       return orderedObject
     }
 
-    _this.getPackingReport = function (startDate, endDate) {
+    _this.getPackingReport = function (startDate, endDate, state) {
       var view = 'reports/packing-by-date'
       startDate = new Date(startDate).toJSON()
       endDate = new Date(endDate).toJSON()
@@ -133,12 +137,25 @@ angular.module('reports')
         startkey: [startDate],
         endkey: [endDate, {}, {}]
       }
+
+      var params = {
+        startkey: [state.name],
+        endkey: [state.name, {}]
+      }
+
       var promises = [
         dbService.getView(view, options),
-        productService.getAll()
+        productService.getAll(),
+        deliveryRoundService.getBy(params)
       ]
       return $q.all(promises)
-        .then(collatePackingReport)
+        .then(function (response) {
+          var deliveryRoundIds = []
+          response[2].rows.forEach(function (row) {
+            deliveryRoundIds.push(row.id)
+          })
+          return collatePackingReport(response[0], response[1], deliveryRoundIds, 1)
+        })
     }
 
     _this.getPackingReportByRound = function (roundID) {
@@ -152,6 +169,8 @@ angular.module('reports')
         productService.getAll()
       ]
       return $q.all(promises)
-        .then(collatePackingReport)
+        .then(function (response) {
+          return collatePackingReport(response[0], response[1], [roundID], 0)
+        })
     }
   })

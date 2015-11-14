@@ -1,9 +1,17 @@
 'use strict'
 
 angular.module('reports')
-  .controller('PackingReportCtrl', function ($window, config, log, packingReportService, deliveryRoundService) {
+  .controller('PackingReportCtrl', function (
+    $window,
+    config,
+    log,
+    packingReportService,
+    deliveryRoundService,
+    $scope
+  ) {
     var vm = this // viewModel
     vm.selectedLocation = {}
+    var state = $scope.selectedState
     vm.list = {
       zone: [],
       lga: [],
@@ -98,7 +106,7 @@ angular.module('reports')
     }
 
     vm.getReport = function () {
-      packingReportService.getPackingReport(vm.startFrom, vm.stopOn)
+      packingReportService.getPackingReport(vm.startFrom, vm.stopOn, state)
         .then(function (response) {
           setViewVars(response)
         })
@@ -111,8 +119,7 @@ angular.module('reports')
         })
     }
 
-    // TODO: Get state dynamically from user logged in user profile
-    deliveryRoundService.getLatestBy('Kano')
+    deliveryRoundService.getLatestBy(state.name)
       .then(function (response) {
         vm.roundCodes = response.roundCodes
       })
@@ -125,4 +132,14 @@ angular.module('reports')
       resetLocations()
       getSelectedLocation()
     }
+
+    $scope.$on('stateChanged', function (event, data) {
+      state = data.state
+      vm.selectedRound = ''
+      deliveryRoundService.getLatestBy(state.name)
+        .then(function (response) {
+          vm.roundCodes = response.roundCodes
+        })
+      vm.getReport()
+    })
   })

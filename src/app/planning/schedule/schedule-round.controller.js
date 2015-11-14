@@ -3,7 +3,7 @@
 angular.module('planning')
   .controller('ScheduleRoundCtrl', function (deliveryRound, $state, dailyDeliveries,
     scheduleService, planningService, log, config,
-    $modal, utility, $q, DELIVERY_STATUS, mailerService, driversService, $window) {
+    $modal, utility, $q, DELIVERY_STATUS, mailerService, driversService, $window, $scope) {
     var vm = this
     vm.isSavingList = {}
     vm.deliveryStatuses = DELIVERY_STATUS
@@ -24,16 +24,6 @@ angular.module('planning')
       $window.jQuery('#print-area').print()
     }
 
-    var STATE = 'KN' // TODO: get state from current user profile
-    driversService.getByState(STATE)
-      .then(function (response) {
-        vm.drivers = response.map(function (row) {
-          return {
-            value: row._id,
-            text: row._id
-          }
-        })
-      })
     vm.deliveryRound = deliveryRound
     vm.deliveriesHash = {}
     scheduleService.flatten(dailyDeliveries)
@@ -45,6 +35,19 @@ angular.module('planning')
     function updateDeliveries (deliveries) {
       vm.dailyDeliveries = deliveries
       vm.facilityDeliveries = scheduleService.flatten(vm.dailyDeliveries)
+    }
+
+    function loadDrivers () {
+      var STATE = $scope.selectedState._id
+      driversService.getByState(STATE)
+        .then(function (response) {
+          vm.drivers = response.map(function (row) {
+            return {
+              value: row._id,
+              text: row._id
+            }
+          })
+        })
     }
 
     updateDeliveries(dailyDeliveries)
@@ -184,7 +187,7 @@ angular.module('planning')
         return $q.when(false)
       }
     }
-
+    loadDrivers()
     vm.openImportDialog = function () {
       $modal.open({
         animation: true,
@@ -207,4 +210,8 @@ angular.module('planning')
           updateDeliveries(updatedDailyDeliveries)
         })
     }
+
+    $scope.$on('stateChanged', function (event, data) {
+      loadDrivers()
+    })
   })

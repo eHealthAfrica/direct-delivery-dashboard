@@ -6,8 +6,7 @@ angular.module('reports')
     dbService,
     deliveryRoundService,
     locationService,
-    pouchUtil,
-    authService
+    pouchUtil
   ) {
     var _this = this
 
@@ -156,7 +155,7 @@ angular.module('reports')
       return report
     }
 
-    _this.getDeliveryReportWithin = function (startDate, endDate, deliveryRounds) {
+    _this.getDeliveryReportWithin = function (startDate, endDate, deliveryRounds, state) {
       var view = 'dashboard-delivery-rounds/report-by-date'
       startDate = new Date(startDate).toJSON()
       endDate = new Date(endDate).toJSON()
@@ -165,34 +164,13 @@ angular.module('reports')
         endkey: [endDate, {}, {}]
       }
 
-      function getLocations () {
-        function branchByUser (user) {
-          // TODO: move into config
-          var ZONE_LEVEL = '3'
-
-          if (user.isAdmin()) {
-            return locationService.getLocationsByLevel(ZONE_LEVEL)
-          }
-          var states = authService.authorisedStates(user)
-          if (states.length) {
-            // TODO: display a dropdown on the frontend if the user can access
-            // more than state?
-            var state = states[0]
-            var locKeys = [ZONE_LEVEL, state]
-            return locationService.getByLevelAndAncestor(locKeys)
-          }
-          return []
-        }
-
-        return authService.getCurrentUser()
-          .then(branchByUser.bind(null))
-      }
-
+      var ZONE_LEVEL = '3'
+      var STATE_CODE = state._id
+      var locKeys = [[ZONE_LEVEL, STATE_CODE]]
       var promises = [
         dbService.getView(view, options),
-        getLocations()
+        locationService.getByLevelAndAncestor(locKeys)
       ]
-
       return $q.all(promises)
         .then(function (res) {
           return _this.collateReport(res[0], deliveryRounds, res[1])
@@ -201,8 +179,8 @@ angular.module('reports')
 
     _this.getByWithin = function (state, startDate, endDate) {
       var params = {
-        startkey: [state],
-        endkey: [state, {}]
+        startkey: [state.name],
+        endkey: [state.name, {}]
       }
 
       return deliveryRoundService.getBy(params)
@@ -211,13 +189,13 @@ angular.module('reports')
           res.rows.forEach(function (row) {
             deliveryRoundIds.push(row.id)
           })
-          return _this.getDeliveryReportWithin(startDate, endDate, deliveryRoundIds)
+          return _this.getDeliveryReportWithin(startDate, endDate, deliveryRoundIds, state)
         })
     }
 
-    _this.getReportByRound = function (roundID) {
+    _this.getReportByRound = function (roundID, stateCode) {
       var ZONE_LEVEL = '3'
-      var STATE_CODE = 'KN' // TODO: get this from user profile
+      var STATE_CODE = stateCode
       var deliveryRounds = [roundID]
       var view = 'reports/by-rounds'
       var options = {

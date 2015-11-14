@@ -7,7 +7,9 @@ describe('NavbarCtrl', function () {
   var NavbarCtrl
 
   beforeEach(inject(function ($controller) {
-    NavbarCtrl = $controller('NavbarCtrl')
+    NavbarCtrl = $controller('NavbarCtrl', {
+      userStates: []
+    })
   }))
 
   it('should expose the application name', function () {

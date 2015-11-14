@@ -14,11 +14,15 @@ angular.module('home')
       templateUrl: 'app/home/home.html',
       resolve: {
         authentication: authProvider.requireAuthenticatedUser,
-        roundReport: function (deliveryRoundService) {
-          var userDefaultState = 'Kano' // TODO: pick from user document states they can access.
+        roundReport: function (deliveryRoundService, $rootScope, indexService) {
           var key = ''
           var roundInfo = []
-          return deliveryRoundService.getLatestBy(userDefaultState)
+          return indexService.getUserStates()
+            .then(function (states) {
+              var defaultState = angular.isArray(states) && states.length > 0 ? states[0]._id : ''
+              var state = angular.isDefined($rootScope.selectedState) ? $rootScope.selectedState._id : defaultState
+              return deliveryRoundService.getLatestBy(state)
+            })
             .then(function (ri) {
               roundInfo = ri
               key = roundInfo.latestRoundId

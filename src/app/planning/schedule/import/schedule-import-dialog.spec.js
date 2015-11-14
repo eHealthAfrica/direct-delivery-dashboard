@@ -13,6 +13,15 @@ describe('ScheduleDataImportDialogCtrl', function () {
   var dailyDeliveries
   var log
   var csvResult
+  var scope = {
+    selectedState: {
+      _id: 'KN',
+      name: 'Kano'
+    },
+    $on: function () {
+      return {}
+    }
+  }
 
   var $modalInstance = {
     result: {
@@ -59,7 +68,8 @@ describe('ScheduleDataImportDialogCtrl', function () {
       dailyDeliveries: dailyDeliveries,
       scheduleService: _scheduleService_,
       planningService: _planningService_,
-      log: log
+      log: log,
+      $scope: scope
     })
 
     ScheduleDataImportDialogCtrl = $controller('ScheduleDataImportDialogCtrl', {
