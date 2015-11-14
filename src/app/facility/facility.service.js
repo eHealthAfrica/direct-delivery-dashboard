@@ -134,7 +134,6 @@ angular.module('facility')
     }
 
     _this.getStateLocations = function (state) {
-      state = state || 'KN'
       var view = 'location/by-ancestors-id'
       var params = {
         startkey: state,
@@ -142,21 +141,7 @@ angular.module('facility')
         include_docs: true
       }
 
-      function branchByUser (user) {
-        if (user.isAdmin()) {
-          return
-        }
-        var states = authService.authorisedStates(user)
-        if (states.indexOf(state) !== -1) {
-          return
-        }
-        log.error('unauthorizedAccess')
-        return $q.reject('unauthorized')
-      }
-
-      return authService.getCurrentUser()
-        .then(branchByUser)
-        .then(dbService.getView.bind(null, view, params))
+      return dbService.getView(view, params)
         .then(pouchUtil.pluckDocs)
         .then(collate)
     }

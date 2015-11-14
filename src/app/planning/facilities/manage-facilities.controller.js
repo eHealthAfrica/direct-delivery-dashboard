@@ -1,8 +1,19 @@
 'use strict'
 
 angular.module('planning')
-  .controller('ManageFacilitiesCtrl', function ($state, $modal, deliveryRound, addFacilityService, mailerService,
-    copyRoundService, scheduleService, log, locationLevels, config) {
+  .controller('ManageFacilitiesCtrl', function (
+    $state,
+    $modal,
+    deliveryRound,
+    addFacilityService,
+    mailerService,
+    copyRoundService,
+    scheduleService,
+    log,
+    locationLevels,
+    config,
+    utility
+  ) {
     var vm = this
 
     vm.deliveryRound = deliveryRound
@@ -30,13 +41,9 @@ angular.module('planning')
     vm.onSelection = function (roundTemplate) {
       vm.facilityList = []
       vm.roundTemplate = roundTemplate
-      vm.roundTemplate.forEach(function (dailySchedule) {
-        if (angular.isArray(dailySchedule.facilityRounds)) {
-          dailySchedule.facilityRounds.forEach(function (facilityRound) {
-            vm.facilityList.push(facilityRound.facility)
-            vm.selectedList[facilityRound.facility.id] = true
-          })
-        }
+      vm.roundTemplate.forEach(function (facilityRound) {
+        vm.facilityList.push(facilityRound.facility)
+        vm.selectedList[facilityRound.facility.id] = true
       })
     }
 
@@ -88,10 +95,16 @@ angular.module('planning')
         backdrop: 'static',
         resolve: {
           deliveryRounds: function (planningService) {
+            function filterCurrentRound (rounds) {
+              function isntCurrentRound (round) {
+                return round._id !== deliveryRound._id
+              }
+              return rounds.filter(isntCurrentRound)
+            }
+
             return planningService.all()
-              .catch(function () {
-                return []
-              })
+              .then(filterCurrentRound)
+              .catch(utility.returnEmptyList)
           },
           deliveryRound: function () {
             return vm.deliveryRound

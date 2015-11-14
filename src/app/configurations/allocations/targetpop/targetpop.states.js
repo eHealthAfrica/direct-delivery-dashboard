@@ -14,6 +14,13 @@ angular.module('allocations')
               .catch(function () {
                 return []
               })
+          },
+          states: function (indexService, log) {
+            return indexService.getUserStates()
+              .catch(function (reason) {
+                log.error('userStatesErr', reason)
+                return []
+              })
           }
         }
       })

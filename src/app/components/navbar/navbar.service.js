@@ -16,9 +16,16 @@ angular.module('navbar')
       function isFirstOf (state) {
         var first = false
         var basename = state.name.split('.')[0]
+
+        // TODO: remove after #169 is resolved
+        if (basename === 'users') {
+          return false
+        }
+
         if (!seen[basename]) {
           seen[basename] = first = true
         }
+
         return first
       }
       function transpose (state) {
