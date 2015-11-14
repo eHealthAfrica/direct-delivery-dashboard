@@ -1,12 +1,56 @@
-<div class="list-group" ng-init="selectedMenu = 1">
-  <a ui-sref="configurations.allocations.assumptions" class="list-group-item"
-     ng-class="{active: selectedMenu == 1}"  ng-click="selectedMenu = 1"><h4><i class="fa fa-pie-chart"></i> Allocations</h4></a>
-  <a ui-sref="configurations.products" class="list-group-item"
-     ng-class="{active: selectedMenu == 2}" ng-click="selectedMenu = 2"><h4><i class="fa fa-list"></i> Products</h4></a>
-  <a ui-sref="configurations.facilities" class="list-group-item" ng-click="selectedMenu = 3"
-     ng-class="{active: selectedMenu == 3}"><h4><i class="fa fa-hospital-o"></i> Facilities</h4></a>
-  <a ui-sref="configurations.locations" class="list-group-item" ng-click="selectedMenu = 4"
-     ng-class="{active: selectedMenu == 4}"><h4><i class="fa fa-map-marker"></i> Locations</h4></a>
-  <a ui-sref="configurations.measurements" class="list-group-item" ng-click="selectedMenu = 5"
-     ng-class="{active: selectedMenu == 5}"><h4><i class="fa fa-area-chart"></i> Measurements</h4></a>
+<div class="list-group">
+  <a
+    class="list-group-item"
+    ui-sref="configurations.allocations.assumptions"
+    ui-sref-active="active"
+  >
+    <h4>
+      <i class="fa fa-pie-chart"></i>
+      <span>Allocations</span>
+    </h4>
+  </a>
+
+  <a
+    class="list-group-item"
+    ui-sref="configurations.products"
+    ui-sref-active="active"
+  >
+    <h4>
+      <i class="fa fa-list"></i>
+      <span>Products</span>
+    </h4>
+  </a>
+
+  <a
+    class="list-group-item"
+    ui-sref="configurations.facilities"
+    ui-sref-active="active"
+  >
+    <h4>
+      <i class="fa fa-hospital-o"></i>
+      <span>Facilities</span>
+    </h4>
+  </a>
+
+  <a
+    class="list-group-item"
+    ui-sref="configurations.locations"
+    ui-sref-active="active"
+  >
+    <h4>
+      <i class="fa fa-map-marker"></i>
+      <span>Locations</span>
+    </h4>
+  </a>
+
+  <a
+    class="list-group-item"
+    ui-sref="configurations.measurements"
+    ui-sref-active="active"
+  >
+    <h4>
+      <i class="fa fa-area-chart"></i>
+      <span>Measurements</span>
+    </h4>
+  </a>
 </div>
