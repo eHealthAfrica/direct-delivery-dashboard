@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('facility')
-  .controller('FacilityAllCtrl', function (facilityService, log) {
+  .controller('FacilityAllCtrl', function (facilityService, log, $scope) {
     var vm = this
     vm.facilityStatus = {}
     vm.selected = {
@@ -53,6 +53,7 @@ angular.module('facility')
         buildLocationList()
       } else {
         buildLocationList()
+        vm.nestedFacilities.zone = vm.nestedFacilities.zone || {}
         vm.selectedLocation = vm.nestedFacilities.zone[vm.selected.zone]
         vm.selected.type = 'Zone'
         vm.selected.name = vm.selected.zone
@@ -60,8 +61,9 @@ angular.module('facility')
     }
 
     function buildLocationList () {
-      vm.list.zone = Object.keys(vm.nestedFacilities.zone).sort()
+      vm.list.zone = Object.keys(vm.nestedFacilities.zone || {}).sort()
       vm.selected.zone = vm.selected.zone || vm.list.zone[0]
+      vm.nestedFacilities.lga = vm.nestedFacilities.lga || {}
       vm.list.lga = Object.keys(vm.nestedFacilities.lga[vm.selected.zone] || {}).sort()
       vm.list.ward = vm.selected.lga ? Object.keys(vm.nestedFacilities.ward[vm.selected.zone][vm.selected.lga]).sort() : []
     }
@@ -84,20 +86,24 @@ angular.module('facility')
         })
     }
 
-    facilityService.getStateLocations()
-      .then(function (response) {
-        vm.facilities = response.facilities
-        vm.locations = response.locations
-        vm.nestedFacilities = response.nestedFacilities
-        vm.zones = Object.keys(vm.nestedFacilities.zone)
-        vm.selected.zone = vm.selected.zone || vm.zones[0]
-        resetLocations()
-        getSelectedLocation()
-        setStatus(response.facilities)
-      })
-      .catch(function (reason) {
-        log('unknownError', reason)
-      })
+    loadFacilities()
+
+    function loadFacilities () {
+      facilityService.getStateLocations($scope.selectedState._id)
+        .then(function (response) {
+          vm.facilities = response.facilities
+          vm.locations = response.locations
+          vm.nestedFacilities = response.nestedFacilities
+          vm.zones = Object.keys(vm.nestedFacilities.zone || {})
+          vm.selected.zone = vm.selected.zone || vm.zones[0]
+          resetLocations()
+          getSelectedLocation()
+          setStatus(response.facilities)
+        })
+        .catch(function (reason) {
+          log('unknownError', reason)
+        })
+    }
 
     function setStatus (facilities) {
       var i = facilities.length
@@ -105,4 +111,8 @@ angular.module('facility')
         vm.facilityStatus[facilities[i]._id] = facilities[i].status
       }
     }
+
+    $scope.$on('stateChanged', function (event, data) {
+      loadFacilities()
+    })
   })

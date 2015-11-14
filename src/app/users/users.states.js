@@ -8,6 +8,10 @@ angular.module('users')
       url: '/users',
       templateUrl: 'app/users/users.html',
       resolve: {
+        // TODO: remove after #169 is resolved
+        disabled: function () {
+          throw new Error('user module temporarily disabled')
+        },
         authentication: authProvider.requireAuthenticatedUser,
         authorization: authProvider.requireAdminUser,
         users: function (usersService, log) {

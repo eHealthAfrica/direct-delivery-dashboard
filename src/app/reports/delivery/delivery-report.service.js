@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('reports')
-  .service('deliveryReportService', function (dbService) {
+  .service('deliveryReportService', function ($q, dbService, deliveryRoundService) {
     function defaultStatus () {
       return {
         success: 0,
@@ -32,7 +32,7 @@ angular.module('reports')
       return grouped
     }
 
-    function collateReport (response) {
+    function collateReport (response, deliveryRounds) {
       response = response.rows
       var index = response.length
       var groupedByZoneByDriver = {}
@@ -40,6 +40,9 @@ angular.module('reports')
 
       while (index--) {
         var row = response[index].value
+        if (deliveryRounds && deliveryRounds.indexOf(row.deliveryRoundID) === -1) {
+          continue // skip
+        }
         groupedByZoneByDriver = groupByZoneByDriver(groupedByZoneByDriver, row)
         groupedByZoneByLGA = groupByZoneByLGA(groupedByZoneByLGA, row)
       }
@@ -50,7 +53,7 @@ angular.module('reports')
       }
     }
 
-    this.getDailyDeliveryReport = function (startDate, endDate) {
+    this.getDailyDeliveryReport = function (startDate, endDate, state) {
       var view = 'dashboard-delivery-rounds/report-by-date'
       startDate = new Date(startDate).toJSON()
       endDate = new Date(endDate).toJSON()
@@ -58,8 +61,25 @@ angular.module('reports')
         startkey: [startDate],
         endkey: [endDate, {}, {}]
       }
-      return dbService.getView(view, options)
-        .then(collateReport)
+
+      var params = {
+        startkey: [state.name],
+        endkey: [state.name, {}]
+      }
+
+      var promises = [
+        dbService.getView(view, options),
+        deliveryRoundService.getBy(params)
+      ]
+
+      return $q.all(promises)
+        .then(function (response) {
+          var deliveryRoundIds = []
+          response[1].rows.forEach(function (row) {
+            deliveryRoundIds.push(row.id)
+          })
+          return collateReport(response[0], deliveryRoundIds)
+        })
     }
 
     this.getDailyDeliveryReportByRound = function (roundID) {
@@ -69,6 +89,8 @@ angular.module('reports')
         endkey: [roundID, {}, {}]
       }
       return dbService.getView(view, options)
-        .then(collateReport)
+        .then(function (response) {
+          return collateReport(response, [roundID])
+        })
     }
   })

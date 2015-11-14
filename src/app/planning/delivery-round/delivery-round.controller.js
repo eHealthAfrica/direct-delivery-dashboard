@@ -4,7 +4,9 @@ angular.module('planning')
   .controller('DeliveryRoundCtrl', function (
     $modal,
     deliveryRounds,
-    deliveryRoundService
+    deliveryRoundService,
+    planningService,
+    $scope
   ) {
     var vm = this
     vm.deliveryRounds = deliveryRounds
@@ -24,4 +26,14 @@ angular.module('planning')
         }
       })
     }
+
+    $scope.$on('stateChanged', function (event, data) {
+      planningService.byAuthorisedStates([$scope.selectedState._id])
+        .then(function (deliveryRounds) {
+          vm.deliveryRounds = deliveryRounds
+        })
+        .catch(function () {
+          vm.deliveryRounds = []
+        })
+    })
   })

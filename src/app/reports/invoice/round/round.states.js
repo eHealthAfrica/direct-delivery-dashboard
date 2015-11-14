@@ -4,7 +4,7 @@ angular.module('reports')
   .config(function ($stateProvider) {
     $stateProvider.state('reports.layout.round', {
       parent: 'reports.layout',
-      url: '/round/:id',
+      url: '/invoice/round/:id',
       templateUrl: 'app/reports/invoice/round/round.html',
       controller: 'ReportsRoundCtrl',
       controllerAs: 'reportsRoundCtrl',
