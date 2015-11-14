@@ -1,8 +1,16 @@
 'use strict'
 
 angular.module('reports')
-  .controller('DeliveryReportCtrl', function ($window, config, reportsService, log, deliveryRoundService) {
+  .controller('DeliveryReportCtrl', function (
+    $window,
+    config,
+    reportsService,
+    log,
+    deliveryRoundService,
+    $scope
+  ) {
     var vm = this // viewModel
+    var state = $scope.selectedState
     vm.dateFormat = config.dateFormat
     vm.stopOn = new Date()
     var ONE_MONTH = 2.62974e9 // milli secs
@@ -37,7 +45,7 @@ angular.module('reports')
       }
     }
 
-    deliveryRoundService.getLatestBy('Kano')
+    deliveryRoundService.getLatestBy(state.name)
       .then(function (response) {
         vm.roundCodes = response.roundCodes
       })
@@ -46,7 +54,7 @@ angular.module('reports')
     vm.statusReport = {}
 
     vm.getByRound = function () {
-      reportsService.getReportByRound(vm.selectedRound)
+      reportsService.getReportByRound(vm.selectedRound, state._id)
         .then(loadSuccess)
         .catch(function (err) {
           log.error('cumulativeReportErr', err)
@@ -54,7 +62,7 @@ angular.module('reports')
     }
 
     vm.getReport = function () {
-      reportsService.getByWithin('Kano', vm.startFrom, vm.stopOn)
+      reportsService.getByWithin(state, vm.startFrom, vm.stopOn)
         .then(loadSuccess)
         .catch(function (err) {
           log.error('cumulativeReportErr', err)
@@ -106,9 +114,26 @@ angular.module('reports')
     }
 
     vm.getReport() // call on init
+    $scope.$on('stateChanged', function (event, data) {
+      state = data.state
+      vm.selectedRound = ''
+      deliveryRoundService.getLatestBy(state.name)
+        .then(function (response) {
+          vm.roundCodes = response.roundCodes
+        })
+      vm.getReport()
+    })
   })
-  .controller('DeliveryReportByZonesCtrl', function (config, reportsService, log, deliveryReportService, deliveryRoundService) {
+  .controller('DeliveryReportByZonesCtrl', function (
+    config,
+    reportsService,
+    log,
+    deliveryReportService,
+    deliveryRoundService,
+    $scope
+  ) {
     var vm = this // viewModel
+    var state = $scope.selectedState
 
     function openDatePicker ($event) {
       $event.preventDefault()
@@ -133,18 +158,18 @@ angular.module('reports')
     var TWO_MONTHS_BEFORE = vm.stopDateOn.getTime() - (ONE_MONTH * 2)
     vm.startDate = new Date(TWO_MONTHS_BEFORE)
 
-    deliveryRoundService.getLatestBy('Kano')
+    deliveryRoundService.getLatestBy(state.name)
       .then(function (response) {
         vm.roundCodes = response.roundCodes
       })
 
     vm.loadReport = function () {
-      deliveryReportService.getDailyDeliveryReport(vm.startDate, vm.stopDateOn)
+      deliveryReportService.getDailyDeliveryReport(vm.startDate, vm.stopDateOn, state)
         .then(function (deliveryStatusReport) {
           loadViewData(deliveryStatusReport)
         })
         .catch(function (reason) {
-          console.log(reason)
+          log.error('deliveryReportErr', reason)
         })
     }
 
@@ -159,7 +184,7 @@ angular.module('reports')
           loadViewData(deliveryStatusReport)
         })
         .catch(function (reason) {
-          console.log(reason)
+          log.error('deliveryReportErr', reason)
         })
     }
 
@@ -179,4 +204,17 @@ angular.module('reports')
     }
 
     vm.loadReport()
+
+    $scope.$on('stateChanged', function (event, data) {
+      state = data.state
+      vm.selectedRound = ''
+      deliveryRoundService.getLatestBy(state.name)
+        .then(function (response) {
+          vm.roundCodes = response.roundCodes
+        })
+        .catch(function (reason) {
+          log.error('deliveryReportErr', reason)
+        })
+      vm.loadReport()
+    })
   })

@@ -78,28 +78,30 @@
           <div class="col-md-6">
             <label></label>
             <div class="form-group has-feedback">
-              <div class="input-group">
-                <input type="text" class="form-control input-lg filter" placeholder="Enter Round code"
-                       ng-model="devRepCtrl.selectedRound"
-                       typeahead="roundCode for roundCode in devRepCtrl.roundCodes">
-                  <span class="input-group-btn">
-                    <button class="btn btn-primary btn-lg" type="button" ng-click="devRepCtrl.updateReport()">
-                      <i class="fa fa-search"></i>
-                    </button>
-                  </span>
-              </div>
+              <input
+                type="text"
+                class="form-control input-lg filter"
+                placeholder="Enter Round code"
+                ng-model="devRepCtrl.selectedRound"
+                typeahead="roundCode for roundCode in devRepCtrl.roundCodes"
+                typeahead-on-select="devRepCtrl.updateReport()"
+                typeahead-append-to-body="true"
+              >
+              <span class="form-control-feedback">
+                <i class="fa fa-lg fa-search"></i>
+              </span>
             </div>
           </div>
         </div>
         </div>
-      </div>
-  </div>
+    </div>
 
-
-    <div class="panel-body alert alert-info"
+    <div class="panel-body"
          ng-show="devRepCtrl.capturedZones.length === 0">
-      <i class="fa fa-lg fa-info-circle"></i>
-      <span> No delivery was made within selected period.</span>
+      <div class="alert alert-info">
+        <i class="fa fa-lg fa-info-circle"></i>
+        <span> No delivery was made within selected period.</span>
+      </div>
     </div>
 
     <div class="panel-body" ng-hide="devRepCtrl.capturedZones.length === 0">

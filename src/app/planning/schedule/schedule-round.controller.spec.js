@@ -15,7 +15,15 @@ describe('ScheduleRoundController', function () {
   var $modal
   var utility
   var row
-
+  var scope = {
+    selectedState: {
+      _id: 'KN',
+      name: 'Kano'
+    },
+    $on: function () {
+      return {}
+    }
+  }
   beforeEach(inject(function (_$controller_, _$state_, _scheduleService_,
     _planningService_, _log_, _deliveryRoundMock_,
     _dailyDeliveriesMock_, _$modal_, _utility_) {
@@ -37,7 +45,8 @@ describe('ScheduleRoundController', function () {
       planningService: planningService,
       log: log,
       $modal: $modal,
-      utility: utility
+      utility: utility,
+      $scope: scope
     })
 
     row = {
