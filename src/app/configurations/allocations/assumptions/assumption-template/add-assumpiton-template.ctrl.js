@@ -3,7 +3,7 @@
  */
 
 angular.module('allocations')
-  .controller('AssumptionsTemplateAddCtrl', function ($scope, data, products, templateType, states, $modalInstance) {
+  .controller('AssumptionsTemplateAddCtrl', function ($scope, data, products, templateType, states, $modalInstance, $filter) {
     var vm = this
     vm.template = {
       name: '',
@@ -15,6 +15,12 @@ angular.module('allocations')
       products: {},
       doc_type: templateType
     }
+    vm.data = data
+
+    vm.disableSubmit = function (form) {
+      var isEmpty = $filter('isEmpty')
+      return form.$invalid || isEmpty(vm.template.products)
+    }
 
     vm.productList = products
     vm.dragging = false
@@ -23,6 +29,10 @@ angular.module('allocations')
     if (data) {
       vm.template = data
     }
+
+    (function () {
+      vm.templateName = !vm.data ? '' : vm.data.name
+    })()
 
     vm.updateTemplateProducts = function (product) {
       vm.template.products[product.code] = product
