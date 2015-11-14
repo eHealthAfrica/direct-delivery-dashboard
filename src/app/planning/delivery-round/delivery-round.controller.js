@@ -33,7 +33,7 @@ angular.module('planning')
           vm.deliveryRounds = deliveryRounds
         })
         .catch(function () {
-          return []
+          vm.deliveryRounds = []
         })
     })
   })
