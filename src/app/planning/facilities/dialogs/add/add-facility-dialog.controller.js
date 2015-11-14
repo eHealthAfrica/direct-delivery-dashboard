@@ -1,16 +1,21 @@
 'use strict'
 
 angular.module('planning')
-  .controller('AddFacilityDialogCtrl', function ($modalInstance, deliveryService, deliveryRound, locationService,
-    locationLevels, utility, log) {
+  .controller('AddFacilityDialogCtrl', function (
+    $modalInstance,
+    deliveryService,
+    deliveryRound,
+    locationService,
+    locationLevels,
+    utility,
+    log
+  ) {
     var vm = this
     vm.deliveryRound = deliveryRound
-    vm.selectedLevel = ''
     vm.START_LEVEL = 3
     vm.END_LEVEL = 5
     vm.locationLevels = locationLevels
-    vm.selectionOpions = ['All', 'None']
-    vm.selectedIds = {}
+    vm.locations = {}
 
     function fromLevel (locLevel) {
       return locLevel.level >= vm.START_LEVEL && locLevel.level <= vm.END_LEVEL
@@ -23,52 +28,47 @@ angular.module('planning')
 
     vm.selectedLocLevel = vm.locationLevels.filter(fromLevel).sort(sortBy)
 
-    vm.cancel = function () {
-      $modalInstance.dismiss('cancel')
-    }
-
-    vm.isSelected = function (id) {
-      return vm.selectedIds[id] === true
-    }
-
-    function selectAll (locations) {
-      locations
-        .forEach(function (loc) {
-          vm.selectedIds[loc._id] = true
-        })
-    }
-
-    vm.onSelection = function () {
-      vm.selectedlevelLocs = []
-      locationService.getLocationsByLevel(vm.selectedLevel)
-        .then(function (locations) {
-          vm.selectedlevelLocs = locations
-          selectAll(vm.selectedlevelLocs)
-        })
-    }
-
-    vm.onChecked = function (index) {
-      vm.selectedlevelLocs[index].selected = !vm.selectedlevelLocs[index].selected
-    }
-
-    vm.onSelectionOptions = function (selected) {
-      if (selected === vm.selectionOpions[0]) {
-        selectAll(vm.selectedlevelLocs, true)
-      } else if (selected === vm.selectionOpions[1]) {
-        vm.selectedIds = {}
-      }
-    }
-
-    function getQueryKey (level, selectedIds) {
-      var keys = []
-      for (var k in selectedIds) {
-        var selected = selectedIds[k]
-        if (selected === true) {
-          var queryKey = [level, k]
-          keys.push(queryKey)
+    vm.onSelection = function (level) {
+      function pick (locations) {
+        function nameAndId (location) {
+          return {
+            _id: location._id,
+            name: location.name
+          }
         }
+        return locations.map(nameAndId)
       }
-      return keys
+
+      function bind (locations) {
+        vm.locations.all = locations
+      }
+
+      if (!level) {
+        vm.locations = {}
+        return
+      }
+
+      locationService.getLocationsByLevel(level)
+        .then(pick)
+        .then(bind)
+    }
+
+    vm.selectAllToggle = function (toggle) {
+      if (toggle) {
+        vm.locations.selected = vm.locations.all
+        return
+      }
+      vm.locations.selected = []
+    }
+
+    function getQueryKey (level, selectedLocations) {
+      function createKeyTuple (selectedLocation) {
+        return [
+          level,
+          selectedLocation._id
+        ]
+      }
+      return selectedLocations.map(createKeyTuple)
     }
 
     function getUniqueAncestorList (facilities) {
@@ -103,12 +103,12 @@ angular.module('planning')
     }
 
     vm.addToList = function () {
-      if (utility.isEmptyObject(vm.selectedIds)) {
+      if (!vm.locations.selected.length) {
         return log.error('selectLevelToImportFromErr')
       }
 
       var lastLevel = vm.locationLevels[vm.locationLevels.length - 1]
-      var queryKeys = getQueryKey(lastLevel._id, vm.selectedIds)
+      var queryKeys = getQueryKey(lastLevel._id, vm.locations.selected)
       locationService.getByLevelAndAncestor(queryKeys)
         .then(function (facilities) {
           var ancestorsId = getUniqueAncestorList(facilities)

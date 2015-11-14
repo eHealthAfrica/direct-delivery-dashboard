@@ -10,10 +10,6 @@ angular.module('planning')
     vm.isLoading = false
     vm.currentRound = deliveryRound
 
-    vm.cancel = function () {
-      $modalInstance.dismiss('cancel')
-    }
-
     function onSuccess (dailySchedules) {
       var roundTemplate = copyRoundService.prepareFromTemplate(vm.currentRound._id, dailySchedules)
       $modalInstance.close(roundTemplate)

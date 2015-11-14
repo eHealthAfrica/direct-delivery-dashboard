@@ -31,23 +31,14 @@ angular.module('planning')
         .then(pouchUtil.rejectIfEmpty)
     }
 
-    this.byAuthorisedStates = function () {
+    this.byAuthorisedStates = function (stateCodes) {
       var view = 'delivery-rounds/by-state-code'
       var options = {
-        include_docs: true
+        include_docs: true,
+        keys: stateCodes
       }
 
-      function getStatesByUser (user) {
-        if (user.isAdmin()) {
-          return
-        }
-        var stateIds = authService.authorisedStates(user)
-        options.keys = stateIds
-      }
-
-      return authService.getCurrentUser()
-        .then(getStatesByUser)
-        .then(dbService.getView.bind(null, view, options))
+      return dbService.getView(view, options)
         .then(pouchUtil.pluckDocs)
         .then(pouchUtil.rejectIfEmpty)
     }

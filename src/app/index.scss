@@ -7,7 +7,14 @@ $fa-font-path: "../../bower_components/font-awesome/fonts";
 // endbower
 
 .content {
+  margin-top: 20px;
   margin-bottom: 20px;
+}
+
+.page-header {
+  margin-top: 0;
+  margin-bottom: 10px;
+  border: none;
 }
 
 // use pointer for all nav links, even those without a href (they generally use ng-click)
@@ -60,12 +67,14 @@ dl > dt, dl > dd {
   box-shadow: inset 0 0 1px rgba(0,0,0,.5), inset 0 0 40px red;
   -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,.5), inset 0 0 40px red;
 }
-
+#user-states {
+  margin-right: 10px;
+}
+#user-states ul.dropdown-menu li {
+  padding-left: 10px;
+}
 // injector
+@import 'home/home.scss';
 @import 'reports/invoice/round/round.scss';
-// endinjector
-
-// injector
 @import 'configurations/allocations/assumptions/assumptions.scss';
 // endinjector
-

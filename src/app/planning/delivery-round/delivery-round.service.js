@@ -302,6 +302,12 @@ angular.module('planning')
       return dbService.getView(view, key)
     }
 
+    _this.getByStateCode = function (key) {
+      var view = 'delivery-rounds/by-state-code'
+      return dbService.getView(view, key)
+        .then(pouchUtil.pluckIDs)
+    }
+
     /**
      * This sorts rows by delivery round date.
      * @param state

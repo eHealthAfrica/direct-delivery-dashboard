@@ -11,5 +11,10 @@ angular.module('log')
       title: 'Access denied',
       message: 'Access is denied either due to wrong login details or session has expired',
       remedy: 'Please login again to create new session'
+    },
+    noInvoiceData: {
+      title: 'No data available',
+      message: 'An invoice could not be displayed as no daily delivery data is available',
+      remedy: 'Confirm a delivery has been made and try again'
     }
   })
