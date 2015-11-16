@@ -11,6 +11,7 @@ angular.module('reports')
     vm.rounds = rounds
     vm.utilData = []
     vm.chartData = []
+    vm.isLoading = true
 
     vm.utilx = function () {
       return function (d) {
@@ -34,14 +35,15 @@ angular.module('reports')
       for (var i in response) {
         productData[response[i].deliveryRoundID] = angular.isObject(productData[response[i].deliveryRoundID]) ? productData[response[i].deliveryRoundID] : {}
         rnd = productData[response[i].deliveryRoundID]
-        for (var pp in response[i].packedProduct) {
-          packed = response[i].packedProduct[pp]
-          rnd[packed.productID] = (angular.isNumber(rnd[packed.productID]) ? rnd[packed.productID] : 0) + packed.expectedQty
+        for (var pp in response[i].packingList) {
+          packed = response[i].packingList[pp]
+          rnd[packed.productID] = (angular.isNumber(rnd[packed.productID]) ? rnd[packed.productID] : 0) + (packed['packedQty'] || 0)
         }
       }
+      return response[0]['deliveryRoundID']
     }
 
-    function pushkpi (response) {
+    function pushKpi (response) {
       var akpi
       var rnd
       if (angular.isArray(response.kpiList)) {
@@ -51,19 +53,24 @@ angular.module('reports')
             kpiData[rnd] = angular.isNumber(kpiData[rnd]) ? kpiData[rnd] : 0
             for (var a in response.kpiList[k].antigensKPI) {
               akpi = response.kpiList[k].antigensKPI[a]
-              kpiData[rnd] += akpi.noImmunized
-              totalImmunized += akpi.noImmunized
+              kpiData[rnd] += angular.isNumber(akpi.noImmunized) ? akpi.noImmunized : 0
+              totalImmunized += angular.isNumber(akpi.noImmunized) ? akpi.noImmunized : 0
             }
           }
         }
       }
     }
-    function errHandler (err) {
-      console.error(err)
-    }
+
     vm.rounds.forEach(function (r) {
-      rnd.push(kpiService.getByRoundId(r).then(pushkpi).catch(errHandler))
-      rnd.push(deliveryService.getByRoundId(r).then(pushProducts).catch(errHandler))
+      rnd.push(
+        deliveryService.getByRoundId(r)
+          .then(pushProducts)
+          .then(kpiService.getByRoundId)
+          .then(pushKpi)
+          .catch(function errHandler (err) {
+            console.log(err)
+          })
+      )
     })
 
     $q.all(rnd)
@@ -74,7 +81,6 @@ angular.module('reports')
             values: []
           }
         }
-
         for (var r in vm.rounds) {
           if (kpiData[vm.rounds[r]]) {
             tempObj.kpi.values.push([parseInt(r, 10), kpiData[vm.rounds[r]]])
@@ -100,6 +106,8 @@ angular.module('reports')
         vm.kpiValues.sort(function (a, b) {
           return a[1] < b[1]
         })
-        console.log(vm.kpiValues)
+        if (vm.chartData.length > 0) {
+          vm.isLoading = false
+        }
       })
   })

@@ -11,7 +11,6 @@ angular.module('reports')
           return authService.getCurrentUser()
             .then(authService.authorisedStates)
             .then(function (r) {
-              console.log(r)
               return r[0]
             })
             .then(deliveryRoundService.getByStateCode)
