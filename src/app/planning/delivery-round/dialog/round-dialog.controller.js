@@ -2,7 +2,6 @@
 
 angular.module('planning')
   .controller('RoundDialogCtrl', function (
-    $scope,
     log,
     $modalInstance,
     config,
@@ -38,8 +37,8 @@ angular.module('planning')
       this.opened = true
     }
 
-    $scope.dateFormat = config.dateFormat
-    $scope.start = {
+    vm.dateFormat = config.dateFormat
+    vm.start = {
       opened: false,
       open: openDatePicker
     }
@@ -69,7 +68,7 @@ angular.module('planning')
       return planningService.getRoundCode(vm.deliveryRound)
     }
 
-    $scope.end = {
+    vm.end = {
       opened: false,
       open: openDatePicker
     }
