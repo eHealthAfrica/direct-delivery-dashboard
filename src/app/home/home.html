@@ -41,73 +41,70 @@
 </div>
 
 <!-- Summary Table Section-->
-<div class="container-fluid">
-  <div class="row" ng-if="homeCtrl.hasSchedules()">
-    <div class="col-md-3">
-      <div class="jumbotron alert-default">
-        <h1 ng-bind="homeCtrl.roundReport.total"></h1>
-        <h4>
-          <ng-pluralize
-            count="homeCtrl.roundReport.total"
-            when="{
-              'NaN': 'Delivery Scheduled',
-              '0' : 'Delivery Scheduled',
-              '1' : 'Delivery Scheduled',
-              'other': 'Deliveries Scheduled'
-            }">
-          </ng-pluralize>
-        </h4>
-      </div>
-    </div>
-
-    <div class="col-md-2">
-      <div class="jumbotron alert-info">
-        <h1 ng-bind="homeCtrl.roundReport.delivered"></h1>
-        <h4>Total Delivered</h4>
-      </div>
-    </div>
-
-    <div class="col-md-2">
-      <div class="jumbotron alert-warning">
-        <h1 ng-bind="homeCtrl.roundReport.upcoming"></h1>
+<div class="row home-summaries" ng-if="homeCtrl.hasSchedules()">
+  <div class="col-md-2-4">
+    <div class="jumbotron alert-default">
+      <h1 ng-bind="homeCtrl.roundReport.total"></h1>
+      <h4>
         <ng-pluralize
           count="homeCtrl.roundReport.total"
           when="{
-              'NaN': 'Upcoming Delivery',
-              '0' : 'Upcoming Delivery',
-              '1' : 'Upcoming Delivery',
-              'other': 'Upcoming Deliveries'
-            }">
+            'NaN': 'Delivery Scheduled',
+            '0' : 'Delivery Scheduled',
+            '1' : 'Delivery Scheduled',
+            'other': 'Deliveries Scheduled'
+          }">
         </ng-pluralize>
-      </div>
+      </h4>
     </div>
+  </div>
 
-    <div class="col-md-2">
-      <div class="jumbotron alert-danger">
-        <h1>{{ homeCtrl.roundReport.notWorkingCCE || 0 }}</h1>
-        <h4>Faulty CCE</h4>
-      </div>
+  <div class="col-md-2-4">
+    <div class="jumbotron alert-info">
+      <h1 ng-bind="homeCtrl.roundReport.delivered"></h1>
+      <h4>Total Delivered</h4>
     </div>
+  </div>
 
-    <div class="col-md-3">
-      <div class="jumbotron alert-success">
-        <h1 ng-bind="homeCtrl.roundReport.billable"></h1>
-        <h4>
-          <ng-pluralize
-            count="homeCtrl.roundReport.billable"
-            when="{
-              'NaN': 'Billable Deliveries',
-              '0' : 'Billable Delivery',
-              '1' : 'Billable Delivery',
-              'other':'Billable Deliveries'
-            }">
-          </ng-pluralize>
-        </h4>
-      </div>
+  <div class="col-md-2-4">
+    <div class="jumbotron alert-warning">
+      <h1 ng-bind="homeCtrl.roundReport.upcoming"></h1>
+      <ng-pluralize
+        count="homeCtrl.roundReport.total"
+        when="{
+            'NaN': 'Upcoming Delivery',
+            '0' : 'Upcoming Delivery',
+            '1' : 'Upcoming Delivery',
+            'other': 'Upcoming Deliveries'
+          }">
+      </ng-pluralize>
+    </div>
+  </div>
+
+  <div class="col-md-2-4">
+    <div class="jumbotron alert-danger">
+      <h1>{{ homeCtrl.roundReport.notWorkingCCE || 0 }}</h1>
+      <h4>Faulty CCE</h4>
+    </div>
+  </div>
+
+  <div class="col-md-2-4">
+    <div class="jumbotron alert-success">
+      <h1 ng-bind="homeCtrl.roundReport.billable"></h1>
+      <h4>
+        <ng-pluralize
+          count="homeCtrl.roundReport.billable"
+          when="{
+            'NaN': 'Billable Deliveries',
+            '0' : 'Billable Delivery',
+            '1' : 'Billable Delivery',
+            'other':'Billable Deliveries'
+          }">
+        </ng-pluralize>
+      </h4>
     </div>
   </div>
 </div>
-
 <!-- end summary section -->
 
 <div class="row" row ng-if="homeCtrl.hasSchedules()">
