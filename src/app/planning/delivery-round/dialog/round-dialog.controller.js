@@ -1,8 +1,17 @@
 'use strict'
 
 angular.module('planning')
-  .controller('RoundDialogCtrl', function ($scope, log, $modalInstance, config, deliveryRound,
-    $state, planningService, stateAdminLevels, ROUND_STATUS) {
+  .controller('RoundDialogCtrl', function (
+    $scope,
+    log,
+    $modalInstance,
+    config,
+    deliveryRound,
+    $state,
+    planningService,
+    stateAdminLevels,
+    ROUND_STATUS
+  ) {
     var vm = this // view model
     vm.edit = false
     vm.ROUND_STATUS = ROUND_STATUS
