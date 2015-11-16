@@ -1,8 +1,16 @@
 'use strict'
 
 angular.module('planning')
-  .controller('RoundDialogCtrl', function ($scope, log, $modalInstance, config, deliveryRound,
-    $state, planningService, stateAdminLevels, ROUND_STATUS) {
+  .controller('RoundDialogCtrl', function (
+    log,
+    $modalInstance,
+    config,
+    deliveryRound,
+    $state,
+    planningService,
+    stateAdminLevels,
+    ROUND_STATUS
+  ) {
     var vm = this // view model
     vm.edit = false
     vm.ROUND_STATUS = ROUND_STATUS
@@ -27,10 +35,16 @@ angular.module('planning')
       $event.preventDefault()
       $event.stopPropagation()
       this.opened = true
+      if (this.name === 'start') {
+        vm.end.opened = false
+        return
+      }
+      vm.start.opened = false
     }
 
-    $scope.dateFormat = config.dateFormat
-    $scope.start = {
+    vm.dateFormat = config.dateFormat
+    vm.start = {
+      name: 'start',
       opened: false,
       open: openDatePicker
     }
@@ -60,7 +74,8 @@ angular.module('planning')
       return planningService.getRoundCode(vm.deliveryRound)
     }
 
-    $scope.end = {
+    vm.end = {
+      name: 'end',
       opened: false,
       open: openDatePicker
     }
