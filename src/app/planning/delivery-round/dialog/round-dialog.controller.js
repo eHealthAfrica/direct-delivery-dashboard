@@ -35,10 +35,16 @@ angular.module('planning')
       $event.preventDefault()
       $event.stopPropagation()
       this.opened = true
+      if (this.name === 'start') {
+        vm.end.opened = false
+        return
+      }
+      vm.start.opened = false
     }
 
     vm.dateFormat = config.dateFormat
     vm.start = {
+      name: 'start',
       opened: false,
       open: openDatePicker
     }
@@ -69,6 +75,7 @@ angular.module('planning')
     }
 
     vm.end = {
+      name: 'end',
       opened: false,
       open: openDatePicker
     }
