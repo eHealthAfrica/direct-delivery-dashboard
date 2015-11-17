@@ -26,19 +26,9 @@
       class="collapse navbar-collapse"
       collapse="navbarCtrl.navbarState.collapsed"
     >
-      <ul class="nav navbar-nav">
-        <li
-          ng-repeat="item in navbarCtrl.navbarState.items track by item.name"
-          ui-sref-active="active"
-          eha-show-for-role="item.roles"
-        >
-          <a
-            ng-click="navbarCtrl.toggleCollapse()"
-            ui-sref="{{item.name}}"
-            ng-bind="::item.label"
-          ></a>
-        </li>
-      </ul>
+      <eha-dropdown-menu items="navbarCtrl.states" selected-item="navbarCtrl.selectedState">
+
+      </eha-dropdown-menu>
       <ul class="nav navbar-nav navbar-right dropdown">
         <div class="btn-group" dropdown is-open="navbarCtrl.isopen">
           <button type="button" class="btn btn-default btn-lg" dropdown-toggle ng-disabled="disabled">
@@ -54,22 +44,7 @@
         </div>
       </ul>
 
-      <ul id="user-states" class="nav navbar-nav navbar-right dropdown">
-        <div class="btn-group" dropdown is-open="navbarCtrl.opened">
-          <button type="button" class="btn btn-default btn-lg" dropdown-toggle ng-disabled="disabled">
-            <span ng-bind="selectedState.name"></span>
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" role="menu">
-            <li
-              class="pointer"
-              ng-repeat="state in userStates"
-              ng-bind="state.name"
-              ng-click="navbarCtrl.changeState(state)">
-            </li>
-          </ul>
-        </div>
-      </ul>
+
 
     </div>
   </div>

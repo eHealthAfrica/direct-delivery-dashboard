@@ -12,6 +12,11 @@ angular.module('navbar')
     var vm = this
     $rootScope.selectedState = $rootScope.selectedState || userStates[0]
     $rootScope.userStates = userStates
+    vm.states = userStates.map( function (item) {
+      return item.name
+    })
+    vm.selectedState = 'Kano'
+    $rootScope.selectedState = vm.selectedState
     this.name = config.name
     this.navbarState = navbarState
     this.logout = authService.logout
@@ -23,4 +28,11 @@ angular.module('navbar')
         state: state
       })
     }
+
+    /*$rootScope.$watch('selectedState', function(newVal, oldVal){
+      $rootScope.$broadcast('stateChanged', {
+        state: newVal
+      })
+    })*/
+
   })
