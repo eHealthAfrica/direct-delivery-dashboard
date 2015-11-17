@@ -45,10 +45,10 @@
           <div class="form-group">
             <div class="input-group">
               <input type="text" class="form-control" ng-model="nrdCtrl.deliveryRound.startDate"
-                     datepicker-popup="{{dateFormat}}" is-open="start.opened"
+              datepicker-popup="{{nrdCtrl.dateFormat}}" is-open="nrdCtrl.start.opened"
                      max-date="nrdCtrl.deliveryRound.endDate"/>
             <span class="input-group-btn">
-              <button type="button" class="btn btn-default" ng-click="start.open($event)">
+              <button type="button" class="btn btn-default" ng-click="nrdCtrl.start.open($event)">
                 <i class="fa fa-calendar"></i>
               </button>
             </span>
@@ -63,10 +63,10 @@
           <div class="form-group">
             <div class="input-group">
               <input type="text" class="form-control" ng-model="nrdCtrl.deliveryRound.endDate"
-                     datepicker-popup="{{dateFormat}}" is-open="end.opened"
+                     datepicker-popup="{{nrdCtrl.dateFormat}}" is-open="nrdCtrl.end.opened"
                      min-date="nrdCtrl.deliveryRound.startDate"/>
             <span class="input-group-btn">
-              <button type="button" class="btn btn-default" ng-click="end.open($event)">
+              <button type="button" class="btn btn-default" ng-click="nrdCtrl.end.open($event)">
                 <i class="fa fa-calendar"></i>
               </button>
             </span>
