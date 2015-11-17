@@ -24,6 +24,7 @@ angular.module('directDeliveryDashboard')
               authentication: function ($q, authService, navbarService) {
                 return authService.getCurrentUser()
                   .then(navbarService.updateItems.bind(null))
+                  .then(navbarService.updateUsername.bind(null))
                   .catch($q.when.bind($q))
               }
             }
