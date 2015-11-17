@@ -28,10 +28,16 @@
           </div>
         </div>
         <div class="col-sm-2">
-          <button ng-show="reportsRoundCtrl.dailyDeliveries.length" eha-print-div="report"
-                  type="button" class="btn btn-primary pull-right">
-            <i class="fa fa-print"></i> Print
-          </button>
+
+          <div class="btn-group" dropdown dropdown-append-to-body>
+            <button id="btn-for-ward" type="button" class="btn btn-primary" dropdown-toggle>
+              <i class="fa fa-print"></i> <span>Print</span> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="btn-append-to-body">
+              <li role="menuitem" ng-click="reportsRoundCtrl.print()">Print current page</li>
+              <li role="menuitem" ng-click="reportsRoundCtrl.print('all')">Print all pages</li>
+              </ul>
+          </div>
         </div>
       </div>
     </div>

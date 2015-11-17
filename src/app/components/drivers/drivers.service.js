@@ -25,4 +25,15 @@ angular.module('drivers')
       return dbService.getView('drivers/by_state', params)
         .then(pouchUtil.pluckDocs)
     }
+
+    this.getSignUpEmail = function () {
+      var params = {
+        include_docs: true
+      }
+      return dbService.getView('drivers/signup-email', params)
+        .then(pouchUtil.pluckDocs)
+        .then(function (templates) {
+          return templates[0]
+        })
+    }
   })
