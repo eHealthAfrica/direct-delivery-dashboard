@@ -3,12 +3,12 @@
  */
 angular.module('navbar').directive('ehaDropdownMenu', function(){
   return {
-     scope: {items: '=', selectedItem: '=', onSelect: '&', selectFirstItemAsDefault: '='},
+     scope: {items: '=', selectedItem: '=', onSelect: '&'},
      templateUrl: '/app/components/navbar/navbar.dropdown.template.html',
      restrict: 'E',
      compile: function (tElem, tAttrs) {
        var position = tAttrs.float || 'right'
-       if (position === 'left') {
+       if (position === 'left'){
         var ul = tElem.find('ul.nav')
          tElem.find('ul.nav').removeClass('navbar-right').addClass('navbar-left')
        }
@@ -19,11 +19,9 @@ angular.module('navbar').directive('ehaDropdownMenu', function(){
        return function (scope, element, attrs) {
 
         function initialize () {
-          if(scope.selectedItem && scope.items.indexOf(scope.selectedItem) < 0){
-            scope.selectedItem = null
-            throw new Error('Selected Item is not in Items')
-          }
-          if(!scope.selectedItem && selectFirstItemAsDefault){
+          debugger
+
+          if(!scope.selectedItem){
             scope.selectedItem = scope.items[0]
           }
           scope.onSelect()(scope.selectedItem);

@@ -43,9 +43,10 @@
       <eha-dropdown-menu
         items="navbarCtrl.states"
         on-select="selectState"
-        selected-item="navbarCtrl.selectedState"
-        float="left">
+        float="left"
+        selected-item="navbarCtrl.selectedState">
       </eha-dropdown-menu>
+
       <ul class="nav navbar-nav navbar-right dropdown">
         <div class="btn-group" dropdown is-open="navbarCtrl.isopen">
           <button type="button" class="btn btn-default btn-lg" dropdown-toggle ng-disabled="disabled">
