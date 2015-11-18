@@ -3,23 +3,30 @@
  */
 angular.module('navbar').directive('ehaDropdownMenu', function(){
   return {
-     scope: {items: '=', selectedItem: '=', onSelect: '&'},
-     templateUrl: '/app/components/navbar/navbar.dropdown.template.html',
+     scope: {items: '=', selectedItem: '=', onSelect: '&', selectedItemAsLabel: '='},
+     templateUrl: function (tElem, tAttrs) {
+       return '/app/components/navbar/navbar.dropdown.template.html'
+     },
      restrict: 'E',
+     replace: true,
      compile: function (tElem, tAttrs) {
-       var position = tAttrs.float || 'right'
-       if (position === 'left'){
-        var ul = tElem.find('ul.nav')
-         tElem.find('ul.nav').removeClass('navbar-right').addClass('navbar-left')
-       }
-       else {
-         tElem.find('ul.nav').removeClass('navbar-left').addClass('navbar-right')
+       var position = tAttrs.floatNav || 'right'
+       debugger
+       var ul = tElem.find('ul.nav')
+       if(position === 'left'){
+         ul.removeClass('navbar-right').addClass('navbar-left')
+       }else{
+         ul.removeClass('navbar-left').addClass('navbar-right')
        }
 
-       return function (scope, element, attrs) {
+       tAttrs.iconClass  && tElem.find('button i').addClass(tAttrs.iconClass )
+       return function (scope) {
 
         function initialize () {
-          debugger
+
+          if(scope.selectedItemAsLabel){
+            return
+          }
 
           if(!scope.selectedItem){
             scope.selectedItem = scope.items[0]
@@ -28,10 +35,14 @@ angular.module('navbar').directive('ehaDropdownMenu', function(){
         }
          initialize()
         scope.changeItem = function (item) {
-          scope.selectedItem = scope.items.filter(function (it){
-            return angular.equals(item, it)
-          })[0]
-          scope.onSelect()(scope.selectedItem);
+          if(scope.selectedItemAsLabel){
+            scope.onSelect()(item);
+          }else{
+            scope.selectedItem = scope.items.filter(function (it){
+              return angular.equals(item, it)
+            })[0]
+            scope.onSelect()(scope.selectedItem);
+          }
         }
 
        }

@@ -21,11 +21,7 @@
       </a>
     </div>
 
-    <div
-      ng-if="navbarCtrl.navbarState.items.length"
-      class="collapse navbar-collapse"
-      collapse="navbarCtrl.navbarState.collapsed"
-    >
+
       <ul class="nav navbar-nav">
         <li
           ng-repeat="item in navbarCtrl.navbarState.items track by item.name"
@@ -40,14 +36,7 @@
         </li>
       </ul>
 
-      <eha-dropdown-menu
-        items="navbarCtrl.states"
-        on-select="selectState"
-        float="left"
-        selected-item="navbarCtrl.selectedState">
-      </eha-dropdown-menu>
-
-      <ul class="nav navbar-nav navbar-right dropdown">
+     <!-- <ul class="nav navbar-nav navbar-right dropdown">
         <div class="btn-group" dropdown is-open="navbarCtrl.isopen">
           <button type="button" class="btn btn-default btn-lg" dropdown-toggle ng-disabled="disabled">
             <i class="fa fa-user fa-lg"></i>
@@ -56,12 +45,27 @@
           </button>
           <ul class="dropdown-menu" role="menu">
             <li>
-              <a class="pointer" ng-click="navbarCtrl.toggleCollapse(); navbarCtrl.logout()">Logout</a>
+              <a class="pointer" ng-click="navbarCtrl.logout()">Logout</a>
             </li>
           </ul>
         </div>
-      </ul>
+      </ul>-->
+    <eha-dropdown-menu
+      items="['logout']"
+      on-select="logout"
+      float-nav="left"
+      selected-item="navbarCtrl.navbarState.username"
+      selected-item-as-label="true"
+      icon-class="fa fa-user fa-lg">
+    </eha-dropdown-menu>
 
+
+    <eha-dropdown-menu
+           items="navbarCtrl.states"
+           on-select="selectState"
+           selected-item="navbarCtrl.selectedState"
+           icon-class="fa fa-plus-square fa-lg">
+      </eha-dropdown-menu>
 
 
     </div>

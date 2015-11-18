@@ -26,6 +26,7 @@ angular.module('navbar')
     this.name = config.name
     this.navbarState = navbarState
     this.logout = authService.logout
+    $scope.logout =this.logout
     this.toggleCollapse = navbarService.toggleCollapse
     vm.changeState = function (state) {
       state = angular.isString(state) ? JSON.parse(state) : state
