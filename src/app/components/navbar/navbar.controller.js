@@ -7,7 +7,7 @@ angular.module('navbar')
     navbarService,
     authService,
     $rootScope,
-    userStates
+    userStates, $scope
   ) {
     var vm = this
     $rootScope.selectedState = $rootScope.selectedState || userStates[0]
@@ -16,6 +16,12 @@ angular.module('navbar')
       return item.name
     })
     vm.selectedState = 'Kano'
+    $scope.selectState = function(state){
+      console.log(state, 'selected')
+      $rootScope.$broadcast('stateChanged', {
+        state: state
+      })
+    }
     $rootScope.selectedState = vm.selectedState
     this.name = config.name
     this.navbarState = navbarState

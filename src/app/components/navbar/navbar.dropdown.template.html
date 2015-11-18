@@ -1,16 +1,34 @@
-<ul id="user-states" class="nav navbar-nav navbar-right dropdown">
-  <div class="btn-group" dropdown is-open="">
-    <button type="button" class="btn btn-default btn-lg" dropdown-toggle ng-disabled="">
+<ul  class="nav navbar-nav navbar-right dropdown">
+  <div class="btn-group" dropdown >
+    <button type="button" class="btn btn-default btn-lg" dropdown-toggle>
       <span ng-bind="selectedItem"></span>
       <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
       <li
-        class="pointer"
-        ng-repeat="item in items"
-        ng-bind="item"
-        ng-click="changeItem(item)">
+        ng-repeat="item in items">
+        <a class="pointer"
+           ng-click="changeItem(item)">
+          {{item}}
+        </a>
       </li>
     </ul>
   </div>
 </ul>
+
+<!--
+
+<ul class="nav navbar-nav navbar-right dropdown">
+  <div class="btn-group" dropdown is-open="navbarCtrl.isopen">
+    <button type="button" class="btn btn-default btn-lg" dropdown-toggle ng-disabled="disabled">
+      <i class="fa fa-user fa-lg"></i>
+      <span ng-bind="navbarCtrl.navbarState.username"></span>
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+      <li>
+        <a class="pointer" ng-click="navbarCtrl.toggleCollapse(); navbarCtrl.logout()">Logout</a>
+      </li>
+    </ul>
+  </div>
+</ul>-->

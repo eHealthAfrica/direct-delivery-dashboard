@@ -26,8 +26,25 @@
       class="collapse navbar-collapse"
       collapse="navbarCtrl.navbarState.collapsed"
     >
-      <eha-dropdown-menu items="navbarCtrl.states" selected-item="navbarCtrl.selectedState">
+      <ul class="nav navbar-nav">
+        <li
+          ng-repeat="item in navbarCtrl.navbarState.items track by item.name"
+          ui-sref-active="active"
+          eha-show-for-role="item.roles"
+          >
+          <a
+            ng-click="navbarCtrl.toggleCollapse()"
+            ui-sref="{{item.name}}"
+            ng-bind="::item.label"
+            ></a>
+        </li>
+      </ul>
 
+      <eha-dropdown-menu
+        items="navbarCtrl.states"
+        on-select="selectState"
+        selected-item="navbarCtrl.selectedState"
+        float="left">
       </eha-dropdown-menu>
       <ul class="nav navbar-nav navbar-right dropdown">
         <div class="btn-group" dropdown is-open="navbarCtrl.isopen">
