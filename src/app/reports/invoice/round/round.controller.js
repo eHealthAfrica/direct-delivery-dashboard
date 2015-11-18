@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('reports')
-  .controller('ReportsRoundCtrl', function ($stateParams, $window, drivers, ZONE_CLASS, reportsService, dailyDeliveries, log) {
+  .controller('ReportsRoundCtrl', function ($stateParams, $window, drivers, ZONE_CLASS, reportsService, dailyDeliveries, log, $timeout) {
     var vm = this
     var keys = ['driverID', 'date']
     var keyRows = {}
@@ -37,8 +37,17 @@ angular.module('reports')
       return states
     }
 
-    vm.print = function () {
-      $window.jQuery('#report').print()
+    vm.print = function (all) {
+      if (all) {
+        vm.pagination.limit = 0
+        vm.getReport(1).then(function () {
+          $timeout(function () {
+            $window.jQuery('#report').print()
+          }, 2000)
+        })
+      } else {
+        $window.jQuery('#report').print()
+      }
     }
     vm.dailyDeliveries = dailyDeliveries.results
     if (!vm.dailyDeliveries.length) {
@@ -54,7 +63,7 @@ angular.module('reports')
       if (parseInt(vm.pagination.limit, 10) === 0) {
         vm.pagination = {}
       }
-      reportsService.getDailyDeliveries($stateParams.id, vm.pagination)
+      return reportsService.getDailyDeliveries($stateParams.id, vm.pagination)
         .then(loadReport)
         .catch(function (reason) {
           log.error('invoiceDailyDeliveryErr', reason)
@@ -90,7 +99,7 @@ angular.module('reports')
       vm.dailyDeliveries = response.results
       vm.pagination.totalItems = response.total
       vm.pagination.lastPage = isNaN(getLastPage()) ? getLastPage() : 1
-      formatReport()
+      return formatReport()
     }
 
     function formatReport () {

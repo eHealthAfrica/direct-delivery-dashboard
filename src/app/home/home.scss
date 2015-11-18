@@ -7,3 +7,14 @@
     margin-bottom: 0;
   }
 }
+
+.home-summaries {
+  .col-md-2-4 {
+    @include make-md-column(2.4);
+  }
+  .jumbotron {
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: center;
+  }
+}

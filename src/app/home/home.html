@@ -19,7 +19,13 @@
         typeahead-append-to-body="true"
       >
       <span class="form-control-feedback">
-        <i class="fa fa-lg fa-search"></i>
+        <i
+          class="fa fa-lg"
+          ng-class="{
+            'fa-search': !homeCtrl.isLoading,
+            'fa-spinner fa-spin': homeCtrl.isLoading
+          }"
+        ></i>
       </span>
     </div>
   </div>
@@ -35,35 +41,35 @@
 </div>
 
 <!-- Summary Table Section-->
-<div class="container-fluid">
-  <div class="row" ng-if="homeCtrl.hasSchedules()">
-    <div class="col-md-3">
-      <div class="jumbotron alert-default">
-        <h1 ng-bind="homeCtrl.roundReport.total"></h1>
-        <h4>
-          <ng-pluralize
-            count="homeCtrl.roundReport.total"
-            when="{
-              'NaN': 'Delivery Scheduled',
-              '0' : 'Delivery Scheduled',
-              '1' : 'Delivery Scheduled',
-              'other': 'Deliveries Scheduled'
-            }">
-          </ng-pluralize>
-        </h4>
-      </div>
+<div class="row home-summaries" ng-if="homeCtrl.hasSchedules()">
+  <div class="col-md-2-4">
+    <div class="jumbotron alert-default">
+      <span class="h1" ng-bind="homeCtrl.roundReport.total"></span>
+      <p>
+        <ng-pluralize
+          count="homeCtrl.roundReport.total"
+          when="{
+            'NaN': 'Delivery Scheduled',
+            '0' : 'Delivery Scheduled',
+            '1' : 'Delivery Scheduled',
+            'other': 'Deliveries Scheduled'
+          }">
+        </ng-pluralize>
+      </p>
     </div>
+  </div>
 
-    <div class="col-md-2">
-      <div class="jumbotron alert-info">
-        <h1 ng-bind="homeCtrl.roundReport.delivered"></h1>
-        <h4>Total Delivered</h4>
-      </div>
+  <div class="col-md-2-4">
+    <div class="jumbotron alert-info">
+      <span class="h1" ng-bind="homeCtrl.roundReport.delivered"></span>
+      <p>Total Delivered</p>
     </div>
+  </div>
 
-    <div class="col-md-2">
-      <div class="jumbotron alert-warning">
-        <h1 ng-bind="homeCtrl.roundReport.upcoming"></h1>
+  <div class="col-md-2-4">
+    <div class="jumbotron alert-warning">
+      <span class="h1" ng-bind="homeCtrl.roundReport.upcoming"></span>
+      <p>
         <ng-pluralize
           count="homeCtrl.roundReport.total"
           when="{
@@ -73,35 +79,34 @@
               'other': 'Upcoming Deliveries'
             }">
         </ng-pluralize>
-      </div>
+      </p>
     </div>
+  </div>
 
-    <div class="col-md-2">
-      <div class="jumbotron alert-danger">
-        <h1>{{ homeCtrl.roundReport.notWorkingCCE || 0 }}</h1>
-        <h4>Faulty CCE</h4>
-      </div>
+  <div class="col-md-2-4">
+    <div class="jumbotron alert-danger">
+      <span class="h1" ng-bind="homeCtrl.roundReport.notWorkingCCE || 0"></span>
+      <p>Faulty CCE</p>
     </div>
+  </div>
 
-    <div class="col-md-3">
-      <div class="jumbotron alert-success">
-        <h1 ng-bind="homeCtrl.roundReport.billable"></h1>
-        <h4>
-          <ng-pluralize
-            count="homeCtrl.roundReport.billable"
-            when="{
-              'NaN': 'Billable Deliveries',
-              '0' : 'Billable Delivery',
-              '1' : 'Billable Delivery',
-              'other':'Billable Deliveries'
-            }">
-          </ng-pluralize>
-        </h4>
-      </div>
+  <div class="col-md-2-4">
+    <div class="jumbotron alert-success">
+      <span class="h1" ng-bind="homeCtrl.roundReport.billable"></span>
+      <p>
+        <ng-pluralize
+          count="homeCtrl.roundReport.billable"
+          when="{
+            'NaN': 'Billable Deliveries',
+            '0' : 'Billable Delivery',
+            '1' : 'Billable Delivery',
+            'other':'Billable Deliveries'
+          }">
+        </ng-pluralize>
+      </p>
     </div>
   </div>
 </div>
-
 <!-- end summary section -->
 
 <div class="row" row ng-if="homeCtrl.hasSchedules()">

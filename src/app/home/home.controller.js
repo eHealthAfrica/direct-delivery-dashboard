@@ -11,10 +11,15 @@ angular.module('directDeliveryDashboard')
     $scope
   ) {
     var vm = this // view models
+    vm.isLoading = false
     vm.selectedRound = ''
 
     vm.roundCodes = roundReport.roundInfo.roundCodes || []
     vm.roundReport = roundReport
+
+    function setIsLoading (isLoading) {
+      vm.isLoading = isLoading
+    }
 
     vm.reportLateness = function () {
       if (!vm.roundReport) {
@@ -41,6 +46,7 @@ angular.module('directDeliveryDashboard')
         return
       }
 
+      setIsLoading(true)
       deliveryRoundService.getReport(vm.selectedRound)
         .then(function (rndReport) {
           rndReport.deliveryRoundID = vm.selectedRound
@@ -57,6 +63,7 @@ angular.module('directDeliveryDashboard')
           ].join(' ')
           log.error('', err, msg)
         })
+        .finally(setIsLoading.bind(null, false))
     }
 
     vm.onTimeColors = function () {
