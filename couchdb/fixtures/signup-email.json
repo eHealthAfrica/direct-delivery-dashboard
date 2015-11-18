@@ -2,7 +2,7 @@
 "docs": [
   {
     "_id": "signup-email",
-    "content": "<p>Hi</p><p>The locations have been chosen for {roundId} please route.</p><p>Thanks</p>",
+    "content": "<p>Welcome {surname}, {forename} to Direct Delivery [{state}]</p> <p> Login {link}  with your email {email} and password {password} to use the application</p><p>Thanks</p>",
     "type": "signup-email",
     "subject": "Welcome To Direct Delivery"
   }

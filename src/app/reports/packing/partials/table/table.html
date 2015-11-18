@@ -53,38 +53,39 @@
     </div>
 
     <div>
-      <button  eha-print-div="report" type="button" class="btn btn-primary pull-right">
-        <i class="fa fa-print"></i>Print
-      </button>
+
     </div>
 
   </div>
 </div>
-<div classs="row">
+<div class="row">
   <div class="panel-body alert alert-info"
        ng-if="packingRepCtrl.products.length === 0">
     <i class="fa fa-lg fa-info-circle"></i>
     <span> No delivery was made within selected period.</span>
   </div>
 
-  <table class="table table-condensed table-striped table-bordered" ng-if="packingRepCtrl.products.length !== 0">
-    <thead>
-    <tr>
-      <th>Products</th>
-      <th>Packed Qty</th>
-      <th>Stock at hand</th>
-      <th>Delivered Qty</th>
-      <th>Returned Qty</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="product in packingRepCtrl.products">
-      <td ng-bind="product"></td>
-      <td ng-bind="packingRepCtrl.selectedLocation[product].expectedQty || 0"></td>
-      <td ng-bind="packingRepCtrl.selectedLocation[product].onHandQty || 0"></td>
-      <td ng-bind="packingRepCtrl.selectedLocation[product].deliveredQty || 0"></td>
-      <td ng-bind="packingRepCtrl.selectedLocation[product].returnedQty || 0"></td>
-    </tr>
-    </tbody>
-  </table>
+  <div eha-print-div printBtnClass="btn btn-primary pull-right" ng-if="packingRepCtrl.products.length !== 0">
+    <table class="table table-condensed table-striped table-bordered">
+      <thead>
+      <tr>
+        <th>Products</th>
+        <th>Packed Qty</th>
+        <th>Stock at hand</th>
+        <th>Delivered Qty</th>
+        <th>Returned Qty</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="product in packingRepCtrl.products">
+        <td ng-bind="product"></td>
+        <td ng-bind="packingRepCtrl.selectedLocation[product].expectedQty || 0"></td>
+        <td ng-bind="packingRepCtrl.selectedLocation[product].onHandQty || 0"></td>
+        <td ng-bind="packingRepCtrl.selectedLocation[product].deliveredQty || 0"></td>
+        <td ng-bind="packingRepCtrl.selectedLocation[product].returnedQty || 0"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
 </div>
