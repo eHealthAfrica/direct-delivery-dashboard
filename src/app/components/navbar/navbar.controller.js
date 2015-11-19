@@ -18,9 +18,6 @@ angular.module('navbar')
     vm.selectedState = 'Kano'
     $scope.selectState = function(state){
       console.log(state, 'selected')
-      $rootScope.$broadcast('stateChanged', {
-        state: state
-      })
     }
     $rootScope.selectedState = vm.selectedState
     this.name = config.name
@@ -35,11 +32,5 @@ angular.module('navbar')
         state: state
       })
     }
-
-    /*$rootScope.$watch('selectedState', function(newVal, oldVal){
-      $rootScope.$broadcast('stateChanged', {
-        state: newVal
-      })
-    })*/
 
   })

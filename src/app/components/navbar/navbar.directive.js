@@ -11,12 +11,10 @@ angular.module('navbar').directive('ehaDropdownMenu', function(){
      replace: true,
      compile: function (tElem, tAttrs) {
        var position = tAttrs.floatNav || 'right'
-       debugger
-       var ul = tElem.find('ul.nav')
        if(position === 'left'){
-         ul.removeClass('navbar-right').addClass('navbar-left')
+         tElem.removeClass('navbar-right').addClass('navbar-left')
        }else{
-         ul.removeClass('navbar-left').addClass('navbar-right')
+        tElem.removeClass('navbar-left').addClass('navbar-right')
        }
 
        tAttrs.iconClass  && tElem.find('button i').addClass(tAttrs.iconClass )
