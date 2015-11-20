@@ -11,21 +11,52 @@ angular.module('utility')
     var self = this
     self.stateMap = {}
 
-
-    this.getUserSelectedState = function (username) {
-      if(!username){
-        return ''
-      }
-      var state = userStatesMap[username]
-      return state
+    function initializeStateVariables() {
+      self.stateMap.statesArray = []
+      self.stateMap.states =[]
+      self.stateMap.selectedState=''
     }
 
-    this.setUserSelectedState = function (username, state) {
-      if(!state || !username){
-        return
+
+    this.getUserSelectedState = function (byId) {
+      return ehaCouchDbAuthService.getCurrentUser()
+        .then(function (user) {
+          if(!user.userCtx.name){
+            return ''
+          }
+          var state = userStatesMap[user.userCtx.name]
+          return !byId ? state : (byId === true ? self.getStateId(state) : self.getStateObject(state))
+        })
+    }
+
+
+    this.setUserSelectedState = function (state) {
+      return ehaCouchDbAuthService.getCurrentUser()
+        .then(function (user) {
+          if(!state || !user.userCtx.name){
+            return ''
+          }
+          userStatesMap[user.userCtx.name] = state
+          return true
+        })
+    }
+
+    this.getStateId = function (name){
+      if(!name || !self.stateMap.statesArray || !self.stateMap.statesArray.length){
+        return ''
       }
-      userStatesMap[username] = state
-      return true
+     return self.stateMap.statesArray.filter( function (item) {
+        return item.name === name
+      })[0]._id
+    }
+
+    this.getStateObject = function (name){
+      if(!name || !self.stateMap.statesArray || !self.stateMap.statesArray.length){
+        return {}
+      }
+      return self.stateMap.statesArray.filter( function (item) {
+        return item.name === name
+      })[0]
     }
 
     this.getUserStates = function (){
@@ -59,29 +90,31 @@ angular.module('utility')
         .map(format)
     }
 
-    this.loadStatesForCurrentUser = function (user) {
-          if(user && user.userCtx){
-            self.getUserStates()
-              .then(function(userStates){
-                self.stateMap.states = userStates.map( function (item) {
-                  return item.name
-                })
-                self.stateMap.selectedState = self.getUserSelectedState(user.userCtx.name) || ''
-              })
-              .catch(function () {
-                self.stateMap.states =[]
-                self.stateMap.selectedState=''
-              })
-          }
-          else{
-            self.stateMap.states =[]
-            self.stateMap.selectedState=''
-          }
+    this.loadStatesForCurrentUser = function () {
+      var user
+      return ehaCouchDbAuthService.getCurrentUser()
+        .then(function (usr) {
+          user = usr
+          return self.getUserStates()
+        })
+        .then(function(userStates){
+          self.stateMap.statesArray = userStates
+          self.stateMap.states = userStates.map( function (item) {
+            return item.name
+          })
+          self.getUserSelectedState()
+            .then(function (state) {
+              self.stateMap.selectedState = state
+            })
+        })
+        .catch(function () {
+          initializeStateVariables()
+        })
     }
 
     this.clearStatesForUser = function () {
-      self.stateMap.states =[]
-      self.stateMap.selectedState=''
+      initializeStateVariables()
     }
+
   })
 

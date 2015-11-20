@@ -12,13 +12,7 @@ angular.module('navbar')
   ) {
   // run to initialize stateMap at point of creation of this controller, on reload
     function initializeStateMap() {
-      authService.getCurrentUser()
-        .then(function(user){
-        userStateService.loadStatesForCurrentUser(user)
-      })
-        .catch(function(){
-          userStateService.clearStatesForUser()
-        })
+        userStateService.loadStatesForCurrentUser()
     }
 
     initializeStateMap()
@@ -26,21 +20,19 @@ angular.module('navbar')
     $scope.stateMap = userStateService.stateMap
 
 
-    $scope.$watch(function(){
-      //console.log('digest loop', userStateService.stateMap )
+   /* $scope.$watch(function(){
+      console.log('digest loop', userStateService.stateMap )
     })
-
+*/
 
 
     $scope.selectState = function (state) {
       console.log(state, 'selected')
-      authService.getCurrentUser()
-        .then(function(user){
-          if(userStateService.setUserSelectedState(user.userCtx.name, state)){
-            console.log(state, 'User states election changed')
+      userStateService.setUserSelectedState(state)
+        .then(function(status){
+          if(status){
             $rootScope.$broadcast('stateChanged', {state: {name: state }})
           }
-
         })
     }
 
