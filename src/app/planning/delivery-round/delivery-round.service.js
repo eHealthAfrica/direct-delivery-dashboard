@@ -61,7 +61,12 @@ angular.module('planning')
         delivered: 0,
         billable: 0,
         status: {},
-        onTimeMap: {}
+        onTimeMap: {},
+        lag: {
+          beforeDate: 0,
+          onDate: 0,
+          afterDate: 0
+        }
       }
       return roundReport
     }
@@ -249,7 +254,15 @@ angular.module('planning')
           if (angular.isNumber(row.billable)) {
             roundReport.billable += row.billable
           }
-
+          if (angular.isNumber(row.lag)) {
+            if (row.lag === 0) {
+              roundReport.lag.beforeDate++
+            } else if (row.lag === 1) {
+              roundReport.lag.onDate++
+            } else if (row.lag === 2) {
+              roundReport.lag.afterDate++
+            }
+          }
           roundReport = _this.collateZoneReport(roundReport, row)
         }
       }

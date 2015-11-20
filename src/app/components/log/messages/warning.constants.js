@@ -16,5 +16,10 @@ angular.module('log')
       title: 'No data available',
       message: 'An invoice could not be displayed as no daily delivery data is available',
       remedy: 'Confirm a delivery has been made and try again'
+    },
+    emptyDataUpload: {
+      title: 'Empty data upload',
+      message: 'The file you are trying to upload have no data in it',
+      remedy: 'please check the file and try again'
     }
   })
