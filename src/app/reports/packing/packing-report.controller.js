@@ -7,11 +7,12 @@ angular.module('reports')
     log,
     packingReportService,
     deliveryRoundService,
-    $scope
+    $scope,
+    userStateService
   ) {
     var vm = this // viewModel
     vm.selectedLocation = {}
-    var state = $scope.selectedState
+    //var state = $scope.selectedState
     vm.list = {
       zone: [],
       lga: [],
@@ -106,7 +107,10 @@ angular.module('reports')
     }
 
     vm.getReport = function () {
-      packingReportService.getPackingReport(vm.startFrom, vm.stopOn, state)
+      userStateService.getUserSelectedState('object')
+        .then(function (state) {
+          return packingReportService.getPackingReport(vm.startFrom, vm.stopOn, state)
+        })
         .then(function (response) {
           setViewVars(response)
         })
@@ -119,7 +123,10 @@ angular.module('reports')
         })
     }
 
-    deliveryRoundService.getLatestBy(state.name)
+    userStateService.getUserSelectedState()
+      .then(function (state) {
+       return deliveryRoundService.getLatestBy(state)
+      })
       .then(function (response) {
         vm.roundCodes = response.roundCodes
       })
@@ -134,7 +141,7 @@ angular.module('reports')
     }
 
     $scope.$on('stateChanged', function (event, data) {
-      state = data.state
+      var state = data.state
       vm.selectedRound = ''
       deliveryRoundService.getLatestBy(state.name)
         .then(function (response) {

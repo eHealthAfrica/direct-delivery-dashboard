@@ -5,18 +5,18 @@
 
 
 angular.module('utility')
-  .service('userStateService', function (ehaCouchDbAuthService, locationService) {
+  .service('userStateService', function (ehaCouchDbAuthService, locationService, $localForage, $q) {
     var userStatesMap= {super : 'Kano', gis : 'Kano'}
 
+
     var self = this
-    self.stateMap = {}
+    self.stateMap = {states: [], selectedState: ''}
 
     function initializeStateVariables() {
-      self.stateMap.statesArray = []
+      $localForage.clear()
       self.stateMap.states =[]
       self.stateMap.selectedState=''
     }
-
 
     this.getUserSelectedState = function (byId) {
       return ehaCouchDbAuthService.getCurrentUser()
@@ -24,8 +24,11 @@ angular.module('utility')
           if(!user.userCtx.name){
             return ''
           }
-          var state = userStatesMap[user.userCtx.name]
-          return !byId ? state : (byId === true ? self.getStateId(state) : self.getStateObject(state))
+           return $localForage.getItem(user.userCtx.name)
+            .then(function (state){
+               var result = !byId ? state : (byId === true ? self.getState(state, true) : self.getState(state))
+               return $q.when(result)
+            })
         })
     }
 
@@ -34,29 +37,27 @@ angular.module('utility')
       return ehaCouchDbAuthService.getCurrentUser()
         .then(function (user) {
           if(!state || !user.userCtx.name){
-            return ''
+            return $q.when('')
           }
-          userStatesMap[user.userCtx.name] = state
-          return true
+          return $localForage.setItem(user.userCtx.name, state)
+            .then(function (st) {
+              return true
+            })
         })
     }
 
-    this.getStateId = function (name){
-      if(!name || !self.stateMap.statesArray || !self.stateMap.statesArray.length){
-        return ''
-      }
-     return self.stateMap.statesArray.filter( function (item) {
-        return item.name === name
-      })[0]._id
-    }
+    this.getState = function (name, byId){
+     return $localForage.getItem('states')
+       .then(function (states) {
+        if(!name || !states || !states.length){
+          return ''
+        }
+        var state =  states.filter( function (item) {
+          return item.name === name
+        })[0]
+         return byId ? state._id : state
+     })
 
-    this.getStateObject = function (name){
-      if(!name || !self.stateMap.statesArray || !self.stateMap.statesArray.length){
-        return {}
-      }
-      return self.stateMap.statesArray.filter( function (item) {
-        return item.name === name
-      })[0]
     }
 
     this.getUserStates = function (){
@@ -98,14 +99,26 @@ angular.module('utility')
           return self.getUserStates()
         })
         .then(function(userStates){
-          self.stateMap.statesArray = userStates
+         // self.stateMap.statesArray = userStates
+          $localForage.setItem('states', userStates)
           self.stateMap.states = userStates.map( function (item) {
             return item.name
           })
-          self.getUserSelectedState()
-            .then(function (state) {
-              self.stateMap.selectedState = state
+          //check if localstorage has the item first
+          // if it doesnt have and you can, then add it
+          $localForage.getItem(user.userCtx.name)
+            .then(function (result) {
+              if(!result && self.stateMap.states.length){
+                $localForage.setItem(user.userCtx.name, self.stateMap.states[0])
+                  .then(function(state) {
+                    self.stateMap.selectedState = result
+                  })
+              }
+              else{
+                self.stateMap.selectedState = result
+              }
             })
+
         })
         .catch(function () {
           initializeStateVariables()

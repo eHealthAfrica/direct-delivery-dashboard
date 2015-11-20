@@ -39,7 +39,6 @@ angular.module('auth')
       return ehaCouchDbAuthService.signOut()
         .then(navbarService.updateItems.bind())
         .then(navbarService.updateUsername.bind())
-        .then(userStateService.clearStatesForUser.bind(null))
         .then($state.go.bind($state, 'login'))
         .catch(log.error.bind(log, 'logoutFailed'))
     }
@@ -61,8 +60,6 @@ angular.module('auth')
         .filter(isState)
         .map(format)
     }
-
-
 
     function roundToStateRole (roundId) {
       // TODO: get this from role lib

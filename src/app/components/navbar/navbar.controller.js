@@ -19,13 +19,6 @@ angular.module('navbar')
 
     $scope.stateMap = userStateService.stateMap
 
-
-   /* $scope.$watch(function(){
-      console.log('digest loop', userStateService.stateMap )
-    })
-*/
-
-
     $scope.selectState = function (state) {
       console.log(state, 'selected')
       userStateService.setUserSelectedState(state)
