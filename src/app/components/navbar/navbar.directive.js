@@ -27,7 +27,7 @@ angular.module('navbar').directive('ehaDropdownMenu', function(){
           }
 
           if(!scope.selectedItem){
-            scope.selectedItem = scope.items[0]
+            scope.selectedItem =  scope.items && scope.items.length ?  scope.items[0] : ''
           }
           scope.onSelect()(scope.selectedItem);
         }
