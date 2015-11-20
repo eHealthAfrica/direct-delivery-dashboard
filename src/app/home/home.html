@@ -125,7 +125,7 @@
 <!-- Delivery Round Chart section-->
 <div class="row" ng-if="homeCtrl.hasSchedules()">
   <!-- current status chart -->
-  <div class="col-md-6">
+  <div class="col-md-4 col-sm-6">
     <div class="panel panel-default">
       <div class="panel-heading"><h4>Round Status</h4></div>
       <div class="panel-body">
@@ -152,7 +152,7 @@
   <!-- end of current round chart -->
 
   <!-- on time delivery section -->
-  <div class="col-md-6">
+  <div class="col-md-4 col-sm-6">
     <div class="panel panel-default">
       <div class="panel-heading"><h4>On Time Delivery</h4></div>
       <div class="panel-body">
@@ -178,5 +178,33 @@
     </div>
   </div>
   <!-- end of on time delivery -->
+
+  <!-- delivery lag section -->
+  <div class="col-md-4 col-sm-6">
+    <div class="panel panel-default">
+      <div class="panel-heading"><h4>Delivery Lags</h4></div>
+      <div class="panel-body">
+        <div class="container-fluid">
+          <nvd3-pie-chart
+            data="homeCtrl.lag"
+            id="lag"
+            height="450"
+            color="homeCtrl.onTimeColors()"
+            x="homeCtrl.xPieFunction()"
+            y="homeCtrl.yPieFunction()"
+            donut="true"
+            tooltips="true"
+            labelType="percent"
+            donutRatio=".35"
+            showValues="true"
+            showLabels="true"
+            showLegend="true"
+            legendColor="homeCtrl.onTimeColors()">
+          </nvd3-pie-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end of delivery lag section -->
 
 </div>
