@@ -109,9 +109,10 @@ angular.module('utility')
           $localForage.getItem(user.userCtx.name)
             .then(function (result) {
               if(!result && self.stateMap.states.length){
+                self.stateMap.selectedState = self.stateMap.states[0]
                 $localForage.setItem(user.userCtx.name, self.stateMap.states[0])
                   .then(function(state) {
-                    self.stateMap.selectedState = result
+                    self.stateMap.selectedState = state
                   })
               }
               else{

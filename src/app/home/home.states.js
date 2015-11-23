@@ -19,6 +19,7 @@ angular.module('home')
           var roundInfo = []
           return userStateService.getUserSelectedState()
             .then(function(state){
+              state = state || userStateService.stateMap.selectedState
               return deliveryRoundService.getLatestBy(state)
             })
             .then(function (ri) {
