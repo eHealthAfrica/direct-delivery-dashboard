@@ -202,8 +202,6 @@ angular.module('planning')
     }
 
     _this.applyChanges = function (dailyDeliveries, schedulesInfo) {
-        console.log(dailyDeliveries)
-        console.log(schedulesInfo)
       function applyUpdate (dailyDelivery) {
         var rowHash
         var scheduleInfo
