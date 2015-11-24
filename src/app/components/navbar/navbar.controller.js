@@ -10,9 +10,9 @@ angular.module('navbar')
     $rootScope,
     userStateService
   ) {
-  // run to initialize stateMap at point of creation of this controller, on reload
-    function initializeStateMap() {
-        userStateService.loadStatesForCurrentUser()
+    // run to initialize stateMap at point of creation of this controller, on reload
+    function initializeStateMap () {
+      userStateService.loadStatesForCurrentUser()
     }
 
     initializeStateMap()
@@ -22,20 +22,19 @@ angular.module('navbar')
     $scope.selectState = function (state) {
       console.log(state, 'selected')
       userStateService.setUserSelectedState(state)
-        .then(function(status){
-          if(status){
-            $rootScope.$broadcast('stateChanged', {state: {name: state }})
+        .then(function (status) {
+          if (status) {
+            $rootScope.$broadcast('stateChanged', { state: { name: state } })
           }
         })
     }
 
     $scope.name = config.name
+    this.name = config.name
 
     $scope.navbarState = navbarState
 
-    $scope.logout =authService.logout
+    $scope.logout = authService.logout
 
     $scope.toggleCollapse = navbarService.toggleCollapse
-
-
   })

@@ -9,14 +9,13 @@ angular.module('planning')
       controllerAs: 'crCtrl',
       resolve: {
         deliveryRounds: function (planningService, userStateService) {
-              return userStateService.getUserSelectedState(true)
-                .then(function (state){
-                return planningService.byAuthorisedStates([state])
-              })
+          return userStateService.getUserSelectedState(true)
+            .then(function (state) {
+              return planningService.byAuthorisedStates([state])
+            })
             .catch(function () {
               return []
             })
-
         }
       },
       data: {

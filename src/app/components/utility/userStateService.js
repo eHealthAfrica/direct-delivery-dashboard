@@ -3,39 +3,35 @@
  */
 'use strict'
 
-
 angular.module('utility')
   .service('userStateService', function (ehaCouchDbAuthService, locationService, $localForage, $q) {
-
-
     var self = this
     self.stateMap = {states: [], selectedState: ''}
 
-    function initializeStateVariables() {
+    function initializeStateVariables () {
       $localForage.clear()
-      self.stateMap.states =[]
-      self.stateMap.selectedState=''
+      self.stateMap.states = []
+      self.stateMap.selectedState = ''
     }
 
     this.getUserSelectedState = function (byId) {
       return ehaCouchDbAuthService.getCurrentUser()
         .then(function (user) {
-          if(!user.userCtx.name){
+          if (!user.userCtx.name) {
             return ''
           }
-           return $localForage.getItem(user.userCtx.name)
-            .then(function (state){
-               var result = !byId ? state : (byId === true ? self.getState(state, true) : self.getState(state))
-               return $q.when(result)
+          return $localForage.getItem(user.userCtx.name)
+            .then(function (state) {
+              var result = !byId ? state : (byId === true ? self.getState(state, true) : self.getState(state))
+              return $q.when(result)
             })
         })
     }
 
-
     this.setUserSelectedState = function (state) {
       return ehaCouchDbAuthService.getCurrentUser()
         .then(function (user) {
-          if(!state || !user.userCtx.name){
+          if (!state || !user.userCtx.name) {
             return $q.when('')
           }
           return $localForage.setItem(user.userCtx.name, state)
@@ -45,21 +41,20 @@ angular.module('utility')
         })
     }
 
-    this.getState = function (name, byId){
-     return $localForage.getItem('states')
-       .then(function (states) {
-        if(!name || !states || !states.length){
-          return ''
-        }
-        var state =  states.filter( function (item) {
-          return item.name === name
-        })[0]
-         return byId ? state._id : state
-     })
-
+    this.getState = function (name, byId) {
+      return $localForage.getItem('states')
+        .then(function (states) {
+          if (!name || !states || !states.length) {
+            return ''
+          }
+          var state = states.filter(function (item) {
+            return item.name === name
+          })[0]
+          return byId ? state._id : state
+        })
     }
 
-    this.getUserStates = function (){
+    this.getUserStates = function () {
       function getStatesByUser (user) {
         var LEVEL = '2'
         if (user.isAdmin()) {
@@ -97,28 +92,26 @@ angular.module('utility')
           user = usr
           return self.getUserStates()
         })
-        .then(function(userStates){
-         // self.stateMap.statesArray = userStates
+        .then(function (userStates) {
+          // self.stateMap.statesArray = userStates
           $localForage.setItem('states', userStates)
-          self.stateMap.states = userStates.map( function (item) {
+          self.stateMap.states = userStates.map(function (item) {
             return item.name
           })
-          //check if localstorage has the item first
+          // check if localstorage has the item first
           // if it doesnt have and you can, then add it
           $localForage.getItem(user.userCtx.name)
             .then(function (result) {
-              if(!result && self.stateMap.states.length){
+              if (!result && self.stateMap.states.length) {
                 self.stateMap.selectedState = self.stateMap.states[0]
                 $localForage.setItem(user.userCtx.name, self.stateMap.states[0])
-                  .then(function(state) {
+                  .then(function (state) {
                     self.stateMap.selectedState = state
                   })
-              }
-              else{
+              } else {
                 self.stateMap.selectedState = result
               }
             })
-
         })
         .catch(function () {
           initializeStateVariables()
@@ -128,6 +121,4 @@ angular.module('utility')
     this.clearStatesForUser = function () {
       initializeStateVariables()
     }
-
   })
-

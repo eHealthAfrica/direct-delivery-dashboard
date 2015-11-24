@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('reports')
-  .controller('ReportUtilityCtrl', function ($q, $window, deliveryService, kpiService, rounds, deliveryRoundService ,$scope) {
+  .controller('ReportUtilityCtrl', function ($q, $window, deliveryService, kpiService, rounds, deliveryRoundService, $scope) {
     var vm = this
     var rnd = []
     var kpiData = {}
@@ -65,7 +65,7 @@ angular.module('reports')
       vm.rounds.forEach(function (r) {
         rnd.push(
           deliveryService.getByRoundId(r)
-            .then(function (data){
+            .then(function (data) {
               return pushProducts(data)
             })
             .then(function (data) {
@@ -114,18 +114,14 @@ angular.module('reports')
           if (vm.chartData.length > 0) {
             vm.isLoading = false
           }
-        }).catch(function (data) {
-          debugger
-        })
+        }).catch(function (data) {})
     }
 
-
     $scope.$on('stateChanged', function (data) {
-      deliveryRoundService.getByStateCode().then(function (data){
+      deliveryRoundService.getByStateCode().then(function (data) {
         vm.rounds = data
-        prepareData ()
+        prepareData()
       })
     })
-    prepareData ()
-
+    prepareData()
   })

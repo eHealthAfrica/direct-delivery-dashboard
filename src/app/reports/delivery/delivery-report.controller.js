@@ -143,7 +143,7 @@ angular.module('reports')
     userStateService
   ) {
     var vm = this // viewModel
-    //var state = $scope.selectedState
+    // var state = $scope.selectedState
 
     function openDatePicker ($event) {
       $event.preventDefault()

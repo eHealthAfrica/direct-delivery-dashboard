@@ -2,13 +2,14 @@
 /* global describe, beforeEach, it, inject, expect, module */
 
 describe('NavbarCtrl', function () {
-  beforeEach(module('navbar', 'navbarMock', 'navbarCtrlMock'))
+  beforeEach(module('navbar', 'navbarMock', 'navbarCtrlMock', 'utility'))
 
   var NavbarCtrl
 
-  beforeEach(inject(function ($controller) {
+  beforeEach(inject(function ($controller, $rootScope) {
     NavbarCtrl = $controller('NavbarCtrl', {
-      userStates: []
+      userStates: [],
+      $scope: $rootScope.$new()
     })
   }))
 

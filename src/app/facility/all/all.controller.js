@@ -90,7 +90,7 @@ angular.module('facility')
 
     function loadFacilities () {
       userStateService.getUserSelectedState(true)
-        .then(function (state){
+        .then(function (state) {
           facilityService.getStateLocations(state)
             .then(function (response) {
               vm.facilities = response.facilities

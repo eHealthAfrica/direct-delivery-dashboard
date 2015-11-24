@@ -30,9 +30,9 @@ angular.module('planning')
 
     $scope.$on('stateChanged', function (event, data) {
       userStateService.getUserSelectedState(true)
-        .then(function (state){
-        return planningService.byAuthorisedStates([state])
-         })
+        .then(function (state) {
+          return planningService.byAuthorisedStates([state])
+        })
         .then(function (deliveryRounds) {
           vm.deliveryRounds = deliveryRounds
         })

@@ -12,7 +12,7 @@ angular.module('reports')
   ) {
     var vm = this // viewModel
     vm.selectedLocation = {}
-    //var state = $scope.selectedState
+    // var state = $scope.selectedState
     vm.list = {
       zone: [],
       lga: [],
@@ -125,7 +125,7 @@ angular.module('reports')
 
     userStateService.getUserSelectedState()
       .then(function (state) {
-       return deliveryRoundService.getLatestBy(state)
+        return deliveryRoundService.getLatestBy(state)
       })
       .then(function (response) {
         vm.roundCodes = response.roundCodes
