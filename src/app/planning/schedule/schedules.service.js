@@ -202,6 +202,8 @@ angular.module('planning')
     }
 
     _this.applyChanges = function (dailyDeliveries, schedulesInfo) {
+        console.log(dailyDeliveries)
+        console.log(schedulesInfo)
       function applyUpdate (dailyDelivery) {
         var rowHash
         var scheduleInfo
@@ -228,7 +230,7 @@ angular.module('planning')
           }
         }
 
-        if (scheduleInfo && utility.isValidDate(dailyDelivery.date)) {
+        if (scheduleInfo) {
           if (dailyDelivery.date !== scheduleInfo.deliveryDate) {
             dailyDelivery.targetDate = dailyDelivery.date
           }
