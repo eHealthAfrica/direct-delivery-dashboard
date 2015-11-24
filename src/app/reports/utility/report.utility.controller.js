@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('reports')
-  .controller('ReportUtilityCtrl', function ($q, $window, deliveryService, kpiService, rounds) {
+  .controller('ReportUtilityCtrl', function ($q, $window, deliveryService, kpiService, rounds, deliveryRoundService ,$scope) {
     var vm = this
     var rnd = []
     var kpiData = {}
@@ -61,53 +61,71 @@ angular.module('reports')
       }
     }
 
-    vm.rounds.forEach(function (r) {
-      rnd.push(
-        deliveryService.getByRoundId(r)
-          .then(pushProducts)
-          .then(kpiService.getByRoundId)
-          .then(pushKpi)
-          .catch(function errHandler (err) {
-            console.log(err)
-          })
-      )
-    })
+    function prepareData () {
+      vm.rounds.forEach(function (r) {
+        rnd.push(
+          deliveryService.getByRoundId(r)
+            .then(function (data){
+              return pushProducts(data)
+            })
+            .then(function (data) {
+              return kpiService.getByRoundId(data)
+            })
+            .then(pushKpi)
+            .catch(function errHandler (err) {
+              console.log(err)
+            })
+        )
+      })
 
-    $q.all(rnd)
-      .then(function (response) {
-        var tempObj = {
-          kpi: {
-            key: 'Immunized',
-            values: []
-          }
-        }
-        for (var r in vm.rounds) {
-          if (kpiData[vm.rounds[r]]) {
-            tempObj.kpi.values.push([parseInt(r, 10), kpiData[vm.rounds[r]]])
-          }
-          if (productData[vm.rounds[r]]) {
-            for (var p in productData[vm.rounds[r]]) {
-              tempObj[p] = angular.isObject(tempObj[p]) ? tempObj[p] : {
-                key: p,
-                values: []
-              }
-              tempObj[p].values.push([parseInt(r, 10), productData[vm.rounds[r]][p]])
+      $q.all(rnd)
+        .then(function (response) {
+          var tempObj = {
+            kpi: {
+              key: 'Immunized',
+              values: []
             }
           }
-        }
-        for (var co in tempObj) {
-          vm.chartData.push(tempObj[co])
-        }
-        vm.kpiAgg = {
-          total: totalImmunized,
-          ave: $window.Math.floor(totalImmunized / vm.rounds.length)
-        }
-        vm.kpiValues = angular.copy(tempObj.kpi.values)
-        vm.kpiValues.sort(function (a, b) {
-          return a[1] < b[1]
+          for (var r in vm.rounds) {
+            if (kpiData[vm.rounds[r]]) {
+              tempObj.kpi.values.push([parseInt(r, 10), kpiData[vm.rounds[r]]])
+            }
+            if (productData[vm.rounds[r]]) {
+              for (var p in productData[vm.rounds[r]]) {
+                tempObj[p] = angular.isObject(tempObj[p]) ? tempObj[p] : {
+                  key: p,
+                  values: []
+                }
+                tempObj[p].values.push([parseInt(r, 10), productData[vm.rounds[r]][p]])
+              }
+            }
+          }
+          for (var co in tempObj) {
+            vm.chartData.push(tempObj[co])
+          }
+          vm.kpiAgg = {
+            total: totalImmunized,
+            ave: $window.Math.floor(totalImmunized / vm.rounds.length)
+          }
+          vm.kpiValues = angular.copy(tempObj.kpi.values)
+          vm.kpiValues.sort(function (a, b) {
+            return a[1] < b[1]
+          })
+          if (vm.chartData.length > 0) {
+            vm.isLoading = false
+          }
+        }).catch(function (data) {
+          debugger
         })
-        if (vm.chartData.length > 0) {
-          vm.isLoading = false
-        }
+    }
+
+
+    $scope.$on('stateChanged', function (data) {
+      deliveryRoundService.getByStateCode().then(function (data){
+        vm.rounds = data
+        prepareData ()
       })
+    })
+    prepareData ()
+
   })

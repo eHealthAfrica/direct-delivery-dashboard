@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('reports')
-  .controller('ReportsAllCtrl', function (reportsService, deliveryRounds, log) {
+  .controller('ReportsAllCtrl', function (reportsService, deliveryRounds, log, $scope) {
     var vm = this
     vm.deliveryRounds = deliveryRounds.results || []
     vm.pagination = {
@@ -50,4 +50,8 @@ angular.module('reports')
       vm.pagination.lastPage = Math.ceil(vm.pagination.totalItems / vm.pagination.limit)
       return vm.pagination.lastPage
     }
+
+    $scope.$on('stateChanged', function (event, data) {
+      vm.getReport()
+    })
   })

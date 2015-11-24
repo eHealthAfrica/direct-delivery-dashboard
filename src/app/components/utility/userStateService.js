@@ -6,7 +6,6 @@
 
 angular.module('utility')
   .service('userStateService', function (ehaCouchDbAuthService, locationService, $localForage, $q) {
-    var userStatesMap= {super : 'Kano', gis : 'Kano'}
 
 
     var self = this

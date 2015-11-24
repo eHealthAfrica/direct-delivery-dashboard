@@ -6,21 +6,40 @@ angular.module('reports')
     dbService,
     deliveryRoundService,
     locationService,
-    pouchUtil
+    pouchUtil,
+    userStateService
   ) {
     var _this = this
 
     this.getDeliveryRounds = function (options) {
       options = options || {}
       options.limit = options.limit || 10
-      return dbService.getView('reports/delivery-rounds', options)
-        .then(function (response) {
-          return {
-            total: response.total_rows,
-            offset: response.offset,
-            results: pouchUtil.pluckValues(response)
-          }
-        })
+      var count
+
+      return userStateService.getUserSelectedState()
+        .then(function (state) {
+          options.startkey = [state]
+          options.endkey = [state, {}]
+
+          return $q.all ([dbService.getView('reports/delivery-rounds', options), _this.getRoundsCount(state)] )
+            .then(function (response) {
+              return {
+                total: response[1].rows.length > 0 ? response[1].rows[0].value : 0,
+                offset: response.offset,
+                results: pouchUtil.pluckValues(response[0])
+              }
+            }).catch(function () {
+            })
+      })
+
+    }
+
+    _this.getRoundsCount = function (state) {
+          var options = {}
+          options.startkey = [state]
+          options.endkey = [state, {}]
+          var view = 'reports/delivery-rounds-count'
+          return dbService.getView(view, options)
     }
 
     this.getDailyDeliveries = function (roundId, pagination) {
@@ -35,23 +54,23 @@ angular.module('reports')
         _this.getDailyDeliveriesCount(roundId)
       ]
 
-      return $q.all(promises)
-        .then(function (response) {
-          var total = 0
-          if (response[1]) {
-            total = response[1].rows.length > 0 ? response[1].rows[0].value : 0
-          }
-          return {
-            total: total,
-            offset: response[0].offset,
-            results: pouchUtil.pluckValues(response[0])
-          }
-        })
-    }
+        return $q.all(promises)
+          .then(function (response) {
+            var total = 0
+            if (response[1]) {
+              total = response[1].rows.length > 0 ? response[1].rows[0].value : 0
+            }
+            return {
+              total: total,
+              offset: response[0].offset,
+              results: pouchUtil.pluckValues(response[0])
+            }
+          })
+      }
 
-    _this.getDailyDeliveriesCount = function (roundId) {
-      var view = 'reports/daily-deliveries-count'
-      var params = {
+      _this.getDailyDeliveriesCount = function (roundId) {
+        var view = 'reports/daily-deliveries-count'
+        var params = {
         startkey: roundId,
         endkey: roundId
       }
