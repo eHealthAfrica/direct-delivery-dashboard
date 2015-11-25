@@ -228,7 +228,7 @@ angular.module('planning')
           }
         }
 
-        if (scheduleInfo && utility.isValidDate(dailyDelivery.date)) {
+        if (scheduleInfo) {
           if (dailyDelivery.date !== scheduleInfo.deliveryDate) {
             dailyDelivery.targetDate = dailyDelivery.date
           }
