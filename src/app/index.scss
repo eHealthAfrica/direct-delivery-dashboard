@@ -68,6 +68,14 @@ dl > dt, dl > dd {
   -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,.5), inset 0 0 40px red;
 }
 
+.wrapped-content {
+  border-collapse:collapse;
+  font-size: 90%;
+  td, th{
+    word-wrap:break-word;
+  }
+}
+
 // injector
 @import 'home/home.scss';
 @import 'reports/invoice/round/round.scss';
