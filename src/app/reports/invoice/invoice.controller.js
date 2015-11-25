@@ -52,6 +52,7 @@ angular.module('reports')
     }
 
     $scope.$on('stateChanged', function (event, data) {
+      vm.pagination.page = 1
       vm.getReport()
     })
   })
