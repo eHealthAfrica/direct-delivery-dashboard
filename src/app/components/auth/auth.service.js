@@ -7,7 +7,8 @@ angular.module('auth')
     log,
     config,
     navbarService,
-    ehaCouchDbAuthService
+    ehaCouchDbAuthService,
+    userStateService
   ) {
     this.getCurrentUser = ehaCouchDbAuthService.getCurrentUser
 
@@ -28,6 +29,7 @@ angular.module('auth')
       return ehaCouchDbAuthService.signIn(params)
         .then(navbarService.updateItems.bind(null))
         .then(navbarService.updateUsername.bind(null))
+        .then(userStateService.loadStatesForCurrentUser.bind(null))
         .then(log.success.bind(log, 'authSuccess'))
         .then($state.go.bind($state, 'home'))
         .catch(handleError)

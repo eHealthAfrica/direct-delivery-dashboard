@@ -7,7 +7,7 @@ describe('reportsService', function () {
   var deliveryRounds
   var dailyDeliveries
 
-  beforeEach(module('reports', 'reportsMock'))
+  beforeEach(module('reports', 'reportsMock', 'utility'))
 
   beforeEach(inject(function (_$rootScope_, _reportsService_, _deliveryRounds_, _dailyDeliveries_) {
     rootScope = _$rootScope_
@@ -17,7 +17,7 @@ describe('reportsService', function () {
   }))
 
   it('should return delivery rounds correctly structured', function (done) {
-    reportsService.getDeliveryRounds()
+    reportsService.getDeliveryRounds({})
       .then(function (rounds) {
         expect(rounds.results.length).toEqual(deliveryRounds.length)
         for (var i = 0; i < rounds.results.length; i++) {

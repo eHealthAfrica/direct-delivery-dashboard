@@ -14,13 +14,12 @@ angular.module('home')
       templateUrl: 'app/home/home.html',
       resolve: {
         authentication: authProvider.requireAuthenticatedUser,
-        roundReport: function (deliveryRoundService, $rootScope, indexService) {
+        roundReport: function (deliveryRoundService, userStateService) {
           var key = ''
           var roundInfo = []
-          return indexService.getUserStates()
-            .then(function (states) {
-              var defaultState = angular.isArray(states) && states.length > 0 ? states[0]._id : ''
-              var state = angular.isDefined($rootScope.selectedState) ? $rootScope.selectedState._id : defaultState
+          return userStateService.getUserSelectedState()
+            .then(function (state) {
+              state = state || userStateService.stateMap.selectedState
               return deliveryRoundService.getLatestBy(state)
             })
             .then(function (ri) {
