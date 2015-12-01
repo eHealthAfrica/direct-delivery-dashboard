@@ -7,14 +7,14 @@ angular.module('reports')
     deliveryRoundService,
     locationService,
     pouchUtil,
-    userStateService
+    authService
   ) {
     var _this = this
 
     this.getDeliveryRounds = function (options) {
       options = options || {}
       options.limit = options.limit || 10
-      return userStateService.getUserSelectedState()
+      return authService.getUserSelectedState()
         .then(function (state) {
           options.startkey = [state]
           options.endkey = [state, {}]
@@ -26,7 +26,10 @@ angular.module('reports')
                 offset: response.offset,
                 results: pouchUtil.pluckValues(response[0])
               }
-            }).catch(function () {})
+            })
+            .catch(function (error) {
+              $q.reject(error)
+            })
         })
     }
 

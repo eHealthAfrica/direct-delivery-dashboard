@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('facility')
-  .controller('FacilityAllCtrl', function (facilityService, log, $scope, userStateService) {
+  .controller('FacilityAllCtrl', function (facilityService, log, $scope, authService) {
     var vm = this
     vm.facilityStatus = {}
     vm.selected = {
@@ -89,7 +89,7 @@ angular.module('facility')
     loadFacilities()
 
     function loadFacilities () {
-      userStateService.getUserSelectedState(true)
+      authService.getUserSelectedState(true)
         .then(function (state) {
           facilityService.getStateLocations(state)
             .then(function (response) {

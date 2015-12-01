@@ -41,9 +41,7 @@ describe('CalculationsController', function () {
           return $q.when([])
         })
       })
-      $provide.service('userStateService', function () {
-
-      })
+      $provide.service('userStateService', angular.noop)
     })
   )
 

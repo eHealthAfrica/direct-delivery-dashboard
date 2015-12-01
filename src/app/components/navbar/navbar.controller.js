@@ -8,24 +8,26 @@ angular.module('navbar')
     authService,
     $scope,
     $rootScope,
-    userStateService
+    log
   ) {
     // run to initialize stateMap at point of creation of this controller, on reload
     function initializeStateMap () {
-      userStateService.loadStatesForCurrentUser()
+      authService.loadStatesForCurrentUser()
     }
 
     initializeStateMap()
 
-    $scope.stateMap = userStateService.stateMap
+    $scope.stateMap = authService.stateMap
 
     $scope.selectState = function (state) {
-      console.log(state, 'selected')
-      userStateService.setUserSelectedState(state)
+      authService.setUserSelectedState(state)
         .then(function (status) {
           if (status) {
             $rootScope.$broadcast('stateChanged', { state: { name: state } })
           }
+        })
+        .catch(function (error) {
+          log.error('stateSelectionErr', error)
         })
     }
 

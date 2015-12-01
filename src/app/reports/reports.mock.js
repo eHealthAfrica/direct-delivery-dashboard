@@ -67,7 +67,7 @@
   angular.module('reportsMock', [])
     .constant('deliveryRounds', deliveryRounds)
     .constant('dailyDeliveries', dailyDeliveries)
-    .service('userStateService', function ($q) {
+    .service('authService', function ($q) {
       this.getUserSelectedState = function () {
         return $q.when('State1')
       }

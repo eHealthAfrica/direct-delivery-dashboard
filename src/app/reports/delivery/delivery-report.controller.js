@@ -8,7 +8,7 @@ angular.module('reports')
     log,
     deliveryRoundService,
     $scope,
-    userStateService
+    authService
   ) {
     var vm = this // viewModel
 
@@ -46,7 +46,7 @@ angular.module('reports')
       }
     }
 
-    userStateService.getUserSelectedState()
+    authService.getUserSelectedState()
       .then(function (state) {
         deliveryRoundService.getLatestBy(state)
           .then(function (response) {
@@ -57,7 +57,7 @@ angular.module('reports')
     vm.statusReport = {}
 
     vm.getByRound = function () {
-      userStateService.getUserSelectedState(true)
+      authService.getUserSelectedState(true)
         .then(function (state) {
           reportsService.getReportByRound(vm.selectedRound, state)
             .then(loadSuccess)
@@ -68,7 +68,7 @@ angular.module('reports')
     }
 
     vm.getReport = function () {
-      userStateService.getUserSelectedState('object')
+      authService.getUserSelectedState('object')
         .then(function (state) {
           reportsService.getByWithin(state, vm.startFrom, vm.stopOn)
             .then(loadSuccess)
@@ -140,7 +140,7 @@ angular.module('reports')
     deliveryReportService,
     deliveryRoundService,
     $scope,
-    userStateService
+    authService
   ) {
     var vm = this // viewModel
     // var state = $scope.selectedState
@@ -168,7 +168,7 @@ angular.module('reports')
     var TWO_MONTHS_BEFORE = vm.stopDateOn.getTime() - (ONE_MONTH * 2)
     vm.startDate = new Date(TWO_MONTHS_BEFORE)
 
-    userStateService.getUserSelectedState()
+    authService.getUserSelectedState()
       .then(function (state) {
         deliveryRoundService.getLatestBy(state)
           .then(function (response) {
@@ -177,7 +177,7 @@ angular.module('reports')
       })
 
     vm.loadReport = function () {
-      userStateService.getUserSelectedState('object')
+      authService.getUserSelectedState('object')
         .then(function (state) {
           deliveryReportService.getDailyDeliveryReport(vm.startDate, vm.stopDateOn, state)
             .then(function (deliveryStatusReport) {

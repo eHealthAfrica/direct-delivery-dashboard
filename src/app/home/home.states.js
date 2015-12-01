@@ -14,12 +14,12 @@ angular.module('home')
       templateUrl: 'app/home/home.html',
       resolve: {
         authentication: authProvider.requireAuthenticatedUser,
-        roundReport: function (deliveryRoundService, userStateService) {
+        roundReport: function (deliveryRoundService, authService) {
           var key = ''
           var roundInfo = []
-          return userStateService.getUserSelectedState()
+          return authService.getUserSelectedState()
             .then(function (state) {
-              state = state || userStateService.stateMap.selectedState
+              state = state || authService.stateMap.selectedState
               return deliveryRoundService.getLatestBy(state)
             })
             .then(function (ri) {

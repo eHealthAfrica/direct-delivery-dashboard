@@ -8,8 +8,8 @@ angular.module('planning')
       controller: 'DeliveryRoundCtrl',
       controllerAs: 'crCtrl',
       resolve: {
-        deliveryRounds: function (planningService, userStateService) {
-          return userStateService.getUserSelectedState(true)
+        deliveryRounds: function (planningService, authService) {
+          return authService.getUserSelectedState(true)
             .then(function (state) {
               return planningService.byAuthorisedStates([state])
             })

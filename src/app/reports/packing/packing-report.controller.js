@@ -8,7 +8,7 @@ angular.module('reports')
     packingReportService,
     deliveryRoundService,
     $scope,
-    userStateService
+    authService
   ) {
     var vm = this // viewModel
     vm.selectedLocation = {}
@@ -107,7 +107,7 @@ angular.module('reports')
     }
 
     vm.getReport = function () {
-      userStateService.getUserSelectedState('object')
+      authService.getUserSelectedState('object')
         .then(function (state) {
           return packingReportService.getPackingReport(vm.startFrom, vm.stopOn, state)
         })
@@ -123,7 +123,7 @@ angular.module('reports')
         })
     }
 
-    userStateService.getUserSelectedState()
+    authService.getUserSelectedState()
       .then(function (state) {
         return deliveryRoundService.getLatestBy(state)
       })

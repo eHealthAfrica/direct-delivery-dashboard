@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('facility')
-  .controller('FacilityReportsCtrl', function (facilityService, log, $scope, userStateService) {
+  .controller('FacilityReportsCtrl', function (facilityService, log, $scope, authService) {
     var vm = this
 
     vm.facilityStatus = {}
@@ -26,7 +26,7 @@ angular.module('facility')
     }
 
     function updateView () {
-      userStateService.getUserSelectedState(true)
+      authService.getUserSelectedState(true)
         .then(function (state) {
           facilityService.getStateLocations(state)
             .then(function (response) {

@@ -19,4 +19,4 @@ angular.module('navbarCtrlMock', [])
     }
   ])
   .constant('dbService', {})
-  .constant('userStateService', {loadStatesForCurrentUser: angular.noop})
+  .constant('authService', {loadStatesForCurrentUser: angular.noop})

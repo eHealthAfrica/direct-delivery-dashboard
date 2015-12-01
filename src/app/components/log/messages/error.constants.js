@@ -176,5 +176,10 @@ angular.module('log')
       title: 'Delivery Report error',
       message: 'An unknown error occurred while loading delivery report',
       remedy: 'Please, try again and contact support if it persists'
+    },
+    stateSelectionErr: {
+      title: 'State selection error',
+      message: 'Error occured while trying to change the state',
+      remedy: 'Please, try again and contact support if it persists'
     }
   })

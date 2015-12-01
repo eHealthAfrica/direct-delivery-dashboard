@@ -3,7 +3,7 @@
 angular.module('planning')
   .controller('ScheduleRoundCtrl', function (deliveryRound, $state, dailyDeliveries,
     scheduleService, planningService, log, config,
-    $modal, utility, $q, DELIVERY_STATUS, mailerService, driversService, $window, $scope, userStateService ) {
+    $modal, utility, $q, DELIVERY_STATUS, mailerService, driversService, $window, $scope, authService) {
     var vm = this
     vm.isSavingList = {}
     vm.deliveryStatuses = DELIVERY_STATUS
@@ -38,7 +38,7 @@ angular.module('planning')
     }
 
     function loadDrivers () {
-      userStateService.getUserSelectedState()
+      authService.getUserSelectedState()
         .then(function (state) {
           driversService.getByState(state)
             .then(function (response) {
@@ -49,7 +49,7 @@ angular.module('planning')
                 }
               })
             })
-    })
+        })
     }
 
     updateDeliveries(dailyDeliveries)

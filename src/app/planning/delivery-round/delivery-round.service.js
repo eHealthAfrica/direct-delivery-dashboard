@@ -9,8 +9,7 @@ angular.module('planning')
     locationService,
     config,
     log,
-    planningService,
-    userStateService
+    planningService
   ) {
     var _this = this
     var successTag = 'success'
@@ -318,7 +317,7 @@ angular.module('planning')
 
     _this.getByStateCode = function (key) {
       var view = 'delivery-rounds/by-state-code'
-      return userStateService.getUserSelectedState(true)
+      return authService.getUserSelectedState(true)
         .then(function (state) {
           var options = key || { key: state }
           return dbService.getView(view, options)
