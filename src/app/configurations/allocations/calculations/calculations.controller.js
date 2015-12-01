@@ -85,7 +85,7 @@ angular.module('allocations')
         .then(resetView)
     }
     vm.switchLocationState = function (stateID) {
-      var state = stateID || vm.selectedState
+      var state = stateID || vm.selectedState // here
       console.log(state)
       return findLga(state)
         .then(getFacilities)

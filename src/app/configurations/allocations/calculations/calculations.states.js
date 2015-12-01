@@ -21,13 +21,8 @@ angular.module('allocations')
                 return []
               })
           },
-          locationStates: function (locationService) {
-            var keys = []
-            keys.push(['2', 'NG']) // TODO: get this from auth
-            return locationService.getByLevelAndAncestor(keys)
-              .catch(function () {
-                return []
-              })
+          locationStates: function (locationService, userStateService) {
+            return userStateService.getUserSelectedState('object')
           },
           assumptionList: function (assumptionService) {
             return assumptionService.getAssumptions()

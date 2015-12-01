@@ -6,21 +6,35 @@ angular.module('navbar')
     navbarState,
     navbarService,
     authService,
+    $scope,
     $rootScope,
-    userStates
+    userStateService
   ) {
-    var vm = this
-    $rootScope.selectedState = $rootScope.selectedState || userStates[0]
-    $rootScope.userStates = userStates
-    this.name = config.name
-    this.navbarState = navbarState
-    this.logout = authService.logout
-    this.toggleCollapse = navbarService.toggleCollapse
-    vm.changeState = function (state) {
-      state = angular.isString(state) ? JSON.parse(state) : state
-      $rootScope.selectedState = state
-      $rootScope.$broadcast('stateChanged', {
-        state: state
-      })
+    // run to initialize stateMap at point of creation of this controller, on reload
+    function initializeStateMap () {
+      userStateService.loadStatesForCurrentUser()
     }
+
+    initializeStateMap()
+
+    $scope.stateMap = userStateService.stateMap
+
+    $scope.selectState = function (state) {
+      console.log(state, 'selected')
+      userStateService.setUserSelectedState(state)
+        .then(function (status) {
+          if (status) {
+            $rootScope.$broadcast('stateChanged', { state: { name: state } })
+          }
+        })
+    }
+
+    $scope.name = config.name
+    this.name = config.name
+
+    $scope.navbarState = navbarState
+
+    $scope.logout = authService.logout
+
+    $scope.toggleCollapse = navbarService.toggleCollapse
   })
