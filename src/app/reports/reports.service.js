@@ -27,9 +27,6 @@ angular.module('reports')
                 results: pouchUtil.pluckValues(response[0])
               }
             })
-            .catch(function (error) {
-              $q.reject(error)
-            })
         })
     }
 
