@@ -20,7 +20,7 @@
             class="form-control"
             ng-change="calculationsController.switchLocationState(calculationsController.selectedState)"
             ng-model="calculationsController.selectedState"
-            ng-options="state._id as state.name for state in calculationsController.locationStates"
+            ng-options="state._id as state.name for state in calculationsController.locationStates "
             ng-init="calculationsController.selectedState">
         </select>
       </div>

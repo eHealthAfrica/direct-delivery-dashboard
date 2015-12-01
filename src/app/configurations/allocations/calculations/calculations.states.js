@@ -21,8 +21,11 @@ angular.module('allocations')
                 return []
               })
           },
-          locationStates: function (locationService, userStateService) {
-            return userStateService.getUserSelectedState('object')
+          locationStates: function (locationService, authService) {
+            return authService.getUserStates()
+              .catch(function () {
+                return []
+              })
           },
           assumptionList: function (assumptionService) {
             return assumptionService.getAssumptions()

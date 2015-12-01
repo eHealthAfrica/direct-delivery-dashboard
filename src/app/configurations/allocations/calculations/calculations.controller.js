@@ -160,10 +160,9 @@ angular.module('allocations')
       assumptionAddService.openForm(emptyTemplate)
     }
 
-    authService.getCurrentUser()
-      .then(authService.authorisedStates)
+    authService.getUserSelectedState('object')
       .then(function (response) {
-        vm.selectedState = response[0]
+        vm.selectedState = response
         return vm.selectedState
       })
       .then(vm.switchLocationState)

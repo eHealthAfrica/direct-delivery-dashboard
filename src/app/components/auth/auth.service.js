@@ -99,6 +99,10 @@ angular.module('auth')
         })
     }
 
+    self.getUserStates = function () {
+      return $localForage.getItem('states')
+    }
+
     self.getState = function (name, byId) {
       return $localForage.getItem('states')
         .then(function (states) {
