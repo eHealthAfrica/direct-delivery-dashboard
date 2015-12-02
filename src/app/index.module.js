@@ -35,7 +35,7 @@ angular
   ])
   .config(function ($compileProvider, config, $logProvider) {
    $compileProvider.debugInfoEnabled(!config.disableDebug)
-   $logProvider.debugEnabled(false)
+   $logProvider.debugEnabled(!config.disableDebug)
   })
   .run(function (indexService) {
     indexService.bootstrap()
