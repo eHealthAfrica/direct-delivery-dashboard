@@ -33,10 +33,6 @@ angular
     'auth',
     'ngMessages'
   ])
-  .config(function ($compileProvider, config, $logProvider) {
-    $compileProvider.debugInfoEnabled(!config.disableDebug)
-    $logProvider.debugEnabled(!config.disableDebug)
-  })
   .run(function (indexService) {
     indexService.bootstrap()
   })

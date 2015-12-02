@@ -5,5 +5,5 @@
   "senderEmail": "no-reply@example.com",
   "senderName": "EHA Direct-Delivery",
   "deliveryRoundAdminLevel": "2",
-  "disableDebug":true
+  "disableDebug":false
 }
