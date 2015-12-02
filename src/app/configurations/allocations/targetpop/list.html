@@ -42,11 +42,11 @@
 <table class="table table-bordered table-striped">
   <tr>
     <th>Facility</th>
-      <th tooltip="Annual target population of children under the age of 1 year for 2015">Annual TP U1 (2015)</th>
-      <th tooltip="Bi-weekly target population of children under the age of 1 year for 2015">Bi-weekly TP U1 (2015)</th>
-      <th tooltip="Annual target population of women in child bearing age">Annual TP WCBA (2015)</th>
-      <th tooltip="Bi-weekly target population of women in child bearing age">Bi-weekly TP WCBA (2015)</th>
-      <th></th>
+    <th tooltip-append-to-body="true" tooltip="Annual target population of children under the age of 1 year for 2015">Annual TP U1 (2015)</th>
+    <th tooltip-append-to-body="true" tooltip="Bi-weekly target population of children under the age of 1 year for 2015">Bi-weekly TP U1 (2015)</th>
+    <th tooltip-append-to-body="true" tooltip="Annual target population of women in child bearing age">Annual TP WCBA (2015)</th>
+    <th tooltip-append-to-body="true" tooltip="Bi-weekly target population of women in child bearing age">Bi-weekly TP WCBA (2015)</th>
+    <th></th>
   </tr>
   <tr ng-repeat="row in targetPopCtrl.renderedData track by $index">
     <td><a href ng-bind="row.facility.name"></a> </td>
