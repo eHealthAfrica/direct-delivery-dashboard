@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('facility')
-  .controller('FacilityAllCtrl', function (facilityService, log, $scope) {
+  .controller('FacilityAllCtrl', function (facilityService, log, $scope, userStateService) {
     var vm = this
     vm.facilityStatus = {}
     vm.selected = {
@@ -89,19 +89,22 @@ angular.module('facility')
     loadFacilities()
 
     function loadFacilities () {
-      facilityService.getStateLocations($scope.selectedState._id)
-        .then(function (response) {
-          vm.facilities = response.facilities
-          vm.locations = response.locations
-          vm.nestedFacilities = response.nestedFacilities
-          vm.zones = Object.keys(vm.nestedFacilities.zone || {})
-          vm.selected.zone = vm.selected.zone || vm.zones[0]
-          resetLocations()
-          getSelectedLocation()
-          setStatus(response.facilities)
-        })
-        .catch(function (reason) {
-          log('unknownError', reason)
+      userStateService.getUserSelectedState(true)
+        .then(function (state) {
+          facilityService.getStateLocations(state)
+            .then(function (response) {
+              vm.facilities = response.facilities
+              vm.locations = response.locations
+              vm.nestedFacilities = response.nestedFacilities
+              vm.zones = Object.keys(vm.nestedFacilities.zone || {})
+              vm.selected.zone = vm.selected.zone || vm.zones[0]
+              resetLocations()
+              getSelectedLocation()
+              setStatus(response.facilities)
+            })
+            .catch(function (reason) {
+              log('unknownError', reason)
+            })
         })
     }
 

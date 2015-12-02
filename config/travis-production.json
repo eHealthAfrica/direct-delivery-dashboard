@@ -1,4 +1,9 @@
 {
   "db": "https://dd-db.ehealth.org.ng/deliveries",
-  "deliveryRoundAdminLevel": "2"
+  "deliveryRoundAdminLevel": "2",
+  "disableDebug":true,
+  "mailerAPI": "https://mandrillapp.com/api/1.0/messages/send.json",
+  "apiKey": "MANDRILL-MAILER-API-KEY",
+  "senderEmail": "no-reply@example.com",
+  "senderName": "EHA Direct-Delivery"
 }
