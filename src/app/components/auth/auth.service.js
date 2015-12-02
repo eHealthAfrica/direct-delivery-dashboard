@@ -43,6 +43,7 @@ angular.module('auth')
       return ehaCouchDbAuthService.signOut()
         .then(navbarService.updateItems.bind())
         .then(navbarService.updateUsername.bind())
+        .then(self.clearStatesForUser.bind())
         .then($state.go.bind($state, 'login'))
         .catch(log.error.bind(log, 'logoutFailed'))
     }
