@@ -2,7 +2,8 @@
   "docs": [
     {
       "_id": "KN-2015",
-      "description": "",
+      "name": "Kano 2015",
+      "description": "Example allocation template",
       "primary": {
         "state": "KN",
         "year": "2015"

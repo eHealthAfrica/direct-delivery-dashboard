@@ -60,7 +60,7 @@
   },
   "main": "gulpfile.js",
   "scripts": {
-    "build": "gulp build",
+    "build": "gulp",
     "coveralls": "coveralls < coverage/lcov/lcov.info",
     "postinstall": "bower install",
     "pretest": "standard",
