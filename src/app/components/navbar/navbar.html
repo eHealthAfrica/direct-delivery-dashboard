@@ -25,38 +25,36 @@
       ng-if="navbarState.items.length"
       class="collapse navbar-collapse"
       collapse="navbarState.collapsed"
-      >
-
+    >
       <ul class="nav navbar-nav">
         <li
           ng-repeat="item in navbarState.items track by item.name"
           ui-sref-active="active"
           eha-show-for-role="item.roles"
-          >
+        >
           <a
             ng-click="toggleCollapse()"
             ui-sref="{{item.name}}"
             ng-bind="::item.label"
-            ></a>
+          ></a>
         </li>
       </ul>
-    <eha-dropdown-menu
-      items="['logout']"
-      on-select="logout"
-      selected-item="navbarState.username"
-      selected-item-as-label="true"
-      icon-class="fa fa-user fa-lg">
-    </eha-dropdown-menu>
 
-    <eha-dropdown-menu
-           items="stateMap.states"
-           on-select="selectState"
-           selected-item="stateMap.selectedState"
-           icon-class="fa fa-plus-square fa-lg">
-      </eha-dropdown-menu>
+      <eha-dropdown-menu
+        items="['Logout']"
+        on-select="logout"
+        selected-item="navbarState.username"
+        selected-item-as-label="true"
+        icon-class="fa fa-user fa-lg"
+      ></eha-dropdown-menu>
 
-</div>
+      <eha-dropdown-menu
+        items="stateMap.states"
+        on-select="selectState"
+        selected-item="stateMap.selectedState"
+        icon-class="fa fa-plus-square fa-lg"
+      ></eha-dropdown-menu>
+
     </div>
-
-  </nav>
-
+  </div>
+</nav>
