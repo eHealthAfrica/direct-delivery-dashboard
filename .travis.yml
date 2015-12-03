@@ -13,7 +13,7 @@ deploy:
     access_key_id: AKIAJHBUIN7T5C5BML2Q
     secret_access_key:
       secure: VMiWVya4zfyabg9dCr6eYwKx1RDKBdE0KN9CJnYJtLO0k8elM+yWwu7Nq1TyrXtJz/oFVcIMCqkw/+cRr38HYrVLsYUOYDYhJM9FsJQi4vITR/pBWfgL21cK6rTQU7LXF6XmhokazT9xp22Sb1q6SSWtfR1PyNlsjDg918ePNTE=
-    bucket: dev-dd-ehealth-org-ng
+    bucket: dev-dd.ehealth.org.ng
     region: eu-west-1
     local-dir: dist
     skip_cleanup: true
@@ -24,7 +24,7 @@ deploy:
     access_key_id: AKIAJHBUIN7T5C5BML2Q
     secret_access_key:
       secure: VMiWVya4zfyabg9dCr6eYwKx1RDKBdE0KN9CJnYJtLO0k8elM+yWwu7Nq1TyrXtJz/oFVcIMCqkw/+cRr38HYrVLsYUOYDYhJM9FsJQi4vITR/pBWfgL21cK6rTQU7LXF6XmhokazT9xp22Sb1q6SSWtfR1PyNlsjDg918ePNTE=
-    bucket: travis-direct-delivery-dashboard-staging
+    bucket: stage-dd.ehealth.org.ng
     region: eu-west-1
     local-dir: dist
     skip_cleanup: true
@@ -35,7 +35,7 @@ deploy:
     access_key_id: AKIAJHBUIN7T5C5BML2Q
     secret_access_key:
       secure: VMiWVya4zfyabg9dCr6eYwKx1RDKBdE0KN9CJnYJtLO0k8elM+yWwu7Nq1TyrXtJz/oFVcIMCqkw/+cRr38HYrVLsYUOYDYhJM9FsJQi4vITR/pBWfgL21cK6rTQU7LXF6XmhokazT9xp22Sb1q6SSWtfR1PyNlsjDg918ePNTE=
-    bucket: travis-direct-delivery-dashboard-production
+    bucket: dd.ehealth.org.ng
     region: eu-west-1
     local-dir: dist
     skip_cleanup: true
