@@ -38,7 +38,7 @@ angular.module('planning')
     }
 
     function loadDrivers () {
-      authService.getUserSelectedState()
+      authService.getUserSelectedState(true)
         .then(function (state) {
           driversService.getByState(state)
             .then(function (response) {
