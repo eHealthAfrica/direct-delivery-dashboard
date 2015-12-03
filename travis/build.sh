@@ -9,3 +9,4 @@ else
 fi
 
 npm run build
+gzip -r dist
