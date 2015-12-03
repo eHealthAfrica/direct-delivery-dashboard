@@ -26,17 +26,6 @@ angular.module('directDeliveryDashboard')
                   .then(navbarService.updateItems.bind(null))
                   .then(navbarService.updateUsername.bind(null))
                   .catch($q.when.bind($q))
-              },
-              userStates: function (indexService, log) {
-                return indexService.getUserStates()
-                  .catch(function (reason) {
-                    if (parseInt(reason.code, 10) === 404) {
-                      log.error('userHasNoState')
-                    } else {
-                      log.error('userStatesErr', reason)
-                    }
-                    return []
-                  })
               }
             }
           },

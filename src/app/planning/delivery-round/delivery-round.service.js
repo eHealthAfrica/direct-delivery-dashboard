@@ -317,8 +317,14 @@ angular.module('planning')
 
     _this.getByStateCode = function (key) {
       var view = 'delivery-rounds/by-state-code'
-      return dbService.getView(view, key)
-        .then(pouchUtil.pluckIDs)
+      return authService.getUserSelectedState(true)
+        .then(function (state) {
+          var options = key || { key: state }
+          return dbService.getView(view, options)
+            .then(function (data) {
+              return pouchUtil.pluckIDs(data)
+            })
+        })
     }
 
     /**

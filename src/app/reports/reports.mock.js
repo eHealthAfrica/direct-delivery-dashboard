@@ -67,6 +67,11 @@
   angular.module('reportsMock', [])
     .constant('deliveryRounds', deliveryRounds)
     .constant('dailyDeliveries', dailyDeliveries)
+    .service('authService', function ($q) {
+      this.getUserSelectedState = function () {
+        return $q.when('State1')
+      }
+    })
     .factory('dbService', function ($q) {
       return {
         getView: function (view) {
@@ -74,6 +79,12 @@
 
           switch (view) {
             case 'reports/delivery-rounds':
+              response = {
+                rows: deliveryRounds
+              }
+              break
+
+            case 'reports/delivery-rounds-count':
               response = {
                 rows: deliveryRounds
               }

@@ -85,7 +85,7 @@ angular.module('allocations')
         .then(resetView)
     }
     vm.switchLocationState = function (stateID) {
-      var state = stateID || vm.selectedState
+      var state = stateID || vm.selectedState // here
       console.log(state)
       return findLga(state)
         .then(getFacilities)
@@ -160,10 +160,9 @@ angular.module('allocations')
       assumptionAddService.openForm(emptyTemplate)
     }
 
-    authService.getCurrentUser()
-      .then(authService.authorisedStates)
+    authService.getUserSelectedState('object')
       .then(function (response) {
-        vm.selectedState = response[0]
+        vm.selectedState = response
         return vm.selectedState
       })
       .then(vm.switchLocationState)
