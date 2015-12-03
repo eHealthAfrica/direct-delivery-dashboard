@@ -1,7 +1,7 @@
 {
   "name": "direct-delivery-dashboard",
   "description": "Dashboard for the direct delivery management system",
-  "version": "0.2.0",
+  "version": "1.0.0-rc.1",
   "dependencies": {},
   "devDependencies": {
     "bower": "^1.3.12",
