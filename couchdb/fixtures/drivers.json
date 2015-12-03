@@ -59,7 +59,16 @@
       "doc_type": "driver",
       "version": "1.0.0",
       "state": "KN"
+    },
+    {
+      "_id": "a@a.com",
+      "email": "a@a.com",
+      "forename": "Arnold",
+      "surname": "Antutu",
+      "phone": "08987978767611",
+      "doc_type": "driver",
+      "version": "1.0.0",
+      "state": "BA"
     }
-
   ]
 }
