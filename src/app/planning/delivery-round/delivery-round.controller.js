@@ -6,7 +6,8 @@ angular.module('planning')
     deliveryRounds,
     deliveryRoundService,
     planningService,
-    $scope
+    $scope,
+    authService
   ) {
     var vm = this
     vm.deliveryRounds = deliveryRounds
@@ -28,7 +29,10 @@ angular.module('planning')
     }
 
     $scope.$on('stateChanged', function (event, data) {
-      planningService.byAuthorisedStates([$scope.selectedState._id])
+      authService.getUserSelectedState(true)
+        .then(function (state) {
+          return planningService.byAuthorisedStates([state])
+        })
         .then(function (deliveryRounds) {
           vm.deliveryRounds = deliveryRounds
         })

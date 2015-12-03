@@ -9,7 +9,7 @@ describe('CalculationsController', function () {
   var calculationsCtrl
   var mockLocationState
 
-  beforeEach(module('allocations', 'db', 'auth'))
+  beforeEach(module('allocations', 'db', 'auth', 'utility'))
 
   beforeEach(
     module(function ($provide) {
@@ -41,6 +41,7 @@ describe('CalculationsController', function () {
           return $q.when([])
         })
       })
+      $provide.service('userStateService', angular.noop)
     })
   )
 

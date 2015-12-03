@@ -6,21 +6,36 @@ angular.module('reports')
     dbService,
     deliveryRoundService,
     locationService,
-    pouchUtil
+    pouchUtil,
+    authService
   ) {
     var _this = this
 
     this.getDeliveryRounds = function (options) {
       options = options || {}
       options.limit = options.limit || 10
-      return dbService.getView('reports/delivery-rounds', options)
-        .then(function (response) {
-          return {
-            total: response.total_rows,
-            offset: response.offset,
-            results: pouchUtil.pluckValues(response)
-          }
+      return authService.getUserSelectedState()
+        .then(function (state) {
+          options.startkey = [state]
+          options.endkey = [state, {}]
+
+          return $q.all([dbService.getView('reports/delivery-rounds', options), _this.getRoundsCount(state)])
+            .then(function (response) {
+              return {
+                total: response[1].rows.length > 0 ? response[1].rows[0].value : 0,
+                offset: response.offset,
+                results: pouchUtil.pluckValues(response[0])
+              }
+            })
         })
+    }
+
+    _this.getRoundsCount = function (state) {
+      var options = {}
+      options.startkey = [state]
+      options.endkey = [state, {}]
+      var view = 'reports/delivery-rounds-count'
+      return dbService.getView(view, options)
     }
 
     this.getDailyDeliveries = function (roundId, pagination) {

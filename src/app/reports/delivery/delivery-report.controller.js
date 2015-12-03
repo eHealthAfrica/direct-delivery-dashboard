@@ -7,10 +7,11 @@ angular.module('reports')
     reportsService,
     log,
     deliveryRoundService,
-    $scope
+    $scope,
+    authService
   ) {
     var vm = this // viewModel
-    var state = $scope.selectedState
+
     vm.dateFormat = config.dateFormat
     vm.stopOn = new Date()
     var ONE_MONTH = 2.62974e9 // milli secs
@@ -45,27 +46,35 @@ angular.module('reports')
       }
     }
 
-    deliveryRoundService.getLatestBy(state.name)
-      .then(function (response) {
-        vm.roundCodes = response.roundCodes
+    authService.getUserSelectedState()
+      .then(function (state) {
+        deliveryRoundService.getLatestBy(state)
+          .then(function (response) {
+            vm.roundCodes = response.roundCodes
+          })
       })
-
     vm.zoneReport = []
     vm.statusReport = {}
 
     vm.getByRound = function () {
-      reportsService.getReportByRound(vm.selectedRound, state._id)
-        .then(loadSuccess)
-        .catch(function (err) {
-          log.error('cumulativeReportErr', err)
+      authService.getUserSelectedState(true)
+        .then(function (state) {
+          reportsService.getReportByRound(vm.selectedRound, state)
+            .then(loadSuccess)
+            .catch(function (err) {
+              log.error('cumulativeReportErr', err)
+            })
         })
     }
 
     vm.getReport = function () {
-      reportsService.getByWithin(state, vm.startFrom, vm.stopOn)
-        .then(loadSuccess)
-        .catch(function (err) {
-          log.error('cumulativeReportErr', err)
+      authService.getUserSelectedState('object')
+        .then(function (state) {
+          reportsService.getByWithin(state, vm.startFrom, vm.stopOn)
+            .then(loadSuccess)
+            .catch(function (err) {
+              log.error('cumulativeReportErr', err)
+            })
         })
     }
 
@@ -115,7 +124,7 @@ angular.module('reports')
 
     vm.getReport() // call on init
     $scope.$on('stateChanged', function (event, data) {
-      state = data.state
+      var state = data.state
       vm.selectedRound = ''
       deliveryRoundService.getLatestBy(state.name)
         .then(function (response) {
@@ -130,10 +139,11 @@ angular.module('reports')
     log,
     deliveryReportService,
     deliveryRoundService,
-    $scope
+    $scope,
+    authService
   ) {
     var vm = this // viewModel
-    var state = $scope.selectedState
+    // var state = $scope.selectedState
 
     function openDatePicker ($event) {
       $event.preventDefault()
@@ -158,18 +168,24 @@ angular.module('reports')
     var TWO_MONTHS_BEFORE = vm.stopDateOn.getTime() - (ONE_MONTH * 2)
     vm.startDate = new Date(TWO_MONTHS_BEFORE)
 
-    deliveryRoundService.getLatestBy(state.name)
-      .then(function (response) {
-        vm.roundCodes = response.roundCodes
+    authService.getUserSelectedState()
+      .then(function (state) {
+        deliveryRoundService.getLatestBy(state)
+          .then(function (response) {
+            vm.roundCodes = response.roundCodes
+          })
       })
 
     vm.loadReport = function () {
-      deliveryReportService.getDailyDeliveryReport(vm.startDate, vm.stopDateOn, state)
-        .then(function (deliveryStatusReport) {
-          loadViewData(deliveryStatusReport)
-        })
-        .catch(function (reason) {
-          log.error('deliveryReportErr', reason)
+      authService.getUserSelectedState('object')
+        .then(function (state) {
+          deliveryReportService.getDailyDeliveryReport(vm.startDate, vm.stopDateOn, state)
+            .then(function (deliveryStatusReport) {
+              loadViewData(deliveryStatusReport)
+            })
+            .catch(function (reason) {
+              log.error('deliveryReportErr', reason)
+            })
         })
     }
 
@@ -200,13 +216,13 @@ angular.module('reports')
       vm.byZoneByDriver = deliveryStatusReport.byZoneByDriver
       vm.byZoneByDriverKeys = Object.keys(deliveryStatusReport.byZoneByDriver).sort()
       vm.capturedZones = Object.keys(deliveryStatusReport.byZoneByLGA).sort()
-      vm.selectedZone = vm.capturedZones[0] || ''
+      vm.selectedZone = vm.selectedZone || vm.capturedZones[0] || ''
     }
 
     vm.loadReport()
 
     $scope.$on('stateChanged', function (event, data) {
-      state = data.state
+      var state = data.state
       vm.selectedRound = ''
       deliveryRoundService.getLatestBy(state.name)
         .then(function (response) {

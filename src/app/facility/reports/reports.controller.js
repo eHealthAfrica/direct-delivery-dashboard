@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('facility')
-  .controller('FacilityReportsCtrl', function (facilityService, log, $scope) {
+  .controller('FacilityReportsCtrl', function (facilityService, log, $scope, authService) {
     var vm = this
 
     vm.facilityStatus = {}
@@ -26,16 +26,19 @@ angular.module('facility')
     }
 
     function updateView () {
-      facilityService.getStateLocations($scope.selectedState._id)
-        .then(function (response) {
-          vm.facilities = response.facilities.filter(function (row) {
-            return !row.status.status
-          })
-          vm.locations = response.locations
-          setStatus(response.facilities)
-        })
-        .catch(function (err) {
-          log.error('unknownError', err)
+      authService.getUserSelectedState(true)
+        .then(function (state) {
+          facilityService.getStateLocations(state)
+            .then(function (response) {
+              vm.facilities = response.facilities.filter(function (row) {
+                return !row.status.status
+              })
+              vm.locations = response.locations
+              setStatus(response.facilities)
+            })
+            .catch(function (err) {
+              log.error('unknownError', err)
+            })
         })
     }
 

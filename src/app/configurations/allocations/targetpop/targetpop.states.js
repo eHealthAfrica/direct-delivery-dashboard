@@ -15,8 +15,8 @@ angular.module('allocations')
                 return []
               })
           },
-          states: function (indexService, log) {
-            return indexService.getUserStates()
+          states: function (authService, log) {
+            return authService.getUserStates()
               .catch(function (reason) {
                 log.error('userStatesErr', reason)
                 return []
