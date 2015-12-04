@@ -181,5 +181,10 @@ angular.module('log')
       title: 'State selection error',
       message: 'Error occured while trying to change the state',
       remedy: 'Please, try again and contact support if it persists'
+    },
+    missingRoundReport: {
+      title: 'Missing round report',
+      message: 'The selected round does not contain a report',
+      remedy: 'Please ensure the round contains a delivery schedule'
     }
   })
