@@ -1,13 +1,31 @@
 'use strict'
 
 angular.module('planning')
-  .service('scheduleService', function (dbService, log, utility, pouchUtil) {
+  .service('scheduleService', function (dbService, log, utility, pouchUtil, $filter) {
     var _this = this
 
     _this.getAlertReceiversForRound = function (deliveryRound) {
-      var stateCode = deliveryRound.roundCode.split('-')[0]
+      var stateCode = deliveryRound.roundCode && deliveryRound.roundCode.split('-')[0] || deliveryRound.id.split('-')[0]
       var view = 'dashboard-delivery-rounds/alert-receivers'
-      var options = {include_docs: true, state: stateCode}
+      var options = {include_docs: true, keys: ['all', stateCode]}
+
+      function containsEmail (email) {
+        return function (element, index, array) {
+          if (array[index].email === email) {
+            return email
+          }
+          return
+        }
+      }
+
+      function containsPhone (phone) {
+        return function (element, index, array) {
+          if (array[index] === phone) {
+            return phone
+          }
+          return
+        }
+      }
 
       return dbService.getView(view, options)
         .then(pouchUtil.pluckDocs)
@@ -17,10 +35,14 @@ angular.module('planning')
             return item.active
           }).reduce(function (previous, current) {
             current.emails.forEach(function (item) {
-              previous.emails.push({email: item, type: 'to', name: current.name})
+              if (!previous.emails.find(containsEmail(item))) {
+                previous.emails.push({email: item, type: 'to', name: current.name})
+              }
             })
             current.phones.forEach(function (item) {
-              previous.phones.push(item)
+              if (!previous.phones.find(containsPhone(item))) {
+                previous.phones.push(item)
+              }
             })
             return previous
           }, obj)
@@ -28,15 +50,32 @@ angular.module('planning')
     }
 
     _this.getRoundEmailTemplate = function (deliveryRound) {
-      var stateCode = deliveryRound.roundCode.split('-')[0]
+      var stateCode = deliveryRound.roundCode && deliveryRound.roundCode.split('-')[0] || deliveryRound.id.split('-')[0]
       var view = 'dashboard-delivery-rounds/round-emails'
-      var options = {include_docs: true, state: stateCode}
+      var options = {include_docs: true, key: stateCode}
       return dbService.getView(view, options)
         .then(pouchUtil.pluckDocs)
         .then(function (data) {
           var msg = data[0] && data[0].content && data[0].content.replace('{roundId}', deliveryRound.roundCode)
           var subject = data[0] && data[0].subject && data[0].subject.replace('{roundId}', deliveryRound.roundCode)
-          var result = {ms: msg, subject: subject}
+          var result = {msg: msg, subject: subject}
+          return result
+        })
+    }
+
+    _this.getStartRoundEmailTemplate = function (deliveryRound) {
+      var stateCode = deliveryRound.id.split('-')[0]
+      var view = 'dashboard-delivery-rounds/round-start-alert'
+      var options = {include_docs: true, key: stateCode}
+      return dbService.getView(view, options)
+        .then(pouchUtil.pluckDocs)
+        .then(function (data) {
+          var msg = data[0] && data[0].content && data[0].content
+              .replace('{roundId}', deliveryRound.id)
+              .replace('{state}', deliveryRound.state).replace('{startDate}', $filter('date')(deliveryRound.startDate, 'dd-MM-yyyy'))
+              .replace('{endDate}', $filter('date')(deliveryRound.endDate, 'dd-MM-yyyy'))
+          var subject = data[0] && data[0].subject && data[0].subject.replace('{roundId}', deliveryRound.id)
+          var result = {msg: msg, subject: subject}
           return result
         })
     }

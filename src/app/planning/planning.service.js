@@ -7,7 +7,8 @@ angular.module('planning')
     log,
     utility,
     ROUND_STATUS,
-    authService
+    authService,
+    scheduleService
   ) {
     var deliveryDocType = 'deliveryRound'
 
