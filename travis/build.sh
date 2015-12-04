@@ -9,3 +9,5 @@ else
 fi
 
 npm run build
+# gzip without the '.gz' suffix so S3 uses the original Content-Type header
+find dist -type f -exec gzip "{}" \; -exec mv "{}.gz" "{}" \;

@@ -17,6 +17,7 @@ deploy:
     region: eu-west-1
     local-dir: dist
     skip_cleanup: true
+    detect_encoding: true
     on:
       repo: eHealthAfrica/direct-delivery-dashboard
       branch: develop
@@ -28,6 +29,7 @@ deploy:
     region: eu-west-1
     local-dir: dist
     skip_cleanup: true
+    detect_encoding: true
     on:
       repo: eHealthAfrica/direct-delivery-dashboard
       branch: master
@@ -39,6 +41,7 @@ deploy:
     region: eu-west-1
     local-dir: dist
     skip_cleanup: true
+    detect_encoding: true
     on:
       repo: eHealthAfrica/direct-delivery-dashboard
       tags: true
