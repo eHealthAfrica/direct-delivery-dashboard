@@ -2,5 +2,6 @@
 
 angular.module('home', [
   'core',
-  'auth'
+  'auth',
+  'eha.round-search'
 ])

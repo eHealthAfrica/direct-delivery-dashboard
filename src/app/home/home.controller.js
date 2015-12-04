@@ -12,7 +12,6 @@ angular.module('directDeliveryDashboard')
   ) {
     var vm = this // view models
     vm.isLoading = false
-    vm.selectedRound = ''
 
     vm.roundCodes = roundReport.roundInfo.roundCodes || []
     vm.roundReport = roundReport
@@ -51,15 +50,15 @@ angular.module('directDeliveryDashboard')
       return vm.roundReport && vm.roundReport.total > 0
     }
 
-    vm.showReport = function () {
-      if (!vm.selectedRound) {
+    vm.showReport = function (round) {
+      if (!round) {
         return
       }
 
       setIsLoading(true)
-      deliveryRoundService.getReport(vm.selectedRound)
+      deliveryRoundService.getReport(round)
         .then(function (rndReport) {
-          rndReport.deliveryRoundID = vm.selectedRound
+          rndReport.deliveryRoundID = round
           vm.roundReport = rndReport
           vm.setTimeline()
           vm.reportLateness()
@@ -69,7 +68,7 @@ angular.module('directDeliveryDashboard')
           vm.roundReport.onTimeMap = {}
           var msg = [
             'Report for Round:',
-            vm.selectedRound,
+            round,
             'does not exist!'
           ].join(' ')
           log.error('', err, msg)
@@ -136,8 +135,8 @@ angular.module('directDeliveryDashboard')
       deliveryRoundService.getLatestBy(data.state.name)
         .then(function (roundInfo) {
           vm.roundCodes = roundInfo.roundCodes || []
-          key = roundInfo.latestRoundId
           vm.selectedRound = ''
+          key = roundInfo.latestRoundId
           return deliveryRoundService.getReport(key)
         })
         .then(function (roundReport) {

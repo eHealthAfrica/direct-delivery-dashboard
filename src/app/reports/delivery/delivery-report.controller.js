@@ -24,6 +24,11 @@ angular.module('reports')
       this.opened = !this.opened
     }
 
+    function toggleLoading (loading) {
+      loading = loading || false
+      vm.isLoading = loading
+    }
+
     vm.start = {
       opened: false,
       open: openDatePicker
@@ -56,7 +61,11 @@ angular.module('reports')
     vm.zoneReport = []
     vm.statusReport = {}
 
-    vm.getByRound = function () {
+    vm.getByRound = function (round) {
+      if (!round) {
+        return
+      }
+      toggleLoading(true)
       authService.getUserSelectedState(true)
         .then(function (state) {
           reportsService.getReportByRound(vm.selectedRound, state)
@@ -65,6 +74,7 @@ angular.module('reports')
               log.error('cumulativeReportErr', err)
             })
         })
+        .finally(toggleLoading)
     }
 
     vm.getReport = function () {
@@ -151,6 +161,11 @@ angular.module('reports')
       this.opened = !this.opened
     }
 
+    function toggleLoading (loading) {
+      loading = loading || false
+      vm.isLoading = loading
+    }
+
     vm.filteredReport = {
       start: {
         opened: false,
@@ -194,14 +209,19 @@ angular.module('reports')
       return type === 'zone' ? stringArr[1] : stringArr[0]
     }
 
-    vm.updateReport = function () {
-      deliveryReportService.getDailyDeliveryReportByRound(vm.selectedRound)
+    vm.updateReport = function (round) {
+      if (!round) {
+        return
+      }
+      toggleLoading(true)
+      deliveryReportService.getDailyDeliveryReportByRound(round)
         .then(function (deliveryStatusReport) {
           loadViewData(deliveryStatusReport)
         })
         .catch(function (reason) {
           log.error('deliveryReportErr', reason)
         })
+        .finally(toggleLoading)
     }
 
     vm.sum = function (row) {

@@ -1,0 +1,20 @@
+<div class="form-group has-feedback">
+  <input
+    type="text"
+    class="form-control input-lg filter"
+    placeholder="Round code"
+    ng-model="ngModel"
+    typeahead="round for round in rounds"
+    typeahead-on-select="onSelect($item)"
+    typeahead-append-to-body="true"
+  >
+  <span class="form-control-feedback">
+    <i
+      class="fa fa-lg"
+      ng-class="{
+        'fa-search': !isLoading,
+        'fa-spinner fa-spin': isLoading
+      }"
+    ></i>
+  </span>
+</div>

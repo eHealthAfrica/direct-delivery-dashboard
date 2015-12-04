@@ -67,26 +67,17 @@
               </div>
               <div class="row" ng-if="packingRepCtrl.filterType">
                 <div class="col-md-6">
-                  <label></label>
-                  <div class="form-group has-feedback">
-                    <input
-                      type="text"
-                      class="form-control input-lg filter"
-                      placeholder="Enter Round code"
-                      ng-model="packingRepCtrl.selectedRound"
-                      typeahead="roundCode for roundCode in packingRepCtrl.roundCodes"
-                      typeahead-on-select="packingRepCtrl.updateReport()"
-                      typeahead-append-to-body="true"
-                    >
-                      <span class="form-control-feedback">
-                        <i class="fa fa-lg fa-search"></i>
-                      </span>
-                  </div>
+                  <eha-round-search
+                    ng-model="packingRepCtrl.selectedRound"
+                    rounds="packingRepCtrl.roundCodes"
+                    on-select="packingRepCtrl.updateReport"
+                    is-loading="packingRepCtrl.isLoading"
+                  ></eha-round-search>
                 </div>
               </div>
             </div>
           </div>
-          
+
         </div>
         <!-- end of date range selector -->
       </div>
