@@ -1,10 +1,14 @@
-// Override Sass dependency variables
+// Override Bower dependency variables
 $icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 $fa-font-path: "../../bower_components/font-awesome/fonts";
 
-// Inject Sass dependencies
+// Inject Bower Sass dependencies
 // bower:scss
 // endbower
+
+// Inject app Sass dependencies
+// injector
+// endinjector
 
 .content {
   margin-top: 20px;
@@ -65,10 +69,3 @@ dl > dt, dl > dd {
     word-wrap:break-word;
   }
 }
-
-// injector
-@import 'home/home.scss';
-@import 'users/users.scss';
-@import 'reports/invoice/round/round.scss';
-@import 'configurations/allocations/assumptions/assumptions.scss';
-// endinjector
