@@ -8,26 +8,12 @@
   </div>
 
   <div class="col-sm-6">
-    <div class="form-group has-feedback">
-      <input
-        type="text"
-        class="form-control input-lg filter"
-        placeholder="Round code"
-        ng-model="homeCtrl.selectedRound"
-        typeahead="roundCode for roundCode in homeCtrl.roundCodes"
-        typeahead-on-select="homeCtrl.showReport()"
-        typeahead-append-to-body="true"
-      >
-      <span class="form-control-feedback">
-        <i
-          class="fa fa-lg"
-          ng-class="{
-            'fa-search': !homeCtrl.isLoading,
-            'fa-spinner fa-spin': homeCtrl.isLoading
-          }"
-        ></i>
-      </span>
-    </div>
+    <eha-round-search
+      ng-model="homeCtrl.selectedRound"
+      rounds="homeCtrl.roundCodes"
+      on-select="homeCtrl.showReport"
+      is-loading="homeCtrl.isLoading"
+    ></eha-round-search>
   </div>
 </div>
 

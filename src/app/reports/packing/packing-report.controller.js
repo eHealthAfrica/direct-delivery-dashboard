@@ -106,6 +106,11 @@ angular.module('reports')
       vm.list.ward = vm.selected.lga ? Object.keys(vm.reports.ward[vm.selected.zone][vm.selected.lga]).sort() : []
     }
 
+    function toggleLoading (loading) {
+      loading = loading || false
+      vm.isLoading = loading
+    }
+
     vm.getReport = function () {
       authService.getUserSelectedState('object')
         .then(function (state) {
@@ -116,11 +121,16 @@ angular.module('reports')
         })
     }
 
-    vm.updateReport = function () {
-      packingReportService.getPackingReportByRound(vm.selectedRound)
+    vm.updateReport = function (round) {
+      if (!round) {
+        return
+      }
+      toggleLoading(true)
+      packingReportService.getPackingReportByRound(round)
         .then(function (response) {
           setViewVars(response)
         })
+        .finally(toggleLoading)
     }
 
     authService.getUserSelectedState()
