@@ -17,12 +17,6 @@ $fa-font-path: "../../bower_components/font-awesome/fonts";
   border: none;
 }
 
-// use pointer for all nav links, even those without a href (they generally use ng-click)
-.nav > li > a:hover,
-.nav > li > a:focus {
-  cursor: pointer;
-}
-
 td.actions {
   width: 1px;
   white-space: nowrap;
