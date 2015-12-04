@@ -17,10 +17,6 @@ $fa-font-path: "../../bower_components/font-awesome/fonts";
   border: none;
 }
 
-td.actions {
-  width: 1px;
-  white-space: nowrap;
-}
 dl > dt, dl > dd {
   margin: 0.7em;
   text-transform: capitalize;
@@ -72,6 +68,7 @@ dl > dt, dl > dd {
 
 // injector
 @import 'home/home.scss';
+@import 'users/users.scss';
 @import 'reports/invoice/round/round.scss';
 @import 'configurations/allocations/assumptions/assumptions.scss';
 // endinjector
