@@ -20,11 +20,3 @@ $fa-font-path: "../../bower_components/font-awesome/fonts";
   margin-bottom: 10px;
   border: none;
 }
-
-.wrapped-content {
-  border-collapse:collapse;
-  font-size: 90%;
-  td, th{
-    word-wrap:break-word;
-  }
-}
