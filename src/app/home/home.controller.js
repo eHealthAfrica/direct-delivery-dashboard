@@ -66,12 +66,8 @@ angular.module('directDeliveryDashboard')
         })
         .catch(function (err) {
           vm.roundReport.onTimeMap = {}
-          var msg = [
-            'Report for Round:',
-            round,
-            'does not exist!'
-          ].join(' ')
-          log.error('', err, msg)
+          var reason = 'The round code was: ' + round
+          log.error('missingRoundReport', err, reason)
         })
         .finally(setIsLoading.bind(null, false))
     }
