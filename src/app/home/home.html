@@ -1,151 +1,180 @@
-<div class="row home-header">
-  <div class="col-sm-6">
-    <h1>
-      <i class="fa fa-truck fa-lg"></i>
-      <span>Delivery Round:</span>
-      <span ng-bind="homeCtrl.roundReport.deliveryRoundID"></span>
-    </h1>
-  </div>
-
-  <div class="col-sm-6">
-    <eha-round-search
-      ng-model="homeCtrl.selectedRound"
-      rounds="homeCtrl.roundCodes"
-      on-select="homeCtrl.showReport"
-      is-loading="homeCtrl.isLoading"
-    ></eha-round-search>
-  </div>
-</div>
-
-<div class="row" ng-if="!homeCtrl.hasSchedules()">
-  <div class="panel-body">
-    <div class="panel-body alert alert-info">
-      <i class="fa fa-lg fa-info-circle"></i>
-      <span> No delivery rounds found, please create one or add schedules through planning tab.</span>
+<section class="home">
+  <header class="row">
+    <div class="col-sm-6">
+      <h1>
+        <i class="fa fa-truck fa-lg"></i>
+        <span>Delivery Round:</span>
+        <span ng-bind="homeCtrl.roundReport.deliveryRoundID"></span>
+      </h1>
     </div>
-  </div>
-</div>
 
-<!-- Summary Table Section-->
-<div class="row home-summaries" ng-if="homeCtrl.hasSchedules()">
-  <div class="col-md-2-4">
-    <div class="jumbotron alert-default">
-      <span class="h1" ng-bind="homeCtrl.roundReport.total"></span>
-      <p>
-        <ng-pluralize
-          count="homeCtrl.roundReport.total"
-          when="{
-            'NaN': 'Delivery Scheduled',
-            '0' : 'Delivery Scheduled',
-            '1' : 'Delivery Scheduled',
-            'other': 'Deliveries Scheduled'
-          }">
-        </ng-pluralize>
-      </p>
+    <div class="col-sm-6">
+      <eha-round-search
+        ng-model="homeCtrl.selectedRound"
+        rounds="homeCtrl.roundCodes"
+        on-select="homeCtrl.showReport"
+        is-loading="homeCtrl.isLoading"
+      ></eha-round-search>
+    </div>
+  </header>
+
+  <div class="row" ng-if="!homeCtrl.hasSchedules()">
+    <div class="panel-body">
+      <div class="panel-body alert alert-info">
+        <i class="fa fa-lg fa-info-circle"></i>
+        <span> No delivery rounds found, please create one or add schedules through planning tab.</span>
+      </div>
     </div>
   </div>
 
-  <div class="col-md-2-4">
-    <div class="jumbotron alert-info">
-      <span class="h1" ng-bind="homeCtrl.roundReport.delivered"></span>
-      <p>Total Delivered</p>
-    </div>
-  </div>
-
-  <div class="col-md-2-4">
-    <div class="jumbotron alert-warning">
-      <span class="h1" ng-bind="homeCtrl.roundReport.upcoming"></span>
-      <p>
-        <ng-pluralize
-          count="homeCtrl.roundReport.total"
-          when="{
-              'NaN': 'Upcoming Delivery',
-              '0' : 'Upcoming Delivery',
-              '1' : 'Upcoming Delivery',
-              'other': 'Upcoming Deliveries'
+  <!-- Summary Table Section-->
+  <div class="row home-summaries" ng-if="homeCtrl.hasSchedules()">
+    <div class="col-md-2-4">
+      <div class="jumbotron alert-default">
+        <span class="h1" ng-bind="homeCtrl.roundReport.total"></span>
+        <p>
+          <ng-pluralize
+            count="homeCtrl.roundReport.total"
+            when="{
+              'NaN': 'Delivery Scheduled',
+              '0' : 'Delivery Scheduled',
+              '1' : 'Delivery Scheduled',
+              'other': 'Deliveries Scheduled'
             }">
-        </ng-pluralize>
-      </p>
+          </ng-pluralize>
+        </p>
+      </div>
+    </div>
+
+    <div class="col-md-2-4">
+      <div class="jumbotron alert-info">
+        <span class="h1" ng-bind="homeCtrl.roundReport.delivered"></span>
+        <p>Total Delivered</p>
+      </div>
+    </div>
+
+    <div class="col-md-2-4">
+      <div class="jumbotron alert-warning">
+        <span class="h1" ng-bind="homeCtrl.roundReport.upcoming"></span>
+        <p>
+          <ng-pluralize
+            count="homeCtrl.roundReport.total"
+            when="{
+                'NaN': 'Upcoming Delivery',
+                '0' : 'Upcoming Delivery',
+                '1' : 'Upcoming Delivery',
+                'other': 'Upcoming Deliveries'
+              }">
+          </ng-pluralize>
+        </p>
+      </div>
+    </div>
+
+    <div class="col-md-2-4">
+      <div class="jumbotron alert-danger">
+        <span class="h1" ng-bind="homeCtrl.roundReport.notWorkingCCE || 0"></span>
+        <p>Faulty CCE</p>
+      </div>
+    </div>
+
+    <div class="col-md-2-4">
+      <div class="jumbotron alert-success">
+        <span class="h1" ng-bind="homeCtrl.roundReport.billable"></span>
+        <p>
+          <ng-pluralize
+            count="homeCtrl.roundReport.billable"
+            when="{
+              'NaN': 'Billable Deliveries',
+              '0' : 'Billable Delivery',
+              '1' : 'Billable Delivery',
+              'other':'Billable Deliveries'
+            }">
+          </ng-pluralize>
+        </p>
+      </div>
     </div>
   </div>
+  <!-- end summary section -->
 
-  <div class="col-md-2-4">
-    <div class="jumbotron alert-danger">
-      <span class="h1" ng-bind="homeCtrl.roundReport.notWorkingCCE || 0"></span>
-      <p>Faulty CCE</p>
-    </div>
-  </div>
-
-  <div class="col-md-2-4">
-    <div class="jumbotron alert-success">
-      <span class="h1" ng-bind="homeCtrl.roundReport.billable"></span>
-      <p>
-        <ng-pluralize
-          count="homeCtrl.roundReport.billable"
-          when="{
-            'NaN': 'Billable Deliveries',
-            '0' : 'Billable Delivery',
-            '1' : 'Billable Delivery',
-            'other':'Billable Deliveries'
-          }">
-        </ng-pluralize>
-      </p>
-    </div>
-  </div>
-</div>
-<!-- end summary section -->
-
-<div class="row" row ng-if="homeCtrl.hasSchedules()">
-  <div class="col-md-12">
-    <div class="panel panel-default">
-      <div class="panel-heading"><h4>Round Progress</h4></div>
-      <div class="panel-body">
-        <div gantt data=homeCtrl.data view-scale="day">
-          <gantt-tooltips></gantt-tooltips>
+  <div class="row" row ng-if="homeCtrl.hasSchedules()">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h4>Round Progress</h4></div>
+        <div class="panel-body">
+          <div gantt data=homeCtrl.data view-scale="day">
+            <gantt-tooltips></gantt-tooltips>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Delivery Round Chart section-->
-<div class="row" ng-if="homeCtrl.hasSchedules()">
-  <!-- current status chart -->
-  <div class="col-md-4 col-sm-6">
-    <div class="panel panel-default">
-      <div class="panel-heading"><h4>Round Status</h4></div>
-      <div class="panel-body">
-        <div class="container-fluid">
-          <nvd3-multi-bar-horizontal-chart
-              data="homeCtrl.roundReport.status"
-              id="roundStatusChart"
-              margin="{ left: 80 }"
-              height="450"
-              tooltips="true"
-              showXAxis="true"
-              showYAxis="true"
-              showLabels="true"
-              interactive="true"
-              stacked="true"
-              yaxistickformat="homeCtrl.roundOff()"
-              showLegend="true">
-            <svg></svg>
-          </nvd3-multi-bar-horizontal-chart>
+  <!-- Delivery Round Chart section-->
+  <div class="row" ng-if="homeCtrl.hasSchedules()">
+    <!-- current status chart -->
+    <div class="col-md-4 col-sm-6">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h4>Round Status</h4></div>
+        <div class="panel-body">
+          <div class="container-fluid">
+            <nvd3-multi-bar-horizontal-chart
+                data="homeCtrl.roundReport.status"
+                id="roundStatusChart"
+                margin="{ left: 80 }"
+                height="450"
+                tooltips="true"
+                showXAxis="true"
+                showYAxis="true"
+                showLabels="true"
+                interactive="true"
+                stacked="true"
+                yaxistickformat="homeCtrl.roundOff()"
+                showLegend="true">
+              <svg></svg>
+            </nvd3-multi-bar-horizontal-chart>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <!-- end of current round chart -->
+    <!-- end of current round chart -->
 
-  <!-- on time delivery section -->
-  <div class="col-md-4 col-sm-6">
-    <div class="panel panel-default">
-      <div class="panel-heading"><h4>On Time Delivery</h4></div>
-      <div class="panel-body">
-        <div class="container-fluid">
-          <nvd3-pie-chart
-              data="homeCtrl.onTime"
-              id="onTimeChart"
+    <!-- on time delivery section -->
+    <div class="col-md-4 col-sm-6">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h4>On Time Delivery</h4></div>
+        <div class="panel-body">
+          <div class="container-fluid">
+            <nvd3-pie-chart
+                data="homeCtrl.onTime"
+                id="onTimeChart"
+                height="450"
+                color="homeCtrl.onTimeColors()"
+                x="homeCtrl.xPieFunction()"
+                y="homeCtrl.yPieFunction()"
+                donut="true"
+                tooltips="true"
+                labelType="percent"
+                donutRatio=".35"
+                showValues="true"
+                showLabels="true"
+                showLegend="true"
+                legendColor="homeCtrl.onTimeColors()">
+            </nvd3-pie-chart>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end of on time delivery -->
+
+    <!-- delivery lag section -->
+    <div class="col-md-4 col-sm-6">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h4>Delivery Lags</h4></div>
+        <div class="panel-body">
+          <div class="container-fluid">
+            <nvd3-pie-chart
+              data="homeCtrl.lag"
+              id="lag"
               height="450"
               color="homeCtrl.onTimeColors()"
               x="homeCtrl.xPieFunction()"
@@ -158,39 +187,12 @@
               showLabels="true"
               showLegend="true"
               legendColor="homeCtrl.onTimeColors()">
-          </nvd3-pie-chart>
+            </nvd3-pie-chart>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <!-- end of on time delivery -->
+    <!-- end of delivery lag section -->
 
-  <!-- delivery lag section -->
-  <div class="col-md-4 col-sm-6">
-    <div class="panel panel-default">
-      <div class="panel-heading"><h4>Delivery Lags</h4></div>
-      <div class="panel-body">
-        <div class="container-fluid">
-          <nvd3-pie-chart
-            data="homeCtrl.lag"
-            id="lag"
-            height="450"
-            color="homeCtrl.onTimeColors()"
-            x="homeCtrl.xPieFunction()"
-            y="homeCtrl.yPieFunction()"
-            donut="true"
-            tooltips="true"
-            labelType="percent"
-            donutRatio=".35"
-            showValues="true"
-            showLabels="true"
-            showLegend="true"
-            legendColor="homeCtrl.onTimeColors()">
-          </nvd3-pie-chart>
-        </div>
-      </div>
-    </div>
   </div>
-  <!-- end of delivery lag section -->
-
-</div>
+</section>

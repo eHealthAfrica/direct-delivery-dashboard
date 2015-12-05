@@ -1,7 +1,9 @@
-.wrapped-content {
-  border-collapse:collapse;
-  font-size: 90%;
-  td, th {
-    word-wrap:break-word;
+section.planning {
+  .wrapped-content {
+    border-collapse: collapse;
+    font-size: 90%;
+    td, th {
+      word-wrap: break-word;
+    }
   }
 }

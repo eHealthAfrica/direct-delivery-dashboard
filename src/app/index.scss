@@ -10,13 +10,21 @@ $fa-font-path: "../../bower_components/font-awesome/fonts";
 // injector
 // endinjector
 
-.content {
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
+// Global Bootstrap overrides
 .page-header {
   margin-top: 0;
   margin-bottom: 10px;
   border: none;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+// Index section
+section.index {
+  .content {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
 }
