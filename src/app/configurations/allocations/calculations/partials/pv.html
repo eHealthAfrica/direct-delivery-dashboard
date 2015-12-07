@@ -1,6 +1,6 @@
 <div
   class="alert alert-warning"
-  ng-show="calculationsController.activeView ==='MR' || calculationsController.activeView === 'MMAX'">
+  ng-show="calculationsController.activeView ==='MR' || calculationsController.activeView === 'MMax' || calculationsController.activeView === 'BWMax' || calculationsController.activeView === 'BWMin'">
   <i class="fa fa-warning"></i>
   figures in <b>yellow</b> are unavailable most likely because <b>target populations data</b> for these facilities is not up to date
 </div>
@@ -16,8 +16,9 @@
         <a href ng-bind="allocation.name"></a>
       </td>
       <td ng-repeat="p in calculationsController.productList" ng-class="{'bg-warning': allocation[calculationsController.activeView][p] === 'NA'}">
+        <span ng-show="!allocation[calculationsController.activeView][p]">-</span>
         {{allocation[calculationsController.activeView][p]}}
-      <span ng-show="calculationsController.activeView ==='coverage' || calculationsController.activeView === 'buffer'">%</span>
+      <span ng-show="(calculationsController.activeView ==='coverage' || calculationsController.activeView === 'buffer') && allocation[calculationsController.activeView][p]">%</span>
       </td>
       <td>
         <a href ng-if="!allocation.customTemplate" ng-click="calculationsController.addCustomAssumption(allocation)"><i class="fa fa-wrench"></i> Customize</a>

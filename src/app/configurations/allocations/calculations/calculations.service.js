@@ -214,7 +214,6 @@ angular.module('allocations')
               }else{
                 facility.MR[productList[pl]] = 'NA'
               }
-              //facility.MR[productList[pl]] = Math.ceil((facility['bi-weeklyU1'] * 2) * (facility.coverage[index] / 100) * facility.schedule[index] * facility.wastage[index])
             }
           })
           console.info(facilities)
@@ -226,7 +225,11 @@ angular.module('allocations')
       function getMax (facility) {
         var r = {}
         for (var i in facility.MR) {
-          r[i] = Math.ceil(facility.MR[i] * (1 + (facility.buffer[i] / 100)))
+          if(facility.MR[i] === 'NA'){
+            r[i] = 'NA'
+          }else{
+            r[i] = Math.ceil(facility.MR[i] * (1 + (facility.buffer[i] / 100)))
+          }
         }
         return r
       }
@@ -245,7 +248,11 @@ angular.module('allocations')
       function setBWMax (MMax) {
         var r = {}
         for (var i in MMax) {
-          r[i] = Math.ceil(MMax[i] / 2)
+          if(MMax[i] === 'NA'){
+            r[i] = 'NA'
+          }else{
+            r[i] = Math.ceil(MMax[i] / 2)
+          }
         }
         return r
       }
@@ -253,7 +260,11 @@ angular.module('allocations')
       function setBWMin (MMax) {
         var r = {}
         for (var i in MMax) {
-          r[i] = Math.ceil(MMax[i] * 0.25)
+          if(MMax[i] === 'NA'){
+            r[i] = 'NA'
+          }else{
+            r[i] = Math.ceil(MMax[i] * 0.25)
+          }
         }
         return r
       }
