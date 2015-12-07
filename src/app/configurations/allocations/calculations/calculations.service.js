@@ -49,10 +49,14 @@ angular.module('allocations')
 
       function fillwithTemplate (facility, template) {
         for (var i in template.products) { //Todo: adjust this to suit the new template structure
-          facility['coverage'][i] = parseInt (template.products[i].coverage);
-          facility['wastage'][i] = template.products[i].wastage;
-          facility['schedule'][i] = parseInt (template.products[i].schedule);
-          facility['buffer'][i] = parseInt (template.products[i].buffer);
+          var coverage = parseInt (template.products[i].coverage)
+          var wastage = parseInt(template.products[i].wastage)
+          var buffer = parseInt (template.products[i].buffer)
+          var schedule = parseInt (template.products[i].schedule)
+          facility['coverage'][i] = isNaN(coverage) ? 0 : coverage
+          facility['wastage'][i] = isNaN(wastage) ? 0 : wastage
+          facility['schedule'][i] = isNaN(schedule) ? 0 : schedule
+          facility['buffer'][i] = isNaN(buffer) ? 0 : buffer
         }
         return facility;
       }
@@ -184,7 +188,7 @@ angular.module('allocations')
      */
     service.getMonthlyRequirement = function (facilities) {
 
-      return service.getAllocations(facilities)
+      return service.getAllocations(facilities, service.template.products)
         .then(service.getTargetPop)
         .then(function (r) {
           for (var i in facilities) {
@@ -204,7 +208,13 @@ angular.module('allocations')
             facility.MR = {}
             for (var pl in productList) {
               index = productList[pl]
-              facility.MR[productList[pl]] = Math.ceil((facility['bi-weeklyU1'] * 2) * (facility.coverage[index] / 100) * facility.schedule[index] * facility.wastage[index])
+              console.log(facility)
+              if(facility['bi-weeklyU1']){
+                facility.MR[productList[pl]] = Math.ceil((facility['bi-weeklyU1'] * 2) * (facility.coverage[index] / 100) * facility.schedule[index] * facility.wastage[index])
+              }else{
+                facility.MR[productList[pl]] = 'NA'
+              }
+              //facility.MR[productList[pl]] = Math.ceil((facility['bi-weeklyU1'] * 2) * (facility.coverage[index] / 100) * facility.schedule[index] * facility.wastage[index])
             }
           })
           console.info(facilities)
