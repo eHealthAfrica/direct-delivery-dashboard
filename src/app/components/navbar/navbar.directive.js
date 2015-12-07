@@ -5,7 +5,7 @@ angular.module('navbar').directive('ehaDropdownMenu', function () {
   return {
     scope: {items: '=', selectedItem: '=', onSelect: '&', selectedItemAsLabel: '='},
     templateUrl: function (tElem, tAttrs) {
-      return '/app/components/navbar/navbar.dropdown.template.html'
+      return 'app/components/navbar/navbar.dropdown.template.html'
     },
     restrict: 'E',
     replace: true,
