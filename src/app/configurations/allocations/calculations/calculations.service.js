@@ -1,6 +1,4 @@
-/**
- * Created by ehealthafrica on 7/11/15.
- */
+'use strict'
 
 angular.module('allocations')
   .service('calculationService', function ($q, locationService, dbService, pouchUtil, assumptionService) {
@@ -44,9 +42,9 @@ angular.module('allocations')
         .then(pouchUtil.pluckDocs)
     }
     service.getAllocations = function (facilities) {
-      var promises = {}
 
       function fillwithTemplate (facility, template) {
+
         for (var i in template.products) { // Todo: adjust this to suit the new template structure
           var coverage = parseInt(template.products[i].coverage, 10)
           var wastage = parseInt(template.products[i].wastage, 10)
@@ -63,51 +61,32 @@ angular.module('allocations')
       function setAllocations () {
         var view = 'allocations/custom-templates'
 
-        facilities.forEach(function (facility) {
-          facility.coverage = {}
-          facility.wastage = {}
-          facility.schedule = {}
-          facility.buffer = {}
+        return dbService.getView(view, {include_docs: true})
+          .then(pouchUtil.pluckDocs)
+          .then(function (response) {
+            console.log(response)
+            facilities.forEach(function (facility) {
+              facility.coverage = {}
+              facility.wastage = {}
+              facility.schedule = {}
+              facility.buffer = {}
 
-          // get custom template
-          return (function (v, key) {
-            var opts = {
-              include_docs: true,
-              key: key
-            }
-            return dbService.getView(v, opts)
-          }(view, facility._id))
-        })
-        return facilities
+              for(var i in response){
+                if(response[i]._id === (facility.name.trim().split(' ').join('-'))){
+                  console.info(facility.name, response[i])
+                  facility.custom_template = true;
+                  fillwithTemplate(facility, response[i])
+                }else{
+                  facility.custom_template = false;
+                  fillwithTemplate(facility, service.template)
+                }
+              }
+            })
+            return facilities
+          })
+
       }
-
-      setAllocations()
-
-      return $q.all(promises)
-        .then(function (response) {
-          var r = {}
-          for (var i in response) {
-            if (response[i].rows.length > 0) {
-              r[i] = response[i].rows[0].doc
-            }
-          }
-          return r
-        })
-        .then(function (r) {
-          var keys = Object.keys(r)
-          var index
-          for (var v in facilities) {
-            index = keys.indexOf(r)
-
-            if (index !== -1) {
-              console.log(r)
-              fillwithTemplate(facilities[v], r[facilities[v]._id])
-            } else {
-              fillwithTemplate(facilities[v], service.template)
-            }
-          }
-          return facilities
-        })
+      return setAllocations()
     }
 
     /**
