@@ -44,108 +44,32 @@ angular.module('allocations')
         .then(pouchUtil.pluckDocs)
     }
     service.getAllocations = function (facilities) {
-      var deferred = $q.defer();
-      var promises = {};
+      var promises = {}
 
       function fillwithTemplate (facility, template) {
-        for (var i in template.products) { //Todo: adjust this to suit the new template structure
-          var coverage = parseInt (template.products[i].coverage)
-          var wastage = parseInt(template.products[i].wastage)
-          var buffer = parseInt (template.products[i].buffer)
-          var schedule = parseInt (template.products[i].schedule)
+        for (var i in template.products) { // Todo: adjust this to suit the new template structure
+          var coverage = parseInt(template.products[i].coverage, 10)
+          var wastage = parseInt(template.products[i].wastage, 10)
+          var buffer = parseInt(template.products[i].buffer, 10)
+          var schedule = parseInt(template.products[i].schedule, 10)
           facility['coverage'][i] = isNaN(coverage) ? 0 : coverage
           facility['wastage'][i] = isNaN(wastage) ? 0 : wastage
           facility['schedule'][i] = isNaN(schedule) ? 0 : schedule
           facility['buffer'][i] = isNaN(buffer) ? 0 : buffer
-        }
-        return facility;
-      }
-
-      function setAllocations () {
-        var view = 'allocations/custom-templates';
-
-        var opts = {
-          include_docs: true
-        };
-        facilities.forEach(function (facility) {
-
-          facility.coverage = {};
-          facility.wastage = {};
-          facility.schedule = {};
-          facility.buffer = {};
-
-          //get custom template
-          return (function (v, key) {
-            var opts = {
-              include_docs: true,
-              key: key
-            }
-            return dbService.getView(v, opts)
-          }(view, facility._id))
-
-        });
-        return facilities;
-      }
-
-      setAllocations ();
-
-      return $q.all(promises)
-        .then(function (response) {
-          var r = {};
-          for (i in response) {
-            if (response[i].rows.length > 0) {
-              r[i] = response[i].rows[0].doc;
-            }
-          }
-          return r;
-        })
-        .then(function (r) {
-          var keys = Object.keys(r);
-          var index;
-          for (v in facilities) {
-            index = keys.indexOf(r);
-
-            if (index !== -1) {
-              console.log(r);
-              fillwithTemplate (facilities[v], r[facilities[v]._id])
-            } else {
-              fillwithTemplate (facilities[v], service.template)
-            }
-          }
-          console.log(facilities);
-          return facilities;
-        });
-    }
-      /*service.getAllocations = function (facilities, products) {
-      function fillwithTemplate (facility, template, custom, products) {
-        var coverage, wastage, schedule, buffer, k
-        facility.customTemplate = custom && template
-        for (var i in products) {
-          k = products[i]
-          coverage = wastage = schedule = buffer = undefined
-          if (template.products[k]) {
-            coverage = parseInt(template.products[k].coverage, 10)
-            wastage = template.products[k].wastage
-            schedule = parseInt(template.products[k].schedule, 10)
-            buffer = parseInt(template.products[k].buffer, 10)
-          }
-          facility['coverage'][k] = isNaN(coverage) ? 0 : coverage
-          facility['wastage'][k] = isNaN(wastage) ? 0 : wastage
-          facility['schedule'][k] = isNaN(schedule) ? 0 : schedule
-          facility['buffer'][k] = isNaN(buffer) ? 0 : buffer
         }
         return facility
       }
 
       function setAllocations () {
         var view = 'allocations/custom-templates'
-        return facilities.map(function (facility) {
-          console.log(facility)
+
+        facilities.forEach(function (facility) {
           facility.coverage = {}
           facility.wastage = {}
           facility.schedule = {}
           facility.buffer = {}
 
+          // get custom template
           return (function (v, key) {
             var opts = {
               include_docs: true,
@@ -154,31 +78,38 @@ angular.module('allocations')
             return dbService.getView(v, opts)
           }(view, facility._id))
         })
+        return facilities
       }
-      return $q.all(setAllocations())
+
+      setAllocations()
+
+      return $q.all(promises)
         .then(function (response) {
-          return response.filter(function (item) {
-            return item.rows.length > 0
-          })
+          var r = {}
+          for (var i in response) {
+            if (response[i].rows.length > 0) {
+              r[i] = response[i].rows[0].doc
+            }
+          }
+          return r
         })
-        .then(function (results) {
-          facilities.forEach(function (facility) {
-            var customTpl
-            for (var i in results) {
-              if (results[i].rows[0].key === facility._id) {
-                customTpl = results[i].rows[0].doc
-                continue
-              }
-            }
-            if (customTpl) {
-              fillwithTemplate(facility, customTpl, true, products)
+        .then(function (r) {
+          var keys = Object.keys(r)
+          var index
+          for (var v in facilities) {
+            index = keys.indexOf(r)
+
+            if (index !== -1) {
+              console.log(r)
+              fillwithTemplate(facilities[v], r[facilities[v]._id])
             } else {
-              fillwithTemplate(facility, service.template, false, products)
+              fillwithTemplate(facilities[v], service.template)
             }
-          })
+          }
+          console.log(facilities)
           return facilities
         })
-    }*/
+    }
 
     /**
      * calculates monthly requirements using allocation
@@ -187,7 +118,6 @@ angular.module('allocations')
      * @returns {*} facilities inputed with MR(monthly requirement) field add to each
      */
     service.getMonthlyRequirement = function (facilities) {
-
       return service.getAllocations(facilities, service.template.products)
         .then(service.getTargetPop)
         .then(function (r) {
@@ -209,9 +139,9 @@ angular.module('allocations')
             for (var pl in productList) {
               index = productList[pl]
               console.log(facility)
-              if(facility['bi-weeklyU1']){
+              if (facility['bi-weeklyU1']) {
                 facility.MR[productList[pl]] = Math.ceil((facility['bi-weeklyU1'] * 2) * (facility.coverage[index] / 100) * facility.schedule[index] * facility.wastage[index])
-              }else{
+              } else {
                 facility.MR[productList[pl]] = 'NA'
               }
             }
@@ -225,9 +155,9 @@ angular.module('allocations')
       function getMax (facility) {
         var r = {}
         for (var i in facility.MR) {
-          if(facility.MR[i] === 'NA'){
+          if (facility.MR[i] === 'NA') {
             r[i] = 'NA'
-          }else{
+          } else {
             r[i] = Math.ceil(facility.MR[i] * (1 + (facility.buffer[i] / 100)))
           }
         }
@@ -248,9 +178,9 @@ angular.module('allocations')
       function setBWMax (MMax) {
         var r = {}
         for (var i in MMax) {
-          if(MMax[i] === 'NA'){
+          if (MMax[i] === 'NA') {
             r[i] = 'NA'
-          }else{
+          } else {
             r[i] = Math.ceil(MMax[i] / 2)
           }
         }
@@ -260,9 +190,9 @@ angular.module('allocations')
       function setBWMin (MMax) {
         var r = {}
         for (var i in MMax) {
-          if(MMax[i] === 'NA'){
+          if (MMax[i] === 'NA') {
             r[i] = 'NA'
-          }else{
+          } else {
             r[i] = Math.ceil(MMax[i] * 0.25)
           }
         }
