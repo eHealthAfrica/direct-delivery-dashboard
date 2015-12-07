@@ -106,7 +106,6 @@ angular.module('allocations')
               fillwithTemplate(facilities[v], service.template)
             }
           }
-          console.log(facilities)
           return facilities
         })
     }
@@ -138,7 +137,6 @@ angular.module('allocations')
             facility.MR = {}
             for (var pl in productList) {
               index = productList[pl]
-              console.log(facility)
               if (facility['bi-weeklyU1']) {
                 facility.MR[productList[pl]] = Math.ceil((facility['bi-weeklyU1'] * 2) * (facility.coverage[index] / 100) * facility.schedule[index] * facility.wastage[index])
               } else {
