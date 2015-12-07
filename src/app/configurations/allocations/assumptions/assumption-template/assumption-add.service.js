@@ -30,7 +30,7 @@ angular.module('allocations')
         }
       })
         .result
-        .then(function(response){
+        .then(function (response) {
           return assumptionService.save(response)
         })
     }

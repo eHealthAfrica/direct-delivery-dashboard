@@ -42,9 +42,7 @@ angular.module('allocations')
         .then(pouchUtil.pluckDocs)
     }
     service.getAllocations = function (facilities) {
-
       function fillwithTemplate (facility, template) {
-
         for (var i in template.products) { // Todo: adjust this to suit the new template structure
           var coverage = parseInt(template.products[i].coverage, 10)
           var wastage = parseInt(template.products[i].wastage, 10)
@@ -71,20 +69,19 @@ angular.module('allocations')
               facility.schedule = {}
               facility.buffer = {}
 
-              for(var i in response){
-                if(response[i]._id === (facility.name.trim().split(' ').join('-'))){
+              for (var i in response) {
+                if (response[i]._id === (facility.name.trim().split(' ').join('-'))) {
                   console.info(facility.name, response[i])
-                  facility.custom_template = true;
+                  facility.custom_template = true
                   fillwithTemplate(facility, response[i])
-                }else{
-                  facility.custom_template = false;
+                } else {
+                  facility.custom_template = false
                   fillwithTemplate(facility, service.template)
                 }
               }
             })
             return facilities
           })
-
       }
       return setAllocations()
     }

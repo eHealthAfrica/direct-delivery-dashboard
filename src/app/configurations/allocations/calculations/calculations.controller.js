@@ -157,10 +157,10 @@ angular.module('allocations')
         emptyTemplate.products[product]['wastage'] = data.wastage[product]
       }
       assumptionAddService.openForm(emptyTemplate)
-        .then(function (r){
+        .then(function (r) {
           log.success('assumptionSaved', data)
         })
-        .catch(function (err){
+        .catch(function (err) {
           log.error('assumptionSaveFailed', err)
         })
     }
