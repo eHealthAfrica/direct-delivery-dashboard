@@ -43,8 +43,76 @@ angular.module('allocations')
       return dbService.getView(view, options)
         .then(pouchUtil.pluckDocs)
     }
+    service.getAllocations = function (facilities) {
+      var deferred = $q.defer();
+      var promises = {};
 
-    service.getAllocations = function (facilities, products) {
+      function fillwithTemplate (facility, template) {
+        for (var i in template.products) { //Todo: adjust this to suit the new template structure
+          facility['coverage'][i] = parseInt (template.products[i].coverage);
+          facility['wastage'][i] = template.products[i].wastage;
+          facility['schedule'][i] = parseInt (template.products[i].schedule);
+          facility['buffer'][i] = parseInt (template.products[i].buffer);
+        }
+        return facility;
+      }
+
+      function setAllocations () {
+        var view = 'allocations/custom-templates';
+
+        var opts = {
+          include_docs: true
+        };
+        facilities.forEach(function (facility) {
+
+          facility.coverage = {};
+          facility.wastage = {};
+          facility.schedule = {};
+          facility.buffer = {};
+
+          //get custom template
+          return (function (v, key) {
+            var opts = {
+              include_docs: true,
+              key: key
+            }
+            return dbService.getView(v, opts)
+          }(view, facility._id))
+
+        });
+        return facilities;
+      }
+
+      setAllocations ();
+
+      return $q.all(promises)
+        .then(function (response) {
+          var r = {};
+          for (i in response) {
+            if (response[i].rows.length > 0) {
+              r[i] = response[i].rows[0].doc;
+            }
+          }
+          return r;
+        })
+        .then(function (r) {
+          var keys = Object.keys(r);
+          var index;
+          for (v in facilities) {
+            index = keys.indexOf(r);
+
+            if (index !== -1) {
+              console.log(r);
+              fillwithTemplate (facilities[v], r[facilities[v]._id])
+            } else {
+              fillwithTemplate (facilities[v], service.template)
+            }
+          }
+          console.log(facilities);
+          return facilities;
+        });
+    }
+      /*service.getAllocations = function (facilities, products) {
       function fillwithTemplate (facility, template, custom, products) {
         var coverage, wastage, schedule, buffer, k
         facility.customTemplate = custom && template
@@ -68,6 +136,7 @@ angular.module('allocations')
       function setAllocations () {
         var view = 'allocations/custom-templates'
         return facilities.map(function (facility) {
+          console.log(facility)
           facility.coverage = {}
           facility.wastage = {}
           facility.schedule = {}
@@ -105,7 +174,7 @@ angular.module('allocations')
           })
           return facilities
         })
-    }
+    }*/
 
     /**
      * calculates monthly requirements using allocation
@@ -114,6 +183,7 @@ angular.module('allocations')
      * @returns {*} facilities inputed with MR(monthly requirement) field add to each
      */
     service.getMonthlyRequirement = function (facilities) {
+
       return service.getAllocations(facilities)
         .then(service.getTargetPop)
         .then(function (r) {
@@ -137,6 +207,7 @@ angular.module('allocations')
               facility.MR[productList[pl]] = Math.ceil((facility['bi-weeklyU1'] * 2) * (facility.coverage[index] / 100) * facility.schedule[index] * facility.wastage[index])
             }
           })
+          console.info(facilities)
           return facilities
         })
     }
