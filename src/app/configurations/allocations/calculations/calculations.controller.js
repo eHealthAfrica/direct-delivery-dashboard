@@ -158,7 +158,10 @@ angular.module('allocations')
       }
       assumptionAddService.openForm(emptyTemplate)
         .then(function (r){
-          console.info(r)
+          log.success('assumptionSaved', data)
+        })
+        .catch(function (err){
+          log.error('assumptionSaveFailed', err)
         })
     }
 
