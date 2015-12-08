@@ -10,7 +10,7 @@ angular.module('configurations')
         parent: 'index',
         abstract: true,
         url: '/configurations',
-        templateUrl: 'app/configurations/index.html',
+        templateUrl: 'app/configurations/configurations.html',
         data: {
           roles: [
             'direct_delivery_dashboard_super'
