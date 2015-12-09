@@ -141,6 +141,9 @@ angular.module('planning')
 
     function createAndExit () {
       planningService.createRound(vm.deliveryRound)
+        .then(function (data) {
+          return sendEmail(angular.extend({}, vm.deliveryRound, data))
+        })
         .then(onSuccessExit)
         .catch(planningService.onSaveError)
     }
