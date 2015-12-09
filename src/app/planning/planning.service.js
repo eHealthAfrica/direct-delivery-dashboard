@@ -6,8 +6,7 @@ angular.module('planning')
     pouchUtil,
     log,
     utility,
-    ROUND_STATUS,
-    authService
+    ROUND_STATUS
   ) {
     var deliveryDocType = 'deliveryRound'
 
