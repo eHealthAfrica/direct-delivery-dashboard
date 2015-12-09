@@ -165,7 +165,7 @@ angular.module('allocations')
         })
     }
 
-    authService.getUserSelectedState('object')
+    authService.getUserSelectedState(true)
       .then(function (response) {
         vm.selectedState = response
         return vm.selectedState

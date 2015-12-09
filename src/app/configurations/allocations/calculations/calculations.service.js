@@ -62,7 +62,6 @@ angular.module('allocations')
         return dbService.getView(view, {include_docs: true})
           .then(pouchUtil.pluckDocs)
           .then(function (response) {
-            console.log(response)
             facilities.forEach(function (facility) {
               facility.coverage = {}
               facility.wastage = {}
@@ -71,7 +70,6 @@ angular.module('allocations')
 
               for (var i in response) {
                 if (response[i]._id === (facility.name.trim().split(' ').join('-'))) {
-                  console.info(facility.name, response[i])
                   facility.custom_template = true
                   fillwithTemplate(facility, response[i])
                 } else {
