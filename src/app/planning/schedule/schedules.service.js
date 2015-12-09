@@ -50,10 +50,9 @@ angular.module('planning')
     }
 
     _this.getRoundEmailTemplate = function (deliveryRound) {
-      var stateCode = deliveryRound.roundCode && deliveryRound.roundCode.split('-')[0] || deliveryRound.id.split('-')[0]
       var doc = 'round-email'
       var options = {include_docs: true}
-      return dbService.get(view, options)
+      return dbService.get(doc, options)
         .then(function (data) {
           var msg = data && data.content && data.content.replace('{roundId}', deliveryRound.roundCode)
           var subject = data && data.subject && data.subject.replace('{roundId}', deliveryRound.roundCode)
@@ -63,7 +62,6 @@ angular.module('planning')
     }
 
     _this.getStartRoundEmailTemplate = function (deliveryRound) {
-      var stateCode = deliveryRound.id.split('-')[0]
       var doc = 'round-start-email'
       var options = {include_docs: true}
       return dbService.get(doc, options)
