@@ -1,14 +1,10 @@
 {
 "docs": [
   {
-    "_id": "192a5379e644c6f3422ea801e8000bc9",
+    "_id": "round-start-email",
     "_rev": "1-6ee1c055b8cf5e894e23d60c3e1cebc1",
     "content": "<p>Hi</p><p>A new round {roundId} has been created for {state}. Start Date : {startDate}, End Date {endDate}</p><p>Thanks</p>",
-    "type": "round-start-alert",
-    "states": [
-      "KN",
-      "BA"
-    ],
+    "type": "round-start-email",
     "subject": "[VDD] {roundId} has been created"
   }
         ]

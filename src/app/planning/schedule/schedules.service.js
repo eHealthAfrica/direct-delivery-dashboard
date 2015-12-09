@@ -51,13 +51,12 @@ angular.module('planning')
 
     _this.getRoundEmailTemplate = function (deliveryRound) {
       var stateCode = deliveryRound.roundCode && deliveryRound.roundCode.split('-')[0] || deliveryRound.id.split('-')[0]
-      var view = 'dashboard-delivery-rounds/round-emails'
-      var options = {include_docs: true, key: stateCode}
-      return dbService.getView(view, options)
-        .then(pouchUtil.pluckDocs)
+      var doc = 'round-email'
+      var options = {include_docs: true}
+      return dbService.get(view, options)
         .then(function (data) {
-          var msg = data[0] && data[0].content && data[0].content.replace('{roundId}', deliveryRound.roundCode)
-          var subject = data[0] && data[0].subject && data[0].subject.replace('{roundId}', deliveryRound.roundCode)
+          var msg = data && data.content && data.content.replace('{roundId}', deliveryRound.roundCode)
+          var subject = data && data.subject && data.subject.replace('{roundId}', deliveryRound.roundCode)
           var result = {msg: msg, subject: subject}
           return result
         })
@@ -65,16 +64,15 @@ angular.module('planning')
 
     _this.getStartRoundEmailTemplate = function (deliveryRound) {
       var stateCode = deliveryRound.id.split('-')[0]
-      var view = 'dashboard-delivery-rounds/round-start-alert'
-      var options = {include_docs: true, key: stateCode}
-      return dbService.getView(view, options)
-        .then(pouchUtil.pluckDocs)
+      var doc = 'round-start-email'
+      var options = {include_docs: true}
+      return dbService.get(doc, options)
         .then(function (data) {
-          var msg = data[0] && data[0].content && data[0].content
+          var msg = data && data.content && data.content
               .replace('{roundId}', deliveryRound.id)
               .replace('{state}', deliveryRound.state).replace('{startDate}', $filter('date')(deliveryRound.startDate, 'dd-MM-yyyy'))
               .replace('{endDate}', $filter('date')(deliveryRound.endDate, 'dd-MM-yyyy'))
-          var subject = data[0] && data[0].subject && data[0].subject.replace('{roundId}', deliveryRound.id)
+          var subject = data && data.subject && data.subject.replace('{roundId}', deliveryRound.id)
           var result = {msg: msg, subject: subject}
           return result
         })
