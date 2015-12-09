@@ -8,9 +8,9 @@ angular.module('allocations')
     vm.docTypes = assumptionService.DOC_TYPES
 
     vm.editTemplate = function (template) {
-      var modalInstance = assumptionAddService.openForm(template, template.doc_type)
+      assumptionAddService.openForm(template, template.doc_type)
         .then(function (r) {
-          log.success('assumptionSaved', data)
+          log.success('assumptionSaved', r)
         })
         .catch(function (err) {
           log.error('assumptionSaveFailed', err)
@@ -18,9 +18,11 @@ angular.module('allocations')
     }
 
     vm.createNewTemplate = function (templateType) {
-      var modalInstance = assumptionAddService.openForm(null, templateType)
+      assumptionAddService.openForm(null, templateType)
         .then(function (r) {
-          log.success('assumptionSaved', data)
+          r.new = true
+          vm.assumptionList.unshift(r)
+          log.success('assumptionSaved', r)
         })
         .catch(function (err) {
           log.error('assumptionSaveFailed', err)
