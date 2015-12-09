@@ -9,5 +9,6 @@ angular.module('reports', [
   'location',
   'db',
   'planning',
-  'auth'
+  'auth',
+  'eha.round-search'
 ])

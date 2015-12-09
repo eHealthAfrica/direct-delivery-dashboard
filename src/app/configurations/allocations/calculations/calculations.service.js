@@ -43,36 +43,33 @@ angular.module('allocations')
       return dbService.getView(view, options)
         .then(pouchUtil.pluckDocs)
     }
+    service.getAllocations = function (facilities) {
+      var promises = {}
 
-    service.getAllocations = function (facilities, products) {
-      function fillwithTemplate (facility, template, custom, products) {
-        var coverage, wastage, schedule, buffer, k
-        facility.customTemplate = custom && template
-        for (var i in products) {
-          k = products[i]
-          coverage = wastage = schedule = buffer = undefined
-          if (template.products[k]) {
-            coverage = parseInt(template.products[k].coverage, 10)
-            wastage = template.products[k].wastage
-            schedule = parseInt(template.products[k].schedule, 10)
-            buffer = parseInt(template.products[k].buffer, 10)
-          }
-          facility['coverage'][k] = isNaN(coverage) ? 0 : coverage
-          facility['wastage'][k] = isNaN(wastage) ? 0 : wastage
-          facility['schedule'][k] = isNaN(schedule) ? 0 : schedule
-          facility['buffer'][k] = isNaN(buffer) ? 0 : buffer
+      function fillwithTemplate (facility, template) {
+        for (var i in template.products) { // Todo: adjust this to suit the new template structure
+          var coverage = parseInt(template.products[i].coverage, 10)
+          var wastage = parseInt(template.products[i].wastage, 10)
+          var buffer = parseInt(template.products[i].buffer, 10)
+          var schedule = parseInt(template.products[i].schedule, 10)
+          facility['coverage'][i] = isNaN(coverage) ? 0 : coverage
+          facility['wastage'][i] = isNaN(wastage) ? 0 : wastage
+          facility['schedule'][i] = isNaN(schedule) ? 0 : schedule
+          facility['buffer'][i] = isNaN(buffer) ? 0 : buffer
         }
         return facility
       }
 
       function setAllocations () {
         var view = 'allocations/custom-templates'
-        return facilities.map(function (facility) {
+
+        facilities.forEach(function (facility) {
           facility.coverage = {}
           facility.wastage = {}
           facility.schedule = {}
           facility.buffer = {}
 
+          // get custom template
           return (function (v, key) {
             var opts = {
               include_docs: true,
@@ -81,28 +78,35 @@ angular.module('allocations')
             return dbService.getView(v, opts)
           }(view, facility._id))
         })
+        return facilities
       }
-      return $q.all(setAllocations())
+
+      setAllocations()
+
+      return $q.all(promises)
         .then(function (response) {
-          return response.filter(function (item) {
-            return item.rows.length > 0
-          })
+          var r = {}
+          for (var i in response) {
+            if (response[i].rows.length > 0) {
+              r[i] = response[i].rows[0].doc
+            }
+          }
+          return r
         })
-        .then(function (results) {
-          facilities.forEach(function (facility) {
-            var customTpl
-            for (var i in results) {
-              if (results[i].rows[0].key === facility._id) {
-                customTpl = results[i].rows[0].doc
-                continue
-              }
-            }
-            if (customTpl) {
-              fillwithTemplate(facility, customTpl, true, products)
+        .then(function (r) {
+          var keys = Object.keys(r)
+          var index
+          for (var v in facilities) {
+            index = keys.indexOf(r)
+
+            if (index !== -1) {
+              console.log(r)
+              fillwithTemplate(facilities[v], r[facilities[v]._id])
             } else {
-              fillwithTemplate(facility, service.template, false, products)
+              fillwithTemplate(facilities[v], service.template)
             }
-          })
+          }
+          console.log(facilities)
           return facilities
         })
     }
@@ -114,7 +118,7 @@ angular.module('allocations')
      * @returns {*} facilities inputed with MR(monthly requirement) field add to each
      */
     service.getMonthlyRequirement = function (facilities) {
-      return service.getAllocations(facilities)
+      return service.getAllocations(facilities, service.template.products)
         .then(service.getTargetPop)
         .then(function (r) {
           for (var i in facilities) {
@@ -134,9 +138,15 @@ angular.module('allocations')
             facility.MR = {}
             for (var pl in productList) {
               index = productList[pl]
-              facility.MR[productList[pl]] = Math.ceil((facility['bi-weeklyU1'] * 2) * (facility.coverage[index] / 100) * facility.schedule[index] * facility.wastage[index])
+              console.log(facility)
+              if (facility['bi-weeklyU1']) {
+                facility.MR[productList[pl]] = Math.ceil((facility['bi-weeklyU1'] * 2) * (facility.coverage[index] / 100) * facility.schedule[index] * facility.wastage[index])
+              } else {
+                facility.MR[productList[pl]] = 'NA'
+              }
             }
           })
+          console.info(facilities)
           return facilities
         })
     }
@@ -145,7 +155,11 @@ angular.module('allocations')
       function getMax (facility) {
         var r = {}
         for (var i in facility.MR) {
-          r[i] = Math.ceil(facility.MR[i] * (1 + (facility.buffer[i] / 100)))
+          if (facility.MR[i] === 'NA') {
+            r[i] = 'NA'
+          } else {
+            r[i] = Math.ceil(facility.MR[i] * (1 + (facility.buffer[i] / 100)))
+          }
         }
         return r
       }
@@ -164,7 +178,11 @@ angular.module('allocations')
       function setBWMax (MMax) {
         var r = {}
         for (var i in MMax) {
-          r[i] = Math.ceil(MMax[i] / 2)
+          if (MMax[i] === 'NA') {
+            r[i] = 'NA'
+          } else {
+            r[i] = Math.ceil(MMax[i] / 2)
+          }
         }
         return r
       }
@@ -172,7 +190,11 @@ angular.module('allocations')
       function setBWMin (MMax) {
         var r = {}
         for (var i in MMax) {
-          r[i] = Math.ceil(MMax[i] * 0.25)
+          if (MMax[i] === 'NA') {
+            r[i] = 'NA'
+          } else {
+            r[i] = Math.ceil(MMax[i] * 0.25)
+          }
         }
         return r
       }

@@ -64,21 +64,12 @@
         </div>
         <div class="row" ng-if="devRepCtrl.filterType">
           <div class="col-md-6">
-            <label></label>
-            <div class="form-group has-feedback">
-              <input
-                type="text"
-                class="form-control input-lg filter"
-                placeholder="Enter Round code"
-                ng-model="devRepCtrl.selectedRound"
-                typeahead="roundCode for roundCode in devRepCtrl.roundCodes"
-                typeahead-on-select="devRepCtrl.updateReport()"
-                typeahead-append-to-body="true"
-              >
-                <span class="form-control-feedback">
-                  <i class="fa fa-lg fa-search"></i>
-                </span>
-            </div>
+            <eha-round-search
+              ng-model="devRepCtrl.selectedRound"
+              rounds="devRepCtrl.roundCodes"
+              on-select="devRepCtrl.updateReport"
+              is-loading="devRepCtrl.isLoading"
+            ></eha-round-search>
           </div>
         </div>
       </div>

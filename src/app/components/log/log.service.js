@@ -27,7 +27,7 @@ angular.module('log')
       }
       text = text.join('. ') + '.'
 
-      $log[type.log](text, message, context)
+      $log.debug(text, message, context)
       return toastr[type.toastr](text, message.title)
     }
 

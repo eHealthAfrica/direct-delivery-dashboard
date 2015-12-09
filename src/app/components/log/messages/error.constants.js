@@ -186,5 +186,10 @@ angular.module('log')
       title: 'Notification error',
       message: 'Error occured while trying to send email',
       remedy: 'Please, contact support if it persists'
+    },
+    missingRoundReport: {
+      title: 'Missing round report',
+      message: 'The selected round does not contain a report',
+      remedy: 'Please ensure the round contains a delivery schedule'
     }
   })
