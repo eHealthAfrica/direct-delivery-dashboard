@@ -9,43 +9,21 @@ angular.module('allocations')
 
     vm.editTemplate = function (template) {
       var modalInstance = assumptionAddService.openForm(template, template.doc_type)
-      modalInstance.result
-        .then(function (formData) {
-          assumptionService.save(formData)
-            .then(function (data) {
-              log.success('assumptionEdited', data)
-              return assumptionService.getAll()
-            })
-            .then(function (data) {
-              vm.assumptionList = data
-            })
-            .catch(function (err) {
-              return log.error('assumptionSaveFailed', err)
-            })
+        .then(function (r) {
+          log.success('assumptionSaved', data)
         })
         .catch(function (err) {
-          log.info('canceledAssumptionEdit', err)
+          log.error('assumptionSaveFailed', err)
         })
     }
 
     vm.createNewTemplate = function (templateType) {
       var modalInstance = assumptionAddService.openForm(null, templateType)
-      modalInstance.result
-        .then(function (formData) {
-          assumptionService.save(formData)
-            .then(function (data) {
-              log.success('assumptionSaved', data)
-              return assumptionService.getAll()
-            })
-            .then(function (data) {
-              vm.assumptionList = data
-            })
-            .catch(function (err) {
-              return log.error('assumptionSaveFailed', err)
-            })
+        .then(function (r) {
+          log.success('assumptionSaved', data)
         })
         .catch(function (err) {
-          log.info('canceledAssumptionEdit', err)
+          log.error('assumptionSaveFailed', err)
         })
     }
 
