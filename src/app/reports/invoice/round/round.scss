@@ -1,54 +1,56 @@
 @import '../../../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/variables';
 
-#report {
-  & > .report-title {
-    margin-bottom: 20px;
+section.reports {
+  #report {
+    & > .report-title {
+      margin-bottom: 20px;
 
-    img {
-      float: left;
-      max-height: 40px;
-      margin: 0 20px 10px 0;
+      img {
+        float: left;
+        max-height: 40px;
+        margin: 0 20px 10px 0;
+      }
+
+      h1 {
+        font-size: 28px;
+        margin-top: 0;
+      }
     }
 
-    h1 {
-      font-size: 28px;
-      margin-top: 0;
+    img.signature {
+      max-width: 100px;
     }
-  }
 
-  img.signature {
-    max-width: 100px;
-  }
+    .success {
+      background: $state-success-bg !important;
+    }
 
-  .success {
-    background: $state-success-bg !important;
-  }
+    .info {
+      background: $state-info-bg !important;
+    }
 
-  .info {
-    background: $state-info-bg !important;
-  }
+    .warning {
+      background: $state-warning-bg !important;
+    }
 
-  .warning {
-    background: $state-warning-bg !important;
-  }
+    .danger {
+      background: $state-danger-bg !important;
+    }
 
-  .danger {
-    background: $state-danger-bg !important;
-  }
+    .zone1 {
+      background: #d9ead3 !important;
+    }
 
-  .zone1 {
-    background: #d9ead3 !important;
-  }
+    .zone2 {
+      background: #c9daf8 !important;
+    }
 
-  .zone2 {
-    background: #c9daf8 !important;
-  }
+    .zone3 {
+      background: #fce5cd !important;
+    }
 
-  .zone3 {
-    background: #fce5cd !important;
-  }
-
-  .zone4 {
-    background: #f4cccc !important;
+    .zone4 {
+      background: #f4cccc !important;
+    }
   }
 }

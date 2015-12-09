@@ -1,83 +1,30 @@
-// Override Sass dependency variables
+// Override Bower dependency variables
 $icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 $fa-font-path: "../../bower_components/font-awesome/fonts";
 
-// Inject Sass dependencies
+// Inject Bower Sass dependencies
 // bower:scss
 // endbower
 
-.content {
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
+// Inject app Sass dependencies
+// injector
+// endinjector
 
+// Global Bootstrap overrides
 .page-header {
   margin-top: 0;
   margin-bottom: 10px;
   border: none;
 }
 
-// use pointer for all nav links, even those without a href (they generally use ng-click)
-.nav > li > a:hover,
-.nav > li > a:focus {
-  cursor: pointer;
-}
-
-td.actions {
-  width: 1px;
-  white-space: nowrap;
-}
-dl > dt, dl > dd {
-  margin: 0.7em;
-  text-transform: capitalize;
-}
 .pointer {
   cursor: pointer;
 }
 
-.switch input {
-  display: none;
-}
-.switch i {
-  display: inline-block;
-  cursor: pointer;
-  padding-right: 20px;
-  transition: all ease 0.2s;
-  -webkit-transition: all ease 0.2s;
-  border-radius: 20px;
-  box-shadow: inset 0 0 1px rgba(0,0,0,.5);
-}
-.switch i:before {
-  display: block;
-  content: '';
-  width: 20px;
-  height: 20px;
-  border-radius: 20px;
-  background: white;
-  box-shadow: 0 1px 2px rgba(0,0,0,.5);
-}
-.switch :checked + i {
-  padding-right: 0;
-  padding-left: 20px;
-  box-shadow: inset 0 0 1px rgba(0,0,0,.5), inset 0 0 40px lightblue;
-  -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,.5), inset 0 0 40px lightblue;
-}
-
-.switch.red :checked + i {
-  box-shadow: inset 0 0 1px rgba(0,0,0,.5), inset 0 0 40px red;
-  -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,.5), inset 0 0 40px red;
-}
-
-.wrapped-content {
-  border-collapse:collapse;
-  font-size: 90%;
-  td, th{
-    word-wrap:break-word;
+// Index section
+section.index {
+  .content {
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
 }
-
-// injector
-@import 'home/home.scss';
-@import 'reports/invoice/round/round.scss';
-@import 'configurations/allocations/assumptions/assumptions.scss';
-// endinjector

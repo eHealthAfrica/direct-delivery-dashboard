@@ -7,7 +7,7 @@ angular.module('configurations')
         abstract: true,
         parent: 'index',
         url: '/reports',
-        templateUrl: 'app/reports/index.html',
+        templateUrl: 'app/reports/reports.html',
         data: {
           roles: [
             'direct_delivery_dashboard_accounting',
