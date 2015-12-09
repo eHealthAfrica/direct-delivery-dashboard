@@ -16,7 +16,7 @@
         <a href ng-bind="allocation.name"></a>
       </td>
       <td ng-repeat="p in calculationsController.productList" ng-class="{'bg-warning': allocation[calculationsController.activeView][p] === 'NA'}">
-        <span ng-show="!allocation[calculationsController.activeView][p]">-</span>
+        <span ng-show="!allocation[calculationsController.activeView][p] && allocation[calculationsController.activeView][p] !== 0">-</span>
         {{allocation[calculationsController.activeView][p]}}
       <span ng-show="(calculationsController.activeView ==='coverage' || calculationsController.activeView === 'buffer') && allocation[calculationsController.activeView][p]">%</span>
       </td>
