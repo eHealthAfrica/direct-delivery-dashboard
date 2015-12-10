@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('reports')
-  .controller('ReportsRoundCtrl', function ($stateParams, $window, drivers, ZONE_CLASS, reportsService, dailyDeliveries, log, $timeout) {
+  .controller('ReportsRoundCtrl', function ($stateParams, $window, drivers, ZONE_CLASS, reportsService, dailyDeliveries, log, $timeout, APP_CONSTANTS) {
     var vm = this
     var keys = ['driverID', 'date']
     var keyRows = {}
@@ -12,6 +12,7 @@ angular.module('reports')
       page: 1,
       lastPage: 1
     }
+    vm.limits = APP_CONSTANTS.pageSizes
 
     vm.drivers = drivers
     vm.zoneClass = {}
@@ -43,7 +44,7 @@ angular.module('reports')
         vm.getReport(1).then(function () {
           $timeout(function () {
             $window.jQuery('#report').print()
-          }, 2000)
+          })
         })
       } else {
         $window.jQuery('#report').print()
@@ -56,15 +57,22 @@ angular.module('reports')
     formatReport()
 
     vm.getReport = function (page) {
+      var all
       keyRows = {}
       lastKeyValues = []
       vm.pagination.page = page || vm.pagination.page
       vm.pagination.skip = (vm.pagination.page - 1) * vm.pagination.limit
       if (parseInt(vm.pagination.limit, 10) === 0) {
         vm.pagination = {}
+        all = true
       }
       return reportsService.getDailyDeliveries($stateParams.id, vm.pagination)
         .then(loadReport)
+        .then(function () {
+          if (all) {
+            vm.pagination.limit = 0
+          }
+        })
         .catch(function (reason) {
           log.error('invoiceDailyDeliveryErr', reason)
         })
@@ -91,7 +99,12 @@ angular.module('reports')
     }
 
     function getLastPage () {
-      vm.pagination.lastPage = Math.ceil(vm.pagination.totalItems / vm.pagination.limit)
+      if (!vm.pagination.limit) {
+        vm.pagination.lastPage = 1
+        vm.pagination.page = 1
+      } else {
+        vm.pagination.lastPage = Math.ceil(vm.pagination.totalItems / vm.pagination.limit)
+      }
       return vm.pagination.lastPage
     }
 
