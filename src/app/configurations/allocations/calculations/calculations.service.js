@@ -44,10 +44,10 @@ angular.module('allocations')
     service.getAllocations = function (facilities) {
       function fillwithTemplate (facility, template) {
         for (var i in template.products) { // Todo: adjust this to suit the new template structure
-          var coverage = parseInt(template.products[i].coverage, 10)
-          var wastage = parseInt(template.products[i].wastage, 10)
-          var buffer = parseInt(template.products[i].buffer, 10)
-          var schedule = parseInt(template.products[i].schedule, 10)
+          var coverage = parseFloat(template.products[i].coverage, 10)
+          var wastage = parseFloat(template.products[i].wastage, 10)
+          var buffer = parseFloat(template.products[i].buffer, 10)
+          var schedule = parseFloat(template.products[i].schedule, 10)
           facility['coverage'][i] = isNaN(coverage) ? 0 : coverage
           facility['wastage'][i] = isNaN(wastage) ? 0 : wastage
           facility['schedule'][i] = isNaN(schedule) ? 0 : schedule
@@ -67,15 +67,15 @@ angular.module('allocations')
               facility.wastage = {}
               facility.schedule = {}
               facility.buffer = {}
+              facility.custom_template = false
 
               for (var i in response) {
                 if (response[i]._id === (facility.name.trim().split(' ').join('-'))) {
                   facility.custom_template = true
                   fillwithTemplate(facility, response[i])
-                } else {
-                  facility.custom_template = false
-                  fillwithTemplate(facility, service.template)
+                  break
                 }
+                fillwithTemplate(facility, service.template)
               }
             })
             return facilities
@@ -97,8 +97,8 @@ angular.module('allocations')
           for (var i in facilities) {
             for (var v in r) {
               if (r[v].facility._id === facilities[i]._id) {
-                facilities[i].annualU1 = parseInt(r[v].annualU1, 10)
-                facilities[i]['bi-weeklyU1'] = parseInt(r[v]['bi-weeklyU1'], 10)
+                facilities[i].annualU1 = parseFloat(r[v].annualU1, 10)
+                facilities[i]['bi-weeklyU1'] = parseFloat(r[v]['bi-weeklyU1'], 10)
               }
             }
           }

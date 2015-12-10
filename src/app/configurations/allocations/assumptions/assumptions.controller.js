@@ -1,6 +1,5 @@
-/**
- * Created by ehealthafrica on 7/7/15.
- */
+'use strict'
+
 angular.module('allocations')
   .controller('AssumptionsCtrl', function (assumptionList, assumptionAddService, assumptionService, log) {
     var vm = this
