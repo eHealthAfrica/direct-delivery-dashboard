@@ -29,5 +29,12 @@ angular.module('allocations')
           }
         }
       })
+        .result
+        .then(function (response) {
+          return assumptionService.save(response)
+            .then(function (r) {
+              return angular.extend(r, response)
+            })
+        })
     }
   })

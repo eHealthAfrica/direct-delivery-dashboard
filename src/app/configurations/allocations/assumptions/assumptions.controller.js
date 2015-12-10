@@ -1,6 +1,5 @@
-/**
- * Created by ehealthafrica on 7/7/15.
- */
+'use strict'
+
 angular.module('allocations')
   .controller('AssumptionsCtrl', function (assumptionList, assumptionAddService, assumptionService, log) {
     var vm = this
@@ -8,44 +7,24 @@ angular.module('allocations')
     vm.docTypes = assumptionService.DOC_TYPES
 
     vm.editTemplate = function (template) {
-      var modalInstance = assumptionAddService.openForm(template, template.doc_type)
-      modalInstance.result
-        .then(function (formData) {
-          assumptionService.save(formData)
-            .then(function (data) {
-              log.success('assumptionEdited', data)
-              return assumptionService.getAll()
-            })
-            .then(function (data) {
-              vm.assumptionList = data
-            })
-            .catch(function (err) {
-              return log.error('assumptionSaveFailed', err)
-            })
+      assumptionAddService.openForm(template, template.doc_type)
+        .then(function (r) {
+          log.success('assumptionSaved', r)
         })
         .catch(function (err) {
-          log.info('canceledAssumptionEdit', err)
+          log.error('assumptionSaveFailed', err)
         })
     }
 
     vm.createNewTemplate = function (templateType) {
-      var modalInstance = assumptionAddService.openForm(null, templateType)
-      modalInstance.result
-        .then(function (formData) {
-          assumptionService.save(formData)
-            .then(function (data) {
-              log.success('assumptionSaved', data)
-              return assumptionService.getAll()
-            })
-            .then(function (data) {
-              vm.assumptionList = data
-            })
-            .catch(function (err) {
-              return log.error('assumptionSaveFailed', err)
-            })
+      assumptionAddService.openForm(null, templateType)
+        .then(function (r) {
+          r.new = true
+          vm.assumptionList.unshift(r)
+          log.success('assumptionSaved', r)
         })
         .catch(function (err) {
-          log.info('canceledAssumptionEdit', err)
+          log.error('assumptionSaveFailed', err)
         })
     }
 
