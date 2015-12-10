@@ -9,7 +9,9 @@ angular.module('planning')
     $state,
     planningService,
     stateAdminLevels,
-    ROUND_STATUS
+    ROUND_STATUS,
+    scheduleService,
+    mailerService
   ) {
     var vm = this // view model
     vm.edit = false
@@ -95,8 +97,38 @@ angular.module('planning')
         })
     }
 
+    function generateMsgBody (round) {
+      return scheduleService.getStartRoundEmailTemplate(round)
+    }
+
+    function sendEmail (round) {
+      var mailConfig = {
+        apiUrl: config.mailerAPI,
+        apiKey: config.apiKey
+      }
+      mailerService.setConfig(mailConfig)
+      var email = mailerService.Email()
+      email.setSender(config.senderEmail, config.senderName)
+      return generateMsgBody(round)
+        .then(function (result) {
+          email.setSubject(result.subject)
+          email.setHTML(result.msg)
+          return scheduleService.getAlertReceiversForRound(round)
+        })
+        .then(function (result) {
+          email.addRecipients(result.emails)
+          return mailerService.send(email)
+        })
+        .catch(function (err) {
+          log.error('notificationErr', err)
+        })
+    }
+
     function createAndContinue () {
       planningService.createRound(vm.deliveryRound)
+        .then(function (data) {
+          return sendEmail(angular.extend({}, vm.deliveryRound, data))
+        })
         .then(onSuccessContinue)
         .catch(planningService.onSaveError)
     }
@@ -109,6 +141,9 @@ angular.module('planning')
 
     function createAndExit () {
       planningService.createRound(vm.deliveryRound)
+        .then(function (data) {
+          return sendEmail(angular.extend({}, vm.deliveryRound, data))
+        })
         .then(onSuccessExit)
         .catch(planningService.onSaveError)
     }

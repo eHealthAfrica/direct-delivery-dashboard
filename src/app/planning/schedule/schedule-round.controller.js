@@ -87,7 +87,7 @@ angular.module('planning')
         .then(function () {
           return mailerService.send(email)
         }).catch(function (err) {
-          log.success('notificationError', err)
+          log.error('notificationErr', err)
         })
     }
 

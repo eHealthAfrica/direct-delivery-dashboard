@@ -1,0 +1,50 @@
+{
+"docs": [
+  {
+    "_id": "7ab9f02f1d61f74666517af7aa001d94",
+    "_rev": "9-d4229fa181cb659b5c5c76d9666a1e37",
+    "active": true,
+    "doc_type": "alert-receiver",
+    "phones": [
+    ],
+    "emails": [
+      "adam@ehealthafrica.org"
+    ],
+    "name": "Adam Thompson",
+    "locations": [
+      "all"
+    ]
+  },
+  {
+    "_id": "4cd167a74113b70dced1395b6a000185",
+    "_rev": "1-ec48430271743a128f8f94c158f4a732",
+    "active": true,
+    "doc_type": "alert-receiver",
+    "phones": [
+    ],
+    "emails": [
+      "usman.inuwa@ehealthnigeria.org"
+    ],
+    "name": "Usman Inuwa",
+    "locations": [
+      "KN",
+      "BA"
+    ]
+  },
+  {
+    "_id": "7ab9f02f1d61f74666517af7aa001d94",
+    "_rev": "9-d4229fa181cb659b5c5c76d9666a1e37",
+    "active": true,
+    "doc_type": "alert-receiver",
+    "phones": [
+    ],
+    "emails": [
+      "adamu.lawan@ehealthnigeria.org"
+    ],
+    "name": "Adamu Lawan",
+    "locations": [
+      "all"
+    ]
+  }
+        ]
+}
