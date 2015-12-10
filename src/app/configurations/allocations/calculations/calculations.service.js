@@ -1,6 +1,4 @@
-/**
- * Created by ehealthafrica on 7/11/15.
- */
+'use strict'
 
 angular.module('allocations')
   .service('calculationService', function ($q, locationService, dbService, pouchUtil, assumptionService) {
@@ -44,14 +42,12 @@ angular.module('allocations')
         .then(pouchUtil.pluckDocs)
     }
     service.getAllocations = function (facilities) {
-      var promises = {}
-
       function fillwithTemplate (facility, template) {
         for (var i in template.products) { // Todo: adjust this to suit the new template structure
-          var coverage = parseInt(template.products[i].coverage, 10)
-          var wastage = parseInt(template.products[i].wastage, 10)
-          var buffer = parseInt(template.products[i].buffer, 10)
-          var schedule = parseInt(template.products[i].schedule, 10)
+          var coverage = parseFloat(template.products[i].coverage, 10)
+          var wastage = parseFloat(template.products[i].wastage, 10)
+          var buffer = parseFloat(template.products[i].buffer, 10)
+          var schedule = parseFloat(template.products[i].schedule, 10)
           facility['coverage'][i] = isNaN(coverage) ? 0 : coverage
           facility['wastage'][i] = isNaN(wastage) ? 0 : wastage
           facility['schedule'][i] = isNaN(schedule) ? 0 : schedule
@@ -63,52 +59,29 @@ angular.module('allocations')
       function setAllocations () {
         var view = 'allocations/custom-templates'
 
-        facilities.forEach(function (facility) {
-          facility.coverage = {}
-          facility.wastage = {}
-          facility.schedule = {}
-          facility.buffer = {}
+        return dbService.getView(view, {include_docs: true})
+          .then(pouchUtil.pluckDocs)
+          .then(function (response) {
+            facilities.forEach(function (facility) {
+              facility.coverage = {}
+              facility.wastage = {}
+              facility.schedule = {}
+              facility.buffer = {}
+              facility.custom_template = false
 
-          // get custom template
-          return (function (v, key) {
-            var opts = {
-              include_docs: true,
-              key: key
-            }
-            return dbService.getView(v, opts)
-          }(view, facility._id))
-        })
-        return facilities
+              for (var i in response) {
+                if (response[i]._id === (facility.name.trim().split(' ').join('-'))) {
+                  facility.custom_template = true
+                  fillwithTemplate(facility, response[i])
+                  break
+                }
+                fillwithTemplate(facility, service.template)
+              }
+            })
+            return facilities
+          })
       }
-
-      setAllocations()
-
-      return $q.all(promises)
-        .then(function (response) {
-          var r = {}
-          for (var i in response) {
-            if (response[i].rows.length > 0) {
-              r[i] = response[i].rows[0].doc
-            }
-          }
-          return r
-        })
-        .then(function (r) {
-          var keys = Object.keys(r)
-          var index
-          for (var v in facilities) {
-            index = keys.indexOf(r)
-
-            if (index !== -1) {
-              console.log(r)
-              fillwithTemplate(facilities[v], r[facilities[v]._id])
-            } else {
-              fillwithTemplate(facilities[v], service.template)
-            }
-          }
-          console.log(facilities)
-          return facilities
-        })
+      return setAllocations()
     }
 
     /**
@@ -124,8 +97,8 @@ angular.module('allocations')
           for (var i in facilities) {
             for (var v in r) {
               if (r[v].facility._id === facilities[i]._id) {
-                facilities[i].annualU1 = parseInt(r[v].annualU1, 10)
-                facilities[i]['bi-weeklyU1'] = parseInt(r[v]['bi-weeklyU1'], 10)
+                facilities[i].annualU1 = parseFloat(r[v].annualU1, 10)
+                facilities[i]['bi-weeklyU1'] = parseFloat(r[v]['bi-weeklyU1'], 10)
               }
             }
           }
@@ -138,7 +111,6 @@ angular.module('allocations')
             facility.MR = {}
             for (var pl in productList) {
               index = productList[pl]
-              console.log(facility)
               if (facility['bi-weeklyU1']) {
                 facility.MR[productList[pl]] = Math.ceil((facility['bi-weeklyU1'] * 2) * (facility.coverage[index] / 100) * facility.schedule[index] * facility.wastage[index])
               } else {

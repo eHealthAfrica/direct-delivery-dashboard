@@ -86,7 +86,6 @@ angular.module('allocations')
     }
     vm.switchLocationState = function (stateID) {
       var state = stateID || vm.selectedState // here
-      console.log(state)
       return findLga(state)
         .then(getFacilities)
         .then(resetView)
@@ -158,9 +157,15 @@ angular.module('allocations')
         emptyTemplate.products[product]['wastage'] = data.wastage[product]
       }
       assumptionAddService.openForm(emptyTemplate)
+        .then(function (r) {
+          log.success('assumptionSaved', data)
+        })
+        .catch(function (err) {
+          log.error('assumptionSaveFailed', err)
+        })
     }
 
-    authService.getUserSelectedState('object')
+    authService.getUserSelectedState(true)
       .then(function (response) {
         vm.selectedState = response
         return vm.selectedState

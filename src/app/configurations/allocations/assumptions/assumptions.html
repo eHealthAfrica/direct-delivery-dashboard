@@ -22,8 +22,8 @@
     <th></th>
     </thead>
     <tbody>
-    <tr ng-repeat="template in assumptionsCtrl.assumptionList track by $index">
-      <td ng-bind="template._id"></td>
+    <tr ng-repeat="template in assumptionsCtrl.assumptionList track by $index" ng-class="{'bg-success': template.new}">
+      <td>{{template._id || template.id}}</td>
       <td ng-bind="template.description"></td>
       <td ng-bind="template.primary.state"></td>
       <td ng-bind="template.primary.year"></td>

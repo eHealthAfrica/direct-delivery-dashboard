@@ -30,6 +30,10 @@ angular.module('log')
       title: 'Delivery round complete planning',
       message: 'Delivery round planning has been complete and ready for next phase'
     },
+    assumptionSaved: {
+      title: 'Template saved successfully',
+      message: 'A new assumption template has been created successfully!'
+    },
     assumptionEdited: {
       title: 'Update successfully',
       message: 'Assumption edited successfully!'
