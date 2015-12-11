@@ -45,8 +45,9 @@ angular.module('reports')
         startkey: [roundId],
         endkey: [roundId, {}, {}, {}]
       }
+      var opts = angular.extend({}, pagination, params)
       var promises = [
-        dbService.getView(view, angular.merge({}, pagination, params)),
+        dbService.getView(view, opts),
         _this.getDailyDeliveriesCount(roundId)
       ]
 

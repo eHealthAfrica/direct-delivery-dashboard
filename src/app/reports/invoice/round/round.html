@@ -17,12 +17,7 @@
               <select
                 ng-change="reportsRoundCtrl.getReport(1)"
                 ng-model="reportsRoundCtrl.pagination.limit"
-                class="form-control">
-                <option ng-selected="reportsRoundCtrl.pagination.limit === 10" value="10" value="10">10</option>
-                <option ng-selected="reportsRoundCtrl.pagination.limit === 25" value="25">25</option>
-                <option ng-selected="reportsRoundCtrl.pagination.limit === 50" value="50">50</option>
-                <option ng-selected="reportsRoundCtrl.pagination.limit === 100" value="100">100</option>
-                <option ng-selected="reportsRoundCtrl.pagination.limit === 0" value="0">All</option>
+                class="form-control" ng-options="item.value as item.label for item in reportsRoundCtrl.limits">
               </select>
             </div>
           </div>
