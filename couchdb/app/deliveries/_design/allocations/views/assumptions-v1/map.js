@@ -1,4 +1,3 @@
-'use strict'
 
 function(doc){
   if(doc.doc_type === 'assumptions'){

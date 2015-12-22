@@ -1,5 +1,3 @@
-'use stream'
-
 function(doc){
   if(doc.doc_type === "dailyDelivery"){
     doc.facilityRounds.forEach(function(row){
