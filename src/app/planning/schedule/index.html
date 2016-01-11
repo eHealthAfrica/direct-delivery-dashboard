@@ -105,10 +105,14 @@
             {{ facRnd.drop || '' }}
           </td>
           <td>
-          <span editable-text="srCtrl.facilityDeliveries[$index].window" e-name="window" e-form="rowform"
-                e-required></span>
+            <span
+              editable-select="facRnd.window"
+              e-name="window"
+              e-form="rowform"
+              e-reqiured
+              e-ng-options="window.value as window.text for window in srCtrl.scheduleWindows">
+              </span>
             {{ facRnd.window || '' }}
-            </span>
           </td>
           <td>
           <span editable-text="srCtrl.facilityDeliveries[$index].distance" e-name="distance" e-form="rowform"
