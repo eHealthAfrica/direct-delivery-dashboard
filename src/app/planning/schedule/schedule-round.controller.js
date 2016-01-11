@@ -20,15 +20,13 @@ angular.module('planning')
       {value: 10, text: '10'}
     ]
     vm.scheduleWindows = [
-      {value:"9AM-11AM", text:"9AM-11AM"},
-      {value:"11AM-1PM", text:"11AM-1PM"},
-      {value:"1PM-3PM", text: "1PM-3PM"},
-      {value:"3PM-5PM", text: "3PM-5PM"}
+      {value: '9AM-11AM', text: '9AM-11AM'},
+      {value: '11AM-1PM', text: '11AM-1PM'},
+      {value: '1PM-3PM', text: '1PM-3PM'},
+      {value: '3PM-5PM', text: '3PM-5PM'}
     ]
-    vm.dtOptions = DTOptionsBuilder.newOptions().withPaginationType('full_numbers');
-    vm.dtColumnDefs = [
-
-    ];
+    vm.dtOptions = DTOptionsBuilder.newOptions().withPaginationType('full_numbers')
+    vm.dtColumnDefs = []
     vm.print = function () {
       $window.jQuery('#print-area').print()
     }
