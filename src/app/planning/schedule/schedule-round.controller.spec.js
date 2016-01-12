@@ -2,7 +2,7 @@
 /* global describe, beforeEach, it, inject, expect, module, spyOn */
 
 describe('ScheduleRoundController', function () {
-  beforeEach(module('planning', 'deliveryMock', 'utility'))
+  beforeEach(module('planning', 'deliveryMock', 'utility', 'datatables'))
 
   var $controller
   var $state
@@ -15,6 +15,9 @@ describe('ScheduleRoundController', function () {
   var $modal
   var utility
   var row
+  var DTOptionsBuilder
+  var DTColumnDefBuilder
+
   var scope = {
     selectedState: {
       _id: 'KN',
@@ -26,7 +29,7 @@ describe('ScheduleRoundController', function () {
   }
   beforeEach(inject(function (_$controller_, _$state_, _scheduleService_,
     _planningService_, _log_, _deliveryRoundMock_,
-    _dailyDeliveriesMock_, _$modal_, _utility_) {
+    _dailyDeliveriesMock_, _$modal_, _utility_, _DTOptionsBuilder_, _DTColumnDefBuilder_) {
     $controller = _$controller_
     $state = _$state_
     scheduleService = _scheduleService_
@@ -36,6 +39,8 @@ describe('ScheduleRoundController', function () {
     $modal = _$modal_
     dailyDeliveries = angular.copy(_dailyDeliveriesMock_)
     utility = _utility_
+    DTOptionsBuilder = _DTOptionsBuilder_
+    DTColumnDefBuilder = _DTColumnDefBuilder_
 
     ScheduleRoundCtrl = $controller('ScheduleRoundCtrl', {
       deliveryRound: deliveryRound,
@@ -46,7 +51,9 @@ describe('ScheduleRoundController', function () {
       log: log,
       $modal: $modal,
       utility: utility,
-      $scope: scope
+      $scope: scope,
+      DTOptionsBuilder: DTOptionsBuilder,
+      DTColumnDefBuilder: DTColumnDefBuilder
     })
 
     row = {
@@ -72,6 +79,7 @@ describe('ScheduleRoundController', function () {
     spyOn($modal, 'open').and.callThrough()
     spyOn(scheduleService, 'hashRow').and.callThrough()
     spyOn(scheduleService, 'applyChanges').and.callThrough()
+    spyOn(DTOptionsBuilder, 'newOptions').and.callThrough()
   }))
 
   describe('ScheduleRoundCtrl', function () {

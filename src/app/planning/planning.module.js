@@ -12,5 +12,6 @@ angular.module('planning', [
   'kpi',
   'drivers',
   'ui.select',
+  'datatables',
   'ngSanitize'
 ])
