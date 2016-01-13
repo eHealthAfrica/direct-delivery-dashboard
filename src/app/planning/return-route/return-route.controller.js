@@ -9,6 +9,7 @@ angular.module('planning')
     vm.query = ''
     vm.deliveryRound = deliveryRound
     vm.deliveryReturnRoutes = deliveryReturnRoutes
+    console.info(deliveryReturnRoutes, deliveryRound)
     vm.packingStores = packingStores
 
     vm.getDocBy = function (driverId, deliveryDate) {

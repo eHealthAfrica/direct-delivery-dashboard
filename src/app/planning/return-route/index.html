@@ -39,6 +39,7 @@
         <th>#</th>
         <th>Driver</th>
         <th>Delivery Date</th>
+        <th>Last Drop Facility</th>
         <th>Packing Store</th>
         <th>Estimated Distance (KM)</th>
         <th>Actual Distance (KM)</th>
@@ -51,6 +52,7 @@
         <td class="col-sm-1" ng-bind="($index + 1 )"></td>
         <td class="col-sm-2" ng-bind="returnRoute.driverID"></td>
         <td class="col-sm-2" ng-bind="returnRoute.deliveryDate"></td>
+        <td></td>
         <td clas="col-sm-4">
           <span editable-select="returnRoute.store"
                 e-name="store"
