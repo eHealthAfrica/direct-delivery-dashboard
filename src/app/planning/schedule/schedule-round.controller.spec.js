@@ -25,8 +25,8 @@ describe('ScheduleRoundController', function () {
     }
   }
   beforeEach(inject(function (_$controller_, _$state_, _scheduleService_,
-                              _planningService_, _log_, _deliveryRoundMock_,
-                              _dailyDeliveriesMock_, _$modal_, _utility_) {
+    _planningService_, _log_, _deliveryRoundMock_,
+    _dailyDeliveriesMock_, _$modal_, _utility_) {
     $controller = _$controller_
     $state = _$state_
     scheduleService = _scheduleService_

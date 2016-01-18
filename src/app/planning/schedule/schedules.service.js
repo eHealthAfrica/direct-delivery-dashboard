@@ -286,4 +286,31 @@ angular.module('planning')
       }
       log.error('saveBatchScheduleFailed', err)
     }
+
+    function formatRounds (list) {
+      list.sort(function (a, b) {
+        return a.drop - b.drop
+      })
+      return list
+    }
+
+    _this.getDaySchedule = function (driverID, date) {
+      var deliveryDate = date || new Date()
+      var key = driverID + '-' + utility.formatDate(deliveryDate)
+      var options = {
+        include_docs: true,
+        key: key
+      }
+      return dbService.getView('daily-deliveries/by-driver-date', options)
+        .then(pouchUtil.pluckDocs)
+        .then(pouchUtil.rejectIfEmpty)
+        .then(formatRounds)
+    }
+
+    _this.getDriverLastDrop = function (driverId, date) {
+      return _this.getDaySchedule(driverId, date)
+        .then(function (response) {
+          return [response[response.length - 1], response]
+        })
+    }
   })

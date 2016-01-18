@@ -52,7 +52,15 @@
         <td class="col-sm-1" ng-bind="($index + 1 )"></td>
         <td class="col-sm-2" ng-bind="returnRoute.driverID"></td>
         <td class="col-sm-2" ng-bind="returnRoute.deliveryDate"></td>
-        <td></td>
+        <td>
+          <span editable-select="returnRoute.lastDropFacility"
+                e-name="lastDropFacility"
+                e-form="returnRouteForm"
+                e-ng-selected="returnRoute.lastDropFacility.id === lastDropFacility.id"
+                e-ng-options="lastDropFacility as lastDropFacility.name for lastDropFacility in rrCtrl.facilitiesScheduled[returnRoute._id]">
+          </span>
+          {{returnRoute.lastDropFacility.name}}
+        </td>
         <td clas="col-sm-4">
           <span editable-select="returnRoute.store"
                 e-name="store"
