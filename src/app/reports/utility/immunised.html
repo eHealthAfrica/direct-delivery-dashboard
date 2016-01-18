@@ -2,7 +2,7 @@
   <i class="fa fa-spinner fa-spin fa-5x"></i>
 </div>
 <div class="row">
-  <div ng-show="!utilityCtrl.isLoading" class="col-sm-12">
+  <div ng-show="!utilityCtrl.isLoading && utilityCtrl.kpiAgg.total !== 0" class="col-sm-12"">
     <div class="btn btn-primary btn-lg clearfix">
       <h5 class="pull-left">Total Immunized </h5>
       <h3 class="pull-right">| {{utilityCtrl.kpiAgg.total}}</h3>
