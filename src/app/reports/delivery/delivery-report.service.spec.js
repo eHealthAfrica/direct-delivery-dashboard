@@ -1,5 +1,4 @@
-
-/* global describe, beforeEach, it, inject, expect, module, spyOn */
+/* global describe, beforeEach, it, inject, expect, module, spyOn, jasmine */
 
 describe('delivery-report-service', function () {
   beforeEach(module('reports'))
@@ -9,31 +8,28 @@ describe('delivery-report-service', function () {
   var dbService
   var state
 
-  beforeEach(inject(function (_deliveryReportService_, _deliveryRoundService_, _dbService_){
+  beforeEach(inject(function (_deliveryReportService_, _deliveryRoundService_, _dbService_) {
     deliveryReportService = _deliveryReportService_
     deliveryRoundService = _deliveryRoundService_
     dbService = _dbService_
 
     spyOn(dbService, 'getView').and.callThrough()
     spyOn(deliveryRoundService, 'getBy').and.callThrough()
-
   }))
 
-  it('should be defined', function(){
+  it('should be defined', function () {
     expect(deliveryReportService).toBeDefined()
   })
 
-  describe('deliveryReportService.getDailyDeliveryReport', function (){
-
-
-    it('should expose getDailyDeliveryReport function', function(){
+  describe('deliveryReportService.getDailyDeliveryReport', function () {
+    it('should expose getDailyDeliveryReport function', function () {
       expect(deliveryReportService.getDailyDeliveryReport).toEqual(jasmine.any(Function))
     })
 
-    it('should call dbService.getView and deliveryRoundService.getBy', function (){
+    it('should call dbService.getView and deliveryRoundService.getBy', function () {
       state = {
-        _id: "KN",
-        name: "Kano"
+        _id: 'KN',
+        name: 'Kano'
       }
 
       deliveryReportService.getDailyDeliveryReport((new Date().getDate()), (new Date().getDate()), state)
@@ -43,15 +39,13 @@ describe('delivery-report-service', function () {
   })
 
   describe('deliveryReportService.getDailyDeliveryReportByRound', function () {
-
-    it ('should expose getDailyDeliveryReport function', function () {
-      expect (deliveryReportService.getDailyDeliveryReportByRound).toEqual(jasmine.any(Function))
+    it('should expose getDailyDeliveryReport function', function () {
+      expect(deliveryReportService.getDailyDeliveryReportByRound).toEqual(jasmine.any(Function))
     })
 
-    it ('should call dbService.getView', function () {
+    it('should call dbService.getView', function () {
       deliveryReportService.getDailyDeliveryReportByRound('KN-07-2016')
-      expect (dbService.getView).toHaveBeenCalled()
+      expect(dbService.getView).toHaveBeenCalled()
     })
   })
-
 })
