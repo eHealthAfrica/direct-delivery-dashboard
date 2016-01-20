@@ -3,14 +3,27 @@
 angular.module('planning')
   .controller('ReturnRouteCtrl', function (deliveryRound, packingStores,
     deliveryReturnRoutes, utility,
-    returnRouteService, log) {
+    returnRouteService, log, scheduleService) {
     var vm = this
 
     vm.query = ''
     vm.deliveryRound = deliveryRound
     vm.deliveryReturnRoutes = deliveryReturnRoutes
     vm.packingStores = packingStores
-
+    vm.facilitiesScheduled = {}
+    vm.deliveryReturnRoutes.forEach(function (row) {
+      scheduleService.getDriverLastDrop(row.driverID, row.deliveryDate)
+        .then(function (response) {
+          vm.facilitiesScheduled[row._id] = []
+          for (var i in response[1]) {
+            vm.facilitiesScheduled[row._id].push(response[1][i].facility)
+            if (!angular.isDefined(row.lastDropFacility)) {
+              row.lastDropFacility = response[1][i].facility
+            }
+          }
+          return vm.facilitiesScheduled
+        })
+    })
     vm.getDocBy = function (driverId, deliveryDate) {
       return utility.takeFirst(vm.deliveryReturnRoutes
         .filter(function (row) {
