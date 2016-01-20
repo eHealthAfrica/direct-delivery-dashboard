@@ -36,7 +36,7 @@
             <span>Edit</span>
           </button>
 
-          <a class="btn btn-success" ui-sref="planning.schedule({ roundId: round._id})">
+          <a class="btn btn-info" ui-sref="planning.schedule({ roundId: round._id})">
             <i class="fa fa-calendar"></i>
             <span>Schedule</span>
           </a>
@@ -58,6 +58,14 @@
             <span>KPI</span>
           </a>
 
+        </td>
+        <td ng-show="round.status ==='Ready'
+        ">
+          <button class="btn btn-success"
+                  ng-click="crCtrl.completePlanning(round)">
+            <i class="fa fa-bell"></i>
+            <span>Activate and Send Alert</span>
+          </button>
         </td>
       </tr>
       </tbody>

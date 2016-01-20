@@ -75,7 +75,6 @@ describe('ScheduleRoundController', function () {
       'status': 'Success: 1st attempt'
     }
 
-    spyOn(planningService, 'completePlanning').and.callThrough()
     spyOn($modal, 'open').and.callThrough()
     spyOn(scheduleService, 'hashRow').and.callThrough()
     spyOn(scheduleService, 'applyChanges').and.callThrough()
@@ -128,14 +127,6 @@ describe('ScheduleRoundController', function () {
     it('Should match expected array in given order', function () {
       var exportData = scheduleService.prepareExport(deliveryRound._id, dailyDeliveries)
       expect(ScheduleRoundCtrl.exportHeader).toEqual(exportData.headers)
-    })
-  })
-
-  describe('ScheduleRoundCtrl.completePlanning', function () {
-    it('Should call planningService.completePlanning with expected parameter', function () {
-      expect(planningService.completePlanning).not.toHaveBeenCalled()
-      ScheduleRoundCtrl.completePlanning(deliveryRound)
-      expect(planningService.completePlanning).toHaveBeenCalledWith(deliveryRound)
     })
   })
 

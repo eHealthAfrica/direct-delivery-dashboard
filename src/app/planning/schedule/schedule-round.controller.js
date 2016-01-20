@@ -65,55 +65,6 @@ angular.module('planning')
     vm.exportForRouting = exportData.rows
     vm.exportHeader = exportData.headers
 
-    function generateMsgBody (round) {
-      return scheduleService.getRoundEmailTemplate(round)
-    }
-
-    function emailNotification (round) {
-      var mailConfig = {
-        apiUrl: config.mailerAPI,
-        apiKey: config.apiKey
-      }
-      mailerService.setConfig(mailConfig)
-      var email = mailerService.Email()
-      email.setSender(config.senderEmail, config.senderName)
-
-      return generateMsgBody(round)
-        .then(function (result) {
-          email.setSubject(result.subject)
-          email.setHTML(result.msg)
-          return email
-        })
-        .then(function () {
-          return scheduleService.getAlertReceiversForRound(round)
-        })
-        .then(function (result) {
-          email.addRecipients(result.emails)
-          return email
-        })
-        .then(function () {
-          return mailerService.send(email)
-        }).catch(function (err) {
-          log.error('notificationErr', err)
-        })
-    }
-
-    vm.completePlanning = function () {
-      planningService.completePlanning(vm.deliveryRound)
-        .then(function () {
-          emailNotification(vm.deliveryRound)
-            .then(function () {
-              log.success('plannerNotificationEmailSuccess')
-            })
-            .catch(function (err) {
-              log.error('plannerNotificationEmailErr', err)
-            })
-          log.success('completePlanningSuccess')
-          $state.go('planning.deliveryRound')
-        })
-        .catch(planningService.onSaveError)
-    }
-
     function onSuccess (res) {
       log.success('schedulesSaved', res)
       $state.go('planning.schedule', {roundId: vm.deliveryRound._id}, {

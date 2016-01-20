@@ -7,7 +7,8 @@ angular.module('planning')
     deliveryRoundService,
     planningService,
     $scope,
-    authService
+    authService,
+    mailerService, config, scheduleService, log
   ) {
     var vm = this
     vm.deliveryRounds = deliveryRounds
@@ -40,4 +41,50 @@ angular.module('planning')
           vm.deliveryRounds = []
         })
     })
+    function generateMsgBody (round) {
+      return scheduleService.getRoundEmailTemplate(round)
+    }
+    function emailNotification (round) {
+      var mailConfig = {
+        apiUrl: config.mailerAPI,
+        apiKey: config.apiKey
+      }
+      mailerService.setConfig(mailConfig)
+      var email = mailerService.Email()
+      email.setSender(config.senderEmail, config.senderName)
+
+      return generateMsgBody(round)
+        .then(function (result) {
+          email.setSubject(result.subject)
+          email.setHTML(result.msg)
+          return email
+        })
+        .then(function () {
+          return scheduleService.getAlertReceiversForRound(round)
+        })
+        .then(function (result) {
+          email.addRecipients(result.emails)
+          return email
+        })
+        .then(function () {
+          return mailerService.send(email)
+        }).catch(function (err) {
+          log.error('notificationErr', err)
+        })
+    }
+
+    vm.completePlanning = function (deliveryRound) {
+      planningService.completePlanning(deliveryRound)
+        .then(function () {
+          emailNotification(deliveryRound)
+            .then(function () {
+              log.success('plannerNotificationEmailSuccess')
+            })
+            .catch(function (err) {
+              log.error('plannerNotificationEmailErr', err)
+            })
+          log.success('completePlanningSuccess')
+        })
+        .catch(planningService.onSaveError)
+    }
   })
