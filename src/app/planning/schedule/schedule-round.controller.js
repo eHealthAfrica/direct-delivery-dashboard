@@ -2,8 +2,8 @@
 
 angular.module('planning')
   .controller('ScheduleRoundCtrl', function (deliveryRound, $state, dailyDeliveries,
-    scheduleService, planningService, log,
-    $modal, utility, $q, DELIVERY_STATUS, driversService, $window, $scope, authService) {
+    scheduleService, planningService, log, config,
+    $modal, utility, $q, DELIVERY_STATUS, mailerService, driversService, $window, $scope, authService, DTOptionsBuilder, DTColumnDefBuilder) {
     var vm = this
     vm.isSavingList = {}
     vm.deliveryStatuses = DELIVERY_STATUS
@@ -19,7 +19,14 @@ angular.module('planning')
       {value: 9, text: '9'},
       {value: 10, text: '10'}
     ]
-
+    vm.scheduleWindows = [
+      {value: '9AM-11AM', text: '9AM-11AM'},
+      {value: '11AM-1PM', text: '11AM-1PM'},
+      {value: '1PM-3PM', text: '1PM-3PM'},
+      {value: '3PM-5PM', text: '3PM-5PM'}
+    ]
+    vm.dtOptions = DTOptionsBuilder.newOptions().withPaginationType('full_numbers')
+    vm.dtColumnDefs = []
     vm.print = function () {
       $window.jQuery('#print-area').print()
     }

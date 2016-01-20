@@ -32,6 +32,7 @@ angular
     'configurations.locations',
     'auth',
     'ngMessages'
+
   ])
   .run(function (indexService) {
     indexService.bootstrap()
