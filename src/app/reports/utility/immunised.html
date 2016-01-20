@@ -2,7 +2,7 @@
   <i class="fa fa-spinner fa-spin fa-5x"></i>
 </div>
 <div class="row">
-  <div ng-show="!utilityCtrl.isLoading" class="col-sm-12">
+  <div ng-show="!utilityCtrl.isLoading && utilityCtrl.kpiAgg.total !== 0" class="col-sm-12"">
     <div class="btn btn-primary btn-lg clearfix">
       <h5 class="pull-left">Total Immunized </h5>
       <h3 class="pull-right">| {{utilityCtrl.kpiAgg.total}}</h3>
@@ -21,11 +21,15 @@
     </div>
   </div>
 </div>
-
+<div class="btn-group pull-right">
+  <div class="btn btn-default"><i class="fa fa-arrow-left"></i> Prev 5 rounds</div>
+  <div class="btn btn-default"> Next 5 rounds <i class="fa fa-arrow-right"></i></div>
+</div>
+<p class="clearfix"></p>
 <nvd3-line-chart
   data="utilityCtrl.chartData"
   id="exampleId"
-  height="400"
+  height="600"
   showXAxis="true"
   showYAxis="true"
   showLegend="true"

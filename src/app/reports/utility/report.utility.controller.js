@@ -8,7 +8,12 @@ angular.module('reports')
     var productData = {}
     var totalImmunized = 0
 
-    vm.rounds = rounds
+    var roundsPerChart = 5
+    vm.currentPage = 1
+
+    vm.rounds = rounds.sort(function (a, b) {
+      return a.endDate < b.endDate
+    })
     vm.utilData = []
     vm.chartData = []
     vm.isLoading = true
@@ -30,6 +35,27 @@ angular.module('reports')
       }
     }
 
+    function paginateRounds (page) {
+      var needleStart = (page - 1) * roundsPerChart
+      var needleEnd = needleStart + roundsPerChart
+
+      var pageRounds = []
+      for (var i = needleStart; i < needleEnd; i++) {
+        if (angular.isDefined(vm.rounds[i])) {
+          pageRounds.push(vm.rounds[i])
+        }
+      }
+      return pageRounds
+    }
+    vm.nextPage = function nextPage () {
+      vm.currentPage += 1
+      return prepareData()
+    }
+
+    vm.prevPage = function prevPage () {
+      vm.currentPage -= 1
+      return prepareData()
+    }
     function pushProducts (response) {
       var rnd, packed
       for (var i in response) {
@@ -62,7 +88,7 @@ angular.module('reports')
     }
 
     function prepareData () {
-      vm.rounds.forEach(function (r) {
+      paginateRounds(vm.currentPage).forEach(function (r) {
         rnd.push(
           deliveryService.getByRoundId(r)
             .then(function (data) {
