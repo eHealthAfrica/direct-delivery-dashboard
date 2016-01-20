@@ -19,6 +19,12 @@ angular.module('planning')
       {value: 9, text: '9'},
       {value: 10, text: '10'}
     ]
+    vm.scheduleWindows = [
+      {value: '9AM-11AM', text: '9AM-11AM'},
+      {value: '11AM-1PM', text: '11AM-1PM'},
+      {value: '1PM-3PM', text: '1PM-3PM'},
+      {value: '3PM-5PM', text: '3PM-5PM'}
+    ]
 
     vm.print = function () {
       $window.jQuery('#print-area').print()
