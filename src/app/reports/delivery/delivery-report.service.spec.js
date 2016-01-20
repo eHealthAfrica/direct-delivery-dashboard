@@ -31,10 +31,17 @@ describe('delivery-report-service', function () {
         _id: 'KN',
         name: 'Kano'
       }
+      var params = {
+        startkey: [state.name],
+        endkey: [state.name, {}]
+      }
+      var view = 'dashboard-delivery-rounds/report-by-date'
+      expect(deliveryRoundService.getBy).not.toHaveBeenCalled()
+      expect(dbService.getView).not.toHaveBeenCalled()
 
       deliveryReportService.getDailyDeliveryReport((new Date().getDate()), (new Date().getDate()), state)
-      expect(dbService.getView).toHaveBeenCalled()
-      expect(deliveryRoundService.getBy).toHaveBeenCalled()
+      expect(dbService.getView).toHaveBeenCalledWith(view, jasmine.any(Object))
+      expect(deliveryRoundService.getBy).toHaveBeenCalledWith(params)
     })
   })
 
@@ -44,8 +51,16 @@ describe('delivery-report-service', function () {
     })
 
     it('should call dbService.getView', function () {
-      deliveryReportService.getDailyDeliveryReportByRound('KN-07-2016')
-      expect(dbService.getView).toHaveBeenCalled()
+      var view = 'reports/by-rounds'
+      var roundID = 'KN-07-2016'
+      var options = {
+        startkey: [roundID],
+        endkey: [roundID, {}, {}]
+      }
+      expect(dbService.getView).not.toHaveBeenCalled()
+
+      deliveryReportService.getDailyDeliveryReportByRound(roundID)
+      expect(dbService.getView).toHaveBeenCalledWith(view, options)
     })
   })
 })
