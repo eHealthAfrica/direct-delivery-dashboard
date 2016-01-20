@@ -45,24 +45,24 @@
       </div>
     </div>
 
-    <div class="panel-body" ng-show="srCtrl.facilityDeliveries.length === 0">
-      <div class="panel-body alert alert-info">
+    <div class="panel-body" >
+      <div class="panel-body alert alert-info" ng-show="srCtrl.facilityDeliveries.length === 0">
         <i class="fa fa-lg fa-info-circle"></i>
         <span> No daily deliveries found, please import facilities to create new delivery schedules.</span>
       </div>
-    </div>
-    <div>
-      <table ng-show="srCtrl.facilityDeliveries.length > 0"
-             class="table table-condensed table-striped table-bordered">
+
+      <table datatable="ng" class="table table-striped row-border hover" dt-options="srCtrl.dtOptions" t-column-defs="srCtrl.dtColumnDefs">
         <thead>
         <tr>
           <th>#</th>
           <th class="col-sm-2">Facility</th>
-          <th class="col-sm-2">Code</th>
-          <th class="col-sm-1">Delivery Date</th>
+          <th class="col-sm-2">Zone</th>
+          <th class="col-sm-1">LGA</th>
+          <th class="col-sm-1">Ward</th>
+          <th class="col-sm-2">Delivery Date</th>
           <th class="col-sm-2">Driver</th>
           <th class="col-sm-1">Drop</th>
-          <th class="col-sm-1">Window</th>
+          <th class="col-sm-2">Window</th>
           <th class="col-sm-1">Distance (KM)</th>
           <th class="col-sm-1">Status</th>
           <th class="col-sm-1 hidden-print">Action</th>
@@ -73,7 +73,9 @@
             ng-class="{'success': srCtrl.isUpdated(facRnd)}">
           <td ng-bind="($index + 1)"></td>
           <td ng-bind="::facRnd.facility.name"></td>
-          <td ng-bind="::facRnd.facility.id"></td>
+          <td ng-bind="::facRnd.facility.zone"></td>
+          <td ng-bind="::facRnd.facility.lga"></td>
+          <td ng-bind="::facRnd.facility.ward"></td>
           <td>
             <span
               ng-bind="srCtrl.getDate(facRnd.date)"
@@ -85,6 +87,7 @@
               e-ng-click="dateOpened = !dateOpened"
               e-is-open="dateOpened"
               buttons="no"
+              editable-bsdate="facRnd.date"
             ></span>
           </td>
           <td>
@@ -150,6 +153,7 @@
         </tr>
         </tbody>
       </table>
+      </div>
     </div>
   </div>
 </div>
