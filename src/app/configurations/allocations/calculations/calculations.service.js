@@ -70,7 +70,7 @@ angular.module('allocations')
               facility.custom_template = false
 
               for (var i in response) {
-                if (response[i]._id === (facility.name.trim().split(' ').join('-'))) {
+                if ((response[i]._id === facility._id) || (facility.name && (response[i]._id === facility.name.trim().split(' ').join('-')))) {
                   facility.custom_template = true
                   fillwithTemplate(facility, response[i])
                   break
@@ -118,7 +118,6 @@ angular.module('allocations')
               }
             }
           })
-          console.info(facilities)
           return facilities
         })
     }
