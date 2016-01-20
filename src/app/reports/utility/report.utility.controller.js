@@ -45,7 +45,6 @@ angular.module('reports')
           pageRounds.push(vm.rounds[i])
         }
       }
-      console.info(pageRounds)
       return pageRounds
     }
     vm.nextPage = function nextPage () {
