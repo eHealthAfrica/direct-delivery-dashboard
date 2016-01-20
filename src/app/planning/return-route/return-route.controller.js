@@ -15,7 +15,6 @@ angular.module('planning')
       scheduleService.getDriverLastDrop(row.driverID, row.deliveryDate)
         .then(function (response) {
           vm.facilitiesScheduled[row._id] = []
-          console.log(row.lastDropFacility)
           for (var i in response[1]) {
             vm.facilitiesScheduled[row._id].push(response[1][i].facility)
             if (!angular.isDefined(row.lastDropFacility)) {
