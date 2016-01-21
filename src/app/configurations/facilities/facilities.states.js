@@ -12,10 +12,16 @@ angular.module('configurations.facilities')
         controller: 'ConfigFacilityListCtrl as configFacilityListCtrl',
         templateUrl: 'app/configurations/facilities/list/list.html',
         resolve: {
-          states: function (locationService) {
-            return locationService.getLocationsByLevel('2')
+          states: function (authService) {
+            return authService.getUserStates()
               .catch(function () {
                 return []
+              })
+          },
+          selectedStateId: function (authService) {
+            return authService.getUserSelectedState(true)
+              .catch(function () {
+                return {}
               })
           }
         }
