@@ -94,7 +94,7 @@ angular.module('auth')
             return $q.when('')
           }
           return $localForage.setItem('selectedState', state)
-            .then(function (st) {
+            .then(function () {
               return true
             })
         })
