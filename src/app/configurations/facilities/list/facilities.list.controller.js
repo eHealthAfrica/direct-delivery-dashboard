@@ -1,11 +1,20 @@
 'use strict'
 
 angular.module('configurations.facilities')
-  .controller('ConfigFacilityListCtrl', function (authService, dbService, log, states, locationService, pouchUtil) {
+  .controller('ConfigFacilityListCtrl', function (
+    authService,
+    dbService,
+    log,
+    states,
+    selectedStateId,
+    locationService,
+    $scope,
+    pouchUtil) {
     var vm = this
 
     vm.states = states
-    vm.authState = false
+    vm.selectedStateId = selectedStateId
+
     vm.getLgas = function (stateId) {
       var keys = []
       keys.push(['4', stateId])
@@ -31,24 +40,15 @@ angular.module('configurations.facilities')
         })
     }
     vm.switchState = function (stateId) {
+      stateId = stateId || vm.selectedStateId
       return vm.getLgas(stateId)
         .then(vm.getFacilities)
         .catch(function (err) {
-          log.error('facilitiesRetrivalErr', err)
+          vm.facilities = []
+          vm.lgas = []
+          log.info('facilitiesRetrievalErr', err)
         })
     }
-
-    authService.getCurrentUser()
-      .then(authService.authorisedStates)
-      .then(function (response) {
-        vm.selectedStateId = response[0]
-        vm.authState = vm.selectedStateId
-        return vm.selectedStateId
-      })
-      .then(vm.switchState)
-      .catch(function (err) {
-        log.error('facilitiesRetrivalErr', err)
-      })
 
     vm.save = function (data, facility) {
       return dbService.update(angular.extend(facility, data))
@@ -60,4 +60,11 @@ angular.module('configurations.facilities')
           log.error('locationSaveErr', err)
         })
     }
+
+    vm.switchState()
+    $scope.$on('stateChanged', function (event, data) {
+      var state = data.state
+      vm.selectedStateId = state._id
+      vm.switchState()
+    })
   })
