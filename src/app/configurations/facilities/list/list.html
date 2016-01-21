@@ -6,8 +6,7 @@
 	            ng-change="configFacilityListCtrl.switchState(configFacilityListCtrl.selectedStateId)"
 	            ng-model="configFacilityListCtrl.selectedStateId"
 	            ng-options="state._id as state.name for state in configFacilityListCtrl.states"
-	            ng-init="configFacilityListCtrl.selectedStateId"
-              ng-disabled="configFacilityListCtrl.authState">
+	            ng-init="configFacilityListCtrl.selectedStateId">
 	        </select>
 	      </div>
 	      <div class="form-group">

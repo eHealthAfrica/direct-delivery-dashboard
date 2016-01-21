@@ -21,10 +21,12 @@ angular.module('navbar')
 
     $scope.selectState = function (state) {
       authService.setUserSelectedState(state)
-        .then(function (status) {
-          if (status) {
-            $rootScope.$broadcast('stateChanged', { state: { name: state } })
-          }
+        .then(authService.getUserSelectedState.bind(null, true))
+        .then(function (id) {
+          $rootScope.$broadcast('stateChanged', { state: {
+            name: state,
+            _id: id
+          } })
         })
         .catch(function (error) {
           log.error('stateSelectionErr', error)

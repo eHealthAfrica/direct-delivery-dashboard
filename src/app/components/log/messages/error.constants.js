@@ -191,5 +191,10 @@ angular.module('log')
       title: 'Missing round report',
       message: 'The selected round does not contain a report',
       remedy: 'Please ensure the round contains a delivery schedule'
+    },
+    facilitiesRetrievalErr: {
+      title: 'Missing Facility Data',
+      message: 'The selected LGA does not contain facilities',
+      remedy: ''
     }
   })
