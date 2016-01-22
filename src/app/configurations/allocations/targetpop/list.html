@@ -23,7 +23,7 @@
         class="form-control"
         ng-change="targetPopCtrl.switchLocationState(targetPopCtrl.selectedState)"
         ng-model="targetPopCtrl.selectedState"
-        ng-options="state.name for state in targetPopCtrl.stateList"
+        ng-options="state._id as state.name for state in targetPopCtrl.stateList"
         ng-init="targetPopCtrl.selectedState">
     </select>
   </div>
@@ -39,7 +39,7 @@
 
 <hr/>
 
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped" ng-if="targetPopCtrl.renderedData.length > 0">
   <tr>
     <th>Facility</th>
     <th tooltip-append-to-body="true" tooltip="Annual target population of children under the age of 1 year for 2015">Annual TP U1 (2015)</th>
@@ -83,3 +83,6 @@
   </tr>
 </table>
 
+<div class="alert alert-info" ng-show="targetPopCtrl.renderedData.length === 0">
+  <i class="fa fa-info-circle"></i> No record found.
+</div>
