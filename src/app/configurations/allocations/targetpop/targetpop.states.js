@@ -21,6 +21,12 @@ angular.module('allocations')
                 log.error('userStatesErr', reason)
                 return []
               })
+          },
+          selectedStateId: function (authService) {
+            return authService.getUserSelectedState(true)
+              .catch(function () {
+                return {}
+              })
           }
         }
       })
