@@ -8,7 +8,9 @@ angular.module('allocations')
     $modal,
     log,
     targetPopulationService,
-    states
+    states,
+    selectedStateId,
+    $scope
   ) {
     var vm = this
     vm.selectedLga = ''
@@ -20,16 +22,10 @@ angular.module('allocations')
       separator: '',
       result: ''
     }
+    vm.selectedState = selectedStateId
+    vm.stateList = states
+    vm.csvHeader = ['_id', 'state', 'facility_id', 'facility_name', 'year', 'annualU1', 'bi-weeklyU1', 'annualWCBA', 'bi-weeklyWCBA']
 
-    function loadStates () {
-      var i = states.length
-      vm.locationStates = []
-      while (i--) {
-        vm.locationStates.push(states[i]._id)
-      }
-      vm.selectedState = vm.locationStates[0]
-    }
-    loadStates()
     function findLga (state) {
       var keys = []
       keys.push(['4', state])
@@ -40,10 +36,11 @@ angular.module('allocations')
           return vm.selectedLga
         })
         .catch(function (err) {
-          log.error('', err, 'could not fetch lga list, please try again. contact admin if this persists.')
+          log.error('lgaListErr', err)
         })
     }
-    function getFacilities (lgs) {
+
+    function getFacilities () {
       var level = '6'
       var keys = []
       var lgas = vm.selectedLga
@@ -62,31 +59,34 @@ angular.module('allocations')
         .then(function (response) {
           return response
         })
-        .catch(function () {
-          log.error('', '', 'could not retrieve facilities, please reload and try again')
+        .catch(function (err) {
+          log.error('facilitiesRetrievalErr', err)
         })
     }
+
     vm.switchLocationState = function (stateID) {
       var state = stateID || vm.selectedState
       return findLga(state)
         .then(getFacilities)
+        .then(calculationService.getTargetPop)
+        .then(function (response) {
+          vm.renderedData = response
+        })
         .catch(function (err) {
-          log.error('', err, 'switching LGA failed')
-          return []
+          log.error('locationSwitchErr', err)
         })
     }
 
-    vm.stateList = locations.filter(function (location) {
-      return location.level === '2'
-    })
-
-    findLga(vm.selectedState)
-      .then(getFacilities)
-      .then(calculationService.getTargetPop)
-      .then(function (response) {
-        vm.renderedData = response
-        return response
-      })
+    vm.switchLocationLga = function () {
+      getFacilities()
+        .then(calculationService.getTargetPop)
+        .then(function (response) {
+          vm.renderedData = response
+        })
+        .catch(function (err) {
+          log.error('locationSwitchErr', err)
+        })
+    }
 
     vm.saveUpdate = function (doc) {
       targetPopulationService.update(doc)
@@ -99,12 +99,12 @@ angular.module('allocations')
           return log.error('targetPopSave', err)
         })
     }
-    vm.csvHeader = ['_id', 'state', 'facility_id', 'facility_name', 'year', 'annualU1', 'bi-weeklyU1', 'annualWCBA', 'bi-weeklyWCBA']
+
     vm.csvTemplateDownload = function () {
       var csvArr = []
 
       if (vm.renderedData.length === 0) {
-        return log.error('', '', 'could not retrieve data please try again')
+        return log.error('dataRetrievalErr')
       }
       for (var i in vm.renderedData) {
         csvArr.push({
@@ -121,6 +121,7 @@ angular.module('allocations')
       }
       return csvArr
     }
+
     vm.csvUpload = function (data) {
       var modalInstance = $modal.open({
         animation: true,
@@ -150,4 +151,11 @@ angular.module('allocations')
           log.info('targetPopSave', err)
         })
     }
+
+    vm.switchLocationState()
+    $scope.$on('stateChanged', function (event, data) {
+      var state = data.state
+      vm.selectedState = state._id
+      vm.switchLocationState()
+    })
   })
