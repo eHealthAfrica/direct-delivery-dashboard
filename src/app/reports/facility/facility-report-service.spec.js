@@ -17,9 +17,11 @@ describe('facilityReportService', function () {
   it("should expose a 'getHFStatusReport' function", function () {
     expect(facilityReportService.getHFStatusReport).toEqual(jasmine.any(Function))
     var date = new Date().getDate()
+    expect(dbService.getView).not.toHaveBeenCalled()
 
     var view = 'facilities/cce-status-by-date'
     facilityReportService.getHFStatusReport(date, date)
+
     expect(dbService.getView).toHaveBeenCalledWith(view, jasmine.any(Object))
   })
 })
