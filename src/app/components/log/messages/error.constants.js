@@ -134,7 +134,7 @@ angular.module('log')
     },
     locationLoadErr: {
       title: 'Location load error',
-      message: 'An unknown error occurred while locations',
+      message: 'An unknown error occurred while loading locations',
       remedy: 'Please, try again and contact support if it persists'
     },
     userLoadErr: {
@@ -195,6 +195,21 @@ angular.module('log')
     facilitiesRetrievalErr: {
       title: 'Missing Facility Data',
       message: 'The selected LGA does not contain facilities',
-      remedy: ''
+      remedy: 'Ensure there are facilities for the selected LGA'
+    },
+    lgaListErr: {
+      title: 'LGA List Error',
+      message: 'could not fetch lga list, please try again. contact admin if this persists.',
+      remedy: 'Ensure there are LGAs for the selected state'
+    },
+    locationSwitchErr: {
+      title: 'Location Switch Error',
+      message: 'Unable to switch to the selected location',
+      remedy: 'reload and try again'
+    },
+    dataRetrievalErr: {
+      title: 'Data Retrieval Error',
+      message: 'could not retrieve data please try again',
+      remedy: 'Please, try again and contact support if it persists'
     }
   })

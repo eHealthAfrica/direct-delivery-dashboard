@@ -24,6 +24,9 @@ angular.module('allocations')
      * data.
      */
     service.getTargetPop = function (facilities) {
+      if (!facilities) {
+        return []
+      }
       var view = 'allocations/target-population'
       var keys = []
       var options = {
