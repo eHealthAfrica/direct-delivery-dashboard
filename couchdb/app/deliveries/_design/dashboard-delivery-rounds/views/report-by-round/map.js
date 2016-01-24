@@ -150,6 +150,8 @@ function(doc) {
       if (isValidStatus(facRnd.status)) {
         facRnd.status = facRnd.status.toLowerCase();
         facRndReport = genReport(facRnd.targetDate, facRnd.date, facRnd.status, facRnd.facility.zone);
+        facRndReport.lag = getLag(doc.date, facRnd.arrivedAt)
+        facRndReport.howMuchLate = getHowMuchTimeLate(doc.date,facRnd.window, facRnd.arrivedAt )
         emit([facRnd.deliveryRoundID, facRnd.date], facRndReport);
       }
     }
