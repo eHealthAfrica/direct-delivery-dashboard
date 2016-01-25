@@ -65,7 +65,8 @@ angular.module('planning')
         lag: {
           beforeDate: 0,
           onDate: 0,
-          afterDate: 0
+          afterDate: 0,
+          unknown: 0
         }
       }
       return roundReport
@@ -262,6 +263,8 @@ angular.module('planning')
             } else if (row.lag === 2) {
               roundReport.lag.afterDate++
             }
+          } else {
+            roundReport.lag.unknown++
           }
           roundReport = _this.collateZoneReport(roundReport, row)
         }

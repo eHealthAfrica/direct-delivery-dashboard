@@ -140,7 +140,9 @@ function(doc) {
           facRnd.status = facRnd.status.toLowerCase();
           facRndReport = genReport(facRnd.targetDate, doc.date, facRnd.status, facRnd.facility.zone);
           facRndReport.howMuchLate = getHowMuchTimeLate(doc.date,facRnd.window, facRnd.arrivedAt )
-          facRndReport.lag = getLag(doc.date, facRnd.arrivedAt)
+          if(facRndReport.delivered === 1 && facRnd.arrivedAt){
+            facRndReport.lag = getLag(doc.date, facRnd.arrivedAt)
+          }
           emit([doc.deliveryRoundID, doc.date], facRndReport);
         }
       }
@@ -150,6 +152,10 @@ function(doc) {
       if (isValidStatus(facRnd.status)) {
         facRnd.status = facRnd.status.toLowerCase();
         facRndReport = genReport(facRnd.targetDate, facRnd.date, facRnd.status, facRnd.facility.zone);
+        if(facRndReport.delivered === 1 && facRnd.arrivedAt){
+          facRndReport.lag = getLag(doc.date, facRnd.arrivedAt)
+        }
+        facRndReport.howMuchLate = getHowMuchTimeLate(doc.date,facRnd.window, facRnd.arrivedAt )
         emit([facRnd.deliveryRoundID, facRnd.date], facRndReport);
       }
     }
