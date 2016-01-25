@@ -35,7 +35,7 @@
            </a>
            <ul class="dropdown-menu">
              <li>
-               <a href="#" ng-repeat="key in daCtrl.views"
+               <a ng-repeat="key in daCtrl.views"
                   ng-click="daCtrl.switchView(key)">{{ key }}
                </a>
              </li>
@@ -52,7 +52,7 @@
            </a>
            <ul class="dropdown-menu">
              <li>
-               <a href="#" ng-repeat="allocTemp in daCtrl.allocationTemplates"
+               <a  ng-repeat="allocTemp in daCtrl.allocationTemplates"
                   ng-click="daCtrl.setAllocationTemplate(allocTemp)">
                  {{ allocTemp.name }}
                </a>
