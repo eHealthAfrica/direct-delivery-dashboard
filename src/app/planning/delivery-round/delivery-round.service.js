@@ -75,8 +75,8 @@ angular.module('planning')
     function getColor (status) {
       var str = status.toLowerCase()
 
-      var darkGreen = '#006600'
-      var lightGreen = '#00CC00'
+      var darkGreen = '#008548'
+      var lightGreen = '#00a65a'
 
       var grey = '#B0B0B0'
       var darkGrey = '#505050'

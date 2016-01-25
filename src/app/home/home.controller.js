@@ -26,13 +26,13 @@ angular.module('directDeliveryDashboard')
       }
       var roundReport = vm.roundReport
       vm.onTime = [
-        { key: 'Unknown', y: roundReport.onTimeMap['Unknown'] || 0, color: '#90C3D4' },
-        { key: 'On time', y: roundReport.onTimeMap['On_time'] || 0, color: '#93C47D' },
-        { key: 'Less than an hour late', y: roundReport.onTimeMap['An_hour_late'] || 0, color: 'orange' },
-        { key: 'Less than six hours late', y: roundReport.onTimeMap['Less_than_six_hours_late'] || 0, color: '#F21142' },
-        { key: 'A day late', y: roundReport.onTimeMap['A_day_late'] || 0, color: 'pink' },
-        { key: 'A week late', y: roundReport.onTimeMap['A_week_late'] || 0, color: '#40030E' },
-        { key: 'More than a week late', y: roundReport.onTimeMap['More_than_a_week_late'] || 0, color: 'red' }
+        { key: 'Unknown', y: roundReport.onTimeMap['Unknown'] || 0, color: '#a3a3a3' },
+        { key: 'On time', y: roundReport.onTimeMap['On_time'] || 0, color: '#00a65a' },
+        { key: 'Less than an hour late', y: roundReport.onTimeMap['An_hour_late'] || 0, color: '#00c0ef' },
+        { key: 'Less than six hours late', y: roundReport.onTimeMap['Less_than_six_hours_late'] || 0, color: '#009abf' },
+        { key: 'A day late', y: roundReport.onTimeMap['A_day_late'] || 0, color: '#d2d6de' },
+        { key: 'A week late', y: roundReport.onTimeMap['A_week_late'] || 0, color: '#f39c12' },
+        { key: 'More than a week late', y: roundReport.onTimeMap['More_than_a_week_late'] || 0, color: '#dd4b39' }
       ]
     }
     vm.getLag = function () {
@@ -40,10 +40,10 @@ angular.module('directDeliveryDashboard')
         return
       }
       vm.lag = [
-        {key: 'On scheduled date', y: vm.roundReport.lag.onDate || 0, color: '#93C47D'},
-        {key: 'Before scheduled date', y: vm.roundReport.lag.beforeDate || 0, color: '#90C3D4'},
-        {key: 'After scheduled date', y: vm.roundReport.lag.afterDate || 0, color: 'red'},
-        {key: 'Unknown', y: vm.roundReport.lag.unknown || 0, color: '#90C3D4'}
+        {key: 'On scheduled date', y: vm.roundReport.lag.onDate || 0, color: '#00a65a'},
+        {key: 'Before scheduled date', y: vm.roundReport.lag.beforeDate || 0, color: '#00c0ef'},
+        {key: 'After scheduled date', y: vm.roundReport.lag.afterDate || 0, color: '#dd4b39'},
+        {key: 'Unknown', y: vm.roundReport.lag.unknown || 0, color: '#a3a3a3'}
       ]
     }
 
@@ -110,7 +110,7 @@ angular.module('directDeliveryDashboard')
           tasks: [
             {
               name: 'Progress',
-              color: '#93C47D',
+              color: '#00a65a',
               from: utility.formatDate(vm.roundReport.timeline.startDate),
               to: new Date(vm.roundReport.timeline.markDate.getTime() + endDateLastHour),
               priority: 1 // enables progress to overlap end point
@@ -142,7 +142,7 @@ angular.module('directDeliveryDashboard')
           if (roundReport.onTime || roundReport.behindTime > 0) {
             vm.onTime = [
               { key: 'Behind Time', y: roundReport.behindTime, color: 'orange' },
-              { key: 'On Time', y: roundReport.onTime, color: 'green' }
+              { key: 'On Time', y: roundReport.onTime, color: '#00a65a' }
             ]
           }
           vm.hasSchedules()
