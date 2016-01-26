@@ -35,37 +35,11 @@
             <i class="fa fa-pencil-square-o"></i>
             <span>Edit</span>
           </button>
-
-          <a class="btn btn-info" ui-sref="planning.schedule({ roundId: round._id})">
-            <i class="fa fa-calendar"></i>
-            <span>Schedule</span>
+          <a class="btn btn-default" ui-sref="planning.schedule({ roundId: round._id})">
+            <i class="fa fa-search "></i>
+            <span>View</span>
           </a>
 
-          <a class="btn btn-primary" ui-sref="planning.allocation({ roundId: round._id})">
-            <i class="fa fa-pie-chart"></i>
-            <span>Allocation</span>
-          </a>
-
-          <a class="btn btn-warning"
-             ui-sref="planning.returnRoute({ roundId: round._id})">
-            <i class="fa fa-truck"></i>
-            <span>Return Route</span>
-          </a>
-
-          <a class="btn btn-danger"
-             ui-sref="planning.kpi({ roundId: round._id})">
-            <i class="fa fa-file-text"></i>
-            <span>KPI</span>
-          </a>
-
-        </td>
-        <td ng-show="round.status ==='Ready'
-        ">
-          <button class="btn btn-success"
-                  ng-click="crCtrl.completePlanning(round)">
-            <i class="fa fa-bell"></i>
-            <span>Activate and Send Alert</span>
-          </button>
         </td>
       </tr>
       </tbody>
