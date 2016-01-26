@@ -29,7 +29,7 @@
         <td ng-bind="round.status"></td>
         <td ng-bind="round.startDate | date:'d-MMM-yyyy'"></td>
         <td ng-bind="round.endDate | date:'d-MMM-yyyy'"></td>
-        <td ng-bind="round.createdOn | date: 'yyyy-MM-dd HH:mm:ss'"></td>
+        <td ng-bind="round.createdOn | date: 'd-MMM-yyyy HH:mm:ss'"></td>
         <td class="btn-group">
           <button class="btn btn-default" ng-click="crCtrl.open(round._id)">
             <i class="fa fa-pencil-square-o"></i>
