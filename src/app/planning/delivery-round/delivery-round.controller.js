@@ -13,8 +13,6 @@ angular.module('planning')
     var vm = this
     vm.deliveryRounds = deliveryRounds
 
-    console.log(vm.deliveryRounds)
-
     vm.open = function (id) {
       $modal.open({
         animation: true,
