@@ -3,7 +3,7 @@
 angular.module('planning')
   .controller('ScheduleRoundCtrl', function (deliveryRound, $state, dailyDeliveries,
     scheduleService, planningService, log, config,
-    $modal, utility, $q, DELIVERY_STATUS, mailerService, driversService, $window, $scope, authService, DTOptionsBuilder, DTColumnDefBuilder) {
+    $modal, utility, $q, DELIVERY_STATUS, mailerService, driversService, $window, $scope, authService, DTOptionsBuilder, DTColumnDefBuilder, ROUND_STATUS) {
     var vm = this
     vm.isSavingList = {}
     vm.deliveryStatuses = DELIVERY_STATUS
@@ -67,11 +67,15 @@ angular.module('planning')
 
     function onSuccess (res) {
       log.success('schedulesSaved', res)
-      $state.go('planning.schedule', {roundId: vm.deliveryRound._id}, {
-        reload: true,
-        inherit: false,
-        notify: true
-      })
+      vm.deliveryRound.status = ROUND_STATUS.ALLOCATING
+      planningService.saveRound(vm.deliveryRound)
+        .then(function () {
+          $state.go('planning.schedule', {roundId: vm.deliveryRound._id}, {
+            reload: true,
+            inherit: false,
+            notify: true
+          })
+        })
     }
     vm.isScheduleComplete = function () {
       var isComplete = true
