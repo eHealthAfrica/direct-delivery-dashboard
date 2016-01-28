@@ -76,7 +76,8 @@ angular.module('planning')
     vm.isScheduleComplete = function () {
       var isComplete = true
       var go = true
-      vm.dailyDeliveries.map(function (delivery) {
+      for (var i = 0; i < vm.dailyDeliveries.length; i++) {
+        var delivery = vm.dailyDeliveries[i]
         delivery.scheduleComplete = true
         if (!utility.isValidDate(delivery.date)) {
           go = false
@@ -96,8 +97,9 @@ angular.module('planning')
         if (!go) {
           delivery.scheduleComplete = false
           isComplete = false
+          break
         }
-      })
+      }
       return isComplete
     }
     vm.saveAll = function () {
