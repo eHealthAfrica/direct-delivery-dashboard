@@ -73,7 +73,17 @@ angular.module('planning')
         notify: true
       })
     }
-
+    vm.isScheduleComplete = function () {
+      var isComplete = true
+      vm.dailyDeliveries.map(function (delivery) {
+        delivery.scheduleComplete = true
+        if (!utility.isValidDate(delivery.date)) {
+          delivery.scheduleComplete = false
+          isComplete = false
+        }
+      })
+      return isComplete
+    }
     vm.saveAll = function () {
       scheduleService.saveSchedules(vm.dailyDeliveries)
         .then(onSuccess)

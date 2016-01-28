@@ -7,9 +7,10 @@
         <div class="col-sm-12">
           <div class="btn-group pull-right">
             <button class="btn btn-primary btn-lg"
-                    ng-click="srCtrl.saveAll()">
+                    ng-click="srCtrl.saveAll()"
+                    ng-disabled="!srCtrl.isScheduleComplete()">
               <i class="fa fa-floppy-o"></i>
-              <span>Save All</span>
+              <span>Scheduling and Routing Complete</span>
             </button>
 
             <button class="btn btn-default btn-lg"

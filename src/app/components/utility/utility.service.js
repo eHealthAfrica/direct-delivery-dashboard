@@ -59,6 +59,10 @@ angular.module('utility')
       return hash
     }
 
+    this.isValidEmail = function (email) {
+      var re = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm
+      return re.test(email)
+    }
     // Useful when writing in a functional style
     this.returnEmptyList = function () {
       return []
