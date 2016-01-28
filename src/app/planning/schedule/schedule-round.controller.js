@@ -75,9 +75,25 @@ angular.module('planning')
     }
     vm.isScheduleComplete = function () {
       var isComplete = true
+      var go = true
       vm.dailyDeliveries.map(function (delivery) {
         delivery.scheduleComplete = true
         if (!utility.isValidDate(delivery.date)) {
+          go = false
+        }
+        if (!utility.isValidEmail(delivery.driverID)) {
+          go = false
+        }
+        if (angular.isUndefined(delivery.drop) || delivery.drop === '') {
+          go = false
+        }
+        if (angular.isUndefined(delivery.window) || delivery.window === '') {
+          go = false
+        }
+        if (angular.isUndefined(delivery.distance) || delivery.distance === '') {
+          go = false
+        }
+        if (!go) {
           delivery.scheduleComplete = false
           isComplete = false
         }
