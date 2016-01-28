@@ -65,7 +65,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="facRnd in srCtrl.facilityDeliveries track by $index"
-            ng-class="{'success': srCtrl.isUpdated(facRnd)}">
+            ng-class="{'success': srCtrl.isUpdated(facRnd) , 'bg-success': facRnd.scheduleComplete, 'bg-warning': !facRnd.scheduleComplete}">
           <td ng-bind="($index + 1)"></td>
           <td ng-bind="::facRnd.facility.name"></td>
           <td ng-bind="::facRnd.facility.zone"></td>
