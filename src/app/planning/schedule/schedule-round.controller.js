@@ -25,7 +25,7 @@ angular.module('planning')
       {value: '1PM-3PM', text: '1PM-3PM'},
       {value: '3PM-5PM', text: '3PM-5PM'}
     ]
-    vm.dtOptions = DTOptionsBuilder.newOptions().withPaginationType('full_numbers')
+    vm.dtOptions = DTOptionsBuilder.newOptions().withPaginationType('full_numbers').withBootstrap()
     vm.dtColumnDefs = []
     vm.print = function () {
       $window.jQuery('#print-area').print()
