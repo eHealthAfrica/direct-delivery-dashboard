@@ -28,6 +28,7 @@ describe('delivery-round.service', function () {
 
     spyOn(dbService, 'getView').and.callThrough()
     spyOn(authService, 'getUserSelectedState').and.callThrough()
+    spyOn(deliveryRoundService, 'getBy').and.callThrough()
   }))
 
   it('should expose a collateReport function', function () {
@@ -89,8 +90,23 @@ describe('delivery-round.service', function () {
     var stateCode = 'KN'
     var authParam = true
     expect(authService.getUserSelectedState).not.toHaveBeenCalled()
-
     deliveryRoundService.getByStateCode(stateCode)
     expect(authService.getUserSelectedState).toHaveBeenCalledWith(authParam)
+  })
+
+  it('should expose a getLatestBy function', function () {
+    expect(deliveryRoundService.getLatestBy).toEqual(jasmine.any(Function))
+  })
+
+  it('should call deliveryRoundService.getBy on getLatestBy function', function () {
+    var state = 'KN'
+    var params = {
+      startkey: [ state ],
+      endkey: [ state, {} ]
+    }
+    expect(deliveryRoundService.getBy).not.toHaveBeenCalled()
+    deliveryRoundService.getLatestBy(state)
+
+    expect(deliveryRoundService.getBy).toHaveBeenCalledWith(params)
   })
 })
