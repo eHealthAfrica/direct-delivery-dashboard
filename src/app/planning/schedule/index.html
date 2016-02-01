@@ -4,21 +4,15 @@
   <div class="panel panel-default">
     <div class="panel-heading hidden-print">
       <div class="row">
-        <div class="col-sm-12">
-          <div class="btn-group pull-right">
-            <button class="btn btn-primary btn-lg"
-                    ng-click="srCtrl.saveAll()">
-              <i class="fa fa-floppy-o"></i>
-              <span>Save All</span>
-            </button>
-
-            <button class="btn btn-default btn-lg"
+        <div class="col-sm-4">
+          <div class="btn-group pull-left">
+            <button class="btn btn-default"
                     ng-click="srCtrl.openImportDialog()">
               <i class="fa fa-cloud-upload"></i>
               <span>Upload Schedule Info</span>
             </button>
 
-            <button class="btn btn-default btn-lg"
+            <button class="btn btn-default "
                     ng-csv="srCtrl.exportForRouting"
                     csv-header="srCtrl.exportHeader"
                     filename="delivery-round-{{ srCtrl.deliveryRound._id }}.csv">
@@ -26,14 +20,56 @@
               <span>Export for Routing</span>
             </button>
 
-            <a class="btn btn-default btn-lg"
+            <a class="btn btn-default"
                ui-sref="planning.manageFacilities({ roundId: srCtrl.deliveryRound._id })">
               <i class="fa fa-exchange"></i>
               <span>Import Facilities</span>
             </a>
-            <button ng-if="srCtrl.facilityDeliveries.length > 0" class="btn btn-primary btn-lg" type="button"  ng-click="srCtrl.print()">
+          </div>
+        </div>
+        <div class="col-sm-5">
+          <div class="btn-group">
+            <a class="btn btn-info" ui-sref="planning.schedule({ roundId: srCtrl.deliveryRound._id})">
+              <i class="fa fa-calendar"></i>
+              <span>Schedule</span>
+            </a>
+
+            <a class="btn btn-info" ui-sref="planning.allocation({ roundId: srCtrl.deliveryRound._id})">
+              <i class="fa fa-pie-chart"></i>
+              <span>Allocation</span>
+            </a>
+
+            <a class="btn btn-info"
+               ui-sref="planning.returnRoute({ roundId: srCtrl.deliveryRound._id})">
+              <i class="fa fa-truck"></i>
+              <span>Return Route</span>
+            </a>
+
+            <a class="btn btn-info"
+               ui-sref="planning.kpi({ roundId: srCtrl.deliveryRound._id})">
+              <i class="fa fa-file-text"></i>
+              <span>KPI</span>
+            </a>
+
+            <button class="btn btn-success"
+                    ng-click="crCtrl.completePlanning(srCtrl.deliveryRound)">
+              <i class="fa fa-bell"></i>
+              <span>Activate and Send Alert</span>
+            </button>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="btn-group pull-right">
+            <button class="btn btn-primary btn-lg"
+                    ng-click="srCtrl.saveAll()">
+              <i class="fa fa-floppy-o"></i>
+              <span>Save All</span>
+            </button>
+            <button ng-if="srCtrl.facilityDeliveries.length > 0"
+                    class="btn btn-primary btn-lg" type="button"  ng-click="srCtrl.print()">
               <i class="fa fa-print"></i> Print
             </button>
+
           </div>
         </div>
       </div>
