@@ -6,29 +6,26 @@ describe('delivery-round.service', function () {
   var deliveryRoundService
   var dbService
   var authService
-  var utility
   var locationService
   var planningService
-  var log
-  var config
-  var pouchUtil
 
   beforeEach(module('db', 'auth', 'planning', 'location', 'log', 'config', 'utility'))
 
-  beforeEach(inject(function (_deliveryRoundService_, _dbService_, _authService_, _utility_, _locationService_, _planningService_, _log_, _config_, _pouchUtil_) {
+  beforeEach(inject(function (_deliveryRoundService_, _dbService_, _authService_, _locationService_, _planningService_) {
     deliveryRoundService = _deliveryRoundService_
     dbService = _dbService_
     authService = _authService_
-    utility = _utility_
     locationService = _locationService_
     planningService = _planningService_
-    log = _log_
-    config = _config_
-    pouchUtil = _pouchUtil_
 
     spyOn(dbService, 'getView').and.callThrough()
     spyOn(authService, 'getUserSelectedState').and.callThrough()
+    spyOn(authService, 'authorisedStates').and.callThrough()
+    spyOn(authService, 'getCurrentUser').and.callThrough()
     spyOn(deliveryRoundService, 'getBy').and.callThrough()
+    spyOn(locationService, 'getLocationsByLevelAndId').and.callThrough()
+    spyOn(locationService, 'getLocationsByLevel').and.callThrough()
+    spyOn(planningService, 'getByRoundId').and.callThrough()
   }))
 
   it('should expose a collateReport function', function () {
@@ -86,7 +83,6 @@ describe('delivery-round.service', function () {
   })
 
   it('should call authService.getUserSelectedState from getByStateCode function', function () {
-    var view = 'delivery-rounds/by-state-code'
     var stateCode = 'KN'
     var authParam = true
     expect(authService.getUserSelectedState).not.toHaveBeenCalled()
@@ -108,5 +104,26 @@ describe('delivery-round.service', function () {
     deliveryRoundService.getLatestBy(state)
 
     expect(deliveryRoundService.getBy).toHaveBeenCalledWith(params)
+  })
+
+  it('should expose a getStateAdminLevels function', function () {
+    expect(deliveryRoundService.getStateAdminLevels).toEqual(jasmine.any(Function))
+  })
+
+  it('should call authService.getCurrentUser on getStateAdminLevels function', function () {
+    expect(authService.getCurrentUser).not.toHaveBeenCalled()
+    deliveryRoundService.getStateAdminLevels()
+    expect(authService.getCurrentUser).toHaveBeenCalled()
+  })
+
+  it('should expose a getDeliveryRound function', function () {
+    expect(deliveryRoundService.getDeliveryRound).toEqual(jasmine.any(Function))
+  })
+
+  it('should call planningService.getByRoundId on getDeliveryRound function', function () {
+    var roundId = 'KN-01-2016'
+    expect(planningService.getByRoundId).not.toHaveBeenCalled()
+    deliveryRoundService.getDeliveryRound(roundId)
+    expect(planningService.getByRoundId).toHaveBeenCalledWith(roundId)
   })
 })
