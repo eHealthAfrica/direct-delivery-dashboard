@@ -27,6 +27,7 @@ describe('delivery-round.service', function () {
     pouchUtil = _pouchUtil_
 
     spyOn(dbService, 'getView').and.callThrough()
+    spyOn(authService, 'getUserSelectedState').and.callThrough()
   }))
 
   it('should expose a collateReport function', function () {
@@ -43,6 +44,7 @@ describe('delivery-round.service', function () {
   it('should expose a getReport function', function () {
     expect(deliveryRoundService.getReport).toEqual(jasmine.any(Function))
   })
+
   it('should call dbService.getView on getReport function', function () {
     var view = 'dashboard-delivery-rounds/report-by-round'
     var roundId = 'KN-01-2016'
@@ -51,9 +53,44 @@ describe('delivery-round.service', function () {
       endkey: [ roundId, {} ]
     }
     expect(dbService.getView).not.toHaveBeenCalled()
-
     deliveryRoundService.getReport(roundId)
-
     expect(dbService.getView).toHaveBeenCalledWith(view, params)
+  })
+
+  it('should expose getRoundCodes function', function () {
+    expect(deliveryRoundService.getRoundCodes).toEqual(jasmine.any(Function))
+  })
+
+  it('should call dbService.getView from getRoundCodes function', function () {
+    var view = 'delivery-rounds/all'
+    expect(dbService.getView).not.toHaveBeenCalled()
+    deliveryRoundService.getRoundCodes()
+    expect(dbService.getView).toHaveBeenCalledWith(view)
+  })
+
+  it('should expose getBy function', function () {
+    expect(deliveryRoundService.getBy).toEqual(jasmine.any(Function))
+  })
+
+  it('should call dbService.getView from getRoundCodes function', function () {
+    var view = 'dashboard-delivery-rounds/by-state-and-end-date'
+    var key = ''
+    expect(dbService.getView).not.toHaveBeenCalled()
+    deliveryRoundService.getBy(key)
+    expect(dbService.getView).toHaveBeenCalledWith(view, key)
+  })
+
+  it('should expose a getByStateCode function', function () {
+    expect(deliveryRoundService.getByStateCode).toEqual(jasmine.any(Function))
+  })
+
+  it('should call authService.getUserSelectedState from getByStateCode function', function () {
+    var view = 'delivery-rounds/by-state-code'
+    var stateCode = 'KN'
+    var authParam = true
+    expect(authService.getUserSelectedState).not.toHaveBeenCalled()
+
+    deliveryRoundService.getByStateCode(stateCode)
+    expect(authService.getUserSelectedState).toHaveBeenCalledWith(authParam)
   })
 })
