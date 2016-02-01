@@ -41,19 +41,22 @@
             <span>Schedule</span>
           </a>
 
-          <a class="btn btn-primary" ui-sref="planning.allocation({ roundId: round._id})">
+          <a class="btn btn-primary" ui-sref="planning.allocation({ roundId: round._id})"
+            ng-disabled="round.status ==='Planning'">
             <i class="fa fa-pie-chart"></i>
             <span>Allocation</span>
           </a>
 
           <a class="btn btn-warning"
-             ui-sref="planning.returnRoute({ roundId: round._id})">
+             ui-sref="planning.returnRoute({ roundId: round._id})"
+             ng-disabled="round.status ==='Planning'">
             <i class="fa fa-truck"></i>
             <span>Return Route</span>
           </a>
 
           <a class="btn btn-danger"
-             ui-sref="planning.kpi({ roundId: round._id})">
+             ui-sref="planning.kpi({ roundId: round._id})"
+             ng-disabled="round.status ==='Planning'">
             <i class="fa fa-file-text"></i>
             <span>KPI</span>
           </a>
