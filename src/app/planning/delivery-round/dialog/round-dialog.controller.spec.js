@@ -40,7 +40,7 @@ describe('round-dialog.controller', function () {
   })
 
   it('should make a new delivery if none is supplied', function () {
-    nrdCtrl.deliveryRound = false
+    nrdCtrl.deliveryRound = deliveryRound = false
     var dRound = {
       state: '',
       stateCode: '',
@@ -52,9 +52,15 @@ describe('round-dialog.controller', function () {
     function deliveryRoundSupplied (deliveryRound) {
       if (!angular.isObject(deliveryRound)) {
         nrdCtrl.deliveryRound = dRound
+      } else {
+        nrdCtrl.deliveryRound = deliveryRound
+        nrdCtrl.edit = true
       }
     }
     deliveryRoundSupplied()
+    expect(nrdCtrl.deliveryRound).toEqual(dRound)
+
+    deliveryRoundSupplied(dRound)
     expect(nrdCtrl.deliveryRound).toEqual(dRound)
   })
 
