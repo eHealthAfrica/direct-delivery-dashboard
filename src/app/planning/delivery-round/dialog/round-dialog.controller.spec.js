@@ -9,6 +9,7 @@ describe('round-dialog.controller', function () {
   var deliveryRound
   var stateAdminLevels
   var planningService
+  var noDeliveryRound
   beforeEach(module('planning'))
 
   beforeEach(inject(function ($rootScope, $controller, _planningService_) {
@@ -25,7 +26,9 @@ describe('round-dialog.controller', function () {
     }
 
     spyOn(planningService, 'getRoundCode').and.callThrough()
-
+    noDeliveryRound = function () {
+      deliveryRound = undefined
+    }
     nrdCtrl = $controller('RoundDialogCtrl', {
       $scope: scope,
       $modalInstance: modalInstance,
@@ -40,28 +43,8 @@ describe('round-dialog.controller', function () {
   })
 
   it('should make a new delivery if none is supplied', function () {
-    nrdCtrl.deliveryRound = deliveryRound = false
-    var dRound = {
-      state: '',
-      stateCode: '',
-      roundNo: '',
-      status: nrdCtrl.ROUND_STATUS.PLANNING,
-      startDate: new Date(),
-      endDate: ''
-    }
-    function deliveryRoundSupplied (deliveryRound) {
-      if (!angular.isObject(deliveryRound)) {
-        nrdCtrl.deliveryRound = dRound
-      } else {
-        nrdCtrl.deliveryRound = deliveryRound
-        nrdCtrl.edit = true
-      }
-    }
-    deliveryRoundSupplied()
-    expect(nrdCtrl.deliveryRound).toEqual(dRound)
-
-    deliveryRoundSupplied(dRound)
-    expect(nrdCtrl.deliveryRound).toEqual(dRound)
+    noDeliveryRound()
+    expect(nrdCtrl.deliveryRound).toEqual(jasmine.any(Object))
   })
 
   it('should have deliveryRound object', function () {
