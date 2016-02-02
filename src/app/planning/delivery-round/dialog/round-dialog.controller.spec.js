@@ -39,6 +39,25 @@ describe('round-dialog.controller', function () {
     expect(nrdCtrl.ROUND_STATUS).toEqual(jasmine.any(Object))
   })
 
+  it('should make a new delivery if none is supplied', function () {
+    nrdCtrl.deliveryRound = false
+    var dRound = {
+      state: '',
+      stateCode: '',
+      roundNo: '',
+      status: nrdCtrl.ROUND_STATUS.PLANNING,
+      startDate: new Date(),
+      endDate: ''
+    }
+    function deliveryRoundSupplied (deliveryRound) {
+      if (!angular.isObject(deliveryRound)) {
+        nrdCtrl.deliveryRound = dRound
+      }
+    }
+    deliveryRoundSupplied()
+    expect(nrdCtrl.deliveryRound).toEqual(dRound)
+  })
+
   it('should have deliveryRound object', function () {
     expect(nrdCtrl.deliveryRound).toEqual(jasmine.any(Object))
   })
