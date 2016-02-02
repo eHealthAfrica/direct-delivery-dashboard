@@ -64,6 +64,22 @@
     }
   ]
 
+  var deliveryRoundCount = [
+    {
+      id: 'State1',
+      key: null,
+      value: deliveryRounds.length
+    }
+  ]
+
+  var dailyDeliveryCount = [
+    {
+      id: 'round1',
+      key: null,
+      value: dailyDeliveries.length
+    }
+  ]
+
   angular.module('reportsMock', [])
     .constant('deliveryRounds', deliveryRounds)
     .constant('dailyDeliveries', dailyDeliveries)
@@ -86,13 +102,19 @@
 
             case 'reports/delivery-rounds-count':
               response = {
-                rows: deliveryRounds
+                rows: deliveryRoundCount
               }
               break
 
             case 'reports/daily-deliveries':
               response = {
                 rows: dailyDeliveries
+              }
+              break
+
+            case 'reports/daily-deliveries-count':
+              response = {
+                rows: dailyDeliveryCount
               }
               break
 
