@@ -10,6 +10,7 @@ describe('round-dialog.controller', function () {
   var stateAdminLevels
   var planningService
   var noDeliveryRound
+  var event
   beforeEach(module('planning'))
 
   beforeEach(inject(function ($rootScope, $controller, _planningService_) {
@@ -24,7 +25,14 @@ describe('round-dialog.controller', function () {
         then: jasmine.createSpy('modalInstance.result.then')
       }
     }
-
+    event = {
+      preventDefault: function () {
+        return
+      },
+      stopPropagation: function () {
+        return
+      }
+    }
     spyOn(planningService, 'getRoundCode').and.callThrough()
     noDeliveryRound = function () {
       deliveryRound = undefined
@@ -56,6 +64,8 @@ describe('round-dialog.controller', function () {
     expect(nrdCtrl.start.name).toBeTruthy()
     expect(nrdCtrl.start.opened).toBeFalsy()
     expect(nrdCtrl.start.open).toEqual(jasmine.any(Function))
+    nrdCtrl.start.open(event)
+    expect(nrdCtrl.start.opened).toBeTruthy()
   })
 
   it('should have end object', function () {
@@ -63,6 +73,8 @@ describe('round-dialog.controller', function () {
     expect(nrdCtrl.end.name).toBeTruthy()
     expect(nrdCtrl.end.opened).toBeFalsy()
     expect(nrdCtrl.end.open).toEqual(jasmine.any(Function))
+    nrdCtrl.end.open(event)
+    expect(nrdCtrl.end.opened).toBeTruthy()
   })
 
   it('should have a setStateCode function', function () {
