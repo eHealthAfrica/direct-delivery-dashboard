@@ -3,7 +3,7 @@
 /* global describe inject expect jasmine spyOn it beforeEach module */
 
 describe('round-dialog.controller', function () {
-  var scope
+  var $scope
   var nrdCtrl
   var modalInstance
   var deliveryRound
@@ -11,11 +11,19 @@ describe('round-dialog.controller', function () {
   var planningService
   var noDeliveryRound
   var event
+
   beforeEach(module('planning'))
 
   beforeEach(inject(function ($rootScope, $controller, _planningService_) {
-    scope = $rootScope.$new()
-    deliveryRound = []
+    $scope = $rootScope.$new()
+    deliveryRound = {
+      state: '',
+      stateCode: '',
+      roundNo: '',
+      status: 'PLANNING',
+      startDate: new Date(),
+      endDate: ''
+    }
     stateAdminLevels = []
     planningService = _planningService_
     modalInstance = {
@@ -38,7 +46,7 @@ describe('round-dialog.controller', function () {
       deliveryRound = undefined
     }
     nrdCtrl = $controller('RoundDialogCtrl', {
-      $scope: scope,
+      $scope: $scope,
       $modalInstance: modalInstance,
       deliveryRound: deliveryRound,
       stateAdminLevels: stateAdminLevels,
@@ -59,6 +67,9 @@ describe('round-dialog.controller', function () {
     expect(nrdCtrl.deliveryRound).toEqual(jasmine.any(Object))
   })
 
+  it('should have states Array', function () {
+    expect(nrdCtrl.states).toEqual(jasmine.any(Array))
+  })
   it('should have start object', function () {
     expect(nrdCtrl.start).toEqual(jasmine.any(Object))
     expect(nrdCtrl.start.name).toBeTruthy()
@@ -79,6 +90,13 @@ describe('round-dialog.controller', function () {
 
   it('should have a setStateCode function', function () {
     expect(nrdCtrl.setStateCode).toEqual(jasmine.any(Function))
+    nrdCtrl.states = [{
+      _id: 'KN-01-2016',
+      name: 'KANO',
+      roundNo: '01'
+    }]
+    nrdCtrl.setStateCode()
+    expect(nrdCtrl.deliveryRound).toEqual(jasmine.any(Object))
   })
 
   it('should have a setRoundNumber function', function () {
@@ -93,7 +111,7 @@ describe('round-dialog.controller', function () {
     var roundId = 'KN-01-2016'
     expect(planningService.getRoundCode).not.toHaveBeenCalled()
     nrdCtrl.getRoundCode(roundId)
-    expect(planningService.getRoundCode).toHaveBeenCalledWith(jasmine.any(Array))
+    expect(planningService.getRoundCode).toHaveBeenCalledWith(jasmine.any(Object))
   })
 
   it('should have a continue function', function () {
