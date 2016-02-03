@@ -107,20 +107,17 @@
         'lga': 'Bebeji',
         'ward': 'Kuki',
         'deliveryRoundID': 'STATEID-23-2015',
-        'count': 1
+        'count': 1,
+        driverID: 'driver.name@domain.com'
       }
-    },
-    {'id': 'id2',
-      'key': ['round1', 'LGAID'],
-      'value': {
-        'status': 'canceled',
-        'date': '2016-01-01',
-        'zone': 'Rano',
-        'lga': 'Bebeji',
-        'ward': 'Garmai',
-        'deliveryRoundID': 'STATEID-23-2015',
-        'count': 1
-      }
+    }
+  ]
+
+  var byDateMock = [
+    {
+      'id': 'id1',
+      'key': ['2015-04-27', 'round1', 'LGA-Name'],
+      value: byRoundMock[0].value
     }
   ]
 
@@ -170,6 +167,24 @@
             case 'location/by-level-and-ancestors-id':
               response = {
                 rows: locationMock
+              }
+              break
+
+            case 'dashboard-delivery-rounds/report-by-date':
+              response = {
+                rows: byDateMock
+              }
+              break
+
+            case 'dashboard-delivery-rounds/by-state-and-end-date':
+              response = {
+                rows: [
+                  {
+                    'id': 'KN-20',
+                    'key': ['Kano', '2015-04-23'],
+                    'value': null
+                  }
+                ]
               }
               break
 
