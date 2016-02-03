@@ -83,4 +83,16 @@ describe('reportsService', function () {
 
     rootScope.$digest()
   })
+
+  it('should test data structure', function (done) {
+    reportsService.getReportByRound()
+      .then(function (data) {
+        expect(data.zones).toBeDefined()
+        expect(data.dates).toBeDefined()
+        expect(data.status).toBeDefined()
+        done()
+      })
+
+    rootScope.$digest()
+  })
 })
