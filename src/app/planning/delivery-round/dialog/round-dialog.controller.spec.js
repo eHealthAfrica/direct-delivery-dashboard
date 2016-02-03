@@ -14,7 +14,7 @@ describe('round-dialog.controller', function () {
 
   beforeEach(module('planning'))
 
-  beforeEach(inject(function ($rootScope, $controller, _planningService_) {
+  beforeEach(inject(function ($rootScope, $controller, _planningService_, $q) {
     $scope = $rootScope.$new()
     deliveryRound = {
       state: 'KANO',
@@ -43,7 +43,11 @@ describe('round-dialog.controller', function () {
     }
     spyOn(planningService, ['getRoundCode']).and.callThrough()
     spyOn(planningService, 'saveRound').and.callThrough()
-    spyOn(planningService, 'createRound').and.callThrough()
+    spyOn(planningService, 'createRound').and.callFake(function () {
+      var deferred = $q.defer()
+      deferred.resolve([])
+      return deferred.promise
+    })
     noDeliveryRound = function () {
       deliveryRound = undefined
     }
@@ -130,6 +134,7 @@ describe('round-dialog.controller', function () {
     nrdCtrl.edit = false
     nrdCtrl.continue()
     expect(planningService.createRound).toHaveBeenCalledWith(nrdCtrl.deliveryRound)
+    expect(planningService.createRound).toHaveBeenCalled()
   })
 
   it('should have a saveAndExit function', function () {
