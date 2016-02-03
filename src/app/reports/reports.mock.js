@@ -82,15 +82,14 @@
 
   var locationMock = [
     {
-      'id': 'LGAID-STATEID',
-      'key': ['3', 'STATEID'],
+      'id': 'ZONEID-STATEID',
+      'key': ['3', 'State1'],
       'value': null,
       'doc': {
-        '_id': 'LGAID-STATEID',
-        '_rev': 'uuid',
+        '_id': 'ZONEID-STATEID',
         'doc_type': 'location',
         'level': '3',
-        'name': 'LGA-Name',
+        'name': 'Zone 1',
         'ancestors': ['COUNTRYID', 'ZONEID', 'STATEID']
       }
     }
@@ -99,14 +98,14 @@
   var byRoundMock = [
     {
       'id': 'id1',
-      'key': ['round1', 'LGAID'],
+      'key': ['round1', 'ZONEID'],
       'value': {
         'status': 'success',
         'date': '2016-01-29',
-        'zone': 'Rano',
-        'lga': 'Bebeji',
+        'zone': 'Zone 1',
+        'lga': 'LGA 1',
         'ward': 'Kuki',
-        'deliveryRoundID': 'STATEID-23-2015',
+        'deliveryRoundID': 'round1',
         'count': 1,
         driverID: 'driver.name@domain.com'
       }
@@ -116,7 +115,7 @@
   var byDateMock = [
     {
       'id': 'id1',
-      'key': ['2015-04-27', 'round1', 'LGA-Name'],
+      'key': ['2015-04-27', 'round1', 'ZONEID'],
       value: byRoundMock[0].value
     }
   ]
@@ -178,13 +177,7 @@
 
             case 'dashboard-delivery-rounds/by-state-and-end-date':
               response = {
-                rows: [
-                  {
-                    'id': 'KN-20',
-                    'key': ['Kano', '2015-04-23'],
-                    'value': null
-                  }
-                ]
+                rows: deliveryRounds
               }
               break
 

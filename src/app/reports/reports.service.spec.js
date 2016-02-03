@@ -86,7 +86,8 @@ describe('reportsService', function () {
 
   it('should test data structure', function (done) {
     var state = {
-      name: 'STATE-Name'
+      name: 'State1',
+      _id: 'STATEID'
     }
     reportsService.getByWithin(state, '2015-04-27', '2015-04-27')
       .then(function (data) {
