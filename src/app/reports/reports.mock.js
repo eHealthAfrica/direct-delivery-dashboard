@@ -82,43 +82,44 @@
 
   var locationMock = [
     {
-      "id":"LGAID-STATEID",
-      "key":["3","STATEID"],
-      "value":null,
-      "doc":{
-        "_id":"LGAID-STATEID",
-        "_rev":"uuid",
-        "doc_type":"location",
-        "level":"3",
-        "name":"LGA-Name",
-        "ancestors":["COUNTRYID","ZONEID","STATEID"]
+      'id': 'LGAID-STATEID',
+      'key': ['3', 'STATEID'],
+      'value': null,
+      'doc': {
+        '_id': 'LGAID-STATEID',
+        '_rev': 'uuid',
+        'doc_type': 'location',
+        'level': '3',
+        'name': 'LGA-Name',
+        'ancestors': ['COUNTRYID', 'ZONEID', 'STATEID']
       }
     }
   ]
 
   var byRoundMock = [
     {
-      "id":"id1",
-      "key":["round1","LGAID"],
-      "value":{
-        "status":"success",
-        "date" :"1972-01-29",
-        "zone":"Rano",
-        "lga":"Bebeji",
-        "ward":"Kuki",
-        "deliveryRoundID":"-23-2015",
-        "count":1
+      'id': 'id1',
+      'key': ['round1', 'LGAID'],
+      'value': {
+        'status': 'success',
+        'date': '2016-01-29',
+        'zone': 'Rano',
+        'lga': 'Bebeji',
+        'ward': 'Kuki',
+        'deliveryRoundID': 'STATEID-23-2015',
+        'count': 1
       }
     },
-    {"id":"id2",
-      "key":["round1","LGAID"],
-      "value":{"status":"canceled",
-        "date":"1970-01-01",
-        "zone":"Rano",
-        "lga":"Bebeji",
-        "ward":"Garmai",
-        "deliveryRoundID":"-23-2015",
-        "count":1
+    {'id': 'id2',
+      'key': ['round1', 'LGAID'],
+      'value': {
+        'status': 'canceled',
+        'date': '2016-01-01',
+        'zone': 'Rano',
+        'lga': 'Bebeji',
+        'ward': 'Garmai',
+        'deliveryRoundID': 'STATEID-23-2015',
+        'count': 1
       }
     }
   ]
