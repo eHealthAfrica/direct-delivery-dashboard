@@ -109,6 +109,20 @@
         'count': 1,
         driverID: 'driver.name@domain.com'
       }
+    },
+    {
+      'id': 'id2',
+      'key': ['round1', 'ZONEID'],
+      'value': {
+        'status': 'success',
+        'date': '2016-01-29',
+        'zone': 'Zone 1',
+        'lga': 'LGA 1',
+        'ward': 'Kuki',
+        'deliveryRoundID': 'round1',
+        'count': 1,
+        driverID: 'driver.name@domain.com'
+      }
     }
   ]
 
@@ -117,7 +131,13 @@
       'id': 'id1',
       'key': ['2015-04-27', 'round1', 'ZONEID'],
       value: byRoundMock[0].value
+    },
+    {
+      'id': 'id2',
+      'key': ['2015-04-27', 'round1', 'ZONEID'],
+      value: byRoundMock[1].value
     }
+
   ]
 
   angular.module('reportsMock', [])
