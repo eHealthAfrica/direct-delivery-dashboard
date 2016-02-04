@@ -6,7 +6,7 @@ describe('deliveryRoundService', function () {
   var rootScope
   var deliveryRoundService
 
-  beforeEach(module('planning', 'dbServiceMock'))
+  beforeEach(module('planning', 'dbServiceMock', 'authServiceMock'))
 
   beforeEach(inject(function (_$rootScope_, _deliveryRoundService_) {
     rootScope = _$rootScope_
@@ -57,7 +57,7 @@ describe('deliveryRoundService', function () {
   })
 
   it('should expose getByStateCode function', function (done) {
-    deliveryRoundService.getByStateCode()
+    deliveryRoundService.getByStateCode('KN')
       .then(function (res) {
         console.log(res)
         done()
