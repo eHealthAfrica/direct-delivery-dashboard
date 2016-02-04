@@ -9,7 +9,7 @@ describe('delivery-round.service', function () {
   var locationService
   var planningService
 
-  beforeEach(module('db', 'auth', 'planning', 'location', 'log', 'config', 'utility'))
+  beforeEach(module('dbServiceMock', 'auth', 'planning', 'location', 'log', 'config', 'utility'))
 
   beforeEach(inject(function (_deliveryRoundService_, _dbService_, _authService_, _locationService_, _planningService_) {
     deliveryRoundService = _deliveryRoundService_
@@ -122,6 +122,9 @@ describe('delivery-round.service', function () {
     }
     expect(dbService.getView).not.toHaveBeenCalled()
     deliveryRoundService.getReport(roundId)
+      .then(function (data) {
+        console.log(data)
+      })
     expect(dbService.getView).toHaveBeenCalledWith(view, params)
   })
 

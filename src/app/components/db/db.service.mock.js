@@ -25,7 +25,34 @@
       }
     }
   ]
-
+  var reportByRoundMock = [
+    {
+      status: 'Upcoming: 2st Attempt',
+      zone: 'Nassarawa', onTime: 1,
+      billable: 0,
+      workingCCE: 1,
+      delivered: 0,
+      howMuchLate: 6110313
+    },
+    {
+      status: 'Upcoming: 2st Attempt',
+      zone: 'Nassarawa',
+      onTime: 1,
+      billable: 0,
+      workingCCE: 1,
+      delivered: 0,
+      howMuchLate: 'UNKNOWN'
+    },
+    {
+      status: 'Upcoming: 2st Attempt',
+      zone: 'Nassarawa',
+      onTime: 1,
+      billable: 0,
+      workingCCE: 1,
+      delivered: 0,
+      howMuchLate: -7934471
+    }
+  ]
   var byRoundMock = [
     {
       'id': 'id1',
@@ -103,11 +130,15 @@
             response = {
               rows: deliveryRounds
             }
-          } else if ('dashboard-delivery-rounds/report-by-date') {
+          } else if (['dashboard-delivery-rounds/report-by-date'].indexOf(view) !== -1) {
             response = {
               rows: byDateMock
             }
-          } else if ('reports/by-rounds') {
+          } else if (['dashboard-delivery-rounds/report-by-round'].indexOf(view) !== -1) {
+            response = {
+              rows: reportByRoundMock
+            }
+          } else if (['reports/by-rounds'].indexOf(view) !== -1) {
             response = {
               rows: byRoundMock
             }
