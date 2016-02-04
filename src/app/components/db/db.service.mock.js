@@ -12,6 +12,17 @@
         state: 'State1',
         startDate: new Date('2015-01-01')
       }
+    },
+    {
+      id: 'round2',
+      key: ['State2', '2015-01-01'],
+      value: {
+        roundCode: 'RC1',
+        endDate: new Date('2015-01-13'),
+        id: 'round1',
+        state: 'State1',
+        startDate: new Date('2015-01-01')
+      }
     }
   ]
 
@@ -38,8 +49,22 @@
         'date': '2016-01-29',
         'zone': 'Zone 1',
         'lga': 'LGA 1',
-        'ward': 'Kuki',
+        'ward': 'Ward 1',
         'deliveryRoundID': 'round1',
+        'count': 1,
+        driverID: 'driver.name@domain.com'
+      }
+    },
+    {
+      'id': 'id3',
+      'key': ['round2', 'ZONEID'],
+      'value': {
+        'status': 'success',
+        'date': '2016-01-29',
+        'zone': 'Zone 2',
+        'lga': 'LGA 2',
+        'ward': 'Ward 2',
+        'deliveryRoundID': 'round2',
         'count': 1,
         driverID: 'driver.name@domain.com'
       }
@@ -56,11 +81,19 @@
       'id': 'id2',
       'key': ['2015-04-27', 'round1', 'ZONEID'],
       value: byRoundMock[1].value
+    },
+    {
+      'id': 'id3',
+      'key': ['2015-04-27', 'round1', 'ZONEID'],
+      value: byRoundMock[2].value
     }
 
   ]
 
   angular.module('dbServiceMock', [])
+    .constant('deliveryRounds', deliveryRounds)
+    .constant('dailyDeliveriesByDate', byDateMock)
+    .constant('dailyDeliveriesByRound', byRoundMock)
     .factory('dbService', function ($q) {
       return {
         getView: function (view) {
