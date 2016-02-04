@@ -28,4 +28,17 @@ describe('delivery-report-service', function () {
       rootScope.$digest()
     })
   })
+
+  describe('deliveryReportService.getDailyDeliveryReportByRound', function () {
+    it('should return formatted data structure ', function (done) {
+      deliveryReportService.getDailyDeliveryReportByRound('round1')
+        .then(function (response) {
+          expect(response).toBeDefined()
+          expect(response.byZoneByLGA).toBeDefined()
+          done()
+        })
+
+      rootScope.$digest()
+    })
+  })
 })

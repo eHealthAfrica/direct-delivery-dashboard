@@ -74,9 +74,9 @@
             response = {
               rows: byDateMock
             }
-          } else {
+          } else if ('reports/by-rounds') {
             response = {
-              rows: []
+              rows: byRoundMock
             }
           }
 
