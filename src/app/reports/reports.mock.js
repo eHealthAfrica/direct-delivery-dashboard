@@ -64,6 +64,82 @@
     }
   ]
 
+  var deliveryRoundCount = [
+    {
+      id: 'State1',
+      key: null,
+      value: deliveryRounds.length
+    }
+  ]
+
+  var dailyDeliveryCount = [
+    {
+      id: 'round1',
+      key: null,
+      value: dailyDeliveries.length
+    }
+  ]
+
+  var locationMock = [
+    {
+      'id': 'ZONEID-STATEID',
+      'key': ['3', 'State1'],
+      'value': null,
+      'doc': {
+        '_id': 'ZONEID-STATEID',
+        'doc_type': 'location',
+        'level': '3',
+        'name': 'Zone 1',
+        'ancestors': ['COUNTRYID', 'ZONEID', 'STATEID']
+      }
+    }
+  ]
+
+  var byRoundMock = [
+    {
+      'id': 'id1',
+      'key': ['round1', 'ZONEID'],
+      'value': {
+        'status': 'success',
+        'date': '2016-01-29',
+        'zone': 'Zone 1',
+        'lga': 'LGA 1',
+        'ward': 'Kuki',
+        'deliveryRoundID': 'round1',
+        'count': 1,
+        driverID: 'driver.name@domain.com'
+      }
+    },
+    {
+      'id': 'id2',
+      'key': ['round1', 'ZONEID'],
+      'value': {
+        'status': 'success',
+        'date': '2016-01-29',
+        'zone': 'Zone 1',
+        'lga': 'LGA 1',
+        'ward': 'Kuki',
+        'deliveryRoundID': 'round1',
+        'count': 1,
+        driverID: 'driver.name@domain.com'
+      }
+    }
+  ]
+
+  var byDateMock = [
+    {
+      'id': 'id1',
+      'key': ['2015-04-27', 'round1', 'ZONEID'],
+      value: byRoundMock[0].value
+    },
+    {
+      'id': 'id2',
+      'key': ['2015-04-27', 'round1', 'ZONEID'],
+      value: byRoundMock[1].value
+    }
+
+  ]
+
   angular.module('reportsMock', [])
     .constant('deliveryRounds', deliveryRounds)
     .constant('dailyDeliveries', dailyDeliveries)
@@ -86,13 +162,42 @@
 
             case 'reports/delivery-rounds-count':
               response = {
-                rows: deliveryRounds
+                rows: deliveryRoundCount
               }
               break
 
             case 'reports/daily-deliveries':
               response = {
                 rows: dailyDeliveries
+              }
+              break
+
+            case 'reports/daily-deliveries-count':
+              response = {
+                rows: dailyDeliveryCount
+              }
+              break
+            case 'reports/by-rounds':
+              response = {
+                rows: byRoundMock
+              }
+              break
+
+            case 'location/by-level-and-ancestors-id':
+              response = {
+                rows: locationMock
+              }
+              break
+
+            case 'dashboard-delivery-rounds/report-by-date':
+              response = {
+                rows: byDateMock
+              }
+              break
+
+            case 'dashboard-delivery-rounds/by-state-and-end-date':
+              response = {
+                rows: deliveryRounds
               }
               break
 

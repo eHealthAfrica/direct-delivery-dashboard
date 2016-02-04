@@ -3,7 +3,7 @@
 angular.module('planning')
   .controller('ScheduleRoundCtrl', function (deliveryRound, $state, dailyDeliveries,
     scheduleService, planningService, log, config,
-    $modal, utility, $q, DELIVERY_STATUS, mailerService, driversService, $window, $scope, authService, DTOptionsBuilder, DTColumnDefBuilder) {
+    $modal, utility, $q, DELIVERY_STATUS, mailerService, driversService, $window, $scope, authService, DTOptionsBuilder, DTColumnDefBuilder, ROUND_STATUS) {
     var vm = this
     vm.isSavingList = {}
     vm.deliveryStatuses = DELIVERY_STATUS
@@ -67,13 +67,45 @@ angular.module('planning')
 
     function onSuccess (res) {
       log.success('schedulesSaved', res)
-      $state.go('planning.schedule', {roundId: vm.deliveryRound._id}, {
-        reload: true,
-        inherit: false,
-        notify: true
-      })
+      vm.deliveryRound.status = ROUND_STATUS.ALLOCATING
+      planningService.saveRound(vm.deliveryRound)
+        .then(function () {
+          $state.go('planning.schedule', {roundId: vm.deliveryRound._id}, {
+            reload: true,
+            inherit: false,
+            notify: true
+          })
+        })
     }
-
+    vm.isScheduleComplete = function () {
+      var isComplete = true
+      var go = true
+      for (var i = 0; i < vm.dailyDeliveries.length; i++) {
+        var delivery = vm.dailyDeliveries[i]
+        delivery.scheduleComplete = true
+        if (!utility.isValidDate(delivery.date)) {
+          go = false
+        }
+        if (!utility.isValidEmail(delivery.driverID)) {
+          go = false
+        }
+        if (angular.isUndefined(delivery.drop) || delivery.drop === '') {
+          go = false
+        }
+        if (angular.isUndefined(delivery.window) || delivery.window === '') {
+          go = false
+        }
+        if (angular.isUndefined(delivery.distance) || delivery.distance === '') {
+          go = false
+        }
+        if (!go) {
+          delivery.scheduleComplete = false
+          isComplete = false
+          break
+        }
+      }
+      return isComplete
+    }
     vm.saveAll = function () {
       scheduleService.saveSchedules(vm.dailyDeliveries)
         .then(onSuccess)

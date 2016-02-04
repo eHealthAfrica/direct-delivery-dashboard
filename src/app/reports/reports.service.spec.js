@@ -57,4 +57,58 @@ describe('reportsService', function () {
 
     rootScope.$digest()
   })
+
+  it('should return total rows found in delivery rounds query', function (done) {
+    reportsService.getRoundsCount()
+      .then(function (deliveryRoundCount) {
+        var mock = deliveryRounds
+        var rows = deliveryRoundCount.rows
+        expect(rows.length).toEqual(1)
+        expect(mock.length).toEqual(rows[0].value)
+        done()
+      })
+
+    rootScope.$digest()
+  })
+
+  it('should return total rows found in daily delivery query', function (done) {
+    reportsService.getDailyDeliveriesCount()
+      .then(function (deliveryCount) {
+        var mock = dailyDeliveries
+        var rows = deliveryCount.rows
+        expect(rows.length).toEqual(1)
+        expect(mock.length).toEqual(rows[0].value)
+        done()
+      })
+
+    rootScope.$digest()
+  })
+
+  it('should test data structure', function (done) {
+    var state = {
+      name: 'State1',
+      _id: 'STATEID'
+    }
+    reportsService.getByWithin(state, '2015-04-27', '2015-04-27')
+      .then(function (data) {
+        expect(data.zones).toBeDefined()
+        expect(data.dates).toBeDefined()
+        expect(data.status).toBeDefined()
+        done()
+      })
+
+    rootScope.$digest()
+  })
+
+  it('should test data structure', function (done) {
+    reportsService.getReportByRound()
+      .then(function (data) {
+        expect(data.zones).toBeDefined()
+        expect(data.dates).toBeDefined()
+        expect(data.status).toBeDefined()
+        done()
+      })
+
+    rootScope.$digest()
+  })
 })
