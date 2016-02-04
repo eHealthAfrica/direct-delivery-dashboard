@@ -28,9 +28,79 @@ describe('delivery-round.service', function () {
     spyOn(planningService, 'getByRoundId').and.callThrough()
   }))
 
+  it('should expose a getDefaultReport function', function () {
+    expect(deliveryRoundService.getDefaultReport).toEqual(jasmine.any(Function))
+  })
+
+  it('should create a roundReport object on getDefaultReport', function () {
+    var res = deliveryRoundService.getDefaultReport()
+    expect(res).toEqual(jasmine.any(Object))
+  })
+
+  it('should expose a collateZoneReport function', function () {
+    expect(deliveryRoundService.collateZoneReport).toEqual(jasmine.any(Function))
+  })
+
+  it('should call deliveryRoundService.updateZoneStatusCount on collateZoneReport', function () {
+    spyOn(deliveryRoundService, 'updateZoneStatusCount').and.callThrough()
+    expect(deliveryRoundService.updateZoneStatusCount).not.toHaveBeenCalled()
+    var res = deliveryRoundService.getDefaultReport()
+    var row = {
+      status: 'Success: 1st Attempt',
+      zone: 'Nassarawa',
+      onTime: 1,
+      billable: 1,
+      workingCCE: 1,
+      delivered: 1,
+      howMuchLate: 886088,
+      lag: 1
+    }
+    deliveryRoundService.collateZoneReport(res, row)
+    expect(deliveryRoundService.updateZoneStatusCount).toHaveBeenCalled()
+  })
+
+  it('should expose a updateZoneStatusCount function', function () {
+    expect(deliveryRoundService.updateZoneStatusCount).toEqual(jasmine.any(Function))
+  })
+  it('should return an roundReport object on updateZoneStatusCount', function () {
+    var rndReport = {
+      status: {
+        'Success: 1st Attempt': {
+          zones: {
+            Nassarawa: {
+              _id: 'NG-NW-KN-NASSARAWA',
+              _rev: '1-d89fd3402264e22379364b9ff95611aa',
+              name: 'Nassarawa',
+              osmId: '',
+              'ancestors': [
+                'NG',
+                'NW',
+                'KN',
+                '',
+                ''
+              ],
+              'doc_type': 'location',
+              'level': '3'
+            }
+          }
+        }
+      },
+      zone: 'Southern',
+      onTime: 1,
+      billable: 1,
+      workingCCE: 1,
+      delivered: 1,
+      howMuchLate: -1279222,
+      lag: 1
+    }
+
+    var res = deliveryRoundService.updateZoneStatusCount('Nassarawa', 'Success: 1st Attempt', rndReport)
+    expect(res).toEqual(jasmine.any(Object))
+  })
   it('should expose a collateReport function', function () {
     expect(deliveryRoundService.collateZoneReport).toEqual(jasmine.any(Function))
   })
+
   it('should take array param for collateReport function and return an object', function () {
     var arr = {
       rows: []
