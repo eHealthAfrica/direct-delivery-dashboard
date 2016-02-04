@@ -27,30 +27,53 @@
   ]
   var reportByRoundMock = [
     {
-      status: 'Upcoming: 2st Attempt',
-      zone: 'Nassarawa', onTime: 1,
-      billable: 0,
-      workingCCE: 1,
-      delivered: 0,
-      howMuchLate: 6110313
+      id: '1b03d0925529656b4c83caed460aa54e',
+      key: [
+        'BA-008-2015',
+        '1970-01-01'
+      ],
+      value: {
+        status: 'Canceled: Staff availability',
+        zone: 'Nassarawa',
+        onTime: 1,
+        billable: 0,
+        workingCCE: 1,
+        delivered: 0,
+        howMuchLate: 'UNKNOWN'
+      }
     },
     {
-      status: 'Upcoming: 2st Attempt',
-      zone: 'Nassarawa',
-      onTime: 1,
-      billable: 0,
-      workingCCE: 1,
-      delivered: 0,
-      howMuchLate: 'UNKNOWN'
+      id: '1b03d0925529656b4c83caed460e055b',
+      key: [
+        'BA-1-2015',
+        '1970-01-01'
+      ],
+      value: {
+        status: 'Upcoming: 1st Attempt',
+        zone: 'Nassarawa',
+        onTime: 1,
+        billable: 0,
+        workingCCE: 1,
+        delivered: 0,
+        howMuchLate: 'UNKNOWN'
+      }
     },
     {
-      status: 'Upcoming: 2st Attempt',
-      zone: 'Nassarawa',
-      onTime: 1,
-      billable: 0,
-      workingCCE: 1,
-      delivered: 0,
-      howMuchLate: -7934471
+      id: '5228bb1535f9cad3d3f6a6133ed9157f',
+      key: [
+        'BA-1-2015',
+        '2015-08-03'
+      ],
+      value: {
+        status: 'Success: 1st Attempt',
+        zone: 'Southern',
+        onTime: 1,
+        billable: 1,
+        workingCCE: 1,
+        delivered: 1,
+        howMuchLate: -15943664,
+        lag: 1
+      }
     }
   ]
   var byRoundMock = [
@@ -125,7 +148,6 @@
       return {
         getView: function (view) {
           var response = null
-
           if (['reports/delivery-rounds', 'dashboard-delivery-rounds/by-state-and-end-date'].indexOf(view) !== -1) {
             response = {
               rows: deliveryRounds
@@ -147,6 +169,13 @@
           var deferred = $q.defer()
           deferred.resolve(response)
 
+          return deferred.promise
+        },
+        get: function (id) {
+          var deferred = $q.defer()
+          deferred.resolve({
+            _id: id
+          })
           return deferred.promise
         }
       }
