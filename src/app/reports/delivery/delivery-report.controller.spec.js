@@ -2,19 +2,25 @@
 /* global describe, beforeEach, it, inject, expect, module */
 
 describe('DeliveryReportCtrl', function () {
-  beforeEach(module('reports', 'config'))
+  beforeEach(module('reports', 'config', 'dbServiceMock', 'authServiceMock'))
 
   var DeliveryReportCtrl
+  var rootScope
   var scope = {
     selectedState: {
-      _id: 'KN',
-      name: 'Kano'
+      _id: 'STATEID',
+      name: 'State1'
     },
     $on: function () {
       return {}
     }
   }
-  beforeEach(inject(function ($controller, config) {
+  var event = {
+    preventDefault: function () {},
+    stopPropagation: function () {}
+  }
+  beforeEach(inject(function ($controller, _$rootScope_) {
+    rootScope = _$rootScope_
     DeliveryReportCtrl = $controller('DeliveryReportCtrl', {
       $scope: scope
     })
@@ -54,5 +60,19 @@ describe('DeliveryReportCtrl', function () {
       var isAFunction = angular.isFunction(DeliveryReportCtrl.stop.open)
       expect(isAFunction).toBeTruthy()
     })
+
+    it('should toggle the state of "stop.opened" if stop.open is called', function () {
+      DeliveryReportCtrl.stop.opened = false
+      expect(DeliveryReportCtrl.stop.opened).toBeFalsy()
+      DeliveryReportCtrl.stop.open(event)
+      expect(DeliveryReportCtrl.stop.opened).toBeTruthy()
+    })
+  })
+
+  it('testing here', function () {
+    DeliveryReportCtrl.getReport()
+    DeliveryReportCtrl.getByRound('round1')
+    DeliveryReportCtrl.getByRound()
+    rootScope.$digest()
   })
 })
