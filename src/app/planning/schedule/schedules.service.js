@@ -9,38 +9,23 @@ angular.module('planning')
       var view = 'dashboard-delivery-rounds/alert-receivers'
       var options = {include_docs: true, keys: ['all', stateCode]}
 
-      function containsEmail (email) {
-        return function (element, index, array) {
-          if (array[index].email === email) {
-            return email
-          }
-          return
-        }
-      }
-
-      function containsPhone (phone) {
-        return function (element, index, array) {
-          if (array[index] === phone) {
-            return phone
-          }
-          return
-        }
-      }
-
       return dbService.getView(view, options)
-        .then(pouchUtil.pluckDocs)
+        .then(function (res) {
+          return res
+        })
+        .then(pouchUtil.pluckValues)
         .then(function (data) {
-          var obj = {emails: [], phones: []}
+          var obj = {emails: ['adam@ehealthafrica.org'], phones: []}
           return data.filter(function (item) {
             return item.active
           }).reduce(function (previous, current) {
             current.emails.forEach(function (item) {
-              if (!previous.emails.find(containsEmail(item))) {
+              if (!previous.emails.indexOf(item)) {
                 previous.emails.push({email: item, type: 'to', name: current.name})
               }
             })
             current.phones.forEach(function (item) {
-              if (!previous.phones.find(containsPhone(item))) {
+              if (!previous.phones.indexOf(item)) {
                 previous.phones.push(item)
               }
             })

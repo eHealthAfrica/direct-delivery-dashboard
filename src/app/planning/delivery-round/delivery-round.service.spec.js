@@ -28,14 +28,13 @@ describe('deliveryRoundService', function () {
     rootScope.$digest()
   })
 
-  /* it('should expose a getStateAdminLevels', function (done) {
+  it('should expose a getStateAdminLevels', function (done) {
     deliveryRoundService.getStateAdminLevels()
       .then(function (data) {
-        console.log(data)
         done()
       })
     rootScope.$digest()
-  })*/
+  })
 
   it('should expose getDeliveryRound', function (done) {
     deliveryRoundService.getDeliveryRound('KN-01-2016')
@@ -59,7 +58,6 @@ describe('deliveryRoundService', function () {
   it('should expose getByStateCode function', function (done) {
     deliveryRoundService.getByStateCode('KN')
       .then(function (res) {
-        console.log(res)
         done()
       })
     rootScope.$digest()

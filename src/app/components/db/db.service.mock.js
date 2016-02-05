@@ -25,6 +25,22 @@
       }
     }
   ]
+
+  var locationMock = [
+    {
+      'id': 'ZONEID-STATEID',
+      'key': ['3', 'State1'],
+      'value': null,
+      'doc': {
+        '_id': 'ZONEID-STATEID',
+        'doc_type': 'location',
+        'level': '3',
+        'name': 'Zone 1',
+        'ancestors': ['COUNTRYID', 'ZONEID', 'STATEID']
+      }
+    }
+  ]
+
   var reportByRoundMock = [
     {
       id: '1b03d0925529656b4c83caed460aa54e',
@@ -140,6 +156,65 @@
 
   ]
 
+  var emailReceiversMock = [
+    {
+      id: '7ab9f02f1d61f74666517af7aa001d94',
+      key: 'all',
+      value: {
+        _id: '7ab9f02f1d61f74666517af7aa001d94',
+        _rev: '10-0ab1fd86f9ecebbf362add6aef19cb44',
+        active: true,
+        doc_type: 'alert-receiver',
+        phones: [ ],
+        emails: [
+          'adam@ehealthafrica.org'
+        ],
+        name: 'Adam Thompson',
+        locations: [
+          'all'
+        ]
+      }
+    },
+    {
+      id: '4cd167a74113b70dced1395b6a000185',
+      key: 'BA',
+      value: {
+        _id: '4cd167a74113b70dced1395b6a000185',
+        _rev: '2-931aa691f68b6bcc0d255e0628bed74c',
+        active: true,
+        doc_type: 'alert-receiver',
+        phones: [ ],
+        emails: [
+          'usman.inuwa@ehealthnigeria.org'
+        ],
+        name: 'Usman Inuwa',
+        locations: [
+          'KN',
+          'BA'
+        ]
+      }
+    },
+    {
+      id: '4cd167a74113b70dced1395b6a000185',
+      key: 'KN',
+      value: {
+        _id: '4cd167a74113b70dced1395b6a000185',
+        _rev: '2-931aa691f68b6bcc0d255e0628bed74c',
+        active: true,
+        doc_type: 'alert-receiver',
+        phones: [ ],
+        emails: [
+          'usman.inuwa@ehealthnigeria.org'
+        ],
+        name: 'Usman Inuwa',
+        locations: [
+          'KN',
+          'BA'
+        ]
+      }
+    }
+  ]
+
   angular.module('dbServiceMock', [])
     .constant('deliveryRounds', deliveryRounds)
     .constant('dailyDeliveriesByDate', byDateMock)
@@ -148,7 +223,7 @@
       return {
         getView: function (view) {
           var response = null
-          if (['reports/delivery-rounds', 'dashboard-delivery-rounds/by-state-and-end-date'].indexOf(view) !== -1) {
+          if (['reports/delivery-rounds', 'dashboard-delivery-rounds/by-state-and-end-date', 'delivery-rounds/by-state-code'].indexOf(view) !== -1) {
             response = {
               rows: deliveryRounds
             }
@@ -164,6 +239,15 @@
             response = {
               rows: byRoundMock
             }
+          } else if (['location/by-level', 'location/by-level-and-id'].indexOf(view) !== -1) {
+            response = {
+              rows: locationMock
+            }
+          } else if (['dashboard-delivery-rounds/alert-receivers'].indexOf(view) !== 1) {
+            response = {
+              rows: emailReceiversMock,
+              docs: emailReceiversMock
+            }
           }
 
           var deferred = $q.defer()
@@ -176,6 +260,21 @@
           deferred.resolve({
             _id: id
           })
+          return deferred.promise
+        },
+        save: function (doc) {
+          var deferred = $q.defer()
+          deferred.resolve(angular.extend(doc, {
+            _rev: '1-01'
+          }))
+          return deferred.promise
+        },
+        insertWithId: function (doc, id) {
+          doc._id = id
+          var deferred = $q.defer()
+          deferred.resolve(angular.extend(doc, {
+            _rev: '1-01'
+          }))
           return deferred.promise
         }
       }

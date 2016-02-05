@@ -1,156 +1,126 @@
 'use strict'
 
-/* global describe inject expect jasmine spyOn it beforeEach module */
+/* global describe inject expect jasmine  it beforeEach module */
 
 describe('round-dialog.controller', function () {
-  var $scope
+  var scope
   var nrdCtrl
+  var $rootScope
   var modalInstance
   var deliveryRound
   var stateAdminLevels
-  var planningService
-  var noDeliveryRound
-  var event
+  var stateMock
 
-  beforeEach(module('planning'))
+  beforeEach(module('planning', 'dbServiceMock', 'mailerServiceMock'))
 
-  beforeEach(inject(function ($rootScope, $controller, _planningService_, $q) {
-    $scope = $rootScope.$new()
-    deliveryRound = {
-      state: 'KANO',
-      stateCode: '',
-      roundNo: '',
-      status: 'PLANNING',
-      startDate: new Date(),
-      endDate: new Date()
-    }
-    stateAdminLevels = []
-    planningService = _planningService_
+  beforeEach(inject(function (_$rootScope_, $controller, $q) {
+    $rootScope = _$rootScope_
+    scope = $rootScope.$new()
     modalInstance = {
-      close: jasmine.createSpy('modalInstance.close'),
-      dismiss: jasmine.createSpy('modalInstance.dismiss'),
-      result: {
-        then: jasmine.createSpy('modalInstance.result.then')
-      }
+      close: function () {},
+      dismiss: function () {}
     }
-    event = {
-      preventDefault: function () {
-        return
+    deliveryRound = {
+      id: 'KN-01-2016',
+      _id: 'KN-01-2016',
+      state: 'Kano'
+    }
+    stateAdminLevels = [
+      {
+        '_id': 'BA',
+        '_rev': '1-10ab65143f2e9881e578eff5a1b1eafa',
+        'doc_type': 'location',
+        'level': '2',
+        'name': 'Bauchi',
+        'ancestors': [
+          'NG',
+          'NE'
+        ]
       },
-      stopPropagation: function () {
-        return
+      {
+        '_id': 'KN',
+        '_rev': '1-ddd3c940d3768dee75fe0763e722ec3a',
+        'doc_type': 'location',
+        'level': '2',
+        'name': 'Kano',
+        'ancestors': [
+          'NG',
+          'NW'
+        ]
+      }
+    ]
+    stateMock = {
+      go: function () {
+        return $q.when({})
       }
     }
-    spyOn(planningService, ['getRoundCode']).and.callThrough()
-    spyOn(planningService, 'saveRound').and.callThrough()
-    spyOn(planningService, 'createRound').and.callFake(function () {
-      var deferred = $q.defer()
-      deferred.resolve([])
-      return deferred.promise
-    })
-    noDeliveryRound = function () {
-      deliveryRound = undefined
-    }
+
     nrdCtrl = $controller('RoundDialogCtrl', {
-      $scope: $scope,
+      $scope: scope,
       $modalInstance: modalInstance,
       deliveryRound: deliveryRound,
       stateAdminLevels: stateAdminLevels,
-      planningService: planningService
+      $state: stateMock
     })
   }))
-
-  it('should have ROUND_STATUS object', function () {
-    expect(nrdCtrl.ROUND_STATUS).toEqual(jasmine.any(Object))
-  })
-
-  it('should make a new delivery if none is supplied', function () {
-    noDeliveryRound()
+  it('should have a deliveryRound object', function () {
     expect(nrdCtrl.deliveryRound).toEqual(jasmine.any(Object))
   })
-
-  it('should have deliveryRound object', function () {
-    expect(nrdCtrl.deliveryRound).toEqual(jasmine.any(Object))
-  })
-
-  it('should have states Array', function () {
-    expect(nrdCtrl.states).toEqual(jasmine.any(Array))
-  })
-  it('should have start object', function () {
+  it('should expose start object with a open function', function () {
     expect(nrdCtrl.start).toEqual(jasmine.any(Object))
-    expect(nrdCtrl.start.name).toBeTruthy()
-    expect(nrdCtrl.start.opened).toBeFalsy()
     expect(nrdCtrl.start.open).toEqual(jasmine.any(Function))
-    nrdCtrl.start.open(event)
-    expect(nrdCtrl.start.opened).toBeTruthy()
   })
-
-  it('should have end object', function () {
-    expect(nrdCtrl.end).toEqual(jasmine.any(Object))
-    expect(nrdCtrl.end.name).toBeTruthy()
+  it('should set nrdCtrl.end.opened to false', function () {
+    var $event = scope.$emit('click')
+    nrdCtrl.start.open($event)
     expect(nrdCtrl.end.opened).toBeFalsy()
+  })
+
+  it('should expose end object with a open function', function () {
+    expect(nrdCtrl.end).toEqual(jasmine.any(Object))
     expect(nrdCtrl.end.open).toEqual(jasmine.any(Function))
-    nrdCtrl.end.open(event)
-    expect(nrdCtrl.end.opened).toBeTruthy()
+  })
+  it('should set nrdCtrl.start.opened to false', function () {
+    var $event = scope.$emit('click')
+    nrdCtrl.end.open($event)
+    expect(nrdCtrl.start.opened).toBeFalsy()
   })
 
-  it('should have a setStateCode function', function () {
-    expect(nrdCtrl.setStateCode).toEqual(jasmine.any(Function))
-    nrdCtrl.states = [{
-      _id: 'KN',
-      name: 'KANO',
-      roundNo: '01'
-    }]
+  it('should expose setStateCode function', function () {
     nrdCtrl.setStateCode()
-    expect(nrdCtrl.deliveryRound.stateCode).toEqual(nrdCtrl.states[0]._id)
+    $rootScope.$digest()
+    expect(nrdCtrl.deliveryRound.stateCode).toBeDefined()
   })
 
-  it('should have a setRoundNumber function', function () {
-    expect(nrdCtrl.setRoundNumber).toEqual(jasmine.any(Function))
-    nrdCtrl.deliveryRound._id = 'KN-01-2016'
+  it('should expose a setRoundNumber function', function () {
     nrdCtrl.setRoundNumber()
-    expect(nrdCtrl.deliveryRound.roundNo).toBe('01')
+    $rootScope.$digest()
+    expect(nrdCtrl.deliveryRound.roundNo).toBeDefined()
   })
 
-  it('should have a getRoundCode function', function () {
-    expect(nrdCtrl.getRoundCode).toEqual(jasmine.any(Function))
-  })
-
-  it('should call planningService.getRoundCode on getRoundCode function', function () {
-    var roundId = 'KN-01-2016'
-    expect(planningService.getRoundCode).not.toHaveBeenCalled()
-    nrdCtrl.getRoundCode(roundId)
-    expect(planningService.getRoundCode).toHaveBeenCalledWith(jasmine.any(Object))
-  })
-
-  it('should have a continue function', function () {
-    expect(nrdCtrl.continue).toEqual(jasmine.any(Function))
-    expect(planningService.saveRound).not.toHaveBeenCalled()
-    nrdCtrl.edit = true
+  it('should expose continue function', function () {
     nrdCtrl.continue()
-    expect(planningService.saveRound).toHaveBeenCalledWith(nrdCtrl.deliveryRound)
+    $rootScope.$digest()
+  })
 
-    expect(planningService.createRound).not.toHaveBeenCalled()
-    nrdCtrl.edit = false
+  it('should call createAndContinue if scope.edit if null', function () {
+    nrdCtrl.edit = null
     nrdCtrl.continue()
-    expect(planningService.createRound).toHaveBeenCalledWith(nrdCtrl.deliveryRound)
-    expect(planningService.createRound).toHaveBeenCalled()
+    $rootScope.$digest()
   })
 
-  it('should have a saveAndExit function', function () {
-    expect(nrdCtrl.saveAndExit).toEqual(jasmine.any(Function))
-    expect(planningService.saveRound).not.toHaveBeenCalled()
-    nrdCtrl.edit = true
+  it('should expose saveAndExit function', function () {
     nrdCtrl.saveAndExit()
-    expect(planningService.saveRound).toHaveBeenCalledWith(nrdCtrl.deliveryRound)
-
-    expect(planningService.createRound).not.toHaveBeenCalled()
-    nrdCtrl.edit = false
-    nrdCtrl.saveAndExit()
-    expect(planningService.createRound).toHaveBeenCalledWith(nrdCtrl.deliveryRound)
+    $rootScope.$digest()
   })
 
-  it('should have a cancel function', function () {
-    expect(nrdCtrl.cancel).toEqual(jasmine.any(Function))
+  it('should call createAndExit if scope.edit if null', function () {
+    nrdCtrl.edit = null
+    nrdCtrl.saveAndExit()
+    $rootScope.$digest()
+  })
+
+  it('should expose cancel function', function () {
+    nrdCtrl.cancel()
   })
 })
