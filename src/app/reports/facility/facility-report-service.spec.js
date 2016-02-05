@@ -1,13 +1,12 @@
 'use strict'
 
-/* global describe beforeEach inject spyOn it expect jasmine */
+/* global describe beforeEach inject it expect */
 
 describe('facilityReportService', function () {
   beforeEach(module('reports', 'dbServiceMock'))
 
   var facilityReportService
   var rootScope
-
   beforeEach(inject(function (_facilityReportService_, _$rootScope_) {
     facilityReportService = _facilityReportService_
     rootScope = _$rootScope_

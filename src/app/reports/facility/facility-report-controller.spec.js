@@ -1,5 +1,5 @@
 'use strict'
-/* global describe, beforeEach, it, inject, expect, module spyOn */
+/* global describe, beforeEach, it, inject, expect, module */
 
 describe('FacilityReportCtrl', function () {
   beforeEach(module('reports', 'config', 'dbServiceMock', 'authServiceMock'))
@@ -23,9 +23,7 @@ describe('FacilityReportCtrl', function () {
     expect(FacilityReportCtrl.stop.opened).toBeTruthy()
   })
 
-
   it('should expose the get report method', function () {
-
     expect(FacilityReportCtrl.getReport).toBeDefined()
     FacilityReportCtrl.getReport()
     var isFunction = angular.isFunction(FacilityReportCtrl.getReport)
