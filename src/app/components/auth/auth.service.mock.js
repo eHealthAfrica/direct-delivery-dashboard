@@ -1,3 +1,5 @@
+'use strict';
+
 (function (angular) {
   angular.module('authServiceMock', [])
     .service('authService', function ($q) {
@@ -5,4 +7,4 @@
         return $q.when('State1')
       }
     })
-})(angular)
+}(angular))
