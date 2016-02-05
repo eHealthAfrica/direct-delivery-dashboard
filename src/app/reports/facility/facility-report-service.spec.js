@@ -3,25 +3,25 @@
 /* global describe beforeEach inject spyOn it expect jasmine */
 
 describe('facilityReportService', function () {
-  beforeEach(module('reports'))
+  beforeEach(module('reports', 'dbServiceMock'))
 
   var facilityReportService
-  var dbService
-  beforeEach(inject(function (_facilityReportService_, _dbService_) {
-    facilityReportService = _facilityReportService_
-    dbService = _dbService_
+  var rootScope
 
-    spyOn(dbService, 'getView').and.callThrough()
+  beforeEach(inject(function (_facilityReportService_, _$rootScope_) {
+    facilityReportService = _facilityReportService_
+    rootScope = _$rootScope_
   }))
 
-  it("should expose a 'getHFStatusReport' function", function () {
-    expect(facilityReportService.getHFStatusReport).toEqual(jasmine.any(Function))
-    var date = new Date().getDate()
-    expect(dbService.getView).not.toHaveBeenCalled()
+  it("should expose a 'getHFStatusReport' function", function (done) {
+    expect(facilityReportService.getHFStatusReport).toBeDefined()
+    facilityReportService.getHFStatusReport('2015-01-01', '2015-01-01')
+      .then(function (response) {
+        expect(response.byFacility).toBeDefined()
+        expect(angular.isObject(response.byFacility)).toBeTruthy()
+        done()
+      })
 
-    var view = 'facilities/cce-status-by-date'
-    facilityReportService.getHFStatusReport(date, date)
-
-    expect(dbService.getView).toHaveBeenCalledWith(view, jasmine.any(Object))
+    rootScope.$digest()
   })
 })
