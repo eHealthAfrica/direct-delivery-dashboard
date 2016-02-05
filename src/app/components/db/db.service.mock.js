@@ -90,6 +90,63 @@
 
   ]
 
+  var locationMock = [
+    {
+      'id': 'ZONEID-STATEID',
+      'key': ['3', 'State1'],
+      'value': null,
+      'doc': {
+        '_id': 'ZONEID-STATEID',
+        'doc_type': 'location',
+        'level': '3',
+        'name': 'Zone 1',
+        'ancestors': ['COUNTRYID', 'ZONEID', 'STATEID']
+      }
+    }
+  ]
+
+  var facilityCCEStatusMock = [
+    {
+      'id': 'id1',
+      'key': ['2015-01-01', 'round1'],
+      'value': {
+        'status': 'upcoming',
+        'reason': '1st attempt',
+        'workingCCE': true,
+        'name': 'Facility 1',
+        'zone': 'Zone 1',
+        'lga': 'LGA 1',
+        'ward': 'Ward 1'
+      }
+    },
+    {
+      'id': 'id2',
+      'key': ['2015-01-01', 'round1'],
+      'value': {
+        'status': 'success',
+        'reason': '1st attempt',
+        'workingCCE': false,
+        'name': 'Facility 2',
+        'zone': 'Zone 2',
+        'lga': 'LGA 1',
+        'ward': 'Ward 2'
+      }
+    },
+    {
+      'id': 'id3',
+      'key': ['2015-01-01', 'round2'],
+      'value': {
+        'status': 'failed',
+        'reason': '1st attempt',
+        'workingCCE': true,
+        'name': 'Facility 1',
+        'zone': 'Zone 1',
+        'lga': 'LGA 1',
+        'ward': 'Ward 1'
+      }
+    }
+  ]
+
   angular.module('dbServiceMock', [])
     .constant('deliveryRounds', deliveryRounds)
     .constant('dailyDeliveriesByDate', byDateMock)
@@ -103,13 +160,25 @@
             response = {
               rows: deliveryRounds
             }
-          } else if ('dashboard-delivery-rounds/report-by-date') {
+          } else if (view === 'dashboard-delivery-rounds/report-by-date') {
             response = {
               rows: byDateMock
             }
-          } else if ('reports/by-rounds') {
+          } else if (view === 'reports/by-rounds') {
             response = {
               rows: byRoundMock
+            }
+          } else if (view === 'location/by-level-and-ancestors-id') {
+            response = {
+              rows: locationMock
+            }
+          } else if (view === 'dashboard-delivery-rounds/report-by-date') {
+            response = {
+              rows: byDateMock
+            }
+          } else if (view === 'facilities/cce-status-by-date') {
+            response = {
+              rows: facilityCCEStatusMock
             }
           }
 
