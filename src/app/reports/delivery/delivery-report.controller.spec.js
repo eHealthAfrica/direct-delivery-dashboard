@@ -69,10 +69,17 @@ describe('DeliveryReportCtrl', function () {
     })
   })
 
-  it('testing here', function () {
+  it('should expose getReport and getRound methods', function () {
+    spyOn(DeliveryReportCtrl, 'getReport')
+    spyOn(DeliveryReportCtrl, 'getByRound')
+    expect(DeliveryReportCtrl.getReport).toBeDefined()
+    expect(DeliveryReportCtrl.getByRound).toBeDefined()
     DeliveryReportCtrl.getReport()
     DeliveryReportCtrl.getByRound('round1')
     DeliveryReportCtrl.getByRound()
+    expect(DeliveryReportCtrl.getReport).toHaveBeenCalled()
+    expect(DeliveryReportCtrl.getByRound).toHaveBeenCalled()
+
     rootScope.$digest()
   })
 })
