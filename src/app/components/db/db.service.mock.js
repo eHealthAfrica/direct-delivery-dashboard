@@ -55,7 +55,8 @@
         billable: 0,
         workingCCE: 1,
         delivered: 0,
-        howMuchLate: 'UNKNOWN'
+        howMuchLate: 'UNKNOWN',
+        lag: 2
       }
     },
     {
@@ -71,7 +72,8 @@
         billable: 0,
         workingCCE: 1,
         delivered: 0,
-        howMuchLate: 'UNKNOWN'
+        howMuchLate: 'UNKNOWN',
+        lag: 1
       }
     },
     {
@@ -88,7 +90,7 @@
         workingCCE: 1,
         delivered: 1,
         howMuchLate: -15943664,
-        lag: 1
+        lag: 0
       }
     }
   ]

@@ -1,49 +1,49 @@
 'use strict'
-/* global describe, beforeEach, it, inject, expect, module, spyOn, jasmine */
+/* global describe, beforeEach, it, inject, expect, module, jasmine */
 
 describe('DeliveryRoundCtrl.completePlanning', function () {
-  beforeEach(module('planning'))
+  beforeEach(module('planning', 'dbServiceMock', 'mailerServiceMock', 'authServiceMock'))
 
-  var planningService
-  var deliveryRoundService
   var deliveryRounds
-  var DeliveryRoundCtrl
-  var scope = {
-    $on: function () {
-      return {}
-    }
-  }
+  var drCtrl
+  var scope
+  var $rootScope
+  var modal
 
-  beforeEach(function () {
+  beforeEach(inject(function (_$controller_, _$rootScope_) {
     deliveryRounds = []
-
-    module(function ($provide) {
-      $provide.value('deliveryRounds', deliveryRounds)
-    })
-  })
-  beforeEach(inject(function (
-    _$controller_,
-    _planningService_,
-    _deliveryRoundService_
-  ) {
-    planningService = _planningService_
-    deliveryRoundService = _deliveryRoundService_
-
-    DeliveryRoundCtrl = _$controller_('DeliveryRoundCtrl', {
-      planningService: _planningService_,
-      deliveryRoundService: _deliveryRoundService_,
+    $rootScope = _$rootScope_
+    scope = $rootScope.$new()
+    modal = {
+      open: function (obj) {
+        return obj
+      }
+    }
+    drCtrl = _$controller_('DeliveryRoundCtrl', {
       deliveryRounds: deliveryRounds,
-      $scope: scope
-    })
-
-    spyOn(planningService, 'completePlanning').and.callThrough()
-    spyOn(deliveryRoundService, 'getStateAdminLevels').and.callFake(function () {
-      return []
+      $scope: scope,
+      $rootScope: $rootScope,
+      $modal: modal
     })
   }))
-  it('Should call planningService.completePlanning with expected parameter', function () {
-    expect(planningService.completePlanning).not.toHaveBeenCalled()
-    DeliveryRoundCtrl.completePlanning(jasmine.any(Object))
-    expect(planningService.completePlanning).toHaveBeenCalledWith(jasmine.any(Object))
+
+  it('should expose completePlanning function', function () {
+    var deliveryRound = {
+      id: 'KN-01-2016',
+      _id: 'KN-01-2016',
+      state: 'Kano',
+      status: 'Planning'
+    }
+    drCtrl.completePlanning(deliveryRound)
+    $rootScope.$digest()
+  })
+
+  it('should expose open function', function () {
+    drCtrl.open()
+  })
+  it('should have array deliveryRounds on stateChange event', function () {
+    $rootScope.$broadcast('stateChanged')
+    expect(drCtrl.deliveryRounds).toEqual(jasmine.any(Array))
+    $rootScope.$digest()
   })
 })
