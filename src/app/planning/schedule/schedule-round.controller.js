@@ -2,8 +2,8 @@
 
 angular.module('planning')
   .controller('ScheduleRoundCtrl', function (deliveryRound, $state, dailyDeliveries,
-    scheduleService, planningService, log, config,
-    $modal, utility, $q, DELIVERY_STATUS, mailerService, driversService, $window, $scope, authService, DTOptionsBuilder, DTColumnDefBuilder, ROUND_STATUS) {
+    scheduleService, planningService, log, config, deliveryService, $modal, utility, $q,
+    DELIVERY_STATUS, mailerService, driversService, $window, $scope, authService, DTOptionsBuilder, DTColumnDefBuilder, ROUND_STATUS) {
     var vm = this
     vm.isSavingList = {}
     vm.deliveryStatuses = DELIVERY_STATUS
@@ -167,11 +167,16 @@ angular.module('planning')
               // TODO: think of better way to refresh all data after changes though this
               // seems like the easiest and the best chance of having latest server copy while editing
               // but might be having performance issues.
-              $state.go('planning.schedule', {roundId: vm.deliveryRound._id}, {
+              /* $state.go('planning.schedule', {roundId: vm.deliveryRound._id}, {
                 reload: true,
                 inherit: false,
                 notify: true
               })
+              changing this to fetch striaght from server on edit */
+              return deliveryService.getByRoundId(vm.deliveryRound._id)
+            })
+            .then(function (dailyDeliveriesFromServer) {
+              return (vm.facilityDeliveries = scheduleService.flatten(dailyDeliveriesFromServer))
             })
             .catch(scheduleService.onSaveError)
         }
