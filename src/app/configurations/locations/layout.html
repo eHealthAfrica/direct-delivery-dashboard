@@ -22,9 +22,9 @@
           </div>
           <div class="form-group pull-right">
             <button class="btn btn-lg "
-                    ng-class="{'btn-success': configLocationCtrl.canSave, 'btn-default': !configLocationCtrl.canSave}"
+                    ng-class="{'btn-success': configLocationCtrl.csv.result.length > 0, 'btn-default': configLocationCtrl.csv.result.length === 0}"
                     ng-click="configLocationCtrl.save()"
-                    >
+                    ng-disabled="configLocationCtrl.csv.result.length === 0">
               <i class="fa " ng-class="{'fa-check': configLocationCtrl.canSave, 'fa-times': !configLocationCtrl.canSave}"></i> Save </button>
           </div>
         </div>
