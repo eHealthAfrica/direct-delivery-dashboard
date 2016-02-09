@@ -36,7 +36,7 @@
       <td class="col-sm-3">
         <span editable-select="daCtrl.productPresentation[pCode]" e-min="0"
               e-class="form-control"
-              e-ng-options="presentation.value as presentation.name for presentation in daCtrl.presentations"
+              e-ng-options="presentation._id as presentation.code for presentation in daCtrl.presentations"
               e-name="{{ pCode }}" e-form="presentationForm" e-required>
           {{ daCtrl.productPresentation[pCode]  || '-' }}
         </span>
