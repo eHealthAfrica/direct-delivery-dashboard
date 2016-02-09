@@ -79,6 +79,10 @@ angular.module('reports')
     }
 
     function getSelectedLocation () {
+      vm.reports = vm.reports || {}
+      vm.reports.zone = vm.reports.zone || {}
+      vm.reports.lga = vm.reports.lga || {}
+      vm.reports.ward = vm.reports.ward || {}
       if (vm.selected.ward) {
         vm.selectedLocation = vm.reports.ward[vm.selected.zone][vm.selected.lga][vm.selected.ward]
         vm.selected.type = 'Ward'
@@ -100,6 +104,7 @@ angular.module('reports')
     }
 
     function buildLocationList () {
+      vm.reports = vm.reports || {}
       vm.list.zone = Object.keys(vm.reports.zone).sort()
       vm.selected.zone = vm.selected.zone || vm.list.zone[0]
       vm.list.lga = Object.keys(vm.reports.lga[vm.selected.zone] || {}).sort()
@@ -116,9 +121,7 @@ angular.module('reports')
         .then(function (state) {
           return packingReportService.getPackingReport(vm.startFrom, vm.stopOn, state)
         })
-        .then(function (response) {
-          setViewVars(response)
-        })
+        .then(setViewVars)
     }
 
     vm.updateReport = function (round) {
@@ -127,9 +130,7 @@ angular.module('reports')
       }
       toggleLoading(true)
       packingReportService.getPackingReportByRound(round)
-        .then(function (response) {
-          setViewVars(response)
-        })
+        .then(setViewVars)
         .finally(toggleLoading)
     }
 

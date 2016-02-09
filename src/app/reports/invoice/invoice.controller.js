@@ -40,7 +40,9 @@ angular.module('reports')
       if (type === 'next' && vm.hasNext()) {
         vm.pagination.page++
         vm.getReport()
-      } else if (type === 'prev' && vm.hasPrev()) {
+      }
+
+      if (type === 'prev' && vm.hasPrev()) {
         vm.pagination.page--
         vm.getReport()
       }
