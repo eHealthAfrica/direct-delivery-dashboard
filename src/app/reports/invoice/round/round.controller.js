@@ -1,11 +1,23 @@
 'use strict'
 
 angular.module('reports')
-  .controller('ReportsRoundCtrl', function ($stateParams, $window, drivers, ZONE_CLASS, reportsService, dailyDeliveries, log, $timeout, APP_CONSTANTS) {
+  .controller('ReportsRoundCtrl', function (
+    $stateParams,
+    $window,
+    drivers,
+    ZONE_CLASS,
+    reportsService,
+    dailyDeliveries,
+    log,
+    $timeout,
+    APP_CONSTANTS,
+    $scope
+  ) {
     var vm = this
     var keys = ['driverID', 'date']
     var keyRows = {}
     var lastKeyValues = []
+    vm.dailyDeliveries = dailyDeliveries.results || []
     vm.deliveryRound = $stateParams.id
     vm.pagination = {
       limit: 10,
@@ -50,7 +62,7 @@ angular.module('reports')
         $window.jQuery('#report').print()
       }
     }
-    vm.dailyDeliveries = dailyDeliveries.results
+
     if (!vm.dailyDeliveries.length) {
       log.warning('noInvoiceData')
     }
@@ -129,4 +141,8 @@ angular.module('reports')
       })
     }
     vm.getReport()
+    $scope.$on('stateChanged', function (event, data) {
+      vm.pagination.page = 1
+      vm.getReport()
+    })
   })
