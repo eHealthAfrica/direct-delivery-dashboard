@@ -26,6 +26,7 @@ angular.module('configurations.locations')
     }
 
     vm.save = function () {
+      console.log('saving...')
       var locations = []
       var results = vm.csv.result
 
