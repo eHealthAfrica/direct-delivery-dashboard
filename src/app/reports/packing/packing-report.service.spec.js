@@ -4,14 +4,13 @@
 
 describe('packingReportService', function () {
   beforeEach(module('reports', 'dbServiceMock'))
-  
   var packingReportService
   var rootScope
   beforeEach(inject(function (_packingReportService_, _$rootScope_) {
     packingReportService = _packingReportService_
     rootScope = _$rootScope_
   }))
-  
+
   it("should expose 'getPackingReport' method", function (done) {
     var state = {
       name: 'State 1',
@@ -29,7 +28,7 @@ describe('packingReportService', function () {
         expect(group.ward).toBeDefined()
         done()
       })
-    
+
     rootScope.$digest()
   })
 

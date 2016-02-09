@@ -6,15 +6,6 @@ describe('DeliveryReportByZonesCtrl', function () {
 
   var DeliveryReportByZonesCtrl
   var rootScope
-  var scope = {
-    selectedState: {
-      _id: 'STATEID',
-      name: 'State1'
-    },
-    $on: function () {
-      return {}
-    }
-  }
   var event = {
     preventDefault: function () {},
     stopPropagation: function () {}
@@ -22,7 +13,7 @@ describe('DeliveryReportByZonesCtrl', function () {
   beforeEach(inject(function ($controller, _$rootScope_) {
     rootScope = _$rootScope_
     DeliveryReportByZonesCtrl = $controller('DeliveryReportByZonesCtrl', {
-      $scope: scope
+      $scope: rootScope.$new()
     })
   }))
 
@@ -58,6 +49,14 @@ describe('DeliveryReportByZonesCtrl', function () {
     expect(DeliveryReportByZonesCtrl.loadReport).toHaveBeenCalled()
     DeliveryReportByZonesCtrl.updateReport('round1')
     DeliveryReportByZonesCtrl.updateReport()
+    rootScope.$digest()
+  })
+
+  it('should reset view data on root broadcast', function () {
+    spyOn(DeliveryReportByZonesCtrl, 'loadReport')
+    rootScope.$broadcast('stateChanged', {state: {name: 'State 1', _id: 'STATEID'}})
+    expect(DeliveryReportByZonesCtrl.loadReport).toHaveBeenCalled()
+
     rootScope.$digest()
   })
 })

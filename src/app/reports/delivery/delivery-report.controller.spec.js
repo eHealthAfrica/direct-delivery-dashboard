@@ -1,20 +1,11 @@
 'use strict'
-/* global describe, beforeEach, it, inject, expect, module */
+/* global describe, beforeEach, it, inject, expect, module spyOn */
 
 describe('DeliveryReportCtrl', function () {
   beforeEach(module('reports', 'config', 'dbServiceMock', 'authServiceMock'))
 
   var DeliveryReportCtrl
   var rootScope
-  var scope = {
-    selectedState: {
-      _id: 'STATEID',
-      name: 'State1'
-    },
-    $on: function () {
-      return {}
-    }
-  }
   var event = {
     preventDefault: function () {},
     stopPropagation: function () {}
@@ -22,7 +13,7 @@ describe('DeliveryReportCtrl', function () {
   beforeEach(inject(function ($controller, _$rootScope_) {
     rootScope = _$rootScope_
     DeliveryReportCtrl = $controller('DeliveryReportCtrl', {
-      $scope: scope
+      $scope: rootScope.$new()
     })
   }))
 
@@ -70,16 +61,27 @@ describe('DeliveryReportCtrl', function () {
   })
 
   it('should expose getReport and getRound methods', function () {
-    spyOn(DeliveryReportCtrl, 'getReport')
-    spyOn(DeliveryReportCtrl, 'getByRound')
     expect(DeliveryReportCtrl.getReport).toBeDefined()
     expect(DeliveryReportCtrl.getByRound).toBeDefined()
     DeliveryReportCtrl.getReport()
     DeliveryReportCtrl.getByRound('round1')
     DeliveryReportCtrl.getByRound()
-    expect(DeliveryReportCtrl.getReport).toHaveBeenCalled()
-    expect(DeliveryReportCtrl.getByRound).toHaveBeenCalled()
 
     rootScope.$digest()
+  })
+
+  it('should reset view data on root broadcast', function () {
+    spyOn(DeliveryReportCtrl, 'getReport')
+    rootScope.$broadcast('stateChanged', {state: {name: 'State 1', _id: 'STATEID'}})
+    expect(DeliveryReportCtrl.getReport).toHaveBeenCalled()
+
+    rootScope.$digest()
+  })
+
+  it('should reset view data on root broadcast', function () {
+    var formatted_X = DeliveryReportCtrl.formatXAxis()(4)
+    var formatted_Y = DeliveryReportCtrl.formatYAxis()(4)
+    expect(formatted_X).toEqual(4)
+    expect(formatted_Y).toEqual('4%')
   })
 })

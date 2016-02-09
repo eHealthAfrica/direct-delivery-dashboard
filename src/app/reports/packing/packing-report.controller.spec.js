@@ -16,7 +16,6 @@ describe('PackingReportCtrl', function () {
   }))
 
   it('should expose updateLocation method', function () {
-
     PackingReportCtrl.updateLocation('Zone 1', 'zone')
     expect(PackingReportCtrl.selectedLocation).toBeUndefined()
     var lgas = [
@@ -44,6 +43,7 @@ describe('PackingReportCtrl', function () {
         }
       }
     }
+
     PackingReportCtrl.selected = {
       zone: 'Zone 1',
       lga: 'LGA 1',
@@ -78,7 +78,7 @@ describe('PackingReportCtrl', function () {
 
     rootScope.$digest()
   })
-  
+
   it('should toggle the state of opened property', function () {
     var event = {
       preventDefault: function () {},

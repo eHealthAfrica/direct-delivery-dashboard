@@ -321,7 +321,7 @@
       }
     }
   ]
-  
+
   var packingReportMock = [
     {
       'id': 'id1',
@@ -366,9 +366,7 @@
       }
     }
   ]
-  var packingByRoundReportMock = [
 
-  ]
   var productsMock = [
     {
       'id': 'product1',
@@ -451,17 +449,14 @@
             response = {
               rows: deliveryRoundCount
             }
-
           } else if (view === 'reports/daily-deliveries-count') {
             response = {
               rows: dailyDeliveryCount
             }
-
-          }  else if (view === 'reports/daily-deliveries') {
+          } else if (view === 'reports/daily-deliveries') {
             response = {
               rows: dailyDeliveries
             }
-
           } else if (['reports/packing-by-date', 'reports/packing-by-round'].indexOf(view) !== -1) {
             response = {
               rows: packingReportMock

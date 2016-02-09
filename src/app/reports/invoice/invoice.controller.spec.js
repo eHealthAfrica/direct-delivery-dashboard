@@ -10,7 +10,7 @@ describe('ReportsAllCtrl', function () {
     rootScope = _$rootScope_
     ReportsAllCtrl = $controller('ReportsAllCtrl', {
       $scope: rootScope.$new(),
-      pagination:  {
+      pagination: {
         limit: 10,
         page: 3,
         totalItems: 100

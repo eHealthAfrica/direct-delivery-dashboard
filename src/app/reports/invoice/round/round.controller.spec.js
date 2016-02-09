@@ -19,15 +19,13 @@ describe('ReportsRoundCtrl', function () {
       $scope: rootScope.$new(),
       drivers: [],
       dailyDeliveries: dailyDeliveries,
-      pagination:  {
+      pagination: {
         limit: 10,
         page: 3,
         totalItems: 100
       }
     })
   }))
-
-
 
   it('should reset view data on root broadcast', function () {
     spyOn(ReportsRoundCtrl, 'getReport')
