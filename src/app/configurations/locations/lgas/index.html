@@ -31,8 +31,14 @@
             </ng-csv-import>
           </div>
           <div class="form-group pull-right">
-            <button class="btn btn-success btn-lg " ng-click="configLocationCtrl.save()" ng-disabled="!configLocationCtrl.canSave">
-              <i class="fa fa-check"></i> Save</button>
+            <button class="btn btn-lg "
+                    ng-class="{'btn-success': configLocationCtrl.csv.result.length > 0, 'btn-default': configLocationCtrl.csv.result.length === 0}"
+                    ng-click="configLocationCtrl.save()"
+                    ng-disabled="configLocationCtrl.result.length === 0">
+              <i class="fa "
+                 ng-class="{'fa-check': configLocationCtrl.result.length > 0, 'fa-times': configLocationCtrl.result.length === 0}"></i>
+              Save
+            </button>
           </div>
         </div>
     </form>
@@ -46,7 +52,6 @@
                   <th style="">G/P Zone</th>
                   <th style="">State</th>
                   <th style="">Zone</th>
-                  <th style="">LGA</th>
                 </tr>
                 <tr ng-repeat="location in configLocationCtrl.csv.result track by $index">
                   <td>{{location.name}}</td>
@@ -56,7 +61,6 @@
                   <td ng-bind="location.admin_level_1"></td>
                   <td ng-bind="location.admin_level_2"></td>
                   <td ng-bind="location.admin_level_3"></td>
-                  <td ng-bind="location.admin_level_4"></td>
                 </tr>
               </table>
             </div>

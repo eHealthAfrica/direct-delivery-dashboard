@@ -3,17 +3,15 @@
 angular.module('configurations.locations')
   .controller('ConfigurationsLocationsCtrl', function (log, locationService) {
     var vm = this
-
+    vm.result = []
     vm.csv = {
       header: true,
       separator: ','
     }
-    vm.canSave = false
     var warningFired = false
     vm.finished = function (data) {
       if (angular.isArray(data)) {
         if (data.length > 0 || (vm.csv.header && data.length === 1)) { // empty files or files with only headers
-          vm.canSave = true
           vm.result = data
           warningFired = false
         } else {
