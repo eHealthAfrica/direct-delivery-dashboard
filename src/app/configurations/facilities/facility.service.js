@@ -8,6 +8,26 @@ angular.module('configurations.facilities')
     pouchUtil,
     $q
   ) {
+    function filterActive (list) {
+      list = list || []
+      var i = list.length
+      var activeFacilities = []
+      if (i > 0) {
+        while (i--) {
+          var row = list[i]
+          if (row.hasOwnProperty('active') && row.active === true) {
+            activeFacilities.unshift(row)
+          }
+
+          if (!row.hasOwnProperty('active')) {
+            activeFacilities.unshift(row)
+          }
+        }
+      }
+
+      return activeFacilities
+    }
+
     this.save = function (data, facility) {
       return dbService.update(angular.extend(facility, data))
     }
@@ -24,11 +44,12 @@ angular.module('configurations.facilities')
       keys.push(['6', lgaId])
       return locationService.getByLevelAndAncestor(keys)
         .then(pouchUtil.rejectIfEmpty)
+        .then(filterActive)
     }
 
     this.remove = function (facility) {
       if (facility && !utility.isEmptyObject(facility)) {
-        facility._deleted = true
+        facility.active = false
         return dbService.update(facility)
       }
       return $q.reject(facility)
