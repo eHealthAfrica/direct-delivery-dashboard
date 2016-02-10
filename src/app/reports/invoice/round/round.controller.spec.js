@@ -6,13 +6,15 @@ describe('ReportsRoundCtrl', function () {
   var ReportsRoundCtrl
   var rootScope
   var dailyDeliveries
+  var $q
 
   module(function ($provide) {
     $provide.value('dailyDeliveries', {results: []})
     $provide.value('drivers', [])
   })
 
-  beforeEach(inject(function (_$rootScope_, $controller, _dailyDeliveries_) {
+  beforeEach(inject(function (_$rootScope_, $controller, _dailyDeliveries_, _$q_) {
+    $q = _$q_
     rootScope = _$rootScope_
     dailyDeliveries = _dailyDeliveries_
     ReportsRoundCtrl = $controller('ReportsRoundCtrl', {
@@ -54,11 +56,22 @@ describe('ReportsRoundCtrl', function () {
     rootScope.$digest()
   })
 
-  it('remain test', function () {
+  it('should expose keySTates and allIn functions', function () {
+    expect(ReportsRoundCtrl.keyStates).toBeDefined()
     ReportsRoundCtrl.keyStates(dailyDeliveries[0], 1)
-    ReportsRoundCtrl.print()
-    ReportsRoundCtrl.print(true)
+    expect(ReportsRoundCtrl.allIn).toBeDefined()
     ReportsRoundCtrl.allIn()
+
+    rootScope.$digest()
+  })
+
+  it('should test print function', function () {
+    spyOn(ReportsRoundCtrl, 'getReport').and.callFake(function () {
+      return $q.resolve({})
+    })
+    ReportsRoundCtrl.print(true)
+    expect(ReportsRoundCtrl.getReport).toHaveBeenCalled()
+    ReportsRoundCtrl.print()
 
     rootScope.$digest()
   })
