@@ -7,7 +7,7 @@ describe('reportsService', function () {
   var deliveryRounds
   var dailyDeliveries
 
-  beforeEach(module('reports', 'reportsMock', 'utility'))
+  beforeEach(module('reports', 'reportsMock', 'utility', 'products'))
 
   beforeEach(inject(function (_$rootScope_, _reportsService_, _deliveryRounds_, _dailyDeliveries_) {
     rootScope = _$rootScope_

@@ -2,7 +2,7 @@
 /* global describe it expect module beforeEach inject spyOn */
 
 describe('PackingReportCtrl', function () {
-  beforeEach(module('reports', 'dbServiceMock', 'authServiceMock'))
+  beforeEach(module('reports', 'dbServiceMock', 'authServiceMock', 'products'))
   var PackingReportCtrl
   var packingReportService
   var rootScope
