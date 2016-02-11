@@ -426,7 +426,8 @@
             response = {
               rows: byRoundMock
             }
-          } else if (['location/by-level', 'location/by-level-and-id'].indexOf(view) !== -1) {
+          } else if (['location/by-level', 'location/by-level-and-id', 'location/by-level-and-ancestors-id'].indexOf(view) !== -1
+          ) {
             response = {
               rows: locationMock
             }
@@ -434,10 +435,6 @@
             response = {
               rows: emailReceiversMock,
               docs: emailReceiversMock
-            }
-          } else if (view === 'location/by-level-and-ancestors-id') {
-            response = {
-              rows: locationMock
             }
           } else if (view === 'dashboard-delivery-rounds/report-by-date') {
             response = {
@@ -489,6 +486,13 @@
         },
         insertWithId: function (doc, id) {
           doc._id = id
+          var deferred = $q.defer()
+          deferred.resolve(angular.extend(doc, {
+            _rev: '1-01'
+          }))
+          return deferred.promise
+        },
+        update: function (doc) {
           var deferred = $q.defer()
           deferred.resolve(angular.extend(doc, {
             _rev: '1-01'

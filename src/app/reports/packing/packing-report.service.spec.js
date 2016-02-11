@@ -3,7 +3,7 @@
 /* global describe beforeEach inject it expect */
 
 describe('packingReportService', function () {
-  beforeEach(module('reports', 'dbServiceMock'))
+  beforeEach(module('reports', 'dbServiceMock', 'products'))
   var packingReportService
   var rootScope
   beforeEach(inject(function (_packingReportService_, _$rootScope_) {

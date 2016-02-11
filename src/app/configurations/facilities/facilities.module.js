@@ -1,1 +1,4 @@
-angular.module('configurations.facilities', [])
+angular.module('configurations.facilities', [
+  'location',
+  'utility'
+])
