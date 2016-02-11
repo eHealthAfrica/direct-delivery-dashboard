@@ -40,8 +40,9 @@ angular.module('configurations.locations')
 
     vm.save = function () {
       var locations = []
-      var results = vm.csv.result
-      for (var i; i < results.length; i++) {
+      var results = vm.result
+
+      for (var i = 0; i < results.length; i++) {
         if (results[i].name) {
           var l = {
             name: results[i].name,
@@ -61,8 +62,7 @@ angular.module('configurations.locations')
           ].filter(function (item) {
             return (typeof item === 'string')
           })
-
-          if (l.ancestors.length === 4) {
+          if (l.ancestors.length > 4) {
             l._id = ([
               results[i].admin_level_0,
               results[i].admin_level_1,
