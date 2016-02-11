@@ -29,7 +29,7 @@ angular.module('configurations.locations')
         if (results[i].name) {
           var location = {
             name: results[i].name,
-            _id: results[i].id || [results[i].admin_level_0, results[i].admin_level_1, results[i].admin_level_2, utility.replaceAll(results[i].name, ' ', '_')].join('-'),
+            _id: results[i].id || [results[i].admin_level_0, results[i].admin_level_1, results[i].admin_level_2, utility.replaceAll(results[i].name, ' ', '_').toUpperCase()].join('-'),
             osmId: results[i].osmId,
             'ISO3166-2': results[i]['ISO3166-2'],
             ancestors: [

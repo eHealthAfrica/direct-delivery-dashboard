@@ -77,6 +77,7 @@ angular.module('configurations.facilities')
                 doc_type: 'location',
                 _id: (_id + '-' + [zone, lga, ward, utility.replaceAll(facility.primary_name, ' ', '_')].join('-')).toUpperCase()
               }
+              console.log(f.ancestors)
               if (f.ancestors.length === 6) {
                 vm.dataToSave.push(f)
               } else {
