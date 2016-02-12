@@ -498,6 +498,11 @@
             _rev: '1-01'
           }))
           return deferred.promise
+        },
+        saveDocs: function (docs) {
+          var deferred = $q.defer()
+          deferred.resolve(docs)
+          return deferred.promise
         }
       }
     })
