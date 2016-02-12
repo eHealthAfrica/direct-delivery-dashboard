@@ -7,7 +7,7 @@ describe('Controller: AddFacilityDialogCtrl', function () {
   var rootScope
   var scope
 
-  beforeEach(module('planning', 'dbServiceMock', 'deliveryRoundMock', 'modalMock'))
+  beforeEach(module('planning', 'dbServiceMock', 'deliveryRoundMock', 'modalMock', 'locationServiceMock'))
 
   beforeEach(inject(function (_$rootScope_, _$controller_) {
     rootScope = _$rootScope_
