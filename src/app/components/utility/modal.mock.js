@@ -46,3 +46,11 @@ angular.module('modalMock', [])
       }
     }
   })
+
+angular.module('modalInstanceMock', [])
+  .factory('$modalInstance', function () {
+    return {
+      close: function () {},
+      dismiss: function () {}
+    }
+  })
