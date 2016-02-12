@@ -16,15 +16,18 @@
               result="facilityUploadCtrl.csv.result">
             </ng-csv-import>
 				</div>
-				<button class="btn btn-success pull-right btn-lg" ng-disabled="!facilityUploadCtrl.canSaveData()"  ng-click="facilityUploadCtrl.save()">
+				<button
+          class="btn btn-success pull-right btn-lg"
+          ng-disabled="facilityUploadCtrl.dataToSave.length === 0"
+          ng-click="facilityUploadCtrl.save()">
 					<i class="fa fa-check"></i>
-					Save
+					Upload <span ng-show="facilityUploadCtrl.dataToSave.length > 0">{{facilityUploadCtrl.dataToSave.length}} facilities</span>
 				</button>
 			</form>
 		</div>
 <hr/>
 <div class="alert alert-warning" ng-show="facilityUploadCtrl.invalidUploads">
-  <i class="fa fa-warning"></i> Facilities highlighted in red background cannot be upload due to missing parent locations
+  <i class="fa fa-warning"></i> Facilities highlighted in red background cannot be uploaded due to missing parent locations
 </div>
 
 <div class="alert alert-info" ng-show="(!facilityUploadCtrl.dataToSave.length && facilityUploadCtrl.csv.result.length)">
