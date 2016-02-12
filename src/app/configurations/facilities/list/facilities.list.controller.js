@@ -2,43 +2,50 @@
 
 angular.module('configurations.facilities')
   .controller('ConfigFacilityListCtrl', function (
-    authService,
-    dbService,
     log,
     states,
     selectedStateId,
-    locationService,
     $scope,
-    pouchUtil) {
+    configFacilityService
+  ) {
     var vm = this
 
     vm.states = states
     vm.selectedStateId = selectedStateId
 
     vm.getLgas = function (stateId) {
-      var keys = []
-      keys.push(['4', stateId])
-      return locationService.getByLevelAndAncestor(keys)
-        .then(pouchUtil.rejectIfEmpty)
+      return configFacilityService.getLGAs(stateId)
         .then(function (response) {
-          if (angular.isArray(response)) {
-            if (response.length > 0) {
-              vm.lgas = response
-              vm.selectedLga = vm.lgas[0]
-              return vm.selectedLga._id
-            }
+          var lgaID
+          if (angular.isArray(response) && response.length > 0) {
+            vm.lgas = response
+            vm.selectedLga = vm.lgas[0]
+            lgaID = vm.lgas[0]._id
           }
+          return lgaID
+        })
+        .catch(function (err) {
+          log.info('facilitiesRetrievalErr', err)
+          return []
         })
     }
     vm.getFacilities = function (lgaId) {
-      var keys = []
-      keys.push(['6', lgaId])
-      return locationService.getByLevelAndAncestor(keys)
+      if (!lgaId) {
+        vm.facilities = []
+        return
+      }
+      return configFacilityService.getFacilities(lgaId)
         .then(function (response) {
           vm.facilities = response
           return response
         })
+        .catch(function (err) {
+          vm.facilities = []
+          log.info('facilitiesRetrievalErr', err)
+          return []
+        })
     }
+
     vm.switchState = function (stateId) {
       stateId = stateId || vm.selectedStateId
       return vm.getLgas(stateId)
@@ -47,17 +54,32 @@ angular.module('configurations.facilities')
           vm.facilities = []
           vm.lgas = []
           log.info('facilitiesRetrievalErr', err)
+          return []
         })
     }
 
     vm.save = function (data, facility) {
-      return dbService.update(angular.extend(facility, data))
+      configFacilityService.save(data, facility)
         .then(function (response) {
           log.success('locationSaveSuccess', response)
           return response
         })
         .catch(function (err) {
           log.error('locationSaveErr', err)
+          return []
+        })
+    }
+
+    vm.remove = function (facility) {
+      return configFacilityService.remove(facility)
+        .then(function (response) {
+          log.success('locationSaveSuccess', response)
+          vm.getFacilities(vm.selectedLga._id)
+          return response
+        })
+        .catch(function (err) {
+          log.error('locationSaveErr', err)
+          return err
         })
     }
 

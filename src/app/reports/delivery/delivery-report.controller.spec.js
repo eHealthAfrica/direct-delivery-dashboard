@@ -1,22 +1,19 @@
 'use strict'
-/* global describe, beforeEach, it, inject, expect, module */
+/* global describe, beforeEach, it, inject, expect, module spyOn */
 
 describe('DeliveryReportCtrl', function () {
-  beforeEach(module('reports', 'config'))
+  beforeEach(module('reports', 'config', 'dbServiceMock', 'authServiceMock'))
 
   var DeliveryReportCtrl
-  var scope = {
-    selectedState: {
-      _id: 'KN',
-      name: 'Kano'
-    },
-    $on: function () {
-      return {}
-    }
+  var rootScope
+  var event = {
+    preventDefault: function () {},
+    stopPropagation: function () {}
   }
-  beforeEach(inject(function ($controller, config) {
+  beforeEach(inject(function ($controller, _$rootScope_) {
+    rootScope = _$rootScope_
     DeliveryReportCtrl = $controller('DeliveryReportCtrl', {
-      $scope: scope
+      $scope: rootScope.$new()
     })
   }))
 
@@ -54,5 +51,37 @@ describe('DeliveryReportCtrl', function () {
       var isAFunction = angular.isFunction(DeliveryReportCtrl.stop.open)
       expect(isAFunction).toBeTruthy()
     })
+
+    it('should toggle the state of "stop.opened" if stop.open is called', function () {
+      DeliveryReportCtrl.stop.opened = false
+      expect(DeliveryReportCtrl.stop.opened).toBeFalsy()
+      DeliveryReportCtrl.stop.open(event)
+      expect(DeliveryReportCtrl.stop.opened).toBeTruthy()
+    })
+  })
+
+  it('should expose getReport and getRound methods', function () {
+    expect(DeliveryReportCtrl.getReport).toBeDefined()
+    expect(DeliveryReportCtrl.getByRound).toBeDefined()
+    DeliveryReportCtrl.getReport()
+    DeliveryReportCtrl.getByRound('round1')
+    DeliveryReportCtrl.getByRound()
+
+    rootScope.$digest()
+  })
+
+  it('should reset view data on root broadcast', function () {
+    spyOn(DeliveryReportCtrl, 'getReport')
+    rootScope.$broadcast('stateChanged', {state: {name: 'State 1', _id: 'STATEID'}})
+    expect(DeliveryReportCtrl.getReport).toHaveBeenCalled()
+
+    rootScope.$digest()
+  })
+
+  it('should reset view data on root broadcast', function () {
+    var formatted_X = DeliveryReportCtrl.formatXAxis()(4)
+    var formatted_Y = DeliveryReportCtrl.formatYAxis()(4)
+    expect(formatted_X).toEqual(4)
+    expect(formatted_Y).toEqual('4%')
   })
 })

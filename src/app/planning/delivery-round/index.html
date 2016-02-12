@@ -36,30 +36,30 @@
             <span>Edit</span>
           </button>
 
-          <a class="btn btn-info" ui-sref="planning.schedule({ roundId: round._id})">
+          <button class="btn btn-info" ui-sref="planning.schedule({ roundId: round._id})">
             <i class="fa fa-calendar"></i>
             <span>Schedule</span>
-          </a>
+          </button>
 
-          <a class="btn btn-primary" ui-sref="planning.allocation({ roundId: round._id})"
+          <button class="btn btn-primary" ui-sref="planning.allocation({ roundId: round._id})"
             ng-disabled="round.status ==='Planning'">
             <i class="fa fa-pie-chart"></i>
             <span>Allocation</span>
-          </a>
+          </button>
 
-          <a class="btn btn-warning"
+          <button class="btn btn-warning"
              ui-sref="planning.returnRoute({ roundId: round._id})"
              ng-disabled="round.status ==='Planning'">
             <i class="fa fa-truck"></i>
             <span>Return Route</span>
-          </a>
+          </button>
 
-          <a class="btn btn-danger"
+          <button class="btn btn-danger"
              ui-sref="planning.kpi({ roundId: round._id})"
              ng-disabled="round.status ==='Planning'">
             <i class="fa fa-file-text"></i>
             <span>KPI</span>
-          </a>
+          </button>
 
         </td>
         <td ng-show="round.status ==='Ready'
