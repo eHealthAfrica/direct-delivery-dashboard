@@ -35,8 +35,8 @@ angular.module('configurations.locations')
             osmId: results[i].osmId,
             'ISO3166-2': results[i]['ISO3166-2'],
             ancestors: [
-              (results[i].admin_level_0.length > 2) ? results[i].admin_level_0.length > 2 : null,
-              (results[i].admin_level_1.length > 2) ? results[i].admin_level_1.length > 2 : null
+              (results[i].admin_level_0.length > 1) ? results[i].admin_level_0 : null,
+              (results[i].admin_level_1.length > 1) ? results[i].admin_level_1 : null
             ],
             doc_type: 'location',
             level: results[i].level || '2'

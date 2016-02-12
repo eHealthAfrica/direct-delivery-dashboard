@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('configurations.locations')
-  .controller('ConfigurationsLocationsLgasCtrl', function (locationService, log) {
+  .controller('ConfigurationsLocationsLgasCtrl', function (locationService, log, utility) {
     var vm = this
     vm.states = []
     vm.zones = []
@@ -33,7 +33,6 @@ angular.module('configurations.locations')
     vm.save = function () {
       var locations = []
       var results = vm.result
-      console.log(results)
       for (var i = 0; i < results.length; i++) {
         if (results[i].name) {
           var l = {
@@ -45,13 +44,12 @@ angular.module('configurations.locations')
               results[i].admin_level_0,
               results[i].admin_level_1,
               results[i].admin_level_2,
-              JSON.parse(vm.zone)._id,
-              results[i].admin_level_4
+              JSON.parse(vm.zone)._id
             ],
             doc_type: 'location',
             level: results[i].level
           }
-          l._id = (l.ancestors.join('-') + l.name.replace(' ', '_')).toUpperCase()
+          l._id = (l.ancestors.join('-') + '-' + utility.replaceAll(l.name, ' ', '_')).toUpperCase()
           locations.push(l)
         } else {
           return log.error('InvalidFileImport', {})
