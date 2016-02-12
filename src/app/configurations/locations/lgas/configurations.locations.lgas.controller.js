@@ -44,12 +44,12 @@ angular.module('configurations.locations')
               results[i].admin_level_0,
               results[i].admin_level_1,
               results[i].admin_level_2,
-              JSON.parse(vm.zone)._id,
+              JSON.parse(vm.zone)._id
             ],
             doc_type: 'location',
             level: results[i].level
           }
-          l._id = (l.ancestors.join('-') +"-"+ utility.replaceAll(l.name,' ', '_')).toUpperCase()
+          l._id = (l.ancestors.join('-') + '-' + utility.replaceAll(l.name, ' ', '_')).toUpperCase()
           locations.push(l)
         } else {
           return log.error('InvalidFileImport', {})

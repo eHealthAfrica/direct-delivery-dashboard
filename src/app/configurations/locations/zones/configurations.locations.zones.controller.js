@@ -35,7 +35,7 @@ angular.module('configurations.locations')
             ancestors: [
               results[i].admin_level_0,
               results[i].admin_level_1,
-              results[i].admin_level_2,
+              results[i].admin_level_2
             ],
             doc_type: 'location',
             level: results[i].level
