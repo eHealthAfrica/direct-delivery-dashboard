@@ -5,6 +5,7 @@ angular.module('configurations.locations')
     var vm = this
     vm.states = []
     vm.zones = []
+    vm.result = []
     vm.csv = {
       separator: ',',
       header: true
@@ -24,15 +25,16 @@ angular.module('configurations.locations')
         })
     }
     vm.finished = function (data) {
-      if (data) {
-        vm.canSave = true
+      if (angular.isArray(data)) {
+        vm.result = data
       }
     }
 
     vm.save = function () {
       var locations = []
-      var results = vm.csv.result
-      for (var i in results) {
+      var results = vm.result
+      console.log(results)
+      for (var i = 0; i < results.length; i++) {
         if (results[i].name) {
           var l = {
             name: results[i].name,
