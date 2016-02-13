@@ -161,7 +161,7 @@ angular.module('locationServiceMock', [])
       getLocationsByLevel: function (level) {
         var deferred = $q.defer()
         deferred.resolve([locations[level]])
-        return deferred.promise;
+        return deferred.promise
       },
       getByLevelAndAncestor: function () {
         return $q.when(locations)
