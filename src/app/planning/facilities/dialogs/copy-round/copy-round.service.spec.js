@@ -21,10 +21,8 @@ describe('Service: copyRoundService', function () {
 
   it('should expose prepareFromTemplate function', function () {
     expect(copyRoundService.prepareFromTemplate).toEqual(jasmine.any(Function))
-  })
-
-  it('it', function () {
     copyRoundService.prepareFromTemplate('KN-01-2016', dd)
+    $rootScope.$digest()
   })
 
   it('should expose copySchedules function', function () {
@@ -32,5 +30,6 @@ describe('Service: copyRoundService', function () {
       'KNS-GZW-BBW-101': true
     }
     copyRoundService.copySchedules(dd, selectedFacilities)
+    $rootScope.$digest()
   })
 })

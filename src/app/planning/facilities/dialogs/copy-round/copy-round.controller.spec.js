@@ -6,16 +6,19 @@ describe('controller: CopyRoundTemplateDialogCtrl', function () {
   var $rootScope
   var scope
   var ctrl
+  var deliveryService
 
-  beforeEach(module('planning', 'modalMock', 'deliveryRoundMock'))
+  beforeEach(module('planning', 'modalMock', 'deliveryRoundMock', 'dailyDeliveryMock'))
 
-  beforeEach(inject(function (_$rootScope_, _$controller_) {
-    $rootScope =_$rootScope_
+  beforeEach(inject(function (_$rootScope_, _$controller_, _deliveryService_) {
+    $rootScope = _$rootScope_
     scope = $rootScope.$new()
+    deliveryService = _deliveryService_
 
     ctrl = _$controller_('CopyRoundTemplateDialogCtrl', {
       $rootScope: $rootScope,
-      $scope: scope
+      $scope: scope,
+      deliveryService: deliveryService
     })
   }))
 
@@ -31,6 +34,15 @@ describe('controller: CopyRoundTemplateDialogCtrl', function () {
     expect(ctrl.isLoading).toBeFalsy()
     ctrl.selectedRoundId = 'KN-01'
     ctrl.copy()
+    $rootScope.$digest()
     expect(ctrl.isLoading).toBeTruthy()
+  })
+
+  it('should log error and make isLoading false status when copy function is called and fails', function () {
+    expect(ctrl.isLoading).toBeFalsy()
+    ctrl.selectedRoundId = 'fail'
+    ctrl.copy()
+    $rootScope.$digest()
+    expect(ctrl.isLoading).toBeFalsy()
   })
 })

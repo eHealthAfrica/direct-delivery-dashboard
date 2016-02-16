@@ -143,6 +143,4 @@ angular.module('allocationsMock', [])
         'name': 'KN-2015'
       }
     ]
-
-
   })

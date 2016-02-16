@@ -79,7 +79,6 @@ angular.module('planning')
     }
 
     _this.copySchedules = function (template, selectedFacilityList) {
-      console.log(selectedFacilityList)
       var result = []
       var currentRoundTemplate = angular.copy(template)
       var selectedList = angular.copy(selectedFacilityList)
@@ -90,7 +89,6 @@ angular.module('planning')
               return _this.isSelectedFacilityRound(facilityRnd, selectedList)
             })
           if (dailySchedule.facilityRounds.length > 0) {
-            console.warn(dailySchedule.facilityRounds)
             result.push(dailySchedule) // skip empty facility rounds
           }
         }
