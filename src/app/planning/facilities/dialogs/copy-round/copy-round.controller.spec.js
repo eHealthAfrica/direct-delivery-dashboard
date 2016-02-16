@@ -23,7 +23,7 @@ describe('controller: CopyRoundTemplateDialogCtrl', function () {
     expect(ctrl).toBeDefined()
   })
 
-  xit('should expose copy function', function () {
+  it('should expose copy function', function () {
     expect(ctrl.copy).toEqual(jasmine.any(Function))
   })
 
