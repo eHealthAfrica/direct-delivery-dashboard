@@ -506,4 +506,100 @@
         }
       }
     })
+
+  angular.module('localForageMock', [])
+    .service('$localForage', function ($q) {
+      var localStorage = {}
+      this.localStorage = localStorage
+
+      this.getItem = function (key) {
+        return $q.when(localStorage[key])
+      }
+
+      this.setItem = function (key, value) {
+        localStorage[key] = value
+        return $q.when(localStorage)
+      }
+
+      this.removeItem = function (listOrString) {
+        function remove (key) {
+          delete localStorage[key]
+        }
+        if (angular.isArray(listOrString)) {
+          var i = listOrString.length
+          while (i--) {
+            remove(listOrString[i])
+          }
+        }
+
+        if (angular.isString(listOrString)) {
+          remove(listOrString)
+        }
+        return $q.when(true)
+      }
+    })
+
+  angular.module('localForageMock', [])
+    .service('$localForage', function ($q) {
+      var localStorage = {}
+      this.localStorage = localStorage
+
+      this.getItem = function (key) {
+        return $q.when(localStorage[key])
+      }
+
+      this.setItem = function (key, value) {
+        localStorage[key] = value
+        return $q.when(localStorage)
+      }
+
+      this.removeItem = function (listOrString) {
+        function remove (key) {
+          delete localStorage[key]
+        }
+        if (angular.isArray(listOrString)) {
+          var i = listOrString.length
+          while (i--) {
+            remove(listOrString[i])
+          }
+        }
+
+        if (angular.isString(listOrString)) {
+          remove(listOrString)
+        }
+        return $q.when(true)
+      }
+    })
+
+  angular.module('localForageMock', [])
+    .service('$localForage', function ($q) {
+      var localStorage = {}
+      this.localStorage = localStorage
+
+      this.getItem = function (key) {
+        return $q.when(localStorage[key])
+      }
+
+      this.setItem = function (key, value) {
+        localStorage[key] = value
+        return $q.when(localStorage)
+      }
+
+      this.removeItem = function (listOrString) {
+        function remove (key) {
+          delete localStorage[key]
+        }
+        if (angular.isArray(listOrString)) {
+          var i = listOrString.length
+          while (i--) {
+            remove(listOrString[i])
+          }
+        }
+
+        if (angular.isString(listOrString)) {
+          remove(listOrString)
+        }
+        return $q.when(true)
+      }
+    })
 }(angular))
