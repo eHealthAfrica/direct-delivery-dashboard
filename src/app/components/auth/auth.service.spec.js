@@ -1,8 +1,9 @@
 'use strict'
-/* global describe expect it beforeEach module */
+/* global describe expect it beforeEach module inject spyOn */
 
 describe('auth Service', function () {
   var $q
+  var log
   var rootScope
   var authService
   var localForage
@@ -32,12 +33,13 @@ describe('auth Service', function () {
 
   beforeEach(module('auth', 'location', 'ehaCouchDbAuthServiceMock', 'localForageMock', 'locationServiceMock'))
 
-  beforeEach(inject(function (_$rootScope_, _authService_, _$q_, _$localForage_, _locations_, _ehaCouchDbAuthService_) {
+  beforeEach(inject(function (_$rootScope_, _authService_, _$q_, _$localForage_, _locations_, _ehaCouchDbAuthService_, _log_) {
     locations = _locations_
     rootScope = _$rootScope_
-    authService =_authService_
+    authService = _authService_
     localForage = _$localForage_
     ehaCouchDbAuthService = _ehaCouchDbAuthService_
+    log = _log_
     $q = _$q_
   }))
 
@@ -50,17 +52,18 @@ describe('auth Service', function () {
     rootScope.$digest()
   })
 
-  it('should test auth service', function (done) {
+  it('should fail if username or password is wrong', function (done) {
+    spyOn(log, 'error')
     done()
     authService.login(username, '12345')
-      .catch(function (err) {
-        done()
+      .catch(function () {
+        expect(log.error).toHaveBeenCalled()
       })
 
     rootScope.$digest()
   })
 
-  it('should ', function (done) {
+  it('should load user selected states', function (done) {
     done()
     authService.getUserSelectedState(true)
       .then(function (response) {
