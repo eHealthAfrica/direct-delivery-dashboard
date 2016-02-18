@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('returnRouteMock', [])
-  .constant('deliveryReturnRoutesMock', [
+  .constant('deliveryReturnRoutes', [
     {
       '_id': 'rr-1',
       'deliveryRoundID': 'KN-21-2015',
