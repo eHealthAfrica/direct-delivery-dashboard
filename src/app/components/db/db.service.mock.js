@@ -206,6 +206,49 @@
       }
     }
   ]
+  var returnRouteMock = [
+    {
+      '_id': 'rr-1',
+      'deliveryRoundID': 'KN-21-2015',
+      'driverID': 'abdullahi@example.com',
+      'deliveryDate': '2015-05-21',
+      'store': {
+        '_id': 'NASSARAWA-ZONAL-STORE',
+        'name': 'Nassarawa Zonal Store'
+      },
+      'estimatedDistance': 90,
+      'actualDistance': 85,
+      'doc_type': 'return-route'
+    },
+    {
+      '_id': 'rr-2',
+      'deliveryRoundID': 'KN-21-2015',
+      'driverID': 'abdullahi@example.com',
+      'deliveryDate': '2015-05-08',
+      'store': {
+        '_id': 'NASSARAWA-ZONAL-STORE',
+        'name': 'Nassarawa Zonal Store'
+      },
+      'estimatedDistance': 115,
+      'actualDistance': 120,
+      'doc_type': 'return-route'
+    },
+    {
+      '_id': 'rr-3',
+      doc: {
+        'deliveryRoundID': 'KN-21-2015',
+        'driverID': 'bashir@example.com',
+        'deliveryDate': '2015-05-21',
+        'store': {
+          '_id': 'NASSARAWA-ZONAL-STORE',
+          'name': 'Nassarawa Zonal Store'
+        },
+        'estimatedDistance': 120,
+        'actualDistance': 150,
+        'doc_type': 'return-route'
+      }
+    }
+  ]
 
   var facilityCCEStatusMock = [
     {
@@ -464,6 +507,10 @@
             response = {
               rows: productsMock
             }
+          } else if (['return-route/daily-deliveries-by-round-id', 'return-route/by-round-id'].indexOf(view) !== -1) {
+            response = {
+              rows: returnRouteMock
+            }
           }
 
           var deferred = $q.defer()
@@ -500,6 +547,11 @@
           return deferred.promise
         },
         saveDocs: function (docs) {
+          var deferred = $q.defer()
+          deferred.resolve(docs)
+          return deferred.promise
+        },
+        insert: function (doc) {
           var deferred = $q.defer()
           deferred.resolve(docs)
           return deferred.promise
