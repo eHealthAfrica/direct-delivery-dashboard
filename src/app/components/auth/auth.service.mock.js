@@ -59,5 +59,15 @@
       this.getCurrentUser = function () {
         return $q.when(getUserData())
       }
+
+      this.requireUserWithRoles = function (roles) {
+        return function () {
+          var user = self.userData
+          if (!user.hasRole(roles) && !user.isAdmin()) {
+            return $q.reject('unauthorized')
+          }
+          return $q.when(user)
+        }
+      }
     })
 }(angular))

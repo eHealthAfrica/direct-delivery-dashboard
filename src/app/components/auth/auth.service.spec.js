@@ -16,20 +16,6 @@ describe('auth Service', function () {
   var states = [
     {name: 'State1', _id: 'STATEID'}
   ]
-  function authProvider (done, service) {
-    return {
-      requireUserWithRoles: function (roles) {
-        return function () {
-          done()
-          var user = service.userData
-          if (!user.hasRole(roles) && !user.isAdmin()) {
-            return $q.reject('unauthorized')
-          }
-          return $q.when(user)
-        }
-      }
-    }
-  }
 
   beforeEach(module('auth', 'location', 'ehaCouchDbAuthServiceMock', 'localForageMock', 'locationServiceMock'))
 
@@ -129,7 +115,7 @@ describe('auth Service', function () {
 
   it('should return user object if state is in user roles', function (done) {
     var userData = angular.copy(ehaCouchDbAuthService.userData)
-    authService.requireStateRole(roundID, authProvider(done, ehaCouchDbAuthService))
+    authService.requireStateRole(roundID, ehaCouchDbAuthService)
       .then(function (response) {
         expect(response).toEqual(userData)
         done()
@@ -137,13 +123,14 @@ describe('auth Service', function () {
     ehaCouchDbAuthService.userData.isAdmin = function () {
       return false
     }
-    authService.requireStateRole(roundID, authProvider(done, ehaCouchDbAuthService))
+
+    authService.requireStateRole(roundID, ehaCouchDbAuthService)
       .then(function (response) {
         expect(response).toEqual(userData)
         done()
       })
 
-    authService.requireStateRole('BA-20-2015', authProvider(done, ehaCouchDbAuthService))
+    authService.requireStateRole('BA-20-2015', ehaCouchDbAuthService)
       .catch(function (response) {
         expect(response).toEqual('unauthorized')
         done()
