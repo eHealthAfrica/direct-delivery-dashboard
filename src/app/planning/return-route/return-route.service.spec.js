@@ -1,5 +1,5 @@
 'use strict'
-/* global describe, beforeEach, inject, spyOn, it, expect */
+/* global describe, beforeEach, inject, it, expect jasmine */
 
 describe('returnRouteService', function () {
   var $rootScope
@@ -30,7 +30,6 @@ describe('returnRouteService', function () {
     expect(returnRouteService.getBy).toEqual(jasmine.any(Function))
     returnRouteService.getBy('KN-01-2016')
       .then(function (res) {
-
         done()
       })
     $rootScope.$digest()

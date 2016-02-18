@@ -553,7 +553,7 @@
         },
         insert: function (doc) {
           var deferred = $q.defer()
-          deferred.resolve(docs)
+          deferred.resolve(doc)
           return deferred.promise
         }
       }

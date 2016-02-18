@@ -1,5 +1,5 @@
 'use strict'
-/* global describe, beforeEach, it, inject, expect, module, spyOn */
+/* global describe, beforeEach, it, inject, expect, module jasmine */
 
 describe('ReturnRouteCtrl', function () {
   var $rootScope
@@ -10,7 +10,6 @@ describe('ReturnRouteCtrl', function () {
   }
 
   beforeEach(module('planning', 'deliveryMock', 'deliveryRoundMock', 'returnRouteMock'))
-
 
   beforeEach(inject(function (_$controller_, _$rootScope_) {
     $rootScope = _$rootScope_
