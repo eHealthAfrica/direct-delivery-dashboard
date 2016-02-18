@@ -20,7 +20,7 @@ describe('Index Service', function () {
   it('should load login page if $stateChangeError event is triggered with unauthenticated', function () {
     expect(indexService.bootstrap).toBeDefined()
     spyOn(state, 'go')
-    var event = rootScope.$emit('$stateChangeError', '', '', '', '', 'unauthenticated')
+    rootScope.$emit('$stateChangeError', '', '', '', '', 'unauthenticated')
     indexService.bootstrap()
     expect(state.go).toHaveBeenCalledWith('login')
     rootScope.$digest()
@@ -47,7 +47,7 @@ describe('Index Service', function () {
   it('should log warning message when unauthorized event is fired', function () {
     expect(indexService.bootstrap).toBeDefined()
     spyOn(log, 'warning')
-    var event = rootScope.$emit('unauthorized', '')
+    rootScope.$emit('unauthorized', '')
     indexService.bootstrap()
     expect(log.warning).toHaveBeenCalledWith('accessDeniedOrExpired')
     rootScope.$digest()
