@@ -1,110 +1,76 @@
 'use strict'
-/* global describe, beforeEach, it, inject, expect, module, spyOn */
+/* global describe, beforeEach, it, inject, expect, module, jasmine */
 
 describe('KPIController', function () {
-  beforeEach(module('planning', 'deliveryMock', 'utility', 'log', 'kpiMock'))
+  beforeEach(module('planning', 'deliveryRoundMock', 'kpiMock'))
 
-  var $controller
-  var log
-  var KPIController
-  var kpiTemplates
+  var ctrl
+  var $rootScope
+  var $scope
   var kpiInfo
-  var kpiService
-  var deliveryRound
 
-  beforeEach(inject(function (_$controller_, _deliveryRoundMock_, _log_,
-    _kpiTemplatesMock_, _kpiInfoMock_, _kpiService_) {
-    $controller = _$controller_
-    log = _log_
-    kpiService = _kpiService_
-    // copy to avoid modifying same object in each test run
-    kpiInfo = angular.copy(_kpiInfoMock_)
-    deliveryRound = angular.copy(_deliveryRoundMock_)
-    kpiTemplates = angular.copy(_kpiTemplatesMock_)
+  beforeEach(inject(function (_$controller_, _$rootScope_, _kpiTemplatesMock_, _kpiInfoMock_) {
+    $rootScope = _$rootScope_
+    $scope = $rootScope.$new()
+    kpiInfo = _kpiInfoMock_
 
-    KPIController = $controller('KPIController', {
-      deliveryRound: deliveryRound,
-      kpiTemplates: kpiTemplates,
-      kpiInfo: kpiInfo,
-      kpiService: kpiService,
-      log: log
+    ctrl = _$controller_('KPIController', {
+      $rootScope: $rootScope,
+      $scope: $scope,
+      kpiTemplates: _kpiTemplatesMock_,
+      kpiInfo: _kpiInfoMock_
     })
-
-    spyOn(log, 'error').and.callThrough()
-    spyOn(kpiService, 'save').and.callThrough()
   }))
 
-  describe('KPIController', function () {
-    it('Should be defined or instantiated', function () {
-      expect(KPIController).toBeDefined()
-    })
+  it('should be defined', function () {
+    expect(ctrl).toBeDefined()
   })
 
-  it('Should set KPIController.deliveryRound to expected object', function () {
-    expect(KPIController.deliveryRound).toBe(deliveryRound)
+  it('should expose setKPI function', function () {
+    expect(ctrl.setKPI).toEqual(jasmine.any(Function))
+    ctrl.setKPI(kpiInfo)
+    $rootScope.$digest()
   })
 
-  it('Should set KPIController.kpiTemplate to expected value', function () {
-    expect(KPIController.kpiTemplates).toBe(kpiTemplates)
+  it('should expose saveRow function', function () {
+    expect(ctrl.saveRow).toEqual(jasmine.any(Function))
+    ctrl.saveRow({}, kpiInfo.kpiList, 0)
+    $rootScope.$digest()
   })
 
-  it('Should set KPIController.antigens to expected value', function () {
-    expect(KPIController.antigens).toBe(kpiInfo.antigens)
+  it('should call ctrl.onSaveError if saveRow function fails', function () {
+    expect(ctrl.saveRow).toEqual(jasmine.any(Function))
+    ctrl.saveRow({}, [{antigensKPI: []}], 0)
+    $rootScope.$digest()
   })
 
-  it('Should set KPIController.facilityKPIList to expected value', function () {
-    expect(KPIController.facilityKPIList).toBe(kpiInfo.kpiList)
+  it('should expose saveAll function', function () {
+    expect(ctrl.saveAll).toEqual(jasmine.any(Function))
+    ctrl.saveAll()
+    $rootScope.$digest()
   })
 
-  describe('getDriver', function () {
-    it('Should return expected formatted value', function () {
-      var driverId = 'bashir@example.com'
-      var result = KPIController.getDriver(driverId)
-      var expected = 'bashir'
-      expect(result).toBe(expected)
-    })
-
-    it('Should return EMPTY string if given non-string', function () {
-      var driverId = {}
-      var result = KPIController.getDriver(driverId)
-      var expected = ''
-      expect(result).toBe(expected)
-    })
+  it('should expose getDriver function', function () {
+    expect(ctrl.getDriver).toEqual(jasmine.any(Function))
+    var res = ctrl.getDriver('a@a.com')
+    expect(res).toBe('a')
   })
 
-  describe('onSaveError', function () {
-    it('Should  call log.error() with expected parameter if status is 401', function () {
-      expect(log.error).not.toHaveBeenCalled()
-      var err = { status: 401 }
-      KPIController.onSaveError(err)
-      expect(log.error).toHaveBeenCalledWith('unauthorizedAccess', err)
-    })
-
-    it('Should  call log.error() with expected parameter if status is 409', function () {
-      expect(log.error).not.toHaveBeenCalled()
-      var err = { status: 409 }
-      KPIController.onSaveError(err)
-      expect(log.error).toHaveBeenCalledWith('updateConflict', err)
-    })
-
-    it('Should call log.error() with expected parameter if status is unknown', function () {
-      expect(log.error).not.toHaveBeenCalled()
-      var err = 'Unknown Error'
-      KPIController.onSaveError(err)
-      expect(log.error).toHaveBeenCalledWith('saveKPIError', err)
-    })
+  it('should expose isEmpty function', function () {
+    expect(ctrl.isEmptyTable).toEqual(jasmine.any(Function))
+    ctrl.isEmptyTable()
+    $rootScope.$digest()
   })
 
-  describe('saveRow', function () {
-    it('Should call kpiService.save(tempDoc)', function () {
-      expect(kpiService.save).not.toHaveBeenCalled()
-      var $data = {
-        notes: 'test notes',
-        outreachSessions: '2'
-      }
-      var $index = 0
-      KPIController.saveRow($data, KPIController.facilityKPIList, $index)
-      expect(kpiService.save).toHaveBeenCalled()
-    })
+  it('should expose showLoading function', function () {
+    expect(ctrl.showLoading).toEqual(jasmine.any(Function))
+    ctrl.showLoading()
+    $rootScope.$digest()
+  })
+
+  it('should expose hideKPITable function', function () {
+    expect(ctrl.showLoading).toEqual(jasmine.any(Function))
+    ctrl.hideKPITable()
+    $rootScope.$digest()
   })
 })
