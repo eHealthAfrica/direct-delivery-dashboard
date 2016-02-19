@@ -60,7 +60,8 @@ describe('round-dialog.controller', function () {
       $modalInstance: modalInstance,
       deliveryRound: deliveryRound,
       stateAdminLevels: stateAdminLevels,
-      $state: stateMock
+      $state: stateMock,
+      selectedStateName: 'Kano'
     })
   }))
   it('should have a deliveryRound object', function () {

@@ -11,7 +11,8 @@ angular.module('planning')
     stateAdminLevels,
     ROUND_STATUS,
     scheduleService,
-    mailerService
+    mailerService,
+    selectedStateName
   ) {
     var vm = this // view model
     vm.edit = false
@@ -53,13 +54,19 @@ angular.module('planning')
 
     vm.setStateCode = function () {
       var state
-      for (var i in vm.states) {
+      var i = vm.states.length
+      while (i--) {
         state = vm.states[i]
         if (angular.isString(state.name) && state.name.toLowerCase() === vm.deliveryRound.state.toLocaleLowerCase()) {
           vm.deliveryRound.stateCode = state._id
           break
         }
       }
+    }
+
+    if (selectedStateName) {
+      vm.deliveryRound.state = selectedStateName
+      vm.setStateCode()
     }
 
     vm.setRoundNumber = function () {
