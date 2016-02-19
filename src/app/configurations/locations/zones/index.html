@@ -24,9 +24,9 @@
             <button class="btn btn-lg "
                     ng-class="{'btn-success': locationZonesCtrl.csv.result.length > 0, 'btn-default': locationZonesCtrl.csv.result.length === 0}"
                     ng-click="locationZonesCtrl.save()"
-                    ng-disabled="locationZonesCtrl.result.length === 0">
+                    ng-disabled="locationZonesCtrl.csv.result.length === 0">
               <i class="fa "
-                 ng-class="{'fa-check': locationZonesCtrl.result.length > 0, 'fa-times': locationZonesCtrl.result.length === 0}"></i>
+                 ng-class="{'fa-check': locationZonesCtrl.csv.result.length > 0, 'fa-times': locationZonesCtrl.csv.result.length === 0}"></i>
               Save
             </button>
           </div>
