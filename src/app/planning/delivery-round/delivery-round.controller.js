@@ -24,7 +24,8 @@ angular.module('planning')
         backdrop: 'static',
         resolve: {
           deliveryRound: deliveryRoundService.getDeliveryRound.bind(null, id),
-          stateAdminLevels: deliveryRoundService.getStateAdminLevels
+          stateAdminLevels: deliveryRoundService.getStateAdminLevels,
+          selectedStateName: authService.getUserSelectedState.bind(null, false)
         }
       })
     }
