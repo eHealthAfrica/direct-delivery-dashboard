@@ -5,53 +5,53 @@
   <div class="panel-body">
     <form role="form" class="form form-inline">
         <div class="import clearfix">
-          <div class="form-group" ng-show="configLocationCtrl.states.length > 0">
+          <div class="form-group" ng-show="locationWardsCtrl.states.length > 0">
             <label>select state</label>
             <select
 							class="form-control"
-							ng-show="configLocationCtrl.states.length > 0"
-							ng-model="configLocationCtrl.state"
-							ng-change="configLocationCtrl.getZones(configLocationCtrl.state)">
-              <option ng-repeat="state in configLocationCtrl.states track by $index" value="{{state}}">{{state.name}}</option>
+							ng-show="locationWardsCtrl.states.length > 0"
+							ng-model="locationWardsCtrl.state"
+							ng-change="locationWardsCtrl.getZones(locationWardsCtrl.state)">
+              <option ng-repeat="state in locationWardsCtrl.states track by $index" value="{{state}}">{{state.name}}</option>
             </select>
           </div>
-					<div class="form-group" ng-show="configLocationCtrl.zones.length > 0">
+					<div class="form-group" ng-show="locationWardsCtrl.zones.length > 0">
             <label>select zone</label>
-            <select class="form-control"  ng-model="configLocationCtrl.zone" ng-change="configLocationCtrl.getLgas(configLocationCtrl.zone)">
-              <option ng-repeat="zone in configLocationCtrl.zones track by $index" value="{{zone}}">{{zone.name}}</option>
+            <select class="form-control"  ng-model="locationWardsCtrl.zone" ng-change="locationWardsCtrl.getLgas(locationWardsCtrl.zone)">
+              <option ng-repeat="zone in locationWardsCtrl.zones track by $index" value="{{zone}}">{{zone.name}}</option>
             </select>
           </div>
-          <div class="form-group" ng-show="configLocationCtrl.lgas.length > 0">
+          <div class="form-group" ng-show="locationWardsCtrl.lgas.length > 0">
             <label>select LGA</label>
-            <select class="form-control"  ng-model="configLocationCtrl.lga">
-              <option ng-repeat="lga in configLocationCtrl.lgas track by $index" value="{{lga}}">{{lga.name}}</option>
+            <select class="form-control"  ng-model="locationWardsCtrl.lga">
+              <option ng-repeat="lga in locationWardsCtrl.lgas track by $index" value="{{lga}}">{{lga.name}}</option>
             </select>
           </div>
           <div class="form-group">
             <ng-csv-import
-              content="configLocationCtrl.csv.content"
-              header="configLocationCtrl.csv.header"
-              separator="configLocationCtrl.csv.separator"
-              finished="configLocationCtrl.finished(configLocationCtrl.csv.result)"
-              result="configLocationCtrl.csv.result">
+              content="locationWardsCtrl.csv.content"
+              header="locationWardsCtrl.csv.header"
+              separator="locationWardsCtrl.csv.separator"
+              finished="locationWardsCtrl.finished(locationWardsCtrl.csv.result)"
+              result="locationWardsCtrl.csv.result">
             </ng-csv-import>
           </div>
           <div class="form-group pull-right">
             <button class="btn btn-lg "
-                    ng-class="{'btn-success': configLocationCtrl.result.length > 0, 'btn-default': configLocationCtrl.result.length === 0}"
-                    ng-click="configLocationCtrl.save()"
-                    ng-disabled="configLocationCtrl.result.length === 0">
+                    ng-class="{'btn-success': locationWardsCtrl.result.length > 0, 'btn-default': locationWardsCtrl.result.length === 0}"
+                    ng-click="locationWardsCtrl.save()"
+                    ng-disabled="locationWardsCtrl.result.length === 0">
               <i class="fa "
-                 ng-class="{'fa-check': configLocationCtrl.result.length > 0, 'fa-times': configLocationCtrl.result.length === 0}"></i>
+                 ng-class="{'fa-check': locationWardsCtrl.result.length > 0, 'fa-times': locationWardsCtrl.result.length === 0}"></i>
               Save
             </button>
           </div>
         </div>
     </form>
-    <div class="alert alert-warning" ng-show="fconfigLocationCtrl.invalidUploads">
+    <div class="alert alert-warning" ng-show="flocationWardsCtrl.invalidUploads">
       <i class="fa fa-warning"></i> wardss highlighted in red background cannot be upload due to missing parent locations
     </div>
-    <div ng-if="configLocationCtrl.csv.result.length > 0">
+    <div ng-if="locationWardsCtrl.csv.result.length > 0">
       <table class="table table-bordered table-hover table-condensed">
         <tr style="font-weight: bold">
           <th style="">Name</th>
@@ -63,7 +63,7 @@
           <th style="">Zone</th>
           <th style="">LGA</th>
         </tr>
-        <tr ng-repeat="location in configLocationCtrl.csv.result track by $index">
+        <tr ng-repeat="location in locationWardsCtrl.csv.result track by $index">
           <td>{{location.name}}</td>
           <td ng-bind="location.level"></td>
           <td ng-bind="location.osmId"></td>
