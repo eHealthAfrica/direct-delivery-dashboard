@@ -1,0 +1,62 @@
+<div class="panel panel-default">
+  <div class="panel-heading clearfix">
+    <div ng-include="'app/configurations/locations/menu.html'"></div>
+  </div>
+  <div class="panel-body">
+    <form role="form" class="form form-inline">
+        <div class="import clearfix">
+          <div class="form-group" ng-show="locationZonesCtrl.states.length > 0">
+            <label>select state</label>
+            <select class="form-control"  ng-model="locationZonesCtrl.state">
+              <option ng-repeat="state in locationZonesCtrl.states track by $index">{{state.name}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <ng-csv-import
+              content="locationZonesCtrl.csv.content"
+              header="locationZonesCtrl.csv.header"
+              separator="locationZonesCtrl.csv.separator"
+              finished="locationZonesCtrl.finished(locationZonesCtrl.csv.result)"
+              result="locationZonesCtrl.csv.result">
+            </ng-csv-import>
+          </div>
+          <div class="form-group pull-right">
+            <button class="btn btn-lg "
+                    ng-class="{'btn-success': locationZonesCtrl.csv.result.length > 0, 'btn-default': locationZonesCtrl.csv.result.length === 0}"
+                    ng-click="locationZonesCtrl.save()"
+                    ng-disabled="locationZonesCtrl.result.length === 0">
+              <i class="fa "
+                 ng-class="{'fa-check': locationZonesCtrl.result.length > 0, 'fa-times': locationZonesCtrl.result.length === 0}"></i>
+              Save
+            </button>
+          </div>
+        </div>
+    </form>
+      <div ng-if="locationZonesCtrl.csv.result.length > 0">
+        <table class="table table-bordered table-hover table-condensed">
+          <tr style="font-weight: bold">
+            <th style="">Name</th>
+            <th>Level</th>
+            <th style="">OSMID</th>
+            <th style="">Country</th>
+            <th style="">G/P Zone</th>
+            <th style="">State</th>
+            <th style="">Zone</th>
+            <th style="">LGA</th>
+          </tr>
+          <tr ng-repeat="location in locationZonesCtrl.csv.result track by $index">
+            <td>{{location.name}}</td>
+            <td ng-bind="location.level"></td>
+            <td ng-bind="location.osmId"></td>
+            <td ng-bind="location.admin_level_0"></td>
+            <td ng-bind="location.admin_level_1"></td>
+            <td ng-bind="location.admin_level_2"></td>
+            <td ng-bind="location.admin_level_3"></td>
+            <td ng-bind="location.admin_level_4"></td>
+          </tr>
+        </table>
+      </div>
+   </div>
+  </div>
+  </div>
+</div>

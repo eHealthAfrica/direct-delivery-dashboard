@@ -12,7 +12,7 @@ angular.module('configurations.locations')
         parent: 'configurations.layout',
         url: '/zones',
         controller: 'ConfigurationsLocationsZonesCtrl as locationZonesCtrl',
-        templateUrl: 'app/configurations/locations/layout.html'
+        templateUrl: 'app/configurations/locations/zones/index.html'
       })
       .state('configurations.locations.lgas', {
         parent: 'configurations.layout',
