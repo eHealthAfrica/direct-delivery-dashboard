@@ -49,6 +49,9 @@ angular.module('auth')
     }
 
     function roundToStateRole (roundId) {
+      if (!roundId) {
+        return
+      }
       // TODO: get this from role lib
       var prefix = 'direct_delivery_dashboard_state_'
       // TODO: make this more robust
@@ -81,8 +84,7 @@ angular.module('auth')
           }
           return $localForage.getItem('selectedState')
             .then(function (state) {
-              var result = !byId ? state : (byId === true ? self.getState(state, true) : self.getState(state))
-              return $q.when(result)
+              return !byId ? state : (byId === true ? self.getState(state, true) : self.getState(state))
             })
         })
     }
@@ -91,17 +93,13 @@ angular.module('auth')
       return self.getCurrentUser()
         .then(function (user) {
           if (!state || !user.userCtx.name) {
-            return $q.when('')
+            return ''
           }
           return $localForage.setItem('selectedState', state)
             .then(function () {
               return true
             })
         })
-    }
-
-    self.getUserStates = function () {
-      return $localForage.getItem('states')
     }
 
     self.getState = function (name, byId) {
@@ -127,7 +125,8 @@ angular.module('auth')
         return locationService.getLocationsByLevelAndId(LEVEL, stateIds)
       }
 
-      return self.getCurrentUser().then(getStatesByUser)
+      return self.getCurrentUser()
+        .then(getStatesByUser)
     }
 
     self.authorisedStates = function (user) {
@@ -149,10 +148,7 @@ angular.module('auth')
     }
 
     self.loadStatesForCurrentUser = function () {
-      return self.getCurrentUser()
-        .then(function () {
-          return self.getUserStates()
-        })
+      self.getUserStates()
         .then(function (userStates) {
           // self.stateMap.statesArray = userStates
           $localForage.setItem('states', userStates)
