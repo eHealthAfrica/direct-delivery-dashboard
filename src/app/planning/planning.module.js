@@ -13,5 +13,6 @@ angular.module('planning', [
   'drivers',
   'ui.select',
   'datatables',
+  'datatables.bootstrap',
   'ngSanitize'
 ])
