@@ -32,7 +32,7 @@ angular.module('configurations.locations')
 
     vm.save = function () {
       var locations = []
-      var results = vm.result
+      var results = vm.csv.result
       for (var i = 0; i < results.length; i++) {
         if (results[i].name) {
           var l = {
