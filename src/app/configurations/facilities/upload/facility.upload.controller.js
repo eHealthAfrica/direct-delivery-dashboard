@@ -17,44 +17,34 @@ angular.module('configurations.facilities')
 
     function _getAncestors () {
       var keys = [
-        ['3', vm.state],
-        ['4', vm.state],
         ['5', vm.state]
       ]
+
+      function extractAncestorNames (facilityAncestors) {
+        var nameString = []
+        facilityAncestors.forEach(function (row) {
+          var splitToArray = row.split('-')
+          nameString.push(splitToArray[splitToArray.length - 1])
+        })
+        return nameString.join('-')
+      }
       return locationService.getByLevelAndAncestor(keys)
         .then(function (response) {
-          var zone
-          var lga
-          var ward
-          var _id
           vm.invalidUploads = false
           vm.dataToSave = []
-
-          var state = vm.states.filter(function (st) {
-            return st._id === vm.state
-          })[0]
 
           if (vm.csv.result && vm.csv.result.length) {
             vm.csv.result.forEach(function (facility) {
               facility.error = false
-              facility.ancestors = [].concat(state.ancestors)
-              facility.ancestors.push(vm.state)
-              _id = facility.ancestors.join('-')
+              facility.ancestors = []
 
               for (var r in response) {
-                if ((utility.replaceAll(facility.zone, ' ', '-').toUpperCase() === utility.replaceAll(response[r].name, ' ', '-').toUpperCase()) && response[r].level === '3') {
+                if ((utility.replaceAll(facility.wardname, ' ', '-') === utility.replaceAll(response[r].name, ' ', '-')) && response[r].ancestors.length === 5) {
+                  facility.ancestors = response[r].ancestors
                   facility.ancestors.push(response[r]._id)
-                  zone = utility.replaceAll(response[r].name, ' ', '_')
-                }
-                if ((utility.replaceAll(facility.lganame, ' ', '-') === utility.replaceAll(response[r].name, ' ', '-')) && response[r].level === '4') {
-                  facility.ancestors.push(response[r]._id)
-                  lga = utility.replaceAll(response[r].name, ' ', '_')
-                }
-                if ((utility.replaceAll(facility.wardname, ' ', '-') === utility.replaceAll(response[r].name, ' ', '-')) && response[r].level === '5') {
-                  facility.ancestors.push(response[r]._id)
-                  ward = utility.replaceAll(response[r].name, ' ', '_')
                 }
               }
+
               if (!facility.primary_name) {
                 return log.error('InvalidFileImport', {})
               }
@@ -75,7 +65,7 @@ angular.module('configurations.facilities')
                 second_contact_phone: '',
                 second_contact_email: '',
                 doc_type: 'location',
-                _id: (_id + '-' + [zone, lga, ward, utility.replaceAll(facility.primary_name, ' ', '_')].join('-')).toUpperCase()
+                _id: ([extractAncestorNames(facility.ancestors), utility.replaceAll(facility.primary_name, ' ', '_')].join('-')).toUpperCase()
               }
 
               if (f.ancestors.length === 6) {
