@@ -32,7 +32,7 @@ angular.module('configurations.facilities')
       function extractAncestorName (ancestors, level) {
         var index = ancestors[level]
         var toArray = index.split('-')
-        var ancestorName = toArray[toArray.length -1]
+        var ancestorName = toArray[toArray.length - 1]
         return ancestorName
       }
 
@@ -48,7 +48,7 @@ angular.module('configurations.facilities')
               for (var r = 0; r < response.length; r++) {
                 var level4Ancestor = extractAncestorName(response[r].ancestors, '4').toLowerCase()
 
-                if (utility.replaceAll(facility.lganame, ' ', '-').toLowerCase() === utility.replaceAll(level4Ancestor, '_', '-').toLowerCase()){
+                if (utility.replaceAll(facility.lganame, ' ', '-').toLowerCase() === utility.replaceAll(level4Ancestor, '_', '-').toLowerCase()) {
                   if ((utility.replaceAll(facility.wardname, ' ', '-').toLowerCase() === utility.replaceAll(response[r].name, ' ', '-').toLowerCase()) && response[r].ancestors.length === 5) {
                     facility.ancestors = response[r].ancestors
                     facility.ancestors.push(response[r]._id)
