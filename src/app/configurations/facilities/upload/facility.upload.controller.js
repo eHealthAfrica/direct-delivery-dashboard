@@ -20,7 +20,7 @@ angular.module('configurations.facilities')
         ['5', vm.state]
       ]
 
-      function extractAncestorNames (facilityAncestors) {
+      function ancestorNamestoString (facilityAncestors) {
         var nameString = []
         facilityAncestors.forEach(function (row) {
           var splitToArray = row.split('-')
@@ -28,6 +28,14 @@ angular.module('configurations.facilities')
         })
         return nameString.join('-')
       }
+
+      function extractAncestorName (ancestors, level) {
+        var index = ancestors[level]
+        var toArray = index.split('-')
+        var ancestorName = toArray[toArray.length -1]
+        return ancestorName
+      }
+
       return locationService.getByLevelAndAncestor(keys)
         .then(function (response) {
           vm.invalidUploads = false
@@ -37,11 +45,14 @@ angular.module('configurations.facilities')
             vm.csv.result.forEach(function (facility) {
               facility.error = false
               facility.ancestors = []
+              for (var r = 0; r < response.length; r++) {
+                var level4Ancestor = extractAncestorName(response[r].ancestors, '4').toLowerCase()
 
-              for (var r in response) {
-                if ((utility.replaceAll(facility.wardname, ' ', '-') === utility.replaceAll(response[r].name, ' ', '-')) && response[r].ancestors.length === 5) {
-                  facility.ancestors = response[r].ancestors
-                  facility.ancestors.push(response[r]._id)
+                if (utility.replaceAll(facility.lganame, ' ', '-').toLowerCase() === utility.replaceAll(level4Ancestor, '_', '-').toLowerCase()){
+                  if ((utility.replaceAll(facility.wardname, ' ', '-').toLowerCase() === utility.replaceAll(response[r].name, ' ', '-').toLowerCase()) && response[r].ancestors.length === 5) {
+                    facility.ancestors = response[r].ancestors
+                    facility.ancestors.push(response[r]._id)
+                  }
                 }
               }
 
@@ -65,7 +76,7 @@ angular.module('configurations.facilities')
                 second_contact_phone: '',
                 second_contact_email: '',
                 doc_type: 'location',
-                _id: ([extractAncestorNames(facility.ancestors), utility.replaceAll(facility.primary_name, ' ', '_')].join('-')).toUpperCase()
+                _id: ([ancestorNamestoString(facility.ancestors), utility.replaceAll(facility.primary_name, ' ', '_')].join('-')).toUpperCase()
               }
 
               if (f.ancestors.length === 6) {
