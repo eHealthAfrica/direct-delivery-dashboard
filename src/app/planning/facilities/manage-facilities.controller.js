@@ -13,7 +13,7 @@ angular.module('planning')
     locationLevels,
     config,
     utility,
-    authService
+    selectedStateID
   ) {
     var vm = this
 
@@ -78,7 +78,9 @@ angular.module('planning')
           deliveryRound: function () {
             return vm.deliveryRound
           },
-          selectedStateID: authService.getUserSelectedState.bind(null, true)
+          selectedStateID: function () {
+            return selectedStateID
+          }
         }
       })
 
@@ -104,7 +106,7 @@ angular.module('planning')
               return rounds.filter(isntCurrentRound)
             }
 
-            return planningService.all()
+            return planningService.byAuthorisedStates([selectedStateID])
               .then(filterCurrentRound)
               .catch(utility.returnEmptyList)
           },
