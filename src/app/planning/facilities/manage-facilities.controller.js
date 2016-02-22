@@ -12,7 +12,8 @@ angular.module('planning')
     log,
     locationLevels,
     config,
-    utility
+    utility,
+    authService
   ) {
     var vm = this
 
@@ -76,7 +77,8 @@ angular.module('planning')
           },
           deliveryRound: function () {
             return vm.deliveryRound
-          }
+          },
+          selectedStateID: authService.getUserSelectedState.bind(null, true)
         }
       })
 
