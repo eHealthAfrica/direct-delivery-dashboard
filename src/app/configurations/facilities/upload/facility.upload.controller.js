@@ -15,7 +15,7 @@ angular.module('configurations.facilities')
         })
     }
 
-    function _getAncestors () {
+    function getAncestors () {
       var keys = [
         ['5', vm.state]
       ]
@@ -47,10 +47,9 @@ angular.module('configurations.facilities')
               facility.ancestors = []
               for (var r = 0; r < response.length; r++) {
                 var level4Ancestor = extractAncestorName(response[r].ancestors, '4').toLowerCase()
-
                 if (utility.replaceAll(facility.lganame, ' ', '-').toLowerCase() === utility.replaceAll(level4Ancestor, '_', '-').toLowerCase()) {
-                  if ((utility.replaceAll(facility.wardname, ' ', '-').toLowerCase() === utility.replaceAll(response[r].name, ' ', '-').toLowerCase()) && response[r].ancestors.length === 5) {
-                    facility.ancestors = response[r].ancestors
+                  if ((utility.replaceAll(facility.wardname.trim(), ' ', '-').toLowerCase() === utility.replaceAll(response[r].name.trim(), ' ', '-').toLowerCase()) && response[r].ancestors.length === 5) {
+                    facility.ancestors = response[r].ancestors.slice()
                     facility.ancestors.push(response[r]._id)
                   }
                 }
@@ -79,7 +78,7 @@ angular.module('configurations.facilities')
                 _id: ([ancestorNamestoString(facility.ancestors), utility.replaceAll(facility.primary_name, ' ', '_')].join('-')).toUpperCase()
               }
 
-              if (f.ancestors.length === 6) {
+              if (f.ancestors.length > 0) {
                 vm.dataToSave.push(f)
               } else {
                 vm.invalidUploads = true
@@ -109,24 +108,21 @@ angular.module('configurations.facilities')
       return vm.dataToSave.length
     }
 
-    function getAncestors () {
-      _getAncestors()
-        .then(function () {
-          return
-        })
-    }
-
-    vm.changeState = function () {
-      if (vm.state) {
-        getAncestors()
+    var warningFired = false
+    vm.finished = function (data) {
+      if (angular.isArray(data)) {
+        if (data.length > 0 || (vm.csv.header && data.length === 1)) { // empty files or files with only headers
+          if (!warningFired) {
+            getAncestors()
+            warningFired = true
+          }
+        } else {
+          if (!warningFired) {
+            log.warning('emptyDataUpload', data)
+            warningFired = true
+          }
+        }
       }
     }
-
-    $scope.$watch('csv.result', function (newVal, oldVal) {
-      if (!newVal || !newVal.length) {
-        return
-      }
-      getAncestors()
-    })
     vm.getStates()
   })
