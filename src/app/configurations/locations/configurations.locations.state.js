@@ -11,19 +11,19 @@ angular.module('configurations.locations')
       .state('configurations.locations.zones', {
         parent: 'configurations.layout',
         url: '/zones',
-        controller: 'ConfigurationsLocationsZonesCtrl as configLocationCtrl',
-        templateUrl: 'app/configurations/locations/layout.html'
+        controller: 'ConfigurationsLocationsZonesCtrl as locationZonesCtrl',
+        templateUrl: 'app/configurations/locations/zones/index.html'
       })
       .state('configurations.locations.lgas', {
         parent: 'configurations.layout',
         url: '/lgas',
-        controller: 'ConfigurationsLocationsLgasCtrl as configLocationCtrl',
+        controller: 'ConfigurationsLocationsLgasCtrl as locationLgasCtrl',
         templateUrl: 'app/configurations/locations/lgas/index.html'
       })
       .state('configurations.locations.wards', {
         parent: 'configurations.layout',
         url: '/wards',
-        controller: 'ConfigurationsLocationsWardsCtrl as configLocationCtrl',
+        controller: 'ConfigurationsLocationsWardsCtrl as locationWardsCtrl',
         templateUrl: 'app/configurations/locations/wards/index.html'
       })
   })

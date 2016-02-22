@@ -15,46 +15,46 @@ angular.module('configurations.facilities')
         })
     }
 
-    function _getAncestors () {
+    function getAncestors () {
       var keys = [
-        ['3', vm.state],
-        ['4', vm.state],
         ['5', vm.state]
       ]
+
+      function ancestorNamestoString (facilityAncestors) {
+        var nameString = []
+        facilityAncestors.forEach(function (row) {
+          var splitToArray = row.split('-')
+          nameString.push(splitToArray[splitToArray.length - 1])
+        })
+        return nameString.join('-')
+      }
+
+      function extractAncestorName (ancestors, level) {
+        var index = ancestors[level]
+        var toArray = index.split('-')
+        var ancestorName = toArray[toArray.length - 1]
+        return ancestorName
+      }
+
       return locationService.getByLevelAndAncestor(keys)
         .then(function (response) {
-          var zone
-          var lga
-          var ward
-          var _id
           vm.invalidUploads = false
           vm.dataToSave = []
-
-          var state = vm.states.filter(function (st) {
-            return st._id === vm.state
-          })[0]
 
           if (vm.csv.result && vm.csv.result.length) {
             vm.csv.result.forEach(function (facility) {
               facility.error = false
-              facility.ancestors = [].concat(state.ancestors)
-              facility.ancestors.push(vm.state)
-              _id = facility.ancestors.join('-')
-
-              for (var r in response) {
-                if ((utility.replaceAll(facility.zone, ' ', '-').toUpperCase() === utility.replaceAll(response[r].name, ' ', '-').toUpperCase()) && response[r].level === '3') {
-                  facility.ancestors.push(response[r]._id)
-                  zone = utility.replaceAll(response[r].name, ' ', '_')
-                }
-                if ((utility.replaceAll(facility.lganame, ' ', '-') === utility.replaceAll(response[r].name, ' ', '-')) && response[r].level === '4') {
-                  facility.ancestors.push(response[r]._id)
-                  lga = utility.replaceAll(response[r].name, ' ', '_')
-                }
-                if ((utility.replaceAll(facility.wardname, ' ', '-') === utility.replaceAll(response[r].name, ' ', '-')) && response[r].level === '5') {
-                  facility.ancestors.push(response[r]._id)
-                  ward = utility.replaceAll(response[r].name, ' ', '_')
+              facility.ancestors = []
+              for (var r = 0; r < response.length; r++) {
+                var level4Ancestor = extractAncestorName(response[r].ancestors, '4').toLowerCase()
+                if (utility.replaceAll(facility.lganame, ' ', '-').toLowerCase() === utility.replaceAll(level4Ancestor, '_', '-').toLowerCase()) {
+                  if ((utility.replaceAll(facility.wardname.trim(), ' ', '-').toLowerCase() === utility.replaceAll(response[r].name.trim(), ' ', '-').toLowerCase()) && response[r].ancestors.length === 5) {
+                    facility.ancestors = response[r].ancestors.slice()
+                    facility.ancestors.push(response[r]._id)
+                  }
                 }
               }
+
               if (!facility.primary_name) {
                 return log.error('InvalidFileImport', {})
               }
@@ -75,10 +75,10 @@ angular.module('configurations.facilities')
                 second_contact_phone: '',
                 second_contact_email: '',
                 doc_type: 'location',
-                _id: (_id + '-' + [zone, lga, ward, utility.replaceAll(facility.primary_name, ' ', '_')].join('-')).toUpperCase()
+                _id: ([ancestorNamestoString(facility.ancestors), utility.replaceAll(facility.primary_name, ' ', '_')].join('-')).toUpperCase()
               }
 
-              if (f.ancestors.length === 6) {
+              if (f.ancestors.length > 0) {
                 vm.dataToSave.push(f)
               } else {
                 vm.invalidUploads = true
@@ -108,24 +108,21 @@ angular.module('configurations.facilities')
       return vm.dataToSave.length
     }
 
-    function getAncestors () {
-      _getAncestors()
-        .then(function () {
-          return
-        })
-    }
-
-    vm.changeState = function () {
-      if (vm.state) {
-        getAncestors()
+    var warningFired = false
+    vm.finished = function (data) {
+      if (angular.isArray(data)) {
+        if (data.length > 0 || (vm.csv.header && data.length === 1)) { // empty files or files with only headers
+          if (!warningFired) {
+            getAncestors()
+            warningFired = true
+          }
+        } else {
+          if (!warningFired) {
+            log.warning('emptyDataUpload', data)
+            warningFired = true
+          }
+        }
       }
     }
-
-    $scope.$watch('csv.result', function (newVal, oldVal) {
-      if (!newVal || !newVal.length) {
-        return
-      }
-      getAncestors()
-    })
     vm.getStates()
   })
