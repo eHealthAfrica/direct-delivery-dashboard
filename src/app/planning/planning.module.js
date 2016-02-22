@@ -3,6 +3,7 @@
 angular.module('planning', [
   'core',
   'db',
+  'auth',
   'utility',
   'log',
   'delivery',
