@@ -110,6 +110,7 @@ angular.module('configurations.facilities')
 
     var warningFired = false
     vm.finished = function (data) {
+      console.log('fired')
       if (angular.isArray(data)) {
         if (data.length > 0 || (vm.csv.header && data.length === 1)) { // empty files or files with only headers
           if (!warningFired) {
