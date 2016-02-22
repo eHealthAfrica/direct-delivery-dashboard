@@ -7,6 +7,7 @@ angular.module('planning')
     deliveryRound,
     locationService,
     locationLevels,
+    selectedStateID,
     utility,
     log
   ) {
@@ -48,7 +49,8 @@ angular.module('planning')
         return
       }
 
-      locationService.getLocationsByLevel(level)
+      var keys = [[level, selectedStateID]]
+      locationService.getByLevelAndAncestor(keys)
         .then(pick)
         .then(bind)
     }
