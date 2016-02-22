@@ -109,21 +109,24 @@ angular.module('configurations.facilities')
     }
 
     var warningFired = false
-    vm.finished = function (data) {
-      console.log('fired')
-      if (angular.isArray(data)) {
-        if (data.length > 0 || (vm.csv.header && data.length === 1)) { // empty files or files with only headers
+
+    $scope.$watch('csv.result', function (newVal, oldVal) {
+      if (!newVal || !newVal.length) {
+        return
+      }
+      if (angular.isArray(vm.csv.result)) {
+        if (vm.csv.result.length > 0 || (vm.csv.header && vm.csv.result.length === 1)) { // empty files or files with only headers
           if (!warningFired) {
             getAncestors()
             warningFired = true
           }
         } else {
           if (!warningFired) {
-            log.warning('emptyDataUpload', data)
+            log.warning('emptyDataUpload', vm.csv.result)
             warningFired = true
           }
         }
       }
-    }
+    })
     vm.getStates()
   })
