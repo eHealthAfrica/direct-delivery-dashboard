@@ -15,7 +15,8 @@ describe('Controller: AddFacilityDialogCtrl', function () {
 
     ctrl = _$controller_('AddFacilityDialogCtrl', {
       $scope: scope,
-      $rootScope: $rootScope
+      $rootScope: $rootScope,
+      selectedStateID: 'KN'
     })
   }))
 

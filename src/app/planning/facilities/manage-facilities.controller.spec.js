@@ -109,11 +109,12 @@ describe('manage-facilities controller', function () {
       $scope: scope,
       deliveryRound: deliveryRound,
       locationLevels: locationLevels,
-      $state: stateMock
+      $state: stateMock,
+      selectedStateID: 'KN'
     })
   }))
 
-  it('shoould expose a openAddFacilitiesDialog function', function () {
+  it('should expose a openAddFacilitiesDialog function', function () {
     mfCtrl.openAddFacilitiesDialog()
     $rootScope.$digest()
     expect(mfCtrl.facilityList).toEqual(jasmine.any(Array))

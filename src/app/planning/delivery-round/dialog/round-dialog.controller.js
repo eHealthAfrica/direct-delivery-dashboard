@@ -64,7 +64,7 @@ angular.module('planning')
       }
     }
 
-    if (selectedStateName) {
+    if (selectedStateName && !angular.isObject(deliveryRound)) {
       vm.deliveryRound.state = selectedStateName
       vm.setStateCode()
     }

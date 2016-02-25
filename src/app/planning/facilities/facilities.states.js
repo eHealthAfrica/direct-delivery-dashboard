@@ -21,6 +21,9 @@ angular.module('planning')
             .catch(function () {
               return []
             })
+        },
+        selectedStateID: function (authService) {
+          return authService.getUserSelectedState(true)
         }
       }
     })
