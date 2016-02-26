@@ -99,7 +99,12 @@
   <div class="row" row ng-if="homeCtrl.hasSchedules()">
     <div class="col-md-12">
       <div class="panel panel-default">
-        <div class="panel-heading"><h4>Round Progress</h4></div>
+        <div class="panel-heading">
+          <h4>Round Progress
+            <i class="fa fa-info-circle"
+               tooltip-append-to-body="true"
+               tooltip="showing progress of round, Year, week of the year and date of the month. Days covered in green and end date in red"></i>
+          </h4></div>
         <div class="panel-body">
           <div gantt data=homeCtrl.data view-scale="day">
             <gantt-tooltips></gantt-tooltips>
@@ -114,7 +119,14 @@
     <!-- current status chart -->
     <div class="col-md-4 col-sm-6">
       <div class="panel panel-default">
-        <div class="panel-heading"><h4>Round Status</h4></div>
+        <div class="panel-heading">
+          <h4>
+            Round Status
+            <i class="fa fa-info-circle"
+               tooltip-append-to-body="true"
+               tooltip="Showing delivery status by zone. mouseover for more info"></i>
+          </h4>
+        </div>
         <div class="panel-body">
           <div class="container-fluid">
             <nvd3-multi-bar-horizontal-chart
@@ -141,7 +153,14 @@
     <!-- on time delivery section -->
     <div class="col-md-4 col-sm-6">
       <div class="panel panel-default">
-        <div class="panel-heading"><h4>On Time Delivery</h4></div>
+        <div class="panel-heading">
+          <h4>
+            On Time Delivery
+            <i class="fa fa-info-circle"
+               tooltip-append-to-body="true"
+               tooltip="Showing time difference between. mouseover for more info"></i>
+          </h4>
+        </div>
         <div class="panel-body">
           <div class="container-fluid">
             <nvd3-pie-chart
@@ -169,7 +188,14 @@
     <!-- delivery lag section -->
     <div class="col-md-4 col-sm-6">
       <div class="panel panel-default">
-        <div class="panel-heading"><h4>Delivery Lags</h4></div>
+        <div class="panel-heading">
+          <h4>
+            Delivery Lags
+            <i class="fa fa-info-circle"
+               tooltip-append-to-body="true"
+               tooltip="Showing delivery status by zone. mouseover for more info"></i>
+          </h4>
+        </div>
         <div class="panel-body">
           <div class="container-fluid">
             <nvd3-pie-chart
