@@ -42,10 +42,34 @@
 <table class="table table-bordered table-striped" ng-if="targetPopCtrl.renderedData.length > 0">
   <tr>
     <th>Facility</th>
-    <th tooltip-append-to-body="true" tooltip="Annual target population of children under the age of 1 year for 2015">Annual TP U1 (2015)</th>
-    <th tooltip-append-to-body="true" tooltip="Bi-weekly target population of children under the age of 1 year for 2015">Bi-weekly TP U1 (2015)</th>
-    <th tooltip-append-to-body="true" tooltip="Annual target population of women in child bearing age">Annual TP WCBA (2015)</th>
-    <th tooltip-append-to-body="true" tooltip="Bi-weekly target population of women in child bearing age">Bi-weekly TP WCBA (2015)</th>
+    <th>
+      Annual TP U1 (2015)
+      <i
+        class="fa fa-info-circle"
+        tooltip-append-to-body="true"
+        tooltip="Annual target population of children under the age of 1 year for 2015"></i>
+    </th>
+    <th>
+      Bi-weekly TP U1 (2015)
+      <i
+        class="fa fa-info-circle"
+        tooltip-append-to-body="true"
+        tooltip="Bi-weekly target population of children under the age of 1 year for 2015"></i>
+    </th>
+    <th >
+      Annual TP WCBA (2015)
+      <i
+        class="fa fa-info-circle"
+        tooltip-append-to-body="true"
+        tooltip="Annual target population of women in child bearing age"></i>
+    </th>
+    <th >
+      Bi-weekly TP WCBA (2015)
+      <i
+        class="fa fa-info-circle"
+        tooltip-append-to-body="true"
+        tooltip="Bi-weekly target population of women in child bearing age"></i>
+    </th>
     <th></th>
   </tr>
   <tr ng-repeat="row in targetPopCtrl.renderedData track by $index">
