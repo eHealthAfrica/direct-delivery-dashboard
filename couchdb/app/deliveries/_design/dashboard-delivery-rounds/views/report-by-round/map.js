@@ -80,13 +80,17 @@ function(doc) {
     return (dateTimeString.split('T'))[0]
   }
   function getLag(targetDate, deliveryDate){
+    if (isInvalidDate(deliveryDate) || isInvalidDate(targetDate)) {
+      return 'invalid Date'
+    }
     var extractedTargetDate = new Date(_extractDate(targetDate));
     var extractedDeliveryDate = new Date(_extractDate(deliveryDate));
+    var daysDiff = Math.ceil((extractedTargetDate.getTime() - extractedDeliveryDate.getTime()) / (1000 * 60 * 60 * 24))
     var lag = 1;
 
-    if(extractedDeliveryDate < extractedTargetDate){
+    if(daysDiff <= -4){
       lag = 0;
-    }else if(extractedDeliveryDate > extractedTargetDate){
+    }else if(daysDiff >= 4){
       lag = 2
     }
     return lag;
@@ -140,9 +144,11 @@ function(doc) {
           facRnd.status = facRnd.status.toLowerCase();
           facRndReport = genReport(facRnd.targetDate, doc.date, facRnd.status, facRnd.facility.zone);
           facRndReport.howMuchLate = getHowMuchTimeLate(doc.date,facRnd.window, facRnd.arrivedAt )
-          if(facRndReport.delivered === 1 && facRnd.arrivedAt){
+          if(facRndReport.delivered === 1){
+
             facRndReport.lag = getLag(doc.date, facRnd.arrivedAt)
           }
+
           emit([doc.deliveryRoundID, doc.date], facRndReport);
         }
       }
@@ -152,10 +158,12 @@ function(doc) {
       if (isValidStatus(facRnd.status)) {
         facRnd.status = facRnd.status.toLowerCase();
         facRndReport = genReport(facRnd.targetDate, facRnd.date, facRnd.status, facRnd.facility.zone);
-        if(facRndReport.delivered === 1 && facRnd.arrivedAt){
+        if(facRndReport.delivered === 1){
+
           facRndReport.lag = getLag(doc.date, facRnd.arrivedAt)
         }
         facRndReport.howMuchLate = getHowMuchTimeLate(doc.date,facRnd.window, facRnd.arrivedAt )
+
         emit([facRnd.deliveryRoundID, facRnd.date], facRndReport);
       }
     }
