@@ -169,8 +169,8 @@ angular.module('planning')
     function saveRound () {
       var isCompleteSchedule = scheduleService.isScheduleComplete(vm.deliveryRound)
       if (vm.deliveryRound.status.toLowerCase() !== 'planning' && !isCompleteSchedule) {
-        vm.deliveryRound.status = 'Planning'
         log.error('inCompleteScheduleErr')
+        return
       }
       return planningService.saveRound(vm.deliveryRound)
     }
