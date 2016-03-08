@@ -211,5 +211,10 @@ angular.module('log')
       title: 'Data Retrieval Error',
       message: 'could not retrieve data please try again',
       remedy: 'Please, try again and contact support if it persists'
+    },
+    inCompleteScheduleErr: {
+      title: 'Incomplete Delivery Schedule',
+      message: 'can not save delivery round data',
+      remedy: 'Kindly complete data entry for facilities before saving'
     }
   })
