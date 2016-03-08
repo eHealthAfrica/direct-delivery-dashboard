@@ -12,9 +12,11 @@ angular.module('planning')
     ROUND_STATUS,
     scheduleService,
     mailerService,
-    selectedStateName
+    selectedStateName,
+    dailyDeliveries
   ) {
     var vm = this // view model
+    var isCompleteSchedule = true
     vm.edit = false
     vm.ROUND_STATUS = ROUND_STATUS
 
@@ -33,6 +35,9 @@ angular.module('planning')
     }
 
     vm.states = stateAdminLevels
+    vm.isScheduleComplete = function () {
+      return scheduleService.isScheduleComplete(dailyDeliveries)
+    }
 
     function openDatePicker ($event) {
       $event.preventDefault()
@@ -141,7 +146,7 @@ angular.module('planning')
     }
 
     function saveEditAndContinue () {
-      planningService.saveRound(vm.deliveryRound)
+      saveRound()
         .then(onSuccessContinue)
         .catch(planningService.onSaveError)
     }
@@ -156,9 +161,18 @@ angular.module('planning')
     }
 
     function saveEditAndExit () {
-      planningService.saveRound(vm.deliveryRound)
+      saveRound()
         .then(onSuccessExit)
         .catch(planningService.onSaveError)
+    }
+
+    function saveRound () {
+      var isCompleteSchedule = scheduleService.isScheduleComplete(vm.deliveryRound)
+      if (vm.deliveryRound.status.toLowerCase() !== 'planning' && !isCompleteSchedule) {
+        vm.deliveryRound.status = 'Planning'
+        log.error('inCompleteScheduleErr')
+      }
+      return planningService.saveRound(vm.deliveryRound)
     }
 
     vm.continue = function () {
