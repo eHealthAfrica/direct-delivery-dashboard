@@ -50,12 +50,15 @@ angular.module('planning')
 
     vm.onAddFacility = function (facilityList) {
       facilityList.forEach(function (facility) {
+        var ward = facility.ancestors[5] || {}
+        var lga = facility.ancestors[4] || {}
+        var zone = facility.ancestors[3] || {}
         var temp = {
           name: facility.name,
           id: facility._id,
-          ward: facility.ancestors[5].name,
-          lga: facility.ancestors[4].name,
-          zone: facility.ancestors[3].name
+          ward: ward.name,
+          lga: lga.name,
+          zone: zone.name || ''
         }
         vm.facilityList.push(temp)
         vm.selectedList[temp.id] = true
