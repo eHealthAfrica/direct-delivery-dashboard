@@ -8,7 +8,10 @@ angular.module('planning')
     planningService,
     $scope,
     authService,
-    mailerService, config, scheduleService, log
+    mailerService,
+    config,
+    scheduleService,
+    log
   ) {
     var vm = this
     vm.deliveryRounds = deliveryRounds
@@ -25,12 +28,19 @@ angular.module('planning')
         resolve: {
           deliveryRound: deliveryRoundService.getDeliveryRound.bind(null, id),
           stateAdminLevels: deliveryRoundService.getStateAdminLevels,
-          selectedStateName: authService.getUserSelectedState.bind(null, false)
+          selectedStateName: authService.getUserSelectedState.bind(null, false),
+          dailyDeliveries: function (deliveryService) {
+            function handleError () {
+              return [] // default value
+            }
+            return deliveryService.getByRoundId(id)
+              .catch(handleError)
+          }
         }
       })
     }
 
-    $scope.$on('stateChanged', function (event, data) {
+    $scope.$on('stateChanged', function () {
       authService.getUserSelectedState(true)
         .then(function (state) {
           return planningService.byAuthorisedStates([state])
