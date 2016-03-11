@@ -2,6 +2,7 @@
 
 angular.module('planning')
   .controller('RoundDialogCtrl', function (
+    $q,
     log,
     $modalInstance,
     config,
@@ -16,7 +17,6 @@ angular.module('planning')
     dailyDeliveries
   ) {
     var vm = this // view model
-    var isCompleteSchedule = true
     vm.edit = false
     vm.ROUND_STATUS = ROUND_STATUS
 
@@ -146,7 +146,7 @@ angular.module('planning')
     }
 
     function saveEditAndContinue () {
-      saveRound()
+      saveRoundData()
         .then(onSuccessContinue)
         .catch(planningService.onSaveError)
     }
@@ -161,16 +161,15 @@ angular.module('planning')
     }
 
     function saveEditAndExit () {
-      saveRound()
+      saveRoundData()
         .then(onSuccessExit)
         .catch(planningService.onSaveError)
     }
 
-    function saveRound () {
-      var isCompleteSchedule = scheduleService.isScheduleComplete(vm.deliveryRound)
-      if (vm.deliveryRound.status.toLowerCase() !== 'planning' && !isCompleteSchedule) {
+    function saveRoundData () {
+      if (vm.deliveryRound.status && vm.deliveryRound.status.toLowerCase() !== 'planning' && !vm.isScheduleComplete()) {
         log.error('inCompleteScheduleErr')
-        return
+        return $q.reject(false)
       }
       return planningService.saveRound(vm.deliveryRound)
     }
