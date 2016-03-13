@@ -28,6 +28,10 @@ angular.module('planning')
       return angular.isObject(vm.selectedList) && Object.keys(vm.selectedList).length === 0
     }
 
+    vm.selectRow = function (id) {
+      vm.selectedList[id] = !vm.selectedList[id]
+    }
+
     vm.onSelect = function (option) {
       var none = vm.selectOptions[1]
       if (option === none) {
