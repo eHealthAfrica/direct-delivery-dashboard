@@ -298,4 +298,41 @@ angular.module('planning')
           return [response[response.length - 1], response]
         })
     }
+
+    _this.scheduleCompleted = function (delivery, go) {
+      delivery.scheduleComplete = true
+      if (!utility.isValidDate(delivery.date)) {
+        go = false
+      }
+      if (!utility.isValidEmail(delivery.driverID)) {
+        go = false
+      }
+      if (angular.isUndefined(delivery.drop) || delivery.drop === '') {
+        go = false
+      }
+      if (angular.isUndefined(delivery.window) || delivery.window === '') {
+        go = false
+      }
+      if (angular.isUndefined(delivery.distance) || delivery.distance === '') {
+        go = false
+      }
+
+      return go
+    }
+
+    this.isScheduleComplete = function (dailyDeliveries) {
+      dailyDeliveries = dailyDeliveries || []
+      var isComplete = dailyDeliveries.length > 0
+      var go = isComplete
+      for (var i = 0; i < dailyDeliveries.length; i++) {
+        var delivery = dailyDeliveries[i]
+        _this.scheduleCompleted(delivery, go)
+        if (!go) {
+          delivery.scheduleComplete = false
+          isComplete = false
+          break
+        }
+      }
+      return isComplete
+    }
   })

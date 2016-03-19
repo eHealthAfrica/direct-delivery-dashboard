@@ -1,8 +1,9 @@
 'use strict'
 
-/* global describe inject expect jasmine  it beforeEach module */
+/* global describe inject expect jasmine  it beforeEach module spyOn */
 
 describe('round-dialog.controller', function () {
+  var $q
   var scope
   var nrdCtrl
   var $rootScope
@@ -10,12 +11,15 @@ describe('round-dialog.controller', function () {
   var deliveryRound
   var stateAdminLevels
   var stateMock
+  var planningService
 
   beforeEach(module('planning', 'dbServiceMock', 'mailerServiceMock'))
 
-  beforeEach(inject(function (_$rootScope_, $controller, $q) {
+  beforeEach(inject(function (_$rootScope_, $controller, _$q_, _planningService_) {
+    $q = _$q_
     $rootScope = _$rootScope_
     scope = $rootScope.$new()
+    planningService = _planningService_
     modalInstance = {
       close: function () {},
       dismiss: function () {}
@@ -23,7 +27,8 @@ describe('round-dialog.controller', function () {
     deliveryRound = {
       id: 'KN-01-2016',
       _id: 'KN-01-2016',
-      state: 'Kano'
+      state: 'Kano',
+      status: 'Planning'
     }
     stateAdminLevels = [
       {
@@ -123,5 +128,28 @@ describe('round-dialog.controller', function () {
 
   it('should expose cancel function', function () {
     nrdCtrl.cancel()
+  })
+
+  it('should save edit if schedule is complete', function () {
+    spyOn(planningService, 'saveRound').and.callFake(function () {
+      return $q.when(deliveryRound)
+    })
+    nrdCtrl.edit = true
+    nrdCtrl.saveAndExit()
+    expect(planningService.saveRound).toHaveBeenCalled()
+    $rootScope.$digest()
+  })
+
+  it('should fail to save edit if schedule is not complete', function () {
+    nrdCtrl.deliveryRound.status = 'something'
+    nrdCtrl.isScheduleComplete = function () {
+      return false
+    }
+    spyOn(planningService, 'saveRound')
+    nrdCtrl.edit = true
+    nrdCtrl.saveAndExit()
+    expect(planningService.saveRound).not.toHaveBeenCalled()
+
+    $rootScope.$digest()
   })
 })

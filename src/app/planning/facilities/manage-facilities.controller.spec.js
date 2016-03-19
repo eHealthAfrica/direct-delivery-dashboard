@@ -145,4 +145,12 @@ describe('manage-facilities controller', function () {
   it('should expose a disableSave function', function () {
     mfCtrl.disableSave()
   })
+
+  it('should toggle row selection', function () {
+    mfCtrl.selectRow('1')
+    expect(mfCtrl.selectedList['1']).toBeTruthy()
+    mfCtrl.selectRow('1')
+    expect(mfCtrl.selectedList['1']).toBeFalsy()
+    $rootScope.$digest()
+  })
 })

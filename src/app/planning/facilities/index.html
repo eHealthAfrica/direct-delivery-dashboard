@@ -27,9 +27,11 @@
   </div>
 
   <div class="panel-body">
-
+    <span ng-show="mfCtrl.facilityList.length > 0">
+      <i class="fa fa-exclamation-circle"></i> Click on any row to select or deselect
+    </span>
     <table ng-show="mfCtrl.facilityList.length > 0"
-           class="table table-condensed table-striped table-bordered">
+           class="table table-condensed table-bordered">
       <thead>
       <tr>
         <th class="col-sm-1">#</th>
@@ -52,7 +54,11 @@
 
       </thead>
       <tbody>
-      <tr ng-repeat="facility in mfCtrl.facilityList track by $index">
+      <tr
+        ng-repeat="facility in mfCtrl.facilityList | orderBy:'name'"
+        class="pointer"
+        ng-class="{'bg-success': mfCtrl.selectedList[facility.id]}"
+        ng-click="mfCtrl.selectRow(facility.id)">
         <td ng-bind="($index + 1)"></td>
         <td ng-bind="facility.zone"></td>
         <td ng-bind="facility.lga"></td>
