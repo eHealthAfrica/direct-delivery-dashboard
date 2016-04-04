@@ -39,6 +39,9 @@ angular.module('directDeliveryDashboard')
       if (!vm.roundReport.lag) {
         return
       }
+      if (roundReport.lag.afterDate + roundReport.lag.beforeDate + roundReport.lag.onDate === 0) {
+        roundReport.lag.unknown = roundReport.total
+      }
       vm.lag = [
         {key: 'On scheduled date', y: vm.roundReport.lag.onDate || 0, color: '#00a65a'},
         {key: 'Before scheduled date', y: vm.roundReport.lag.beforeDate || 0, color: '#00c0ef'},
